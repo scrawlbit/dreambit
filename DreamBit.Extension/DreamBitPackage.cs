@@ -24,8 +24,8 @@ namespace DreamBit.Extension
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(DreamBitExtensionPackage.PackageGuidString)]
-    public sealed class DreamBitExtensionPackage : AsyncPackage
+    [Guid(DreamBitPackage.PackageGuidString)]
+    public sealed class DreamBitPackage : AsyncPackage
     {
          /// <summary>
         /// DreamBit.ExtensionPackage GUID string.
