@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using ScrawlBit.Notification;
-using static ScrawlBit.Presentation.Commands.CommandHelper;
+using static ScrawlBit.Presentation.Helpers.CommandHelper;
 
 namespace ScrawlBit.Presentation.Commands
 {
