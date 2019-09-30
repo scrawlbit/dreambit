@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using ScrawlBit.Presentation.Commands;
 using ScrawlBit.Presentation.Dependency;
 using ScrawlBit.Presentation.Helpers;

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using ScrawlBit.Presentation.Dependency;
 
 namespace ScrawlBit.Presentation.DragAndDrop
