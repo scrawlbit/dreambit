@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{07C95767-806B-4F9E-9B86-3C502A337678}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DreamBit.Project</RootNamespace>
+    <AssemblyName>DreamBit.Project</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\FileIdAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\FileLocationAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\InvalidFileExtensionException.cs" />
+    <Compile Include="Exceptions\ProjectAlreadyLoadedException.cs" />
+    <Compile Include="Exceptions\ProjectFileNotFoundException.cs" />
+    <Compile Include="Exceptions\ProjectNotLoadedException.cs" />
+    <Compile Include="Exceptions\TypeAlreadyRegistredException.cs" />
+    <Compile Include="Exceptions\TypeNotRegisteredException.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="ProjectFile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\ProjectInjectionModule.cs" />
+    <Compile Include="Registrations\IProjectRegistration.cs" />
+    <Compile Include="Registrations\IProjectRegistrationCollection.cs" />
+    <Compile Include="Serialization\Converters\ProjectConverter.cs" />
+    <Compile Include="Serialization\Converters\ProjectItemConverter.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DreamBit.General\DreamBit.General.csproj">
+      <Project>{8c104190-7f8d-451f-bcf8-48936609e988}</Project>
+      <Name>DreamBit.General</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrawlbit.Json\Scrawlbit.Json.csproj">
+      <Project>{33b87f35-abdd-46da-8abd-48067b369a71}</Project>
+      <Name>Scrawlbit.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrawlbit.Util\Scrawlbit.Util.csproj">
+      <Project>{ea0ebdb8-9ed2-4c34-8133-624d707a04f2}</Project>
+      <Name>Scrawlbit.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

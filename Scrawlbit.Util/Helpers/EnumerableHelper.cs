@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using ScrawlBit.Comparison;
+
+namespace ScrawlBit.Helpers
+{
+    public static class EnumerableHelper
+    {
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> source, T item)
+        {
+            return source.Except(new[] { item });
+        }
+        public static IEnumerable<T> Except<T, TComparer>(this IEnumerable<T> first, IEnumerable<T> second, Func<T, TComparer> comparer)
+        {
+            return first.Except(second, new FuncEqualityComparer<T, TComparer>(comparer));
+        }
+
+        public static IEnumerable<T> Union<T>(this IEnumerable<T> source, params T[] item)
+        {
+            return Enumerable.Union(source, item ?? new T[0]);
+        }
+
+        public static void ForEach(this IEnumerable source, Action<object> action)
+        {
+            foreach (var item in source)
+                action(item);
+        }
+        public static void ForEach<T>(this IEnumerable collection, Action<T> action)
+        {
+            foreach (var item in collection)
+                action((T)item);
+        }
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var item in source)
+                action(item);
+        }
+        public static void ForEach<T>(this IEnumerable<T> source, Action<int, T> action)
+        {
+            var i = 0;
+            foreach (var item in source)
+                action(i++, item);
+        }
+        
+        public static bool Contains(this IEnumerable source, object item)
+        {
+            return Enumerable.Contains(source.Cast<object>(), item);
+        }
+        public static bool ContainsAny<T>(this IEnumerable<T> source, IEnumerable<T> items)
+        {
+            return items.Any(i => Enumerable.Contains(source, i));
+        }
+
+        public static int IndexOf<T>(this IEnumerable<T> source, T item)
+        {
+            var index = 0;
+            
+            foreach (var i in source)
+            {
+                if (Equals(i, item))
+                    return index;
+                
+                index++;
+            }
+
+            return -1;
+        }
+    }
+}

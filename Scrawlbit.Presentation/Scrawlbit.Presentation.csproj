@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0118BE5E-BB3C-4F32-AD74-C6355FE0DEF7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scrawlbit.Presentation</RootNamespace>
+    <AssemblyName>Scrawlbit.Presentation</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\LocalizableDescriptionAttribute.cs" />
+    <Compile Include="Behaviors\ListBoxDragAndDropBehavior.cs" />
+    <Compile Include="Behaviors\RadioButtonListSelectedValueBehavior.cs" />
+    <Compile Include="Behaviors\RegexInputValidationBehavior.cs" />
+    <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\CommandHelper.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Commands\IBaseCommand.cs" />
+    <Compile Include="Commands\OverrideCommand.cs" />
+    <Compile Include="Converters\ArrayConverter.cs" />
+    <Compile Include="Converters\CollectionViewSourceConverter.cs" />
+    <Compile Include="Converters\EnumDisplayNameConverter.cs" />
+    <Compile Include="Converters\EnumerableHasElementsConverter.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\IsNullConverter.cs" />
+    <Compile Include="Converters\LocalizableDescriptionConverter.cs" />
+    <Compile Include="Converters\MultiValueConverterGroup.cs" />
+    <Compile Include="Converters\TypeConverter.cs" />
+    <Compile Include="Converters\ValueConverterGroup.cs" />
+    <Compile Include="Data\ContextMenuBinding.cs" />
+    <Compile Include="Dependency\ComponentObject.cs" />
+    <Compile Include="Dependency\DependencyObjectHelper.cs" />
+    <Compile Include="Dependency\DependencyProperty.cs" />
+    <Compile Include="Dependency\DependencyRegistry.cs" />
+    <Compile Include="Dependency\EventRegistry.cs" />
+    <Compile Include="Dependency\RoutedEvent.cs" />
+    <Compile Include="DragAndDrop\DraggableBehavior.cs" />
+    <Compile Include="DragAndDrop\DropEventArgs.cs" />
+    <Compile Include="DragAndDrop\DroppableAdorner.cs" />
+    <Compile Include="DragAndDrop\DroppableBehavior.cs" />
+    <Compile Include="DragAndDrop\DropType.cs" />
+    <Compile Include="DragAndDrop\MultipleChildDraggableBehavior.cs" />
+    <Compile Include="DragAndDrop\TreeViewDraggableBehavior.cs" />
+    <Compile Include="DragAndDrop\TreeViewDropEventArgs.cs" />
+    <Compile Include="DragAndDrop\TreeViewDroppableBehavior.cs" />
+    <Compile Include="Helpers\ApplicationHelper.cs" />
+    <Compile Include="Helpers\ComponentModelHelper.cs" />
+    <Compile Include="Helpers\ControlHelper.cs" />
+    <Compile Include="Helpers\InteractionHelper.cs" />
+    <Compile Include="Helpers\ItemContainerGeneratorHelper.cs" />
+    <Compile Include="Helpers\KeyboardHelper.cs" />
+    <Compile Include="Helpers\TreeViewHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scrawlbit.Util\Scrawlbit.Util.csproj">
+      <Project>{ea0ebdb8-9ed2-4c34-8133-624d707a04f2}</Project>
+      <Name>Scrawlbit.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

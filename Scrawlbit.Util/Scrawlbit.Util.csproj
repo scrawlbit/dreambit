@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EA0EBDB8-9ED2-4C34-8133-624D707A04F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scrawlbit.Util</RootNamespace>
+    <AssemblyName>Scrawlbit.Util</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\ExtendedObservableCollection.cs" />
+    <Compile Include="Collections\IObservableCollection.cs" />
+    <Compile Include="Collections\IReadOnlyObservableCollection.cs" />
+    <Compile Include="Collections\ObservableCollectionHelper.cs" />
+    <Compile Include="Collections\OrderedDictionary.cs" />
+    <Compile Include="Collections\ReadonlyObservableCollectionWrapper.cs" />
+    <Compile Include="Comparison\FuncEqualityComparer.cs" />
+    <Compile Include="Helpers\ArrayHelper.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="Helpers\CollectionHelper.cs" />
+    <Compile Include="Helpers\DictionaryHelper.cs" />
+    <Compile Include="Helpers\EnumerableHelper.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\ExpressionHelper.cs" />
+    <Compile Include="Helpers\FloatHelper.cs" />
+    <Compile Include="Helpers\IntHelper.cs" />
+    <Compile Include="Helpers\LazyHelper.cs" />
+    <Compile Include="Helpers\ListHelper.cs" />
+    <Compile Include="Helpers\ObjectHelper.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
+    <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Injection\Configuration\IInjectionModule.cs" />
+    <Compile Include="Injection\Configuration\IRegistration.cs" />
+    <Compile Include="Injection\Configuration\IRegistrationBuilder.cs" />
+    <Compile Include="Injection\IContainer.cs" />
+    <Compile Include="Mapping\Configuration\IInclusionMappingSource.cs" />
+    <Compile Include="Mapping\Configuration\IMappingBuilder.cs" />
+    <Compile Include="Mapping\Configuration\IMappingDestination.cs" />
+    <Compile Include="Mapping\Configuration\IMappingMemberConfiguration.cs" />
+    <Compile Include="Mapping\Configuration\IMappingProfile.cs" />
+    <Compile Include="Mapping\Configuration\IMappingSource.cs" />
+    <Compile Include="Mapping\IMapping.cs" />
+    <Compile Include="Mapping\IMappingService.cs" />
+    <Compile Include="Notification\InternalPropertyChangedEventArgs.cs" />
+    <Compile Include="Notification\InternalPropertyChangingEventArgs.cs" />
+    <Compile Include="Notification\NotificationComponent.cs" />
+    <Compile Include="Notification\NotificationHelper.cs" />
+    <Compile Include="Notification\NotificationObject.cs" />
+    <Compile Include="Notification\Notificator\ChainedNotificationConstructor.cs" />
+    <Compile Include="Notification\Notificator\ChainedNotificator.cs" />
+    <Compile Include="Notification\Notificator\Events.cs" />
+    <Compile Include="Notification\Notificator\NotificationConstruction.cs" />
+    <Compile Include="Notification\Notificator\NotificationConstructor.cs" />
+    <Compile Include="Notification\Notificator\Notificator.cs" />
+    <Compile Include="Notification\State\ChangesStateManager.cs" />
+    <Compile Include="Notification\State\ChangesTracker.cs" />
+    <Compile Include="Notification\State\CollectionChangesTracker.cs" />
+    <Compile Include="Notification\State\IChangesState.cs" />
+    <Compile Include="Notification\State\NullChangesTracker.cs" />
+    <Compile Include="Notification\State\PropertyChangesTracker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
