@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace ScrawlBit.Collections
+namespace Scrawlbit.Collections
 {
     public interface IOrderedDictionary<TKey, TValue>
     {

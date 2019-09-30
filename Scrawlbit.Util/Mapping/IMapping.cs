@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScrawlBit.Mapping
+namespace Scrawlbit.Mapping
 {
     public interface IMapping
     {

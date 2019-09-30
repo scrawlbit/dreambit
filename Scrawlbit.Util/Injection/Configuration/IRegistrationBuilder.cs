@@ -1,4 +1,4 @@
-﻿namespace ScrawlBit.Injection.Configuration
+﻿namespace Scrawlbit.Injection.Configuration
 {
     public interface IRegistrationBuilder
     {

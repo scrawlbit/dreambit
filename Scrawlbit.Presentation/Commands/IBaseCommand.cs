@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace ScrawlBit.Presentation.Commands
+namespace Scrawlbit.Presentation.Commands
 {
     public interface IBaseCommand : ICommand
     {

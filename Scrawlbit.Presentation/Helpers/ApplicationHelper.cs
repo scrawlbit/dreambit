@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 
-namespace ScrawlBit.Presentation.Helpers
+namespace Scrawlbit.Presentation.Helpers
 {
     public static class ApplicationHelper
     {

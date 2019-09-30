@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace ScrawlBit.Presentation.Converters
+namespace Scrawlbit.Presentation.Converters
 {
     public class ArrayConverter : IMultiValueConverter
     {

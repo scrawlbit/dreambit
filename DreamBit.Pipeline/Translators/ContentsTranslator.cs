@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using DreamBit.Pipeline.Imports;
 using DreamBit.Pipeline.Translators.ImportTranslators;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
 namespace DreamBit.Pipeline.Translators
 {

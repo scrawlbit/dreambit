@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
-using ScrawlBit.Presentation.Dependency;
+using Scrawlbit.Presentation.Dependency;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public class DroppableBehavior : Behavior<FrameworkElement>
     {

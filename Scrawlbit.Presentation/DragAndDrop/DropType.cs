@@ -1,4 +1,4 @@
-﻿namespace ScrawlBit.Presentation.DragAndDrop
+﻿namespace Scrawlbit.Presentation.DragAndDrop
 {
     public enum DropType
     {

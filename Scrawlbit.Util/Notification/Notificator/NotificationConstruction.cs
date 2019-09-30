@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 // ReSharper disable once CheckNamespace
-namespace ScrawlBit.Notification.Notificator
+namespace Scrawlbit.Notification.Notificator
 {
     internal class NotificationConstruction
     {

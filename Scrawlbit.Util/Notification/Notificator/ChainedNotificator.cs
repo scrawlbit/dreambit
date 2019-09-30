@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 
 // ReSharper disable once CheckNamespace
-namespace ScrawlBit.Notification.Notificator
+namespace Scrawlbit.Notification.Notificator
 {
     internal class ChainedNotificator : IDisposable
     {

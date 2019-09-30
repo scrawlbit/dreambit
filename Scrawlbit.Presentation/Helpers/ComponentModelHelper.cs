@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace ScrawlBit.Presentation.Helpers
+namespace Scrawlbit.Presentation.Helpers
 {
     public static class ComponentModelHelper
     {

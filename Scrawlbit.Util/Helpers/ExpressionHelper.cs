@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class ExpressionHelper
     {

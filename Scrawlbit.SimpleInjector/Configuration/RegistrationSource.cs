@@ -4,7 +4,7 @@ using System.Linq;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
 
-namespace ScrawlBit.Injection.Configuration
+namespace Scrawlbit.Injection.Configuration
 {
     internal class RegistrationSource
     {
@@ -26,7 +26,7 @@ namespace ScrawlBit.Injection.Configuration
                     ? lifeStyle.CreateRegistration(creator, _container)
                     : lifeStyle.CreateRegistration<TImplementation>(_container);
 
-                registration.SuppressDiagnosticWarning(DiagnosticType.LifestyleMismatch, "Lifestyle hierachy validation is ignored for ScrawlBit containers");
+                registration.SuppressDiagnosticWarning(DiagnosticType.LifestyleMismatch, "Lifestyle hierachy validation is ignored for Scrawlbit containers");
 
                 _registrations.Add(registration);
             }

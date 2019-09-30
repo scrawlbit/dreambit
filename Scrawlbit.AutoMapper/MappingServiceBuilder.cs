@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ScrawlBit.Mapping.Configuration;
+using Scrawlbit.Mapping.Configuration;
 
-namespace ScrawlBit.Mapping
+namespace Scrawlbit.Mapping
 {
     public class MappingServiceBuilder
     {

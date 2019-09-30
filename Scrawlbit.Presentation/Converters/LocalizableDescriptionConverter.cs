@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
-using ScrawlBit.Presentation.Attributes;
+using Scrawlbit.Presentation.Attributes;
 
-namespace ScrawlBit.Presentation.Converters
+namespace Scrawlbit.Presentation.Converters
 {
     [ValueConversion(typeof(object), typeof(String))]
     public class LocalizableDescriptionConverter : IValueConverter

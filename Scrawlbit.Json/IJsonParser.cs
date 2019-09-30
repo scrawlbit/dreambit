@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace ScrawlBit.Json
+namespace Scrawlbit.Json
 {
     public interface IJsonParser
     {

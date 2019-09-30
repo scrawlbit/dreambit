@@ -2,9 +2,9 @@
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Data;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
-namespace ScrawlBit.Presentation.Dependency
+namespace Scrawlbit.Presentation.Dependency
 {
     public static class DependencyObjectHelper
     {

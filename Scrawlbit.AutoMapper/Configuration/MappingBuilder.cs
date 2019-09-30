@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace ScrawlBit.Mapping.Configuration
+namespace Scrawlbit.Mapping.Configuration
 {
     internal class MappingBuilder : IMappingBuilder
     {

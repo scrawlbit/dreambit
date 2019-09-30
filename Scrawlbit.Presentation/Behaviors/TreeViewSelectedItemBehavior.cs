@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
-using ScrawlBit.Presentation.Dependency;
+using Scrawlbit.Presentation.Dependency;
 
-namespace ScrawlBit.Presentation.Behaviors
+namespace Scrawlbit.Presentation.Behaviors
 {
     public class TreeViewSelectedItemBehavior : Behavior<TreeView>
     {

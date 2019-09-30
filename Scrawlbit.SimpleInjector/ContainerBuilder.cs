@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using ScrawlBit.Injection.Configuration;
+using Scrawlbit.Injection.Configuration;
 using SimpleInjector;
 
-namespace ScrawlBit.Injection
+namespace Scrawlbit.Injection
 {
     public class ContainerBuilder
     {

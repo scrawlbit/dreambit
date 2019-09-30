@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class ObjectHelper
     {

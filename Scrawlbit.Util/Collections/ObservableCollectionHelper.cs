@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
-namespace ScrawlBit.Collections
+namespace Scrawlbit.Collections
 {
     public static class ObservableCollectionHelper
     {

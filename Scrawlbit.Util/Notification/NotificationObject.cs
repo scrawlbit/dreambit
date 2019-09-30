@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 // ReSharper disable ExplicitCallerInfoArgument
-namespace ScrawlBit.Notification
+namespace Scrawlbit.Notification
 {
     public class NotificationObject : INotifyPropertyChanged, INotifyPropertyChanging
     {

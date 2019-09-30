@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using DreamBit.Modularization.Management;
 using DreamBit.Project;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
 namespace DreamBit.Pipeline.Files
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScrawlBit.Injection
+namespace Scrawlbit.Injection
 {
     public interface IContainer : IServiceProvider
     {

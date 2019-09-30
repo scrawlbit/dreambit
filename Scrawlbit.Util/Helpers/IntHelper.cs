@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class IntHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using SimpleInjector;
 
-namespace ScrawlBit.Injection.Configuration
+namespace Scrawlbit.Injection.Configuration
 {
     internal interface IRegistration
     {

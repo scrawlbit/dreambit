@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using ScrawlBit.Notification;
+using Scrawlbit.Notification;
 
-namespace ScrawlBit.Collections
+namespace Scrawlbit.Collections
 {
     public abstract class ReadOnlyObservableCollectionWrapper<T> : NotificationObject, IReadOnlyObservableCollection<T>
     {

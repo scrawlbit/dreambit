@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScrawlBit.Mapping.Configuration
+namespace Scrawlbit.Mapping.Configuration
 {
     public interface IInclusionMappingSource<TSource, TDestination, TDerivedSource> where TDerivedSource : TSource
     {

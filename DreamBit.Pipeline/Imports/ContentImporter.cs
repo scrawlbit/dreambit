@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DreamBit.Pipeline.Exceptions;
-using ScrawlBit.Helpers;
-using ScrawlBit.Mapping;
+using Scrawlbit.Helpers;
+using Scrawlbit.Mapping;
 
 namespace DreamBit.Pipeline.Imports
 {

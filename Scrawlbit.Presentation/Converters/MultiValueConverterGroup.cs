@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ScrawlBit.Presentation.Converters
+namespace Scrawlbit.Presentation.Converters
 {
     public class MultiValueConverterGroup : List<object>, IMultiValueConverter
     {

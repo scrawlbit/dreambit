@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public abstract class DroppableAdorner : Adorner
     {

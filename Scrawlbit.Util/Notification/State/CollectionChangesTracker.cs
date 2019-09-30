@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 
-namespace ScrawlBit.Notification.State
+namespace Scrawlbit.Notification.State
 {
     public class CollectionChangesTracker<T> : ChangesTracker<T>
     {

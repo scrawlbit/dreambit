@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace ScrawlBit.Mapping
+namespace Scrawlbit.Mapping
 {
     internal class MappingServiceProfile : Profile
     {

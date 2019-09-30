@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class AttributeHelper
     {

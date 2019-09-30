@@ -1,5 +1,5 @@
 ﻿using DreamBit.Modularization.Management;
-using ScrawlBit.Injection.Configuration;
+using Scrawlbit.Injection.Configuration;
 
 namespace DreamBit.Modularization.Properties
 {

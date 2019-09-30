@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace ScrawlBit.Mapping.Configuration
+namespace Scrawlbit.Mapping.Configuration
 {
     public interface IMappingDestination<TSource, TDestination>
     {

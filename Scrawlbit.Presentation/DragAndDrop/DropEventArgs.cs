@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public class DropEventArgs
     {

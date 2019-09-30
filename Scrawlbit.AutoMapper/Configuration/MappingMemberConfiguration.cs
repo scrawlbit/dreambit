@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
 
-namespace ScrawlBit.Mapping.Configuration
+namespace Scrawlbit.Mapping.Configuration
 {
     internal class MappingMemberConfiguration<TSource, TDestination, TDestinationMember> : IMappingMemberConfiguration<TSource, TDestination, TDestinationMember>
     {

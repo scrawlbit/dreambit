@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace ScrawlBit.Presentation.Helpers
+namespace Scrawlbit.Presentation.Helpers
 {
     public static class InteractionHelper
     {

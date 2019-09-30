@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Windows;
 using Microsoft.Xaml.Behaviors;
-using ScrawlBit.Presentation.Dependency;
+using Scrawlbit.Presentation.Dependency;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public class MultipleChildDraggableBehavior : Behavior<FrameworkElement>
     {

@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ScrawlBit.Helpers;
-using ScrawlBit.Presentation.Helpers;
+using Scrawlbit.Helpers;
+using Scrawlbit.Presentation.Helpers;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public class TreeViewDroppableBehavior : DroppableBehavior
     {

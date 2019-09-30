@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class EnumHelper
     {

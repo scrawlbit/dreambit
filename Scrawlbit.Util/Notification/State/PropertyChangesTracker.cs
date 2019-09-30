@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace ScrawlBit.Notification.State
+namespace Scrawlbit.Notification.State
 {
     public class PropertyChangesTracker<T> : ChangesTracker<T>
     {

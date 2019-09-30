@@ -4,7 +4,7 @@ using DreamBit.Modularization.Management;
 using DreamBit.Project.Exceptions;
 using DreamBit.Project.Registrations;
 using DreamBit.Project.Serialization;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 using _Path = System.IO.Path;
 
 namespace DreamBit.Project

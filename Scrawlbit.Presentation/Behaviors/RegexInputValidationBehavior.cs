@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ScrawlBit.Presentation.Behaviors
+namespace Scrawlbit.Presentation.Behaviors
 {
     public class RegexInputValidationBehavior : Behavior<TextBox>
     {

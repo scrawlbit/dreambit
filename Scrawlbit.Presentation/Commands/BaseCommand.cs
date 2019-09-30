@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using ScrawlBit.Notification;
-using static ScrawlBit.Presentation.Helpers.CommandHelper;
+using Scrawlbit.Notification;
+using static Scrawlbit.Presentation.Helpers.CommandHelper;
 
-namespace ScrawlBit.Presentation.Commands
+namespace Scrawlbit.Presentation.Commands
 {
     // ReSharper disable once InconsistentNaming
     public abstract class _BaseCommand : NotificationObject

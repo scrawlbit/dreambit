@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DreamBit.Project.Registrations;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
 namespace DreamBit.Project.Mocks
 {

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class FloatHelper
     {

@@ -1,4 +1,4 @@
-﻿namespace ScrawlBit.Notification.State
+﻿namespace Scrawlbit.Notification.State
 {
     public class ChangesStateManager : NotificationObject, IChangesStateManager
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace ScrawlBit.Notification
+namespace Scrawlbit.Notification
 {
     public class NotificationComponent : INotifyPropertyChanging, INotifyPropertyChanged
     {

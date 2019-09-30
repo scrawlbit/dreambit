@@ -1,9 +1,9 @@
-﻿using ScrawlBit.Presentation.Commands;
+﻿using Scrawlbit.Presentation.Commands;
 using System;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ScrawlBit.Presentation.Helpers
+namespace Scrawlbit.Presentation.Helpers
 {
     public static class CommandHelper
     {

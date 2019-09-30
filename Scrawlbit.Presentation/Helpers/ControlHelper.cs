@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace ScrawlBit.Presentation.Helpers
+namespace Scrawlbit.Presentation.Helpers
 {
     public static class ControlHelper
     {

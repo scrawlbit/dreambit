@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ScrawlBit.Presentation.Dependency
+namespace Scrawlbit.Presentation.Dependency
 {
     public class EventRegistry<TOwner> where TOwner : UIElement
     {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
-namespace ScrawlBit.Presentation.Helpers
+namespace Scrawlbit.Presentation.Helpers
 {
     public static class KeyboardHelper
     {

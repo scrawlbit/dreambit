@@ -1,6 +1,6 @@
 using SimpleInjector;
 
-namespace ScrawlBit.Injection.Configuration
+namespace Scrawlbit.Injection.Configuration
 {
     internal class RegistrationBuilder : IRegistrationBuilder
     {

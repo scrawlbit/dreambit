@@ -3,10 +3,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Xaml.Behaviors;
-using ScrawlBit.Collections;
-using ScrawlBit.Presentation.Helpers;
+using Scrawlbit.Collections;
+using Scrawlbit.Presentation.Helpers;
 
-namespace ScrawlBit.Presentation.Behaviors
+namespace Scrawlbit.Presentation.Behaviors
 {
     public class ListBoxDragAndDropBehavior : Behavior<ListBox>
     {

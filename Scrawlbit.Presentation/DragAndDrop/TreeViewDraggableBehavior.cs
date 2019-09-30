@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using ScrawlBit.Presentation.Helpers;
+using Scrawlbit.Presentation.Helpers;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public class TreeViewDraggableBehavior : DraggableBehavior
     {

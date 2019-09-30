@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Windows;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
-namespace ScrawlBit.Presentation.Dependency
+namespace Scrawlbit.Presentation.Dependency
 {
     public class DependencyRegistry<TOwner> where TOwner : DependencyObject
     {

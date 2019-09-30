@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ScrawlBit.Presentation.Converters
+namespace Scrawlbit.Presentation.Converters
 {
     public class InverseBooleanConverter : IValueConverter
     {

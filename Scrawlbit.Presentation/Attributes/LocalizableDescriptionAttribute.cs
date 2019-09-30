@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 
-namespace ScrawlBit.Presentation.Attributes
+namespace Scrawlbit.Presentation.Attributes
 {
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
     public sealed class LocalizableDescriptionAttribute : DescriptionAttribute

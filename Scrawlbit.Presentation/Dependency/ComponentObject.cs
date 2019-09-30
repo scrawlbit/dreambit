@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
-using ScrawlBit.Notification;
+using Scrawlbit.Notification;
 
-namespace ScrawlBit.Presentation.Dependency
+namespace Scrawlbit.Presentation.Dependency
 {
     public interface IComponentObject : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable
     {

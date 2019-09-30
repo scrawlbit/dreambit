@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using ScrawlBit.Helpers;
-using ScrawlBit.Notification.Notificator;
-using ScrawlBit.Notification.State;
+using Scrawlbit.Helpers;
+using Scrawlbit.Notification.Notificator;
+using Scrawlbit.Notification.State;
 
-namespace ScrawlBit.Notification
+namespace Scrawlbit.Notification
 {
     public static class NotificationHelper
     {

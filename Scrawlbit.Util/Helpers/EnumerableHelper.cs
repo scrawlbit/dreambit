@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ScrawlBit.Comparison;
+using Scrawlbit.Comparison;
 
-namespace ScrawlBit.Helpers
+namespace Scrawlbit.Helpers
 {
     public static class EnumerableHelper
     {

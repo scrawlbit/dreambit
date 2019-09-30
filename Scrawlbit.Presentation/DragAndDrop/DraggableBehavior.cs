@@ -3,9 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
-using ScrawlBit.Presentation.Helpers;
+using Scrawlbit.Presentation.Helpers;
 
-namespace ScrawlBit.Presentation.DragAndDrop
+namespace Scrawlbit.Presentation.DragAndDrop
 {
     public class DraggableBehavior : Behavior<FrameworkElement>
     {

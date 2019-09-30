@@ -3,11 +3,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
-using ScrawlBit.Presentation.Commands;
-using ScrawlBit.Presentation.Dependency;
-using ScrawlBit.Presentation.Helpers;
+using Scrawlbit.Presentation.Commands;
+using Scrawlbit.Presentation.Dependency;
+using Scrawlbit.Presentation.Helpers;
 
-namespace ScrawlBit.Presentation.Behaviors
+namespace Scrawlbit.Presentation.Behaviors
 {
     public class RadioButtonListSelectedValueBehavior : Behavior<Panel>
     {

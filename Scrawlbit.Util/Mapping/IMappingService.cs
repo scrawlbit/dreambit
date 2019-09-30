@@ -1,4 +1,4 @@
-﻿namespace ScrawlBit.Mapping
+﻿namespace Scrawlbit.Mapping
 {
     public interface IMappingService
     {

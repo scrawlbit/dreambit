@@ -1,7 +1,7 @@
 ﻿using DreamBit.Modularization.Management;
 using DreamBit.Project.Serialization;
-using ScrawlBit.Injection.Configuration;
-using ScrawlBit.Json;
+using Scrawlbit.Injection.Configuration;
+using Scrawlbit.Json;
 
 namespace DreamBit.Project.Properties
 {

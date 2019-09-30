@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace ScrawlBit.Notification.State
+namespace Scrawlbit.Notification.State
 {
     public interface IChangesState : INotifyPropertyChanged
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScrawlBit.Presentation.Commands
+namespace Scrawlbit.Presentation.Commands
 {
     public class DelegateCommand : BaseCommand
     {

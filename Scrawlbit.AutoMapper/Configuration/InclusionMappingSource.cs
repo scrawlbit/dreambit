@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoMapper;
 
-namespace ScrawlBit.Mapping.Configuration
+namespace Scrawlbit.Mapping.Configuration
 {
     internal class InclusionMappingSource<TSource, TDestination, TDerivedSource> : IInclusionMappingSource<TSource, TDestination, TDerivedSource>
         where TDerivedSource : TSource

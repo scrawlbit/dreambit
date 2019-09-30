@@ -1,4 +1,4 @@
-﻿namespace ScrawlBit.Notification
+﻿namespace Scrawlbit.Notification
 {
     internal class InternalPropertyChangingEventArgs : System.ComponentModel.PropertyChangingEventArgs
     {

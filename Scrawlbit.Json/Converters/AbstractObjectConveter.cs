@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ScrawlBit.Json.Converters
+namespace Scrawlbit.Json.Converters
 {
     public abstract class AbstractObjectConveter<T> : JsonConverter
     {

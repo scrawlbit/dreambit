@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using ScrawlBit.Presentation.Helpers;
+using Scrawlbit.Presentation.Helpers;
 
-namespace ScrawlBit.Presentation.Converters
+namespace Scrawlbit.Presentation.Converters
 {
     public class EnumDisplayNameConverter : IValueConverter
     {

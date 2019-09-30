@@ -1,4 +1,4 @@
-﻿namespace ScrawlBit.Mapping.Configuration
+﻿namespace Scrawlbit.Mapping.Configuration
 {
     public interface IMappingSource<TSource>
     {

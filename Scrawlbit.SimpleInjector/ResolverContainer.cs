@@ -1,7 +1,7 @@
 ﻿using System;
 using SimpleInjector;
 
-namespace ScrawlBit.Injection
+namespace Scrawlbit.Injection
 {
     internal class ResolverContainer : IContainer
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ScrawlBit.Comparison
+namespace Scrawlbit.Comparison
 {
     internal class FuncEqualityComparer<T, TComparer> : IEqualityComparer<T>
     {

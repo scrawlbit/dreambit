@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace ScrawlBit.Collections
+namespace Scrawlbit.Collections
 {
     public interface IReadOnlyObservableCollection<out T> : IReadOnlyCollection<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {

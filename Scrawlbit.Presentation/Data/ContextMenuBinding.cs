@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace ScrawlBit.Presentation.Data
+namespace Scrawlbit.Presentation.Data
 {
     public class ContextMenuBinding : Binding
     {

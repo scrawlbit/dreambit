@@ -2,7 +2,7 @@
 using DreamBit.Modularization.Management;
 using DreamBit.Project.Serialization.Converters;
 using Newtonsoft.Json.Converters;
-using ScrawlBit.Json;
+using Scrawlbit.Json;
 
 namespace DreamBit.Project.Serialization
 {

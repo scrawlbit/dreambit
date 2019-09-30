@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScrawlBit.Notification.State
+namespace Scrawlbit.Notification.State
 {
     public abstract class ChangesTracker<T>
     {

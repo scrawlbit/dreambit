@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ScrawlBit.Helpers;
+using Scrawlbit.Helpers;
 
 namespace DreamBit.Project.Serialization.Converters
 {
