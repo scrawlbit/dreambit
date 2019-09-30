@@ -7,7 +7,7 @@
     <ProjectGuid>{5C277AE0-FB21-45B2-BEAD-7A78A6952C3D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scrawlbit.SimpleInjector</RootNamespace>
+    <RootNamespace>Scrawlbit.Injection</RootNamespace>
     <AssemblyName>Scrawlbit.SimpleInjector</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

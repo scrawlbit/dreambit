@@ -7,7 +7,7 @@
     <ProjectGuid>{00135058-5C40-4953-A0BF-309E6FDB58FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scrawlbit.AutoMapper</RootNamespace>
+    <RootNamespace>Scrawlbit.Mapping</RootNamespace>
     <AssemblyName>Scrawlbit.AutoMapper</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
