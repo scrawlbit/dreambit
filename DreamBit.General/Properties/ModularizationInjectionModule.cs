@@ -3,7 +3,7 @@ using Scrawlbit.Injection.Configuration;
 
 namespace DreamBit.Modularization.Properties
 {
-    public class ModularizationInjectionModule : IInjectionModule
+    public class GeneralInjectionModule : IInjectionModule
     {
         private IRegistrationBuilder _builder;
 
