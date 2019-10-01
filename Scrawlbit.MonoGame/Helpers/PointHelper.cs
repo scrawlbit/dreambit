@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ScrawlBit.MonoGame.Helpers
+namespace Scrawlbit.MonoGame.Helpers
 {
     public static class PointHelper
     {
