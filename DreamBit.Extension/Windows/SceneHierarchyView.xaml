@@ -1,0 +1,86 @@
+﻿<controls:WindowView
+    x:Class="DreamBit.Extension.Windows.SceneHierarchyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+    xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
+    xmlns:models="clr-namespace:DreamBit.Extension.Models"
+    xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
+    xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
+    mc:Ignorable="d"
+    Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
+    Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+    d:DataContext="{d:DesignInstance viewModels:SceneHierarchyViewModel, IsDesignTimeCreatable=False}"
+    d:DesignHeight="300" d:DesignWidth="300"
+    x:Name="View">
+
+    <controls:WindowView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Image x:Key="CameraIcon" Source="../Resources/Icons/VideoCamera_16x.png" x:Shared="False" />
+            <Image x:Key="CancelIcon" Source="../Resources/Icons/Cancel_16x.png" x:Shared="False" />
+            <Image x:Key="CopyIcon" Source="../Resources/Icons/Copy_16x.png" x:Shared="False" />
+            <Image x:Key="ModelIcon" Source="../Resources/Icons/Graphics3D_16x.png" x:Shared="False" />
+        </ResourceDictionary>
+    </controls:WindowView.Resources>
+
+    <TreeView ItemsSource="{Binding Scene.Objects}">
+        <TreeView.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" />
+                <MenuItem Header="Add Camera Object" Icon="{StaticResource CameraIcon}" Command="{Binding AddCameraObjectCommand}" />
+
+                <Separator />
+                <MenuItem Header="Paste" Command="{Binding PasteGameObjectCommand}" />
+            </ContextMenu>
+        </TreeView.ContextMenu>
+
+        <TreeView.ItemContainerStyle>
+            <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                <Setter Property="Tag" Value="{Binding DataContext, ElementName=View}" />
+                <Setter Property="IsExpanded" Value="{Binding Path=(models:ISceneObject.IsExpanded), Mode=TwoWay}" />
+                <Setter Property="IsSelected" Value="{Binding Path=(models:ISceneObject.IsSelected), Mode=TwoWay}" />
+                <Setter Property="ContextMenu">
+                    <Setter.Value>
+                        <ContextMenu>
+                            <MenuItem Header="Add Game Object"
+                                      Icon="{StaticResource ModelIcon}"
+                                      Command="{data:ContextMenuBinding AddGameObjectCommand}"
+                                      CommandParameter="{Binding}" />
+
+                            <Separator/>
+
+                            <MenuItem Header="Copy"
+                                      Icon="{StaticResource CopyIcon}"
+                                      Command="{data:ContextMenuBinding CopyGameObjectCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="Paste"
+                                      Command="{data:ContextMenuBinding PasteGameObjectCommand}"
+                                      CommandParameter="{Binding}" />
+
+                            <Separator />
+
+                            <MenuItem Header="Remove"
+                                      Icon="{StaticResource CancelIcon}"
+                                      Command="{data:ContextMenuBinding RemoveGameObjectCommand}"
+                                      CommandParameter="{Binding}" />
+                        </ContextMenu>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </TreeView.ItemContainerStyle>
+
+        <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                <TextBlock Text="{Binding Name}" />
+            </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
+    </TreeView>
+
+</controls:WindowView>
+

@@ -1,53 +1,94 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
+using DreamBit.Extension.Commands;
+using DreamBit.Extension.Commands.Project;
+using DreamBit.Extension.Commands.SceneHierarchy;
+using DreamBit.Extension.Components;
+using DreamBit.Extension.Management;
+using DreamBit.Extension.Properties;
+using DreamBit.Modularization.Properties;
+using DreamBit.Pipeline.Properties;
+using DreamBit.Project.Properties;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Scrawlbit.Injection;
+using Scrawlbit.Injection.Configuration;
+using Scrawlbit.Mapping;
 using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension
 {
-    /// <summary>
-    /// This is the class that implements the package exposed by this assembly.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// The minimum requirement for a class to be considered a valid package for Visual Studio
-    /// is to implement the IVsPackage interface and register itself with the shell.
-    /// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-    /// to do it: it derives from the Package class that provides the implementation of the
-    /// IVsPackage interface and uses the registration attributes defined in the framework to
-    /// register itself and its components with the shell. These attributes tell the pkgdef creation
-    /// utility what data to put into .pkgdef file.
-    /// </para>
-    /// <para>
-    /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
-    /// </para>
-    /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(DreamBitPackage.PackageGuidString)]
-    public sealed class DreamBitPackage : AsyncPackage
+    [Guid(Guids.Package)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideToolWindow(typeof(Windows.SceneEditorWindow))]
+    [ProvideToolWindow(typeof(Windows.SceneHierarchyWindow))]
+    [ProvideToolWindow(typeof(Windows.SceneInspectWindow))]
+    public sealed partial class DreamBitPackage : AsyncPackage
     {
-         /// <summary>
-        /// DreamBit.ExtensionPackage GUID string.
-        /// </summary>
-        public const string PackageGuidString = "9acdf843-80e5-4552-9a16-90a610ebb3ce";
+        private readonly IPackageBridge _bridge;
 
-    #region Package Members
+        public DreamBitPackage()
+        {
+            BuildMapper();
+            BuildContainer();
 
-    /// <summary>
-    /// Initialization of the package; this method is called right after the package is sited, so this is the place
-    /// where you can put all the initialization code that rely on services provided by VisualStudio.
-    /// </summary>
-    /// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
-    /// <param name="progress">A provider for progress updates.</param>
-    /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
-    protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
-    {
-        // When initialized asynchronously, the current thread may be a background thread at this point.
-        // Do any initialization that requires the UI thread after switching to the UI thread.
-        await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            Container.Inject(out _bridge);
+        }
+
+        internal static IContainer Container { get; private set; }
+        internal static IMappingService Mapper { get; private set; }
+        
+        private static void BuildMapper()
+        {
+            var builder = new MappingServiceBuilder();
+
+            builder.MappingBuilder.RegisterProfile<PipelineMappingProfile>();
+
+            Mapper = builder.Build();
+        }
+        private void BuildContainer()
+        {
+            var builder = new ContainerBuilder();
+
+            foreach (var module in GetModules())
+                builder.RegistrationBuilder.RegisterModule(module);
+
+            Container = builder.Build();
+        }
+
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            var projectManager = Container.Resolve<IProjectManager>();
+            var pipelineManager = Container.Resolve<IPipelineManager>();
+
+            projectManager.Initialize();
+            pipelineManager.Initialize();
+
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await _bridge.InitializeAsync();
+            await RegisterCommandAsync<BuildContentCommand>();
+            await RegisterCommandAsync<SceneEditorWindowCommand>();
+            await RegisterCommandAsync<SceneHierarchyWindowCommand>();
+            await RegisterCommandAsync<SceneInspectWindowCommand>();
+            await RegisterCommandAsync<AddFontCommand>();
+            await RegisterCommandAsync<AddGameObjectCommand>();
+            await RegisterCommandAsync<AddCameraObjectCommand>();
+        }
+
+        private IEnumerable<IInjectionModule> GetModules()
+        {
+            yield return new ExtensionInjectionModule(this, Mapper);
+            yield return new ProjectInjectionModule();
+            yield return new PipelineInjectionModule();
+            yield return new GeneralInjectionModule();
+        }
+        private Task RegisterCommandAsync<T>() where T : class, IToolCommand
+        {
+            return Container.Resolve<T>().RegisterAsync(_bridge);
+        }
     }
-
-    #endregion
-}
 }
