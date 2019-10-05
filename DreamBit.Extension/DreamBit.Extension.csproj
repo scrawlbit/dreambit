@@ -80,7 +80,6 @@
     <Compile Include="Interop\Services\DeviceService.cs" />
     <Compile Include="Interop\Services\GraphicsDeviceService.cs" />
     <Compile Include="Interop\Util\Disposer.cs" />
-    <Compile Include="Management\PipelineManager.cs" />
     <Compile Include="Management\ProjectManager.cs" />
     <Compile Include="Models\EditingScene.cs" />
     <Compile Include="Models\SceneObject.cs" />
@@ -94,7 +93,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\EditFontDialogViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
-    <Compile Include="ViewModels\SceneHierarchyViewModel.cs" />    
+    <Compile Include="ViewModels\SceneHierarchyViewModel.cs" />
     <Compile Include="Windows\Dialogs\EditFontDialog.xaml.cs">
       <DependentUpon>EditFontDialog.xaml</DependentUpon>
     </Compile>

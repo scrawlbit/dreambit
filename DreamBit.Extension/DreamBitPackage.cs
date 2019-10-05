@@ -29,15 +29,7 @@ namespace DreamBit.Extension
     [ProvideToolWindow(typeof(Windows.SceneInspectWindow))]
     public sealed partial class DreamBitPackage : AsyncPackage
     {
-        private readonly IPackageBridge _bridge;
-
-        public DreamBitPackage()
-        {
-            BuildMapper();
-            BuildContainer();
-
-            Container.Inject(out _bridge);
-        }
+        private IPackageBridge _bridge;
 
         internal static IContainer Container { get; private set; }
         internal static IMappingService Mapper { get; private set; }
@@ -62,11 +54,11 @@ namespace DreamBit.Extension
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            var projectManager = Container.Resolve<IProjectManager>();
-            var pipelineManager = Container.Resolve<IPipelineManager>();
+            BuildMapper();
+            BuildContainer();
 
-            projectManager.Initialize();
-            pipelineManager.Initialize();
+            Container.Inject(out _bridge);
+            Container.Resolve<IProjectManager>().Initialize();
 
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await _bridge.InitializeAsync();

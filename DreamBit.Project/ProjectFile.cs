@@ -48,8 +48,12 @@ namespace DreamBit.Project
                 _location = value.Replace($"{Project.Folder}\\", "");
             }
         }
-        public abstract string Type { get; }
-        public abstract string Extension { get; }
+        public string Type { get; internal set; }
+        public string Extension { get; internal set; }
+
+        internal protected virtual void OnAdded() { }
+        internal protected virtual void OnMoved(string oldPath) { }
+        internal protected virtual void OnRemoved() { }
 
         private void ValidateExtension(string path)
         {

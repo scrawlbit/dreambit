@@ -62,7 +62,6 @@ namespace DreamBit.Extension.Properties
         private void Management()
         {
             _builder.Register<IProjectManager>().Singleton<ProjectManager>();
-            _builder.Register<IPipelineManager>().Singleton<PipelineManager>();
         }
         private void Models()
         {

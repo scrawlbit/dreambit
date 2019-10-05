@@ -19,12 +19,13 @@ namespace DreamBit.Project
         string Path { get; }
         IReadOnlyList<ProjectFile> Files { get; }
 
-        void AddFiles(string[] path);
-        void MoveFiles(string[] oldPaths, string[] newPaths);
-        void RemoveFiles(string[] paths);
+        void AddFile(string path);
+        void MoveFile(string oldPath, string newPath);
+        void RemoveFile(string path);
 
         void Load(string path);
         void Unload();
+        void Save();
     }
 
     internal interface IProjectManager
@@ -39,6 +40,7 @@ namespace DreamBit.Project
         private readonly ISerializer _serializer;
         private readonly IFileManager _fileManager;
         private readonly List<ProjectFile> _files;
+        private bool _hasChanges;
 
         public Project(ISerializer serializer, IFileManager fileManager, IFileRegistrations registrations)
         {
@@ -63,60 +65,57 @@ namespace DreamBit.Project
         }
         public IFileRegistrations Registrations { get; }
 
-        public void AddFiles(string[] paths)
+        public void AddFile(string path)
         {
             EnsureProjectLoaded();
 
-            foreach (var path in paths)
-            {
-                if (_files.ContainsPath(path))
-                    continue;
+            if (_files.ContainsPath(path)) return;
+            if (!path.StartsWith(Folder)) return;
 
-                IFileRegistration registration = Registrations.DetermineFromPath(path);
-                ProjectFile file = registration.CreateInstance();
+            IFileRegistration registration = Registrations.DetermineFromPath(path);
+            ProjectFile file = registration.CreateInstance();
 
-                file.Project = this;
-                file.Path = path;
-                _files.InsertOrdered(file, f => f.Location);
-            }
+            file.Project = this;
+            file.Type = registration.Type;
+            file.Extension = registration.Extension;
+            file.Path = path;
 
-            Save();
+            _files.InsertOrdered(file, f => f.Location);
+
+            file.OnAdded();
+            IndicateChanges();
         }
-        public void MoveFiles(string[] oldPaths, string[] newPaths)
+        public void MoveFile(string oldPath, string newPath)
         {
             EnsureProjectLoaded();
 
-            for (int i = 0; i < oldPaths.Length; i++)
-            {
-                string oldPath = oldPaths[i];
-                string newPath = newPaths[i];
-                ProjectFile file = _files.GetByPath(oldPath);
-                ProjectFile existent = _files.GetByPath(newPath);
+            ProjectFile file = _files.GetByPath(oldPath);
+            ProjectFile existent = _files.GetByPath(newPath);
 
-                if (file == null)
-                    continue;
+            if (file == null)
+                return;
 
-                file.Path = newPath;
+            file.Path = newPath;
 
-                _files.Remove(existent);
-                _files.Remove(file);
-                _files.InsertOrdered(file, f => f.Location);
-            }
+            _files.Remove(existent);
+            _files.Remove(file);
+            _files.InsertOrdered(file, f => f.Location);
 
-            Save();
+            file.OnMoved(oldPath);
+            IndicateChanges();
         }
-        public void RemoveFiles(params string[] paths)
+        public void RemoveFile(string path)
         {
             EnsureProjectLoaded();
 
-            foreach (var path in paths)
-            {
-                ProjectFile file = _files.GetByPath(path);
+            if (!path.StartsWith(Folder)) return;
 
-                _files.Remove(file);
-            }
+            ProjectFile file = _files.GetByPath(path);
 
-            Save();
+            _files.Remove(file);
+
+            file.OnRemoved();
+            IndicateChanges();
         }
 
         public void IncludeFile(ProjectFile file)
@@ -145,15 +144,23 @@ namespace DreamBit.Project
             Path = null;
             Loaded = false;
         }
+        public void Save()
+        {
+            if (_hasChanges)
+            {
+                _serializer.Save(this);
+                _hasChanges = false;
+            }
+        }
 
         private void EnsureProjectLoaded()
         {
             if (!Loaded)
                 throw new ProjectNotLoadedException();
         }
-        private void Save()
+        private void IndicateChanges()
         {
-            _serializer.Save(this);
+            _hasChanges = true;
         }
     }
 }

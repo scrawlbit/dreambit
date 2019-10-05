@@ -8,10 +8,19 @@ namespace DreamBit.Pipeline.Files
 
     public sealed class PipelineImage : ProjectFile, IPipelineImage
     {
-        public const string ImageType = "Image";
-        public const string ImageExtension = "png";
+        private readonly IPipeline _pipeline;
 
-        public override string Type => ImageType;
-        public override string Extension => ImageExtension;
+        public PipelineImage(IPipeline pipeline)
+        {
+            _pipeline = pipeline;
+        }
+
+        protected override void OnAdded()
+        {
+            _pipeline.Contents.AddImport(this);
+        }
+        protected override void OnRemoved()
+        {
+        }
     }
 }

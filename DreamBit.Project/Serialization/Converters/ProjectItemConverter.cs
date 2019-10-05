@@ -1,5 +1,4 @@
-﻿using DreamBit.Project.Helpers;
-using DreamBit.Project.Registrations;
+﻿using DreamBit.Project.Registrations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -24,10 +23,12 @@ namespace DreamBit.Project.Serialization.Converters
             string type = jObject[nameof(IProjectFile.Type)].ToString();
             string location = jObject[nameof(IProjectFile.Location)].ToString();
 
-            IFileRegistration factory = _manager.Registrations.DetermineFromType(type);
-            ProjectFile instance = factory.CreateInstance();
+            IFileRegistration registration = _manager.Registrations.DetermineFromType(type);
+            ProjectFile instance = registration.CreateInstance();
 
             instance.Project = _project;
+            instance.Type = registration.Type;
+            instance.Extension = registration.Extension;
             instance.Id = id;
             instance.Location = location;
 

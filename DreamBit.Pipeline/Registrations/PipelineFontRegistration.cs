@@ -11,19 +11,21 @@ namespace DreamBit.Pipeline.Registrations
 
     internal class PipelineFontRegistration : IPipelineFontRegistration
     {
+        private readonly IPipeline _pipeline;
         private readonly IFileManager _fileManager;
 
-        public PipelineFontRegistration(IFileManager fileManager)
+        public PipelineFontRegistration(IPipeline pipeline, IFileManager fileManager)
         {
+            _pipeline = pipeline;
             _fileManager = fileManager;
         }
 
-        public string Type => PipelineFont.FontType;
-        public string Extension => PipelineFont.FontExtension;
+        public string Type => "Font";
+        public string Extension => ".spritefont";
 
         public ProjectFile CreateInstance()
         {
-            return new PipelineFont(_fileManager);
+            return new PipelineFont(_pipeline, _fileManager);
         }
     }
 }

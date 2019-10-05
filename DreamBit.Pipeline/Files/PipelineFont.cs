@@ -19,9 +19,7 @@ namespace DreamBit.Pipeline.Files
 
     public sealed class PipelineFont : ProjectFile, IPipelineFont
     {
-        internal const string FontType = "Font";
-        internal const string FontExtension = "spritefont";
-
+        private readonly IPipeline _pipeline;
         private readonly IFileManager _fileManager;
         private bool _loaded;
         private FontFamily _family;
@@ -29,8 +27,9 @@ namespace DreamBit.Pipeline.Files
         private int _spacing;
         private FontStyle _style;
 
-        public PipelineFont(IFileManager fileManager)
+        public PipelineFont(IPipeline pipeline, IFileManager fileManager)
         {
+            _pipeline = pipeline;
             _fileManager = fileManager;
             _family = FontFamily.SegoeUI;
             _size = 12;
@@ -38,18 +37,16 @@ namespace DreamBit.Pipeline.Files
             _style = FontStyle.Regular;
         }
 
-        public override string Extension => FontExtension;
-        public override string Type => FontType;
         public FontFamily Family
         {
             get
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 return _family;
             }
             set
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 _family = value;
             }
         }
@@ -57,12 +54,12 @@ namespace DreamBit.Pipeline.Files
         {
             get
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 return _size;
             }
             set
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 _size = value;
             }
         }
@@ -70,12 +67,12 @@ namespace DreamBit.Pipeline.Files
         {
             get
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 return _spacing;
             }
             set
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 _spacing = value;
             }
         }
@@ -83,12 +80,12 @@ namespace DreamBit.Pipeline.Files
         {
             get
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 return _style;
             }
             set
             {
-                LoadIfNotLoaded();
+                EnsureLoaded();
                 _style = value;
             }
         }
@@ -136,7 +133,15 @@ namespace DreamBit.Pipeline.Files
             _fileManager.WriteAllText(Path, xml.ToString(), new UTF8Encoding(true));
         }
 
-        private void LoadIfNotLoaded()
+        protected override void OnAdded()
+        {
+            _pipeline.Contents.AddImport(this);
+        }
+        protected override void OnRemoved()
+        {
+        }
+
+        private void EnsureLoaded()
         {
             if (!_loaded)
                 Load();

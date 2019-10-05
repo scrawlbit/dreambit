@@ -18,7 +18,7 @@ namespace DreamBit.Modularization.Properties
         private void Components()
         {
             _builder.Register<IFileManager>().Singleton<FileManager>();
-            _builder.Register<IJsonParser>().Transient<IJsonParser>();
+            _builder.Register<IJsonParser>().Transient<JsonParser>();
         }
     }
 }

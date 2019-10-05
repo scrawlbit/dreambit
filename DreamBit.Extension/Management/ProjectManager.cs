@@ -34,6 +34,8 @@ namespace DreamBit.Extension.Management
         {
             _package.Monitor.SolutionOpened += OnSolutionOpened;
             _package.Monitor.SolutionClosed += OnSolutionClosed;
+            _package.Monitor.ItemsAdded += OnItemsAdded;
+            _package.Monitor.ItemsRemoved += OnItemsRemoved;
         }
 
         private void OnSolutionOpened(string path)
@@ -51,6 +53,22 @@ namespace DreamBit.Extension.Management
         {
             _project.Unload();
             _pipeline.Unload();
+        }
+        private void OnItemsAdded(string[] paths)
+        {
+            foreach (var path in paths)
+                _project.AddFile(path);
+
+            _project.Save();
+            _pipeline.Save();
+        }
+        private void OnItemsRemoved(string[] paths)
+        {
+            foreach (var path in paths)
+                _project.RemoveFile(path);
+
+            _project.Save();
+            _pipeline.Save();
         }
     }
 }

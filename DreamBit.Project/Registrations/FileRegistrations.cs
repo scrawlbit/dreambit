@@ -19,6 +19,10 @@ namespace DreamBit.Project.Registrations
         private readonly IContainer _container;
         private List<IFileRegistration> _registrations;
 
+        static FileRegistrations()
+        {
+            Types = new List<Type>();
+        }
         public FileRegistrations(IContainer container)
         {
             _container = container;
