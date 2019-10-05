@@ -1,4 +1,5 @@
-﻿using DreamBit.Project.Serialization;
+﻿using DreamBit.Project.Registrations;
+using DreamBit.Project.Serialization;
 using Scrawlbit.Injection.Configuration;
 
 namespace DreamBit.Project.Properties
@@ -12,6 +13,8 @@ namespace DreamBit.Project.Properties
             builder.Register<IProjectManager>().Resolve<Project>();
 
             builder.Register<ISerializer>().Transient<Serializer>();
+
+            builder.Register<IFileRegistrations>().Singleton<FileRegistrations>();
         }
     }
 }

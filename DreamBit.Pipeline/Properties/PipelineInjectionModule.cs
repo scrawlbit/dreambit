@@ -3,6 +3,7 @@ using DreamBit.Pipeline.MonoGame;
 using DreamBit.Pipeline.Registrations;
 using DreamBit.Pipeline.Translators;
 using DreamBit.Pipeline.Translators.ImportTranslators;
+using DreamBit.Project.Helpers;
 using Scrawlbit.Injection.Configuration;
 
 namespace DreamBit.Pipeline.Properties
@@ -37,9 +38,8 @@ namespace DreamBit.Pipeline.Properties
         }
         private void Registrations()
         {
-            _builder.Register<IPipelineFontRegistration>().Transient<PipelineFontRegistration>();
-            _builder.Register<IPipelineImageRegistration>().Transient<PipelineImageRegistration>();
-            _builder.Register<IPipelineRegistrations>().Transient<PipelineRegistrations>();
+            _builder.RegisterFile<IPipelineFontRegistration>().Transient<PipelineFontRegistration>();
+            _builder.RegisterFile<IPipelineImageRegistration>().Transient<PipelineImageRegistration>();
         }
         private void Translators()
         {

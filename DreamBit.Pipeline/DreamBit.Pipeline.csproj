@@ -63,7 +63,6 @@
     <Compile Include="Properties\PipelineMappingProfile.cs" />
     <Compile Include="Registrations\PipelineFontRegistration.cs" />
     <Compile Include="Registrations\PipelineImageRegistration.cs" />
-    <Compile Include="Registrations\PipelineRegistrations.cs" />
     <Compile Include="Translators\ContentsTranslator.cs" />
     <Compile Include="Translators\GlobalPropertiesTranslator.cs" />
     <Compile Include="Translators\ImportTranslators\CopyImportTranslator.cs" />

@@ -6,6 +6,7 @@ using DreamBit.Project.Helpers;
 using DreamBit.Project.Registrations;
 using DreamBit.Project.Serialization;
 using Scrawlbit.Helpers;
+using Scrawlbit.Injection;
 using _Path = System.IO.Path;
 
 namespace DreamBit.Project
@@ -18,8 +19,6 @@ namespace DreamBit.Project
         string Path { get; }
         IReadOnlyList<ProjectFile> Files { get; }
 
-        void AddRegistration(IFileRegistration registration);
-
         void AddFiles(string[] path);
         void MoveFiles(string[] oldPaths, string[] newPaths);
         void RemoveFiles(string[] paths);
@@ -30,24 +29,24 @@ namespace DreamBit.Project
 
     internal interface IProjectManager
     {
-        IReadOnlyList<IFileRegistration> Registrations { get; }
+        IFileRegistrations Registrations { get; }
 
         void IncludeFile(ProjectFile file);
     }
 
-    internal class Project : IProject, IProjectManager
+    internal partial class Project : IProject, IProjectManager
     {
         private readonly ISerializer _serializer;
         private readonly IFileManager _fileManager;
-        private readonly List<IFileRegistration> _registrations;
         private readonly List<ProjectFile> _files;
 
-        public Project(ISerializer serializer, IFileManager fileManager)
+        public Project(ISerializer serializer, IFileManager fileManager, IFileRegistrations registrations)
         {
             _serializer = serializer;
             _fileManager = fileManager;
-            _registrations = new List<IFileRegistration>();
             _files = new List<ProjectFile>();
+
+            Registrations = registrations;
         }
 
         public bool Loaded { get; private set; }
@@ -62,16 +61,7 @@ namespace DreamBit.Project
                 return _files;
             }
         }
-        public IReadOnlyList<IFileRegistration> Registrations => _registrations;
-
-        public void AddRegistration(IFileRegistration registration)
-        {
-            if (_registrations.Contains(registration)) return;
-            if (_registrations.Any(r => r.Type == registration.Type))
-                throw new TypeAlreadyRegistredException();
-
-            _registrations.Add(registration);
-        }
+        public IFileRegistrations Registrations { get; }
 
         public void AddFiles(string[] paths)
         {
@@ -82,7 +72,7 @@ namespace DreamBit.Project
                 if (_files.ContainsPath(path))
                     continue;
 
-                IFileRegistration registration = _registrations.DetermineFromPath(path);
+                IFileRegistration registration = Registrations.DetermineFromPath(path);
                 ProjectFile file = registration.CreateInstance();
 
                 file.Project = this;

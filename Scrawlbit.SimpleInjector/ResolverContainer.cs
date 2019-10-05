@@ -20,6 +20,10 @@ namespace Scrawlbit.Injection
         {
             return _container.GetInstance(serviceType);
         }
+        public TService Resolve<TService>(Type serviceType) where TService : class
+        {
+            return (TService)Resolve(serviceType);
+        }
         public TService Resolve<TService>() where TService : class
         {
             return _container.GetInstance<TService>();
