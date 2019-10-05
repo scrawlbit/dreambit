@@ -1,7 +1,5 @@
-﻿using DreamBit.Modularization.Management;
-using DreamBit.Project.Serialization;
+﻿using DreamBit.Project.Serialization;
 using Scrawlbit.Injection.Configuration;
-using Scrawlbit.Json;
 
 namespace DreamBit.Project.Properties
 {
@@ -9,15 +7,11 @@ namespace DreamBit.Project.Properties
     {
         public void Register(IRegistrationBuilder builder)
         {
-            builder.Register<IProject>().Singleton<Project>();
+            builder.Register<Project>().Singleton();
+            builder.Register<IProject>().Resolve<Project>();
+            builder.Register<IProjectManager>().Resolve<Project>();
 
-            builder.Register<ISerializer>().Transient(c =>
-            {
-                var jsonParser = new JsonParser();
-                var fileManager = c.Resolve<IFileManager>();
-
-                return new Serializer(jsonParser, fileManager);
-            });
+            builder.Register<ISerializer>().Transient<Serializer>();
         }
     }
 }

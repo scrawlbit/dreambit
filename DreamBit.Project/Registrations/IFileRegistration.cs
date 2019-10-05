@@ -1,6 +1,6 @@
 ﻿namespace DreamBit.Project.Registrations
 {
-    public interface IProjectRegistration
+    public interface IFileRegistration
     {
         string Type { get; }
         string Extension { get; }

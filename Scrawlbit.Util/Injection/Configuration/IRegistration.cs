@@ -6,6 +6,8 @@ namespace Scrawlbit.Injection.Configuration
     {
         bool Registered { get; }
 
+        void Resolve<TImplementation>() where TImplementation : class, TService;
+
         void Transient<TImplementation>() where TImplementation : class, TService;
         void Transient<TImplementation>(Func<TImplementation> creator) where TImplementation : class, TService;
         void Transient<TImplementation>(Func<IContainer, TImplementation> creator) where TImplementation : class, TService;

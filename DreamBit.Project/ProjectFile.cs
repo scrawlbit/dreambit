@@ -17,24 +17,13 @@ namespace DreamBit.Project
     {
         private string _location;
         private string _path;
-        private IProject _project;
 
         protected ProjectFile()
         {
             Id = Guid.NewGuid();
         }
 
-        internal IProject Project
-        {
-            get => _project;
-            set
-            {
-                _project = value ?? throw new ArgumentNullException();
-
-                if (_location != null)
-                    _path = _Path.Combine(value.Folder, _location);
-            }
-        }
+        internal IProject Project { get; set; }
         public Guid Id { get; internal set; }
         public string Name => _Path.GetFileName(Location);
         public string Location

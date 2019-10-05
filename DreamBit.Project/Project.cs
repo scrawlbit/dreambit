@@ -2,6 +2,7 @@
 using System.Linq;
 using DreamBit.Modularization.Management;
 using DreamBit.Project.Exceptions;
+using DreamBit.Project.Helpers;
 using DreamBit.Project.Registrations;
 using DreamBit.Project.Serialization;
 using Scrawlbit.Helpers;
@@ -15,54 +16,55 @@ namespace DreamBit.Project
         string Name { get; }
         string Folder { get; }
         string Path { get; }
-        IReadOnlyList<IProjectFile> Files { get; }
-        IReadOnlyList<IProjectRegistration> Registrations { get; }
+        IReadOnlyList<ProjectFile> Files { get; }
 
-        void AddRegistration(IProjectRegistration registration);
-        void AddRegistrations(IProjectRegistrationCollection registration);
+        void AddRegistration(IFileRegistration registration);
 
-        IProjectFile AddFile(string path);
-        void IncludeFile(IProjectFile file);
-        void RenameFile(IProjectFile file, string path);
-        void RemoveFile(IProjectFile file);
+        void AddFiles(string[] path);
+        void MoveFiles(string[] oldPaths, string[] newPaths);
+        void RemoveFiles(string[] paths);
 
         void Load(string path);
         void Unload();
-        void Save();
     }
 
-    internal class Project : IProject
+    internal interface IProjectManager
+    {
+        IReadOnlyList<IFileRegistration> Registrations { get; }
+
+        void IncludeFile(ProjectFile file);
+    }
+
+    internal class Project : IProject, IProjectManager
     {
         private readonly ISerializer _serializer;
         private readonly IFileManager _fileManager;
-        private readonly List<IProjectFile> _files;
-        private readonly List<IProjectRegistration> _registrations;
+        private readonly List<IFileRegistration> _registrations;
+        private readonly List<ProjectFile> _files;
 
         public Project(ISerializer serializer, IFileManager fileManager)
         {
             _serializer = serializer;
             _fileManager = fileManager;
-            _files = new List<IProjectFile>();
-            _registrations = new List<IProjectRegistration>();
+            _registrations = new List<IFileRegistration>();
+            _files = new List<ProjectFile>();
         }
 
         public bool Loaded { get; private set; }
         public string Name => _Path.GetFileNameWithoutExtension(Path);
         public string Folder => _Path.GetDirectoryName(Path);
         public string Path { get; private set; }
-        public IReadOnlyList<IProjectFile> Files
+        public IReadOnlyList<ProjectFile> Files
         {
             get
             {
-                if (!Loaded)
-                    throw new ProjectNotLoadedException();
-
+                EnsureProjectLoaded();
                 return _files;
             }
         }
-        public IReadOnlyList<IProjectRegistration> Registrations => _registrations;
+        public IReadOnlyList<IFileRegistration> Registrations => _registrations;
 
-        public void AddRegistration(IProjectRegistration registration)
+        public void AddRegistration(IFileRegistration registration)
         {
             if (_registrations.Contains(registration)) return;
             if (_registrations.Any(r => r.Type == registration.Type))
@@ -70,50 +72,69 @@ namespace DreamBit.Project
 
             _registrations.Add(registration);
         }
-        public void AddRegistrations(IProjectRegistrationCollection registration)
+
+        public void AddFiles(string[] paths)
         {
-            registration.Registrations().ForEach(AddRegistration);
+            EnsureProjectLoaded();
+
+            foreach (var path in paths)
+            {
+                if (_files.ContainsPath(path))
+                    continue;
+
+                IFileRegistration registration = _registrations.DetermineFromPath(path);
+                ProjectFile file = registration.CreateInstance();
+
+                file.Project = this;
+                file.Path = path;
+                _files.InsertOrdered(file, f => f.Location);
+            }
+
+            Save();
+        }
+        public void MoveFiles(string[] oldPaths, string[] newPaths)
+        {
+            EnsureProjectLoaded();
+
+            for (int i = 0; i < oldPaths.Length; i++)
+            {
+                string oldPath = oldPaths[i];
+                string newPath = newPaths[i];
+                ProjectFile file = _files.GetByPath(oldPath);
+                ProjectFile existent = _files.GetByPath(newPath);
+
+                if (file == null)
+                    continue;
+
+                file.Path = newPath;
+
+                _files.Remove(existent);
+                _files.Remove(file);
+                _files.InsertOrdered(file, f => f.Location);
+            }
+
+            Save();
+        }
+        public void RemoveFiles(params string[] paths)
+        {
+            EnsureProjectLoaded();
+
+            foreach (var path in paths)
+            {
+                ProjectFile file = _files.GetByPath(path);
+
+                _files.Remove(file);
+            }
+
+            Save();
         }
 
-        public IProjectFile AddFile(string path)
+        public void IncludeFile(ProjectFile file)
         {
-            if (_files.Any(f => f.Path == path))
-                throw new FileLocationAlreadyExistsException();
-
-            var extension = _Path.GetExtension(path);
-            var registration = Registrations.Single(r => r.Extension == extension);
-            var file = registration.CreateInstance();
-
-            file.Path = path;
-            IncludeFile(file);
-
-            return file;
-        }
-        public void IncludeFile(IProjectFile file)
-        {
-            if (_files.Contains(file))
-                return;
-
-            if ((file as ProjectFile)?.Project != this)
-                return;
-
             if (_files.Any(f => f.Path == file.Path))
                 throw new FileLocationAlreadyExistsException();
 
             _files.InsertOrdered(file, f => f.Location);
-        }
-        public void RenameFile(IProjectFile file, string path)
-        {
-            if (!_files.Contains(file))
-                return;
-
-            ((ProjectFile)file).Path = path;
-            RemoveFile(file);
-            IncludeFile(file);
-        }
-        public void RemoveFile(IProjectFile file)
-        {
-            _files.Remove(file);
         }
 
         public void Load(string path)
@@ -125,7 +146,7 @@ namespace DreamBit.Project
                 throw new ProjectFileNotFoundException(path);
 
             Path = path;
-            _serializer.Load(this);
+            _serializer.Load(this, this);
             Loaded = true;
         }
         public void Unload()
@@ -134,11 +155,14 @@ namespace DreamBit.Project
             Path = null;
             Loaded = false;
         }
-        public void Save()
+
+        private void EnsureProjectLoaded()
         {
             if (!Loaded)
                 throw new ProjectNotLoadedException();
-
+        }
+        private void Save()
+        {
             _serializer.Save(this);
         }
     }

@@ -5,7 +5,7 @@ using DreamBit.Project.Registrations;
 
 namespace DreamBit.Pipeline.Registrations
 {
-    internal interface IPipelineFontRegistration : IProjectRegistration
+    internal interface IPipelineFontRegistration : IFileRegistration
     {
     }
 

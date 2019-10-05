@@ -4,7 +4,7 @@ using DreamBit.Project.Registrations;
 
 namespace DreamBit.Pipeline.Registrations
 {
-    internal interface IPipelineImageRegistration : IProjectRegistration
+    internal interface IPipelineImageRegistration : IFileRegistration
     {
     }
 

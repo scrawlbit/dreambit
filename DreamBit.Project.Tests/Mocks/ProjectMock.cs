@@ -9,7 +9,7 @@ namespace DreamBit.Project.Mocks
         public ProjectMock()
         {
             Files = new List<IProjectFile>();
-            Registrations = new List<IProjectRegistration>();
+            Registrations = new List<IFileRegistration>();
         }
 
         public bool Loaded { get; set; }
@@ -17,12 +17,12 @@ namespace DreamBit.Project.Mocks
         public string Folder { get; set; }
         public string Path { get; set; }
         public List<IProjectFile> Files { get; }
-        public List<IProjectRegistration> Registrations { get; }
+        public List<IFileRegistration> Registrations { get; }
 
         IReadOnlyList<IProjectFile> IProject.Files => Files;
-        IReadOnlyList<IProjectRegistration> IProject.Registrations => Registrations;
+        IReadOnlyList<IFileRegistration> IProject.Registrations => Registrations;
 
-        public void AddRegistration(IProjectRegistration registration)
+        public void AddRegistration(IFileRegistration registration)
         {
             Registrations.Add(registration);
         }

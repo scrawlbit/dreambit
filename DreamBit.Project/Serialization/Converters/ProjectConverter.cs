@@ -8,19 +8,21 @@ namespace DreamBit.Project.Serialization.Converters
     internal class ProjectConverter : JsonConverter
     {
         private readonly IProject _project;
+        private readonly IProjectManager _manager;
 
-        public ProjectConverter(IProject project)
+        public ProjectConverter(IProject project, IProjectManager manager)
         {
             _project = project;
+            _manager = manager;
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            var files = jObject[nameof(_project.Files)].ToObject<IProjectFile[]>(serializer);
+            var files = jObject[nameof(_project.Files)].ToObject<ProjectFile[]>(serializer);
 
             foreach (var file in files)
-                _project.IncludeFile(file);
+                _manager.IncludeFile(file);
 
             return _project;
         }

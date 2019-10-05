@@ -19,7 +19,7 @@ namespace DreamBit.Pipeline.Registrations
             _imageRegistration = imageRegistration;
         }
 
-        public IEnumerable<IProjectRegistration> Registrations()
+        public IEnumerable<IFileRegistration> Registrations()
         {
             yield return _fontRegistration;
             yield return _imageRegistration;

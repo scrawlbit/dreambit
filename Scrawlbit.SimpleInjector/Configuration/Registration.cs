@@ -30,6 +30,11 @@ namespace Scrawlbit.Injection.Configuration
             Register(_registrations.Get<TService>(Lifestyle.Transient));
         }
 
+        public void Resolve<TImplementation>() where TImplementation : class, TService
+        {
+            Transient(c => c.Resolve<TImplementation>());
+        }
+
         public void Transient<TImplementation>() where TImplementation : class, TService
         {
             Register(_registrations.Get<TImplementation>(Lifestyle.Transient));
@@ -41,7 +46,7 @@ namespace Scrawlbit.Injection.Configuration
         public void Transient<TImplementation>(Func<IContainer, TImplementation> creator) where TImplementation : class, TService
         {
             var container = _resolver;
-            
+
             Register(_registrations.Get(Lifestyle.Transient, () => creator(container)));
         }
 

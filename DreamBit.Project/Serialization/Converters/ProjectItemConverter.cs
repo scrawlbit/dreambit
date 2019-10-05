@@ -1,32 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DreamBit.Project.Helpers;
+using DreamBit.Project.Registrations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Linq;
-using DreamBit.Project.Registrations;
+using System;
 
 namespace DreamBit.Project.Serialization.Converters
 {
     internal class ProjectItemConverter : JsonConverter
     {
         private readonly IProject _project;
-        private readonly IProjectRegistration[] _registrations;
+        private readonly IProjectManager _manager;
 
-        public ProjectItemConverter(IProject project)
+        public ProjectItemConverter(IProject project, IProjectManager manager)
         {
             _project = project;
-            _registrations = project.Registrations.ToArray();
+            _manager = manager;
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var jObject = JObject.Load(reader);
-            var type = jObject[nameof(IProjectFile.Type)].ToString();
-            var id = jObject[nameof(IProjectFile.Id)].ToObject<Guid>();
-            var location = jObject[nameof(IProjectFile.Location)].ToString();
+            JObject jObject = JObject.Load(reader);
+            Guid id = jObject[nameof(IProjectFile.Id)].ToObject<Guid>();
+            string type = jObject[nameof(IProjectFile.Type)].ToString();
+            string location = jObject[nameof(IProjectFile.Location)].ToString();
 
-            var factory = _registrations.Single(f => f.Type == type);
-            var instance = factory.CreateInstance();
+            IFileRegistration factory = _manager.Registrations.DetermineFromType(type);
+            ProjectFile instance = factory.CreateInstance();
 
             instance.Project = _project;
             instance.Id = id;
@@ -36,8 +35,8 @@ namespace DreamBit.Project.Serialization.Converters
         }
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var jObject = new JObject();
-            var file = (IProjectFile)value;
+            JObject jObject = new JObject();
+            IProjectFile file = (IProjectFile)value;
 
             jObject[nameof(file.Type)] = file.Type;
             jObject[nameof(file.Location)] = file.Location;

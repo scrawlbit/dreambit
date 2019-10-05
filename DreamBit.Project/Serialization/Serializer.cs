@@ -8,7 +8,7 @@ namespace DreamBit.Project.Serialization
 {
     internal interface ISerializer
     {
-        void Load(IProject project);
+        void Load(IProject project, IProjectManager manager);
         void Save(IProject project);
     }
 
@@ -26,13 +26,13 @@ namespace DreamBit.Project.Serialization
             _encoding = new UTF8Encoding(false);
         }
 
-        public void Load(IProject project)
+        public void Load(IProject project, IProjectManager manager)
         {
             if (!_convertersDefined)
             {
                 _jsonParser.Converters.Add(new StringEnumConverter());
-                _jsonParser.Converters.Add(new ProjectConverter(project));
-                _jsonParser.Converters.Add(new ProjectItemConverter(project));
+                _jsonParser.Converters.Add(new ProjectConverter(project, manager));
+                _jsonParser.Converters.Add(new ProjectItemConverter(project, manager));
 
                 _convertersDefined = true;
             }
