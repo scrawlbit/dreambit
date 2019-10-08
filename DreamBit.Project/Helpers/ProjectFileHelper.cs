@@ -5,7 +5,7 @@ namespace DreamBit.Project.Helpers
 {
     internal static class ProjectFileHelper
     {
-        public static bool ContainsPath(this IEnumerable<ProjectFile> files, string path)
+        public static bool IsPathIncluded(this IEnumerable<ProjectFile> files, string path)
         {
             return files.Any(f => f.Path == path);
         }

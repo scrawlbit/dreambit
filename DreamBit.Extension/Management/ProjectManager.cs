@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using DreamBit.Extension.Commands;
 using DreamBit.Extension.Components;
 using DreamBit.Modularization.Management;
 using DreamBit.Pipeline;
@@ -11,23 +12,26 @@ namespace DreamBit.Extension.Management
         void Initialize();
     }
 
-    public class ProjectManager : IProjectManager
+    internal class ProjectManager : IProjectManager
     {
         private readonly IPackageBridge _package;
         private readonly IFileManager _fileManager;
         private readonly IProject _project;
         private readonly IPipeline _pipeline;
+        private readonly IBuildContentCommand _buildContentCommand;
 
         public ProjectManager(
             IPackageBridge package,
             IFileManager fileManager,
             IProject project,
-            IPipeline pipeline)
+            IPipeline pipeline,
+            IBuildContentCommand buildContentCommand)
         {
             _package = package;
             _fileManager = fileManager;
             _project = project;
             _pipeline = pipeline;
+            _buildContentCommand = buildContentCommand;
         }
 
         public void Initialize()
@@ -61,6 +65,7 @@ namespace DreamBit.Extension.Management
 
             _project.Save();
             _pipeline.Save();
+            _buildContentCommand.Execute();
         }
         private void OnItemsRemoved(string[] paths)
         {
@@ -69,6 +74,7 @@ namespace DreamBit.Extension.Management
 
             _project.Save();
             _pipeline.Save();
+            _buildContentCommand.Execute(null);
         }
     }
 }

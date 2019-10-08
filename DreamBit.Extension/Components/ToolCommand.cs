@@ -26,11 +26,11 @@ namespace DreamBit.Extension.Components
 
             var commandService = await package.GetServiceAsync<IMenuCommandService>();
             var commandId = new CommandID(new Guid(DreamBitPackage.Guids.CommandSet), Id);
-            var menu = new OleMenuCommand(Clicked, commandId);
+            var command = new OleMenuCommand(Clicked, commandId);
 
-            menu.BeforeQueryStatus += BeforeQueryStatus;
+            command.BeforeQueryStatus += BeforeQueryStatus;
 
-            commandService.AddCommand(menu);
+            commandService.AddCommand(command);
         }
 
         private void Clicked(object sender, EventArgs e)

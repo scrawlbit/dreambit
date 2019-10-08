@@ -10,7 +10,7 @@
     {
         protected ContentImport(string path, BuildtAction buildtAction)
         {
-            Path = path.Replace('\\', '/');
+            Path = path;
             BuildtAction = buildtAction;
         }
 

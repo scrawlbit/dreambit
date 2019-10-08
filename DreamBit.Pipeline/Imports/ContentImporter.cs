@@ -9,7 +9,9 @@ namespace DreamBit.Pipeline.Imports
     internal interface IContentImporter
     {
         IReadOnlyList<IContentImport> Imports { get; }
-        
+
+        bool IsPathIncluded(string path);
+
         void AddOrUpdate(IContentImport import);
         void Remove(string path);
         void Clear();
@@ -28,6 +30,11 @@ namespace DreamBit.Pipeline.Imports
 
         public IReadOnlyList<IContentImport> Imports => _imports;
 
+        public bool IsPathIncluded(string path)
+        {
+            return _imports.Any(c => c.Path == path);
+        }
+
         public void AddOrUpdate(IContentImport import)
         {
             var added = Imports.SingleOrDefault(i => i.Path == import.Path);
@@ -35,7 +42,7 @@ namespace DreamBit.Pipeline.Imports
             if (added != null)
                 _mappingService.Map(import).To(added);
             else
-                _imports.InsertOrdered(import, i => (int) i.BuildtAction, i => i.Path);
+                _imports.InsertOrdered(import, i => (int)i.BuildtAction, i => i.Path);
         }
         public void Remove(string path)
         {

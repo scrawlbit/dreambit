@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DreamBit.Pipeline.Exceptions;
 using DreamBit.Pipeline.Files;
+using DreamBit.Pipeline.Helpers;
 using DreamBit.Pipeline.Imports;
 using DreamBit.Project;
 
@@ -15,16 +17,18 @@ namespace DreamBit.Pipeline
         IFontImport AddImport(IPipelineFont font);
         ICopyImport AddCopy(IProjectFile file);
 
-        void Remove(string path);
+        void Remove(IProjectFile file);
         void Clear();
     }
 
     internal class Contents : IContents
     {
+        private readonly IPipelineManager _manager;
         private readonly IContentImporter _contentImporter;
 
-        internal Contents(IContentImporter contentImporter)
+        internal Contents(IPipelineManager manager, IContentImporter contentImporter)
         {
+            _manager = manager;
             _contentImporter = contentImporter;
         }
 
@@ -32,32 +36,43 @@ namespace DreamBit.Pipeline
 
         public ITextureImport AddImport(IPipelineImage image)
         {
-            return Add(new TextureImport(image.Path));
+            return Add(image, path => new TextureImport(path));
         }
         public IFontImport AddImport(IPipelineFont font)
         {
-            return Add(new FontImport(font.Path));
+            return Add(font, path => new FontImport(path));
         }
         public ICopyImport AddCopy(IProjectFile file)
         {
-            return Add(new CopyImport(file.Path));
+            return Add(file, path => new CopyImport(path));
         }
 
-        public void Remove(string path)
+        public void Remove(IProjectFile file)
         {
+            string path = file.GetContentPath();
+
+            if (!_contentImporter.IsPathIncluded(path))
+                throw new ImportNotFoundException(path);
+
             _contentImporter.Remove(path);
+            _manager.NotifyChanges();
         }
         public void Clear()
         {
             _contentImporter.Clear();
+            _manager.NotifyChanges();
         }
 
-        private T Add<T>(T import) where T : IContentImport
+        private T Add<T>(IProjectFile file, Func<string, T> factory) where T : IContentImport
         {
-            if (Imports.Any(i => i.Path == import.Path))
-                throw new ImportAlreadyExistsException(import.Path);
+            string path = file.GetContentPath();
 
+            if (_contentImporter.IsPathIncluded(path))
+                throw new ImportAlreadyExistsException(path);
+
+            T import = factory(path);
             _contentImporter.AddOrUpdate(import);
+            _manager.NotifyChanges();
 
             return import;
         }

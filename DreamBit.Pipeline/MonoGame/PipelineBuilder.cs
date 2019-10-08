@@ -15,16 +15,15 @@ namespace DreamBit.Pipeline.MonoGame
 
         static PipelineBuilder()
         {
-            MgcbPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                @"MSBuild\MonoGame\v3.0\Tools\mgcb.exe"
-            );
+            string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            MgcbPath = Path.Combine(programFiles, @"MSBuild\MonoGame\v3.0\Tools\mgcb.exe");
         }
 
         public void Build(IPipeline pipeline, string outputPath, bool clean)
         {
-            var arguments = GenerateArguments(pipeline, outputPath, clean);
-            var process = CreateProcess(arguments);
+            string arguments = GenerateArguments(pipeline, outputPath, clean);
+            Process process = CreateProcess(pipeline, arguments);
 
             process.Start();
             process.WaitForExit();
@@ -32,20 +31,22 @@ namespace DreamBit.Pipeline.MonoGame
 
         private static string GenerateArguments(IPipeline pipeline, string outputPath, bool clean)
         {
-            var argument = $"/@:\"{pipeline.Path}\" /outputDir:\"{outputPath}\"";
+            string file = Path.GetFileName(pipeline.Path);
+            string argument = $"/@:\"{file}\" /outputDir:\"{outputPath}\"";
 
             if (clean)
                 argument += " /clean";
 
             return argument;
         }
-        private static Process CreateProcess(string arguments)
+        private static Process CreateProcess(IPipeline pipeline, string arguments)
         {
             return new Process
             {
                 StartInfo =
                 {
                     FileName = MgcbPath,
+                    WorkingDirectory = Path.GetDirectoryName(pipeline.Path),
                     Arguments = arguments,
                     WindowStyle = ProcessWindowStyle.Hidden
                 }

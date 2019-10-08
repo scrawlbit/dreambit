@@ -19,13 +19,19 @@ namespace DreamBit.Pipeline
         void Build(string outputPath, bool clean = false);
     }
 
-    internal class Pipeline : IPipeline
+    internal interface IPipelineManager
+    {
+        void NotifyChanges();
+    }
+
+    internal class Pipeline : IPipeline, IPipelineManager
     {
         private readonly IProject _project;
         private readonly IPipelineFile _file;
         private readonly IPipelineBuilder _builder;
         private readonly GlobalProperties _globalProperties;
         private readonly Contents _contents;
+        private bool _hasChanges;
 
         public Pipeline(
             IProject project,
@@ -36,7 +42,7 @@ namespace DreamBit.Pipeline
             _project = project;
             _file = file;
             _builder = builder;
-            _contents = new Contents(contentImporter);
+            _contents = new Contents(this, contentImporter);
             _globalProperties = new GlobalProperties();
         }
 
@@ -69,7 +75,11 @@ namespace DreamBit.Pipeline
             if (!Loaded)
                 throw new PipelineNotLoadedException();
 
-            _file.Save(this);
+            if (_hasChanges)
+            {
+                _file.Save(this);
+                _hasChanges = false;
+            }
         }
         public void Build(string outputPath, bool clean = false)
         {
@@ -77,6 +87,11 @@ namespace DreamBit.Pipeline
                 throw new PipelineNotLoadedException();
 
             _builder.Build(this, outputPath, clean);
+        }
+
+        public void NotifyChanges()
+        {
+            _hasChanges = true;
         }
     }
 }

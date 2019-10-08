@@ -46,6 +46,7 @@
     <Compile Include="Files\PipelineFont.cs" />
     <Compile Include="Files\PipelineImage.cs" />
     <Compile Include="GlobalProperties.cs" />
+    <Compile Include="Helpers\ContentImportHelper.cs" />
     <Compile Include="Imports\BuildtAction.cs" />
     <Compile Include="Imports\ContentImport.cs" />
     <Compile Include="Imports\ContentImporter.cs" />

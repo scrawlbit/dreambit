@@ -6,7 +6,6 @@ using DreamBit.Project.Helpers;
 using DreamBit.Project.Registrations;
 using DreamBit.Project.Serialization;
 using Scrawlbit.Helpers;
-using Scrawlbit.Injection;
 using _Path = System.IO.Path;
 
 namespace DreamBit.Project
@@ -69,7 +68,7 @@ namespace DreamBit.Project
         {
             EnsureProjectLoaded();
 
-            if (_files.ContainsPath(path)) return;
+            if (_files.IsPathIncluded(path)) return;
             if (!path.StartsWith(Folder)) return;
 
             IFileRegistration registration = Registrations.DetermineFromPath(path);
