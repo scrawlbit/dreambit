@@ -21,6 +21,7 @@ namespace DreamBit.Pipeline.Files
         }
         protected override void OnRemoved()
         {
+            _pipeline.Contents.Remove(this);
         }
     }
 }
