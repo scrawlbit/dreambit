@@ -104,22 +104,10 @@ namespace DreamBit.Extension.Components
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            IntPtr hierarchyPointer = IntPtr.Zero;
-            IntPtr selectionPointer = IntPtr.Zero;
-
-            try
+            if (IsSingleHierarchySelected(out IVsHierarchy vsHierarchy, out uint itemId))
             {
-                if (IsSingleHierarchySelected(out hierarchyPointer, out selectionPointer, out uint itemId))
-                {
-                    var vsHierarchy = (IVsHierarchy)Marshal.GetObjectForIUnknown(hierarchyPointer);
-                    hierarchy = new HierarchyBridge(vsHierarchy, itemId, _fileManager);
-                    return true;
-                }
-            }
-            finally
-            {
-                selectionPointer.Release();
-                hierarchyPointer.Release();
+                hierarchy = new HierarchyBridge(vsHierarchy, itemId, _fileManager);
+                return true;
             }
 
             hierarchy = null;
@@ -177,11 +165,7 @@ namespace DreamBit.Extension.Components
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            hierarchyPointer = IntPtr.Zero;
-            selectionPointer = IntPtr.Zero;
-            itemId = VSConstants.VSITEMID_NIL;
-
-            var currentHierarchy = _selectionMonitor.GetCurrentSelection(
+            int currentHierarchy = _selectionMonitor.GetCurrentSelection(
                 out hierarchyPointer,
                 out itemId,
                 out var multiItemSelect,
@@ -197,6 +181,30 @@ namespace DreamBit.Extension.Components
                 return false;
 
             return true;
+        }
+        private bool IsSingleHierarchySelected(out IVsHierarchy hierarchy, out uint itemId)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            IntPtr hierarchyPointer = IntPtr.Zero;
+            IntPtr selectionPointer = IntPtr.Zero;
+
+            try
+            {
+                if (IsSingleHierarchySelected(out hierarchyPointer, out selectionPointer, out itemId))
+                {
+                    hierarchy = (IVsHierarchy)Marshal.GetObjectForIUnknown(hierarchyPointer);
+                    return true;
+                }
+            }
+            finally
+            {
+                selectionPointer.Release();
+                hierarchyPointer.Release();
+            }
+
+            hierarchy = null;
+            return false;
         }
         private bool IsSingleItemSelected(out IVsHierarchy hierarchy, out uint itemId)
         {
