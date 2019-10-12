@@ -71,6 +71,7 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<AddFontCommand>();
             await RegisterCommandAsync<AddGameObjectCommand>();
             await RegisterCommandAsync<AddCameraObjectCommand>();
+            await RegisterCommandAsync<AddSceneCommand>();
         }
 
         private IEnumerable<IInjectionModule> GetModules()

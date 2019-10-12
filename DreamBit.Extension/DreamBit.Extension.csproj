@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Commands\BuildContentCommand.cs" />
     <Compile Include="Commands\Project\AddFontCommand.cs" />
+    <Compile Include="Commands\Project\AddSceneCommand.cs" />
     <Compile Include="Commands\SceneEditorWindowCommand.cs" />
     <Compile Include="Commands\SceneHierarchyWindowCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\AddCameraObjectCommand.cs" />

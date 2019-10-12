@@ -76,7 +76,15 @@
       </Button>
 
       <!-- Project -->
-      <Button guid="DreamBitCommandSet" id="AddFontCommand" priority="0x0100" type="Button">
+      <Button guid="DreamBitCommandSet" id="AddSceneCommand" priority="0x0100" type="Button">
+        <Parent guid="DreamBitCommandSet" id="ProjectContextAddGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Add Scene</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="DreamBitCommandSet" id="AddFontCommand" priority="0x0101" type="Button">
         <Parent guid="DreamBitCommandSet" id="ProjectContextAddGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -128,6 +136,7 @@
       <!-- Project -->
       <IDSymbol name="ProjectContextAddGroup" value="0x2003" />
       <IDSymbol name="AddFontCommand" value="0x3005" />
+      <IDSymbol name="AddSceneCommand" value="0x3007" />
     </GuidSymbol>
 
     <!-- Scene Hierarchy -->
