@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1D60D34E-285F-4C61-B2A8-19D67075DB44}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DreamBit.Game.Tests</RootNamespace>
+    <AssemblyName>DreamBit.Game.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\CameraServiceTest.cs" />
+    <Compile Include="Components\SceneCameraTest.cs" />
+    <Compile Include="Components\SceneManagerTest.cs" />
+    <Compile Include="Content\ContentManagerServiceTest.cs" />
+    <Compile Include="Content\ContentReferenceManagerTest.cs" />
+    <Compile Include="Content\SceneLoaderTest.cs" />
+    <Compile Include="Drawing\DrawBatchDefinitionsTest.cs" />
+    <Compile Include="Drawing\DrawBatchTest.cs" />
+    <Compile Include="Elements\Components\CameraObjectTest.cs" />
+    <Compile Include="Elements\Components\GameObjectComponentTest.cs" />
+    <Compile Include="Elements\Components\ImageRendererTest.cs" />
+    <Compile Include="Elements\Components\TextRendererTest.cs" />
+    <Compile Include="Elements\GameObjectTest.cs" />
+    <Compile Include="Elements\SceneTest.cs" />
+    <Compile Include="Elements\TransformTest.cs" />
+    <Compile Include="Implementations\Elements\GameObjectComponentImplementation.cs" />
+    <Compile Include="Mocks\Components\CameraMock.cs" />
+    <Compile Include="Mocks\Components\CameraServiceMock.cs" />
+    <Compile Include="Mocks\Components\SceneCameraMock.cs" />
+    <Compile Include="Mocks\Content\ContentLoaderMock.cs" />
+    <Compile Include="Mocks\Content\ContentManagerMock.cs" />
+    <Compile Include="Mocks\Content\ContentReferenceManagerMock.cs" />
+    <Compile Include="Mocks\Content\FontMock.cs" />
+    <Compile Include="Mocks\Content\ImageMock.cs" />
+    <Compile Include="Mocks\Data\GameDataMock.cs" />
+    <Compile Include="Mocks\Drawing\DrawBatchMock.cs" />
+    <Compile Include="Mocks\Drawing\DrawBatchServiceMock.cs" />
+    <Compile Include="Mocks\Elements\GameObjectComponentMock.cs" />
+    <Compile Include="Mocks\Elements\GameObjectMock.cs" />
+    <Compile Include="Mocks\Reading\DataReaderMock.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions">
+      <Version>5.9.0</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestAdapter">
+      <Version>1.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>1.3.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Game\DreamBit.Game.csproj">
+      <Project>{58873eaf-2068-4c98-9931-25551ff5d825}</Project>
+      <Name>DreamBit.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrawlbit.MonoGame.Tests\Scrawlbit.MonoGame.Tests.csproj">
+      <Project>{087b7a9b-ea05-4a14-b2d1-1d98b395de5c}</Project>
+      <Name>Scrawlbit.MonoGame.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrawlbit.MonoGame\Scrawlbit.MonoGame.csproj">
+      <Project>{cea07d37-3e41-4a6c-9cb7-a1597e59c44a}</Project>
+      <Name>Scrawlbit.MonoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrawlbit.Util\Scrawlbit.Util.csproj">
+      <Project>{ea0ebdb8-9ed2-4c34-8133-624d707a04f2}</Project>
+      <Name>Scrawlbit.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
