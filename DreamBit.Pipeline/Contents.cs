@@ -52,7 +52,7 @@ namespace DreamBit.Pipeline
             string path = file.GetContentPath();
 
             if (!_contentImporter.IsPathIncluded(path))
-                throw new ImportNotFoundException(path);
+                return;
 
             _contentImporter.Remove(path);
             _manager.NotifyChanges();
@@ -66,13 +66,14 @@ namespace DreamBit.Pipeline
         private T Add<T>(IProjectFile file, Func<string, T> factory) where T : IContentImport
         {
             string path = file.GetContentPath();
+            T import = (T)_contentImporter.GetByPath(path);
 
-            if (_contentImporter.IsPathIncluded(path))
-                throw new ImportAlreadyExistsException(path);
-
-            T import = factory(path);
-            _contentImporter.AddOrUpdate(import);
-            _manager.NotifyChanges();
+            if (import == null)
+            {
+                import = factory(path);
+                _contentImporter.AddOrUpdate(import);
+                _manager.NotifyChanges();
+            }
 
             return import;
         }

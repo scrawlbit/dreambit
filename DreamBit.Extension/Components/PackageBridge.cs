@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using DreamBit.Extension.Helpers;
+using DreamBit.Modularization.Management;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -16,13 +17,15 @@ namespace DreamBit.Extension.Components
     public class PackageBridge : IPackageBridge
     {
         private readonly AsyncPackage _package;
+        private readonly IFileManager _fileManager;
         private readonly SolutionMonitor _monitor;
         private IVsMonitorSelection _selectionMonitor;
         private IVsSolution _solution;
 
-        public PackageBridge(AsyncPackage package)
+        public PackageBridge(AsyncPackage package, IFileManager fileManager)
         {
             _package = package;
+            _fileManager = fileManager;
             _monitor = new SolutionMonitor(this);
         }
 
@@ -47,6 +50,45 @@ namespace DreamBit.Extension.Components
         public async Task<TCast> GetServiceAsync<TCast, TService>()
         {
             return (TCast)await _package.GetServiceAsync(typeof(TService));
+        }
+
+        public bool IsSingleHierarchySelected(out IHierarchyBridge hierarchy)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            IntPtr hierarchyPointer = IntPtr.Zero;
+            IntPtr selectionPointer = IntPtr.Zero;
+
+            try
+            {
+                if (IsSingleHierarchySelected(out hierarchyPointer, out selectionPointer, out uint itemId))
+                {
+                    var vsHierarchy = (IVsHierarchy)Marshal.GetObjectForIUnknown(hierarchyPointer);
+                    hierarchy = new HierarchyBridge(vsHierarchy, itemId, _fileManager);
+                    return true;
+                }
+            }
+            finally
+            {
+                selectionPointer.Release();
+                hierarchyPointer.Release();
+            }
+
+            hierarchy = null;
+            return false;
+        }
+        public bool IsSingleItemSelected(out IHierarchyBridge hierarchy)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (IsSingleItemSelected(out IVsHierarchy vsHierarchy, out uint itemId))
+            {
+                hierarchy = new HierarchyBridge(vsHierarchy, itemId, _fileManager);
+                return true;
+            }
+
+            hierarchy = null;
+            return false;
         }
 
         public string GetSolutionDirectory()
@@ -130,6 +172,22 @@ namespace DreamBit.Extension.Components
 
             return directory;
         }
+        public IVsHierarchy GetSingleHierarchySelected()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (IsSingleHierarchySelected(out IVsHierarchy hierarchy))
+                return hierarchy;
+
+            return null;
+        }
+        public string GetHierarchyPath(IVsHierarchy hierarchy)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            ((IVsProject)hierarchy).GetMkDocument(VSConstants.VSITEMID_ROOT, out var itemFullPath);
+            return itemFullPath;
+        }
 
         public void ShowWindow<T>() where T : ToolWindow
         {
@@ -142,6 +200,27 @@ namespace DreamBit.Extension.Components
                 throw new NotSupportedException($"Cannot create {typeof(T).Name}");
 
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+        public void AddItem(IVsHierarchy hierarchy, string path)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            IntPtr handleDialogPointer = IntPtr.Zero;
+
+            try
+            {
+                const uint to = VSConstants.VSITEMID_ROOT;
+                const VSADDITEMOPERATION operation = VSADDITEMOPERATION.VSADDITEMOP_OPENFILE;
+                const int numberOfItensToOpen = 1;
+                string[] itensToOpen = new[] { path };
+                VSADDRESULT[] results = new VSADDRESULT[1];
+
+                ((IVsProject4)hierarchy).AddItem(to, operation, path, numberOfItensToOpen, itensToOpen, handleDialogPointer, results);
+            }
+            finally
+            {
+                handleDialogPointer.Release();
+            }
         }
 
         private bool IsSingleHierarchySelected(out IntPtr hierarchyPointer, out IntPtr selectionPointer, out uint itemId)

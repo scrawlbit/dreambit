@@ -1,6 +1,7 @@
 using DreamBit.Pipeline.Files;
 using DreamBit.Project;
 using DreamBit.Project.Registrations;
+using System;
 
 namespace DreamBit.Pipeline.Registrations
 {
@@ -19,10 +20,8 @@ namespace DreamBit.Pipeline.Registrations
 
         public string Type => "Image";
         public string Extension => ".png";
+        public Type ObjectType => typeof(PipelineImage);
 
-        public ProjectFile CreateInstance()
-        {
-            return new PipelineImage(_pipeline);
-        }
+        public ProjectFile CreateInstance() => new PipelineImage(_pipeline);
     }
 }

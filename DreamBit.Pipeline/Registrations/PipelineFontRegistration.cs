@@ -2,6 +2,7 @@
 using DreamBit.Pipeline.Files;
 using DreamBit.Project;
 using DreamBit.Project.Registrations;
+using System;
 
 namespace DreamBit.Pipeline.Registrations
 {
@@ -22,10 +23,8 @@ namespace DreamBit.Pipeline.Registrations
 
         public string Type => "Font";
         public string Extension => ".spritefont";
+        public Type ObjectType => typeof(PipelineFont);
 
-        public ProjectFile CreateInstance()
-        {
-            return new PipelineFont(_pipeline, _fileManager);
-        }
+        public ProjectFile CreateInstance() => new PipelineFont(_pipeline, _fileManager);
     }
 }

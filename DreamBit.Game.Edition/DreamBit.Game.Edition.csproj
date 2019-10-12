@@ -61,6 +61,14 @@
       <Project>{58873eaf-2068-4c98-9931-25551ff5d825}</Project>
       <Name>DreamBit.Game</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DreamBit.General\DreamBit.General.csproj">
+      <Project>{8c104190-7f8d-451f-bcf8-48936609e988}</Project>
+      <Name>DreamBit.General</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DreamBit.Pipeline\DreamBit.Pipeline.csproj">
+      <Project>{7aefb6e6-9058-45f1-a946-b092e300005b}</Project>
+      <Name>DreamBit.Pipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DreamBit.Project\DreamBit.Project.csproj">
       <Project>{07c95767-806b-4f9e-9b86-3c502a337678}</Project>
       <Name>DreamBit.Project</Name>

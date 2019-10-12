@@ -60,6 +60,7 @@
     <Compile Include="Components\IPackageBridge.cs" />
     <Compile Include="Components\ISolutionMonitor.cs" />
     <Compile Include="Components\PackageBridge.cs" />
+    <Compile Include="Components\HierarchyBridge.cs" />
     <Compile Include="Components\SolutionMonitor.cs" />
     <Compile Include="Components\ToolCommand.cs" />
     <Compile Include="Components\ToolWindow.cs" />
@@ -98,6 +99,9 @@
     <Compile Include="Windows\Dialogs\EditFontDialog.xaml.cs">
       <DependentUpon>EditFontDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Dialogs\FileNameDialog.xaml.cs">
+      <DependentUpon>FileNameDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SceneEditorView.xaml.cs">
       <DependentUpon>SceneEditorView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +137,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.202" ExcludeAssets="runtime" />
@@ -213,6 +218,10 @@
     <Page Include="Windows\Dialogs\EditFontDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Dialogs\FileNameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SceneEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,9 +1,9 @@
-﻿using System.IO;
-using DreamBit.Extension.Commands;
+﻿using DreamBit.Extension.Commands;
 using DreamBit.Extension.Components;
 using DreamBit.Modularization.Management;
 using DreamBit.Pipeline;
 using DreamBit.Project;
+using System.IO;
 
 namespace DreamBit.Extension.Management
 {
@@ -11,7 +11,8 @@ namespace DreamBit.Extension.Management
     {
         void Initialize();
 
-        bool IsSingleItemSelected();
+        bool IsSingleHierarchySelected(out IHierarchyBridge hierarchy);
+        void AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile;
     }
 
     internal class ProjectManager : IProjectManager
@@ -44,14 +45,10 @@ namespace DreamBit.Extension.Management
             _package.Monitor.ItemsRemoved += OnItemsRemoved;
         }
 
-        public bool IsSingleItemSelected()
+        public bool IsSingleHierarchySelected(out IHierarchyBridge hierarchy)
         {
-            if (_package.IsSingleHierarchySelected(out var hierarchy))
-            {
-                string projectFolder = _package.GetProjectFolder(hierarchy);
-
-                return projectFolder == _project.Folder;
-            }
+            if (_package.IsSingleHierarchySelected(out hierarchy))
+                return hierarchy.ProjectFolder == _project.Folder;
 
             return false;
         }
@@ -77,18 +74,30 @@ namespace DreamBit.Extension.Management
             foreach (var path in paths)
                 _project.AddFile(path);
 
-            _project.Save();
-            _pipeline.Save();
-            _buildContentCommand.Execute();
+            SaveAll();
         }
         private void OnItemsRemoved(string[] paths)
         {
             foreach (var path in paths)
                 _project.RemoveFile(path);
 
+            SaveAll();
+        }
+
+        private void SaveAll()
+        {
             _project.Save();
             _pipeline.Save();
             _buildContentCommand.Execute(null);
+        }
+
+        public void AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile
+        {
+            string folder = hierarchy.IsFolder ? hierarchy.Path : hierarchy.Folder;
+            string fileName = Path.Combine(folder, name);
+            T file = _project.AddFile<T>(fileName);
+
+            hierarchy.AddItem(file.Path);
         }
     }
 }

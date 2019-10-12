@@ -11,6 +11,7 @@ namespace DreamBit.Pipeline.Imports
         IReadOnlyList<IContentImport> Imports { get; }
 
         bool IsPathIncluded(string path);
+        IContentImport GetByPath(string path);
 
         void AddOrUpdate(IContentImport import);
         void Remove(string path);
@@ -34,10 +35,14 @@ namespace DreamBit.Pipeline.Imports
         {
             return _imports.Any(c => c.Path == path);
         }
+        public IContentImport GetByPath(string path)
+        {
+            return Imports.SingleOrDefault(i => i.Path == path);
+        }
 
         public void AddOrUpdate(IContentImport import)
         {
-            var added = Imports.SingleOrDefault(i => i.Path == import.Path);
+            var added = GetByPath(import.Path);
 
             if (added != null)
                 _mappingService.Map(import).To(added);
@@ -46,7 +51,7 @@ namespace DreamBit.Pipeline.Imports
         }
         public void Remove(string path)
         {
-            var import = Imports.SingleOrDefault(i => i.Path == path);
+            var import = GetByPath(path);
 
             if (import == null)
                 throw new ImportNotFoundException(path);

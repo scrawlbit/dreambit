@@ -1,6 +1,7 @@
 ﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Windows.Dialogs;
+using Microsoft.VisualStudio.Shell.Interop;
 using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.Project
@@ -10,10 +11,10 @@ namespace DreamBit.Extension.Commands.Project
     {
         private readonly IPackageBridge _package;
         private readonly IProjectManager _manager;
+        private IHierarchyBridge _hierarchy;
 
-        public AddFontCommand(IPackageBridge package, IProjectManager manager)
+        public AddFontCommand(IProjectManager manager)
         {
-            _package = package;
             _manager = manager;
         }
 
@@ -21,14 +22,14 @@ namespace DreamBit.Extension.Commands.Project
 
         public override void Execute(object parameter)
         {
-            var folder = _package.GetSelectedItemPath();
+            var folder = _hierarchy.Path;
             var dialog = new EditFontDialog();
 
             dialog.NewFont(folder);
         }
         protected override bool CanShow(object parameter)
         {
-            return _manager.IsSingleItemSelected();
+            return _manager.IsSingleHierarchySelected(out _hierarchy);
         }
     }
 }

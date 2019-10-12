@@ -11,6 +11,7 @@ namespace DreamBit.Project.Registrations
     {
         IFileRegistration DetermineFromPath(string path);
         IFileRegistration DetermineFromType(string type);
+        IFileRegistration DetermineFromObjectType(Type objectType);
     }
 
     internal class FileRegistrations : IFileRegistrations
@@ -64,6 +65,10 @@ namespace DreamBit.Project.Registrations
         public IFileRegistration DetermineFromType(string type)
         {
             return Registrations.Single(r => r.Type == type);
+        }
+        public IFileRegistration DetermineFromObjectType(Type objectType)
+        {
+            return Registrations.Single(r => r.ObjectType == objectType);
         }
     }
 }

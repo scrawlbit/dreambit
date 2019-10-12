@@ -6,6 +6,7 @@ using DreamBit.Extension.Management;
 using DreamBit.Extension.Models;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
+using DreamBit.Modularization.Management;
 using Microsoft.VisualStudio.Shell;
 using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Mapping;
@@ -57,7 +58,12 @@ namespace DreamBit.Extension.Properties
         }
         private void Components()
         {
-            _builder.Register<IPackageBridge>().Singleton(new PackageBridge(_package));
+            _builder.Register<IPackageBridge>().Singleton(c =>
+            {
+                IFileManager fileManager = c.Resolve<IFileManager>();
+
+                return new PackageBridge(_package, fileManager);
+            });
         }
         private void Management()
         {

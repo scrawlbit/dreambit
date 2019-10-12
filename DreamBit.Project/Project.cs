@@ -18,7 +18,8 @@ namespace DreamBit.Project
         string Path { get; }
         IReadOnlyList<ProjectFile> Files { get; }
 
-        void AddFile(string path);
+        T AddFile<T>(string fileName) where T : ProjectFile;
+        ProjectFile AddFile(string path);
         void MoveFile(string oldPath, string newPath);
         void RemoveFile(string path);
 
@@ -64,25 +65,20 @@ namespace DreamBit.Project
         }
         public IFileRegistrations Registrations { get; }
 
-        public void AddFile(string path)
+        public T AddFile<T>(string fileName) where T : ProjectFile
         {
             EnsureProjectLoaded();
 
-            if (_files.IsPathIncluded(path)) return;
-            if (!path.StartsWith(Folder)) return;
+            IFileRegistration registration = Registrations.DetermineFromObjectType(typeof(T));
+            string path = $"{fileName}{registration.Extension}";
 
-            IFileRegistration registration = Registrations.DetermineFromPath(path);
-            ProjectFile file = registration.CreateInstance();
+            return (T)AddFile(path, registration);
+        }
+        public ProjectFile AddFile(string path)
+        {
+            EnsureProjectLoaded();
 
-            file.Project = this;
-            file.Type = registration.Type;
-            file.Extension = registration.Extension;
-            file.Path = path;
-
-            _files.InsertOrdered(file, f => f.Location);
-
-            file.OnAdded();
-            IndicateChanges();
+            return AddFile(path, Registrations.DetermineFromPath(path));
         }
         public void MoveFile(string oldPath, string newPath)
         {
@@ -156,6 +152,29 @@ namespace DreamBit.Project
         {
             if (!Loaded)
                 throw new ProjectNotLoadedException();
+        }
+        private ProjectFile AddFile(string path, IFileRegistration registration)
+        {
+            if (!path.StartsWith(Folder))
+                return null;
+
+            ProjectFile file = _files.GetByPath(path);
+
+            if (file == null)
+            {
+                file = registration.CreateInstance();
+                file.Project = this;
+                file.Type = registration.Type;
+                file.Extension = registration.Extension;
+                file.Path = path;
+
+                _files.InsertOrdered(file, f => f.Location);
+
+                file.OnAdded();
+                IndicateChanges();
+            }
+            
+            return file;
         }
         private void IndicateChanges()
         {
