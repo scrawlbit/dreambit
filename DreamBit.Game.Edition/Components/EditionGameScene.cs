@@ -5,6 +5,7 @@ using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Scrawlbit.Injection;
 using Scrawlbit.Json;
 using Scrawlbit.Json.Converters;
 
@@ -12,24 +13,20 @@ namespace DreamBit.Game.Components
 {
     public class EditionGameScene : IEditionGameScene
     {
+        private readonly IContainer _container;
         private readonly IGameScene _gameScene;
         private readonly IContentManagerService _contentManagerService;
         private readonly IDrawBatchService _drawBatchService;
         private readonly ISceneManager _sceneManager;
 
-        public EditionGameScene() : this(
-            EditionContainer.Resolve<IGameScene>(),
-            EditionContainer.Resolve<IContentManagerService>(),
-            EditionContainer.Resolve<IDrawBatchService>(),
-            EditionContainer.Resolve<ISceneManager>())
-        {
-        }
         internal EditionGameScene(
+            IContainer container,
             IGameScene gameScene,
             IContentManagerService contentManagerService,
             IDrawBatchService drawBatchService,
             ISceneManager sceneManager)
         {
+            _container = container;
             _gameScene = gameScene;
             _contentManagerService = contentManagerService;
             _drawBatchService = drawBatchService;
@@ -51,7 +48,7 @@ namespace DreamBit.Game.Components
         {
             var jsonParser = new JsonParser();
 
-            jsonParser.Converters.Add(new DependencyInstanceConverter<GameData>(EditionContainer.Container));
+            jsonParser.Converters.Add(new DependencyInstanceConverter<GameData>(_container));
             jsonParser.ParseString<GameData>(File.ReadAllText("Game.data"));
         }
         public void Update(GameTime gameTime)

@@ -27,7 +27,7 @@ namespace DreamBit.Pipeline.Files
         private int _spacing;
         private FontStyle _style;
 
-        public PipelineFont(IPipeline pipeline, IFileManager fileManager)
+        internal PipelineFont(IPipeline pipeline, IFileManager fileManager)
         {
             _pipeline = pipeline;
             _fileManager = fileManager;

@@ -37,14 +37,15 @@
   <ItemGroup>
     <Compile Include="Components\EditionGameScene.cs" />
     <Compile Include="Components\IEditionGameScene.cs" />
-    <Compile Include="EditionContainer.cs" />
     <Compile Include="Elements\Components\EditableCameraObject.cs" />
     <Compile Include="Elements\Components\EditableImageRenderer.cs" />
     <Compile Include="Elements\Components\EditableScriptBehavior.cs" />
     <Compile Include="Elements\Components\EditableTextRenderer.cs" />
     <Compile Include="Factory\EditableGameObjectComponentFactory.cs" />
+    <Compile Include="Files\SceneFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\GameEditionInjectionModule.cs" />
+    <Compile Include="Registrations\SceneFileRegistration.cs" />
     <Compile Include="Writing\DataWriter.cs" />
     <Compile Include="Writing\IDataWriter.cs" />
     <Compile Include="Writing\ISceneWriter.cs" />
@@ -59,6 +60,10 @@
     <ProjectReference Include="..\DreamBit.Game\DreamBit.Game.csproj">
       <Project>{58873eaf-2068-4c98-9931-25551ff5d825}</Project>
       <Name>DreamBit.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DreamBit.Project\DreamBit.Project.csproj">
+      <Project>{07c95767-806b-4f9e-9b86-3c502a337678}</Project>
+      <Name>DreamBit.Project</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scrawlbit.Json\Scrawlbit.Json.csproj">
       <Project>{33b87f35-abdd-46da-8abd-48067b369a71}</Project>

@@ -3,15 +3,12 @@ using DreamBit.Game.Elements;
 
 namespace DreamBit.Game.Writing
 {
-    public class SceneWriter : ISceneWriter
+    internal class SceneWriter : ISceneWriter
     {
         private readonly IDataWriter _dataWriter;
         private readonly UTF8Encoding _encoding;
 
-        public SceneWriter() : this(EditionContainer.Resolve<IDataWriter>())
-        {
-        }
-        internal SceneWriter(IDataWriter dataWriter)
+        public SceneWriter(IDataWriter dataWriter)
         {
             _dataWriter = dataWriter;
             _encoding = new UTF8Encoding(false);

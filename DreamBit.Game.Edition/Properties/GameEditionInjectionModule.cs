@@ -1,10 +1,12 @@
 ﻿using DreamBit.Game.Factory;
+using DreamBit.Game.Registrations;
 using DreamBit.Game.Writing;
+using DreamBit.Project.Helpers;
 using Scrawlbit.Injection.Configuration;
 
 namespace DreamBit.Game.Properties
 {
-    internal class GameEditionInjectionModule : IInjectionModule
+    public class GameEditionInjectionModule : IInjectionModule
     {
         private IRegistrationBuilder _builder;
 
@@ -12,7 +14,10 @@ namespace DreamBit.Game.Properties
         {
             _builder = builder;
 
+            new GameInjectionModule().Register(builder);
+
             Factory();
+            Registrations();
             Writing();
         }
 
@@ -20,8 +25,13 @@ namespace DreamBit.Game.Properties
         {
             _builder.Register<IGameObjectComponentFactory>().Transient<EditableGameObjectComponentFactory>();
         }
+        private void Registrations()
+        {
+            _builder.RegisterFile<ISceneFileRegistration>().Transient<SceneFileRegistration>();
+        }
         private void Writing()
         {
+            _builder.Register<ISceneWriter>().Transient<SceneWriter>();
             _builder.Register<IDataWriter>().Transient<DataWriter>();
         }
     }

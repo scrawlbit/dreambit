@@ -8,6 +8,7 @@ using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Properties;
+using DreamBit.Game.Properties;
 using DreamBit.Modularization.Properties;
 using DreamBit.Pipeline.Properties;
 using DreamBit.Project.Properties;
@@ -34,7 +35,7 @@ namespace DreamBit.Extension
 
         internal static IContainer Container { get; private set; }
         internal static IMappingService Mapper { get; private set; }
-        
+
         private static void BuildMapper()
         {
             var builder = new MappingServiceBuilder();
@@ -45,7 +46,7 @@ namespace DreamBit.Extension
         }
         private void BuildContainer()
         {
-            var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder { AllowOverrides = true };
 
             foreach (var module in GetModules())
                 builder.RegistrationBuilder.RegisterModule(module);
@@ -78,6 +79,7 @@ namespace DreamBit.Extension
             yield return new ProjectInjectionModule();
             yield return new PipelineInjectionModule();
             yield return new GeneralInjectionModule();
+            yield return new GameEditionInjectionModule();
         }
         private Task RegisterCommandAsync<T>() where T : class, IToolCommand
         {

@@ -141,6 +141,10 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.3.2099" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Game.Edition\DreamBit.Game.Edition.csproj">
+      <Project>{592cda1d-61c2-462c-9317-3131bbe091a6}</Project>
+      <Name>DreamBit.Game.Edition</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DreamBit.General\DreamBit.General.csproj">
       <Project>{8c104190-7f8d-451f-bcf8-48936609e988}</Project>
       <Name>DreamBit.General</Name>

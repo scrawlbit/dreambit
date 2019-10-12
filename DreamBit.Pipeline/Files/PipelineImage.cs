@@ -10,7 +10,7 @@ namespace DreamBit.Pipeline.Files
     {
         private readonly IPipeline _pipeline;
 
-        public PipelineImage(IPipeline pipeline)
+        internal PipelineImage(IPipeline pipeline)
         {
             _pipeline = pipeline;
         }
