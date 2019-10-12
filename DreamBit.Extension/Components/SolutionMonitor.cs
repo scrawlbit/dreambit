@@ -6,6 +6,14 @@ using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension.Components
 {
+    public interface ISolutionMonitor
+    {
+        event Action<string> SolutionOpened;
+        event Action SolutionClosed;
+        event Action<string[]> ItemsAdded;
+        event Action<string[]> ItemsRemoved;
+    }
+
     internal class SolutionMonitor : ISolutionMonitor, IVsSolutionEvents, IVsTrackProjectDocumentsEvents2, IDisposable
     {
         private readonly IPackageBridge _package;

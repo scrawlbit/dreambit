@@ -57,8 +57,6 @@
     <Compile Include="Commands\SceneHierarchy\PasteGameObjectCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\RemoveGameObjectCommand.cs" />
     <Compile Include="Commands\SceneInspectWindowCommand.cs" />
-    <Compile Include="Components\IPackageBridge.cs" />
-    <Compile Include="Components\ISolutionMonitor.cs" />
     <Compile Include="Components\PackageBridge.cs" />
     <Compile Include="Components\HierarchyBridge.cs" />
     <Compile Include="Components\SolutionMonitor.cs" />
