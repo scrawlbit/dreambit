@@ -145,6 +145,10 @@
       <Project>{592cda1d-61c2-462c-9317-3131bbe091a6}</Project>
       <Name>DreamBit.Game.Edition</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DreamBit.Game\DreamBit.Game.csproj">
+      <Project>{58873eaf-2068-4c98-9931-25551ff5d825}</Project>
+      <Name>DreamBit.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DreamBit.General\DreamBit.General.csproj">
       <Project>{8c104190-7f8d-451f-bcf8-48936609e988}</Project>
       <Name>DreamBit.General</Name>

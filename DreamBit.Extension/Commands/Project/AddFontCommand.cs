@@ -1,10 +1,7 @@
-﻿using System.IO;
-using System.Windows.Input;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
+using DreamBit.Extension.Management;
 using DreamBit.Extension.Windows.Dialogs;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.Project
 {
@@ -12,10 +9,12 @@ namespace DreamBit.Extension.Commands.Project
     internal sealed class AddFontCommand : ToolCommand, IAddFontCommand
     {
         private readonly IPackageBridge _package;
+        private readonly IProjectManager _manager;
 
-        public AddFontCommand(IPackageBridge package)
+        public AddFontCommand(IPackageBridge package, IProjectManager manager)
         {
             _package = package;
+            _manager = manager;
         }
 
         protected override int Id => DreamBitPackage.Guids.AddFontCommand;
@@ -29,18 +28,7 @@ namespace DreamBit.Extension.Commands.Project
         }
         protected override bool CanShow(object parameter)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (_package.IsSingleHierarchySelected(out var hierarchy))
-            {
-                ((IVsProject)hierarchy).GetMkDocument(VSConstants.VSITEMID_ROOT, out var fileName);
-                var directory = Path.GetDirectoryName(fileName);
-                var dreamPath = Path.Combine(directory, "Game.dream");
-
-                return File.Exists(dreamPath);
-            }
-
-            return false;
+            return _manager.IsSingleItemSelected();
         }
     }
 }

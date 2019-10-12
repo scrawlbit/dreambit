@@ -20,6 +20,7 @@ namespace DreamBit.Extension.Components
         string GetSelectedItemPath();
         string[] GetLoadedProjects();
         bool IsValidProjectPath(string path);
+        string GetProjectFolder(IVsHierarchy item);
 
         void ShowWindow<T>() where T : ToolWindow;
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -119,6 +120,15 @@ namespace DreamBit.Extension.Components
 
             var extensions = new[] { "shproj", "csproj" };
             return extensions.Any(path.EndsWith);
+        }
+        public string GetProjectFolder(IVsHierarchy hierarchy)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            ((IVsProject)hierarchy).GetMkDocument(VSConstants.VSITEMID_ROOT, out var fileName);
+            var directory = Path.GetDirectoryName(fileName);
+
+            return directory;
         }
 
         public void ShowWindow<T>() where T : ToolWindow

@@ -10,6 +10,8 @@ namespace DreamBit.Extension.Management
     public interface IProjectManager
     {
         void Initialize();
+
+        bool IsSingleItemSelected();
     }
 
     internal class ProjectManager : IProjectManager
@@ -40,6 +42,18 @@ namespace DreamBit.Extension.Management
             _package.Monitor.SolutionClosed += OnSolutionClosed;
             _package.Monitor.ItemsAdded += OnItemsAdded;
             _package.Monitor.ItemsRemoved += OnItemsRemoved;
+        }
+
+        public bool IsSingleItemSelected()
+        {
+            if (_package.IsSingleHierarchySelected(out var hierarchy))
+            {
+                string projectFolder = _package.GetProjectFolder(hierarchy);
+
+                return projectFolder == _project.Folder;
+            }
+
+            return false;
         }
 
         private void OnSolutionOpened(string path)
