@@ -10,7 +10,8 @@ namespace DreamBit.Pipeline.Translators.ImportTranslators
     {
         public bool TryRead(string text, out object value)
         {
-            var match = Regex.Match(text, "/copy:(.*?)\r\n", RegexOptions.Multiline);
+            var pattern = $"^#begin (.*)\r\n/copy:.*$";
+            var match = Regex.Match(text, pattern, RegexOptions.Multiline);
 
             if (match.Success)
             {

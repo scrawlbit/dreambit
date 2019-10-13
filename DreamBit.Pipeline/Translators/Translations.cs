@@ -16,7 +16,7 @@ namespace DreamBit.Pipeline.Translators
         }
         internal static string ReadImporter(string importer, string text)
         {
-            var pattern = $"^#begin.*\r\n/importer:{importer}\r\n((?:.*\r\n)+?/build:.*?)$";
+            var pattern = $"^#begin.*\r\n/importer:{importer}\r\n((?:.*\r\n)+?/build:.*)$";
             var match = Regex.Match(text, pattern, RegexOptions.Multiline);
 
             return match.Success ? match.Groups[1].Value.Trim() : null;

@@ -47,7 +47,7 @@ namespace DreamBit.Pipeline.Imports
             if (added != null)
                 _mappingService.Map(import).To(added);
             else
-                _imports.InsertOrdered(import, i => (int)i.BuildtAction, i => i.Path);
+                _imports.InsertOrdered(import, i => i.Path);
         }
         public void Remove(string path)
         {
