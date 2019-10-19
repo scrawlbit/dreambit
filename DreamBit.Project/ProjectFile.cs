@@ -52,6 +52,7 @@ namespace DreamBit.Project
         public string Extension { get; internal set; }
 
         internal protected virtual void OnAdded() { }
+        internal protected virtual void OnReplaced() { }
         internal protected virtual void OnMoved(MovedEventArgs e) { }
         internal protected virtual void OnRemoved() { }
 

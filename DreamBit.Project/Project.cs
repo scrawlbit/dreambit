@@ -178,6 +178,10 @@ namespace DreamBit.Project
                 file.OnAdded();
                 IndicateChanges();
             }
+            else
+            {
+                file.OnReplaced();
+            }
             
             return file;
         }

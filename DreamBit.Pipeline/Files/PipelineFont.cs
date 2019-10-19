@@ -1,8 +1,8 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
-using DreamBit.Modularization.Management;
+﻿using DreamBit.Modularization.Management;
 using DreamBit.Project;
 using Scrawlbit.Helpers;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DreamBit.Pipeline.Files
 {
@@ -136,6 +136,10 @@ namespace DreamBit.Pipeline.Files
         protected override void OnAdded()
         {
             _pipeline.Contents.AddImport(this);
+        }
+        protected override void OnReplaced()
+        {
+            _loaded = false;
         }
         protected override void OnMoved(MovedEventArgs e)
         {
