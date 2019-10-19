@@ -51,6 +51,10 @@ namespace DreamBit.Pipeline
         public void Move(IProjectFile file, string oldPath)
         {
             oldPath = oldPath.AsContentPath();
+
+            if (!_contentImporter.IsPathIncluded(oldPath))
+                return;
+
             string newPath = file.GetContentPath();
 
             _contentImporter.Move(oldPath, newPath);

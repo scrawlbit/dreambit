@@ -112,6 +112,9 @@ namespace DreamBit.Project
 
             ProjectFile file = _files.GetByPath(path);
 
+            if (file == null)
+                return;
+
             _files.Remove(file);
 
             file.OnRemoved();
