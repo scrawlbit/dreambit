@@ -29,6 +29,14 @@ namespace DreamBit.Game.Files
 
             _pipeline.Contents.AddCopy(this);
         }
+        protected override void OnMoved(MovedEventArgs e)
+        {
+            _pipeline.Contents.Move(this, e.OldLocation);
+        }
+        protected override void OnRemoved()
+        {
+            _pipeline.Contents.Remove(this);
+        }
 
         private void Save()
         {

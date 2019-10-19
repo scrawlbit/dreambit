@@ -42,6 +42,7 @@ namespace DreamBit.Extension.Management
             _package.Monitor.SolutionOpened += OnSolutionOpened;
             _package.Monitor.SolutionClosed += OnSolutionClosed;
             _package.Monitor.ItemsAdded += OnItemsAdded;
+            _package.Monitor.ItemsMoved += OnItemsMoved;
             _package.Monitor.ItemsRemoved += OnItemsRemoved;
         }
 
@@ -73,6 +74,13 @@ namespace DreamBit.Extension.Management
         {
             foreach (var path in paths)
                 _project.AddFile(path);
+
+            SaveAll();
+        }
+        private void OnItemsMoved(string[] oldPaths, string[] newPaths)
+        {
+            for (int i = 0; i < oldPaths.Length; i++)
+                _project.MoveFile(oldPaths[i], newPaths[i]);
 
             SaveAll();
         }

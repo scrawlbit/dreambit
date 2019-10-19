@@ -41,7 +41,7 @@ namespace DreamBit.Pipeline.Translators
                 {
                     if (translator.TryRead($"#begin {import.Trim()}", out var value))
                     {
-                        _contentImporter.AddOrUpdate((IContentImport)value);
+                        _contentImporter.AddOrUpdate((ContentImport)value);
                         break;
                     }
                 }

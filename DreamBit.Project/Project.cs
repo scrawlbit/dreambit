@@ -90,13 +90,18 @@ namespace DreamBit.Project
             if (file == null)
                 return;
 
+            var args = new MovedEventArgs();
+
+            args.OldPath = oldPath;
+            args.OldLocation = file.Location;
+
             file.Path = newPath;
 
             _files.Remove(existent);
             _files.Remove(file);
             _files.InsertOrdered(file, f => f.Location);
 
-            file.OnMoved(oldPath);
+            file.OnMoved(args);
             IndicateChanges();
         }
         public void RemoveFile(string path)

@@ -11,6 +11,7 @@ namespace DreamBit.Extension.Components
         event Action<string> SolutionOpened;
         event Action SolutionClosed;
         event Action<string[]> ItemsAdded;
+        event Action<string[], string[]> ItemsMoved;
         event Action<string[]> ItemsRemoved;
     }
 
@@ -30,6 +31,7 @@ namespace DreamBit.Extension.Components
         public event Action<string> SolutionOpened;
         public event Action SolutionClosed;
         public event Action<string[]> ItemsAdded;
+        public event Action<string[], string[]> ItemsMoved;
         public event Action<string[]> ItemsRemoved;
 
         public async Task InitializeAsync()
@@ -114,6 +116,8 @@ namespace DreamBit.Extension.Components
         }
         int IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles(int cProjects, int cFiles, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgszMkOldNames, string[] rgszMkNewNames, VSRENAMEFILEFLAGS[] rgFlags)
         {
+            ItemsMoved?.Invoke(rgszMkOldNames, rgszMkNewNames);
+
             return VSConstants.S_OK;
         }
         int IVsTrackProjectDocumentsEvents2.OnQueryRenameDirectories(IVsProject pProject, int cDirs, string[] rgszMkOldNames, string[] rgszMkNewNames, VSQUERYRENAMEDIRECTORYFLAGS[] rgFlags, VSQUERYRENAMEDIRECTORYRESULTS[] pSummaryResult, VSQUERYRENAMEDIRECTORYRESULTS[] rgResults)

@@ -46,6 +46,7 @@
     <Compile Include="Exceptions\TypeNotRegisteredException.cs" />
     <Compile Include="Helpers\FileRegistrationHelper.cs" />
     <Compile Include="Helpers\ProjectFileHelper.cs" />
+    <Compile Include="MovedEventArgs.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

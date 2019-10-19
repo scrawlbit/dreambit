@@ -19,6 +19,10 @@ namespace DreamBit.Pipeline.Files
         {
             _pipeline.Contents.AddImport(this);
         }
+        protected override void OnMoved(MovedEventArgs e)
+        {
+            _pipeline.Contents.Move(this, e.OldLocation);
+        }
         protected override void OnRemoved()
         {
             _pipeline.Contents.Remove(this);

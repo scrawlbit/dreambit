@@ -14,7 +14,7 @@
             BuildtAction = buildtAction;
         }
 
-        public string Path { get; }
+        public string Path { get; internal set; }
         public BuildtAction BuildtAction { get; }
     }
 }

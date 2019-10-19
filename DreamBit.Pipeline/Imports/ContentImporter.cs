@@ -8,12 +8,13 @@ namespace DreamBit.Pipeline.Imports
 {
     internal interface IContentImporter
     {
-        IReadOnlyList<IContentImport> Imports { get; }
+        IReadOnlyList<ContentImport> Imports { get; }
 
         bool IsPathIncluded(string path);
-        IContentImport GetByPath(string path);
+        ContentImport GetByPath(string path);
 
-        void AddOrUpdate(IContentImport import);
+        void AddOrUpdate(ContentImport import);
+        void Move(string oldPath, string newPath);
         void Remove(string path);
         void Clear();
     }
@@ -21,26 +22,26 @@ namespace DreamBit.Pipeline.Imports
     internal class ContentImporter : IContentImporter
     {
         private readonly IMappingService _mappingService;
-        private readonly List<IContentImport> _imports;
+        private readonly List<ContentImport> _imports;
 
         public ContentImporter(IMappingService mappingService)
         {
             _mappingService = mappingService;
-            _imports = new List<IContentImport>();
+            _imports = new List<ContentImport>();
         }
 
-        public IReadOnlyList<IContentImport> Imports => _imports;
+        public IReadOnlyList<ContentImport> Imports => _imports;
 
         public bool IsPathIncluded(string path)
         {
             return _imports.Any(c => c.Path == path);
         }
-        public IContentImport GetByPath(string path)
+        public ContentImport GetByPath(string path)
         {
             return Imports.SingleOrDefault(i => i.Path == path);
         }
 
-        public void AddOrUpdate(IContentImport import)
+        public void AddOrUpdate(ContentImport import)
         {
             var added = GetByPath(import.Path);
 
@@ -48,6 +49,17 @@ namespace DreamBit.Pipeline.Imports
                 _mappingService.Map(import).To(added);
             else
                 _imports.InsertOrdered(import, i => i.Path);
+        }
+        public void Move(string oldPath, string newPath)
+        {
+            var import = GetByPath(oldPath);
+            var existent = GetByPath(newPath);
+
+            import.Path = newPath;
+
+            _imports.Remove(import);
+            _imports.Remove(existent);
+            _imports.InsertOrdered(import, i => i.Path);
         }
         public void Remove(string path)
         {

@@ -17,6 +17,7 @@ namespace DreamBit.Pipeline
         IFontImport AddImport(IPipelineFont font);
         ICopyImport AddCopy(IProjectFile file);
 
+        void Move(IProjectFile file, string oldPath);
         void Remove(IProjectFile file);
         void Clear();
     }
@@ -47,6 +48,14 @@ namespace DreamBit.Pipeline
             return Add(file, path => new CopyImport(path));
         }
 
+        public void Move(IProjectFile file, string oldPath)
+        {
+            oldPath = oldPath.AsContentPath();
+            string newPath = file.GetContentPath();
+
+            _contentImporter.Move(oldPath, newPath);
+            _manager.NotifyChanges();
+        }
         public void Remove(IProjectFile file)
         {
             string path = file.GetContentPath();
@@ -63,7 +72,7 @@ namespace DreamBit.Pipeline
             _manager.NotifyChanges();
         }
 
-        private T Add<T>(IProjectFile file, Func<string, T> factory) where T : IContentImport
+        private T Add<T>(IProjectFile file, Func<string, T> factory) where T : ContentImport
         {
             string path = file.GetContentPath();
             T import = (T)_contentImporter.GetByPath(path);
