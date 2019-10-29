@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading;
-using DreamBit.Extension.Commands;
+﻿using DreamBit.Extension.Commands;
 using DreamBit.Extension.Commands.Project;
 using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Components;
@@ -12,11 +8,16 @@ using DreamBit.Game.Properties;
 using DreamBit.Modularization.Properties;
 using DreamBit.Pipeline.Properties;
 using DreamBit.Project.Properties;
+using DreamBit.Resources;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Scrawlbit.Injection;
 using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Mapping;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension
@@ -56,6 +57,8 @@ namespace DreamBit.Extension
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            ResourcesLoader.EnsureLoad();
+
             BuildMapper();
             BuildContainer();
 

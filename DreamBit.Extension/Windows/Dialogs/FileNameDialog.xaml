@@ -12,8 +12,6 @@
     Width="300"
     Height="90"
     WindowStartupLocation="CenterOwner"
-    HasMaximizeButton="False"
-    HasMinimizeButton="False"
     d:DesignWidth="300" d:DesignHeight="90">
 
     <StackPanel Grid.Column="0" Margin="5">

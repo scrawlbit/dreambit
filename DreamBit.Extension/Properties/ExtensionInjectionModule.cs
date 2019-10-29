@@ -77,7 +77,7 @@ namespace DreamBit.Extension.Properties
         {
             _builder.Register<SceneHierarchyViewModel>();
 
-            // dialogd
+            // dialogs
             _builder.Register<EditFontDialogViewModel>();
         }
     }

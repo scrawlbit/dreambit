@@ -17,16 +17,10 @@
     x:Name="View">
 
     <controls:WindowView.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Theme.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-
-            <Image x:Key="CameraIcon" Source="../Resources/Icons/VideoCamera_16x.png" x:Shared="False" />
-            <Image x:Key="CancelIcon" Source="../Resources/Icons/Cancel_16x.png" x:Shared="False" />
-            <Image x:Key="CopyIcon" Source="../Resources/Icons/Copy_16x.png" x:Shared="False" />
-            <Image x:Key="ModelIcon" Source="../Resources/Icons/Graphics3D_16x.png" x:Shared="False" />
-        </ResourceDictionary>
+        <Image x:Key="CameraIcon" Source="../Resources/Icons/VideoCamera_16x.png" x:Shared="False" />
+        <Image x:Key="CancelIcon" Source="../Resources/Icons/Cancel_16x.png" x:Shared="False" />
+        <Image x:Key="CopyIcon" Source="../Resources/Icons/Copy_16x.png" x:Shared="False" />
+        <Image x:Key="ModelIcon" Source="../Resources/Icons/Graphics3D_16x.png" x:Shared="False" />
     </controls:WindowView.Resources>
 
     <TreeView ItemsSource="{Binding Scene.Objects}">

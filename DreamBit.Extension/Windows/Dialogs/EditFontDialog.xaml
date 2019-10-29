@@ -4,16 +4,72 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:r="clr-namespace:DreamBit.Resources;assembly=DreamBit.Resources"
     xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+    xmlns:bindings="clr-namespace:Scrawlbit.Presentation.Bindings;assembly=Scrawlbit.Presentation"
+    xmlns:pipeline="clr-namespace:DreamBit.Pipeline.Files;assembly=DreamBit.Pipeline"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
+    xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels.Dialogs"
     mc:Ignorable="d"
     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
     Width="300"
-    Height="300"
-    WindowStartupLocation="CenterOwner"
-    HasMaximizeButton="False"
-    HasMinimizeButton="False"
+    Height="205"
+    d:DataContext="{d:DesignInstance viewModels:EditFontDialogViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300">
+    
+    <controls:DialogView.Resources>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Margin" Value="0 0 0 2" />
+        </Style>
 
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="0 0 0 6" />
+        </Style>
+    </controls:DialogView.Resources>
+
+    <StackPanel Margin="5">
+        <TextBlock Text="{x:Static r:FileResources.Name}" />
+        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0 5 5 0">
+                <TextBlock Text="{x:Static r:PipelineResources.Family}" />
+                <ComboBox ItemsSource="{bindings:EnumCollectionBinding Source={x:Type pipeline:FontFamily}}"
+                          SelectedItem="{Binding Family, Mode=TwoWay}"
+                          Style="{StaticResource EnumComboBoxStyle}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5 5 0 0">
+                <TextBlock Text="{x:Static r:PipelineResources.Style}" />
+                <ComboBox ItemsSource="{bindings:EnumCollectionBinding Source={x:Type pipeline:FontStyle}}"
+                          SelectedItem="{Binding Style, Mode=TwoWay}"
+                          Style="{StaticResource EnumComboBoxStyle}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 5 0">
+                <TextBlock Text="{x:Static r:PipelineResources.Size}" />
+                <TextBox Text="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5 5 0 0">
+                <TextBlock Text="{x:Static r:PipelineResources.Spacing}" />
+                <TextBox Text="{Binding Spacing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5 0 0">
+            <Button Command="{Binding SaveCommand}" Content="{x:Static r:InteractionResources.Save}" Padding="5 2" />
+        </StackPanel>
+    </StackPanel>
+        
 </controls:DialogView>

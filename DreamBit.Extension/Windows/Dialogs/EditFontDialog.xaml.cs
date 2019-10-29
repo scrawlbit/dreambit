@@ -1,4 +1,5 @@
-﻿using DreamBit.Extension.Helpers;
+﻿using DreamBit.Extension.Components;
+using DreamBit.Extension.Helpers;
 using DreamBit.Extension.ViewModels.Dialogs;
 
 namespace DreamBit.Extension.Windows.Dialogs
@@ -10,14 +11,17 @@ namespace DreamBit.Extension.Windows.Dialogs
         public EditFontDialog()
         {
             InitializeComponent();
+
             if (this.IsInDesignMode())
                 return;
 
             LoadViewModel(out _viewModel);
         }
 
-        public void NewFont(string folder)
+        public void NewFont(IHierarchyBridge hierarchy)
         {
+            _viewModel.Hierarchy = hierarchy;
+
             Title = "New Font";
             ShowModal();
         }

@@ -45,6 +45,7 @@
     <Compile Include="Behaviors\RadioButtonListSelectedValueBehavior.cs" />
     <Compile Include="Behaviors\RegexInputValidationBehavior.cs" />
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Bindings\EnumCollectionBinding.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />

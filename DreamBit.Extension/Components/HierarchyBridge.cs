@@ -64,11 +64,21 @@ namespace DreamBit.Extension.Components
         }
         public string Folder
         {
-            get => _folder ?? (_folder = _Path.GetDirectoryName(Path));
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
+                return _folder ?? (_folder = _Path.GetDirectoryName(Path));
+            }
         }
         public bool IsFolder
         {
-            get => _isFolder ?? (_isFolder = _fileManager.FolderExists(Path)).Value;
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
+                return _isFolder ?? (_isFolder = _fileManager.FolderExists(Path)).Value;
+            }
         }
 
         public void AddItem(string path)

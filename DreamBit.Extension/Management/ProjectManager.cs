@@ -12,7 +12,9 @@ namespace DreamBit.Extension.Management
         void Initialize();
 
         bool IsSingleHierarchySelected(out IHierarchyBridge hierarchy);
-        void AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile;
+        T AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile;
+
+        void BuildPipeline();
     }
 
     internal class ProjectManager : IProjectManager
@@ -52,6 +54,20 @@ namespace DreamBit.Extension.Management
                 return hierarchy.ProjectFolder == _project.Folder;
 
             return false;
+        }
+        public T AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile
+        {
+            string folder = hierarchy.IsFolder ? hierarchy.Path : hierarchy.Folder;
+            string fileName = Path.Combine(folder, name);
+            T file = _project.AddFile<T>(fileName);
+
+            hierarchy.AddItem(file.Path);
+
+            return file;
+        }
+        public void BuildPipeline()
+        {
+            _buildContentCommand.Execute(null);
         }
 
         private void OnSolutionOpened(string path)
@@ -96,16 +112,7 @@ namespace DreamBit.Extension.Management
         {
             _project.Save();
             _pipeline.Save();
-            _buildContentCommand.Execute(null);
-        }
-
-        public void AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile
-        {
-            string folder = hierarchy.IsFolder ? hierarchy.Path : hierarchy.Folder;
-            string fileName = Path.Combine(folder, name);
-            T file = _project.AddFile<T>(fileName);
-
-            hierarchy.AddItem(file.Path);
+            BuildPipeline();
         }
     }
 }

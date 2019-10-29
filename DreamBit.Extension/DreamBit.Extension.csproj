@@ -90,9 +90,10 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
+    <Compile Include="Resources\ThemeResources.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\EditFontDialogViewModel.cs" />
-    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\SceneHierarchyViewModel.cs" />
     <Compile Include="Windows\Dialogs\EditFontDialog.xaml.cs">
       <DependentUpon>EditFontDialog.xaml</DependentUpon>
@@ -165,6 +166,10 @@
       <Project>{07c95767-806b-4f9e-9b86-3c502a337678}</Project>
       <Name>DreamBit.Project</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DreamBit.Resources\DreamBit.Resources.csproj">
+      <Project>{b87b7ac3-1b01-4f7f-b344-e53a33a635a2}</Project>
+      <Name>DreamBit.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scrawlbit.AutoMapper\Scrawlbit.AutoMapper.csproj">
       <Project>{00135058-5c40-4953-a0bf-309e6fdb58fb}</Project>
       <Name>Scrawlbit.AutoMapper</Name>
@@ -209,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\Styles\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Styles\TreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -234,7 +243,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

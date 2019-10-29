@@ -2,7 +2,7 @@
 
 namespace DreamBit.Extension.ViewModels
 {
-    public class BaseViewModel : NotificationObject, IViewModel
+    public class BaseViewModel : NotificationObject
     {   
     }
 }

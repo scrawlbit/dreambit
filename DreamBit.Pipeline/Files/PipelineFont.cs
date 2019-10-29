@@ -116,11 +116,11 @@ namespace DreamBit.Pipeline.Files
             xml.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             xml.AppendLine("<XnaContent xmlns:Graphics=\"Microsoft.Xna.Framework.Content.Pipeline.Graphics\">");
             xml.AppendLine("  <Asset Type=\"Graphics:FontDescription\">");
-            xml.AppendLine($"    <FontName>{Family}</FontName>");
-            xml.AppendLine($"    <Size>{Size}</Size>");
-            xml.AppendLine($"    <Spacing>{Spacing}</Spacing>");
+            xml.AppendLine($"    <FontName>{_family}</FontName>");
+            xml.AppendLine($"    <Size>{_size}</Size>");
+            xml.AppendLine($"    <Spacing>{_spacing}</Spacing>");
             xml.AppendLine("    <UseKerning>true</UseKerning>");
-            xml.AppendLine($"    <Style>{Style}</Style>");
+            xml.AppendLine($"    <Style>{_style}</Style>");
             xml.AppendLine("    <CharacterRegions>");
             xml.AppendLine("      <CharacterRegion>");
             xml.AppendLine("        <Start>&#32;</Start>");
@@ -131,11 +131,15 @@ namespace DreamBit.Pipeline.Files
             xml.Append("</XnaContent>");
 
             _fileManager.WriteAllText(Path, xml.ToString(), new UTF8Encoding(true));
+            _loaded = true;
         }
 
         protected override void OnAdded()
         {
             _pipeline.Contents.AddImport(this);
+
+            if (!_fileManager.FileExists(Path))
+                Save();
         }
         protected override void OnReplaced()
         {
