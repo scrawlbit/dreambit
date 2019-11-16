@@ -1,37 +1,36 @@
 ﻿using DreamBit.Extension.Components;
-using DreamBit.Extension.Windows.Dialogs;
-using DreamBit.Pipeline.Files;
+using DreamBit.Game.Files;
 using DreamBit.Project;
 using DreamBit.Project.Helpers;
 
 namespace DreamBit.Extension.Commands.Project
 {
-    internal interface IEditFontCommand : IToolCommand { }
-    internal class EditFontCommand : ToolCommand, IEditFontCommand
+    internal interface IEditSceneCommand : IToolCommand { }
+    internal class EditSceneCommand : ToolCommand, IEditSceneCommand
     {
         private readonly IPackageBridge _package;
         private readonly IProject _project;
         private IHierarchyBridge _hierarchy;
-        private PipelineFont _font;
+        private SceneFile _font;
 
-        public EditFontCommand(IPackageBridge package, IProject project)
+        public EditSceneCommand(IPackageBridge package, IProject project)
         {
             _package = package;
             _project = project;
         }
 
-        protected override int Id => DreamBitPackage.Guids.EditFontCommand;
+        protected override int Id => DreamBitPackage.Guids.EditSceneCommand;
 
         public override void Execute(object parameter)
         {
-            new EditFontDialog().EditFont(_font);
+            // TODO open scene in MonoGame window
         }
         protected override bool CanShow(object parameter)
         {
             _font = null;
 
             if (_package.IsSingleHierarchySelected(out _hierarchy))
-                _font = _project.Files.GetByPath(_hierarchy.Path) as PipelineFont;
+                _font = _project.Files.GetByPath(_hierarchy.Path) as SceneFile;
 
             return _font != null;
         }
