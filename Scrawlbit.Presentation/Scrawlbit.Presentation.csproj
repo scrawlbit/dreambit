@@ -47,6 +47,7 @@
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Bindings\EnumCollectionBinding.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\IBaseCommand.cs" />

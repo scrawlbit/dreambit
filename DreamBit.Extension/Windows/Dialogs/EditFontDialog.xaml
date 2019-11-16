@@ -10,6 +10,7 @@
     xmlns:pipeline="clr-namespace:DreamBit.Pipeline.Files;assembly=DreamBit.Pipeline"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels.Dialogs"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
     mc:Ignorable="d"
     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
@@ -19,6 +20,8 @@
     d:DesignHeight="300" d:DesignWidth="300">
     
     <controls:DialogView.Resources>
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Margin" Value="0 0 0 2" />
         </Style>
@@ -29,8 +32,10 @@
     </controls:DialogView.Resources>
 
     <StackPanel Margin="5">
-        <TextBlock Text="{x:Static r:FileResources.Name}" />
-        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Visibility="{Binding IsNew, Converter={StaticResource VisibilityConverter}}">
+            <TextBlock Text="{x:Static r:FileResources.Name}" />
+            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
 
         <Grid>
             <Grid.RowDefinitions>

@@ -8,6 +8,7 @@ namespace DreamBit.Project
     {
         Guid Id { get; }
         string Name { get; }
+        string FileName { get; }
         string Location { get; }
         string Path { get; }
         string Type { get; }
@@ -25,7 +26,8 @@ namespace DreamBit.Project
 
         internal IProject Project { get; set; }
         public Guid Id { get; internal set; }
-        public string Name => _Path.GetFileName(Location);
+        public string Name => _Path.GetFileNameWithoutExtension(Location);
+        public string FileName => _Path.GetFileName(Location);
         public string Location
         {
             get => _location;

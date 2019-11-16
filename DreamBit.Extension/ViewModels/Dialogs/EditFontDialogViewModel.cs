@@ -27,9 +27,11 @@ namespace DreamBit.Extension.ViewModels.Dialogs
             _size = 12;
             _style = FontStyle.Regular;
 
+            IsNew = true;
             SaveCommand = new DelegateCommand(Save, CanSave);
         }
 
+        public bool IsNew { get; private set; }
         public string Name
         {
             get => _name;
@@ -68,6 +70,8 @@ namespace DreamBit.Extension.ViewModels.Dialogs
             _family = font.Family;
             _size = font.Size;
             _style = font.Style;
+
+            IsNew = false;
         }
 
         private void Save()
