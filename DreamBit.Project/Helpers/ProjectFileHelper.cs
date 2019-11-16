@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace DreamBit.Project.Helpers
 {
-    internal static class ProjectFileHelper
+    public static class ProjectFileHelper
     {
-        public static bool IsPathIncluded(this IEnumerable<ProjectFile> files, string path)
+        internal static bool IsPathIncluded(this IEnumerable<ProjectFile> files, string path)
         {
             return files.Any(f => f.Path == path);
         }

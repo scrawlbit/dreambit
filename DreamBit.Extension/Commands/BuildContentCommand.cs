@@ -1,11 +1,10 @@
-﻿using System.Windows.Input;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
 using DreamBit.Pipeline;
 using DreamBit.Project;
 
 namespace DreamBit.Extension.Commands
 {
-    internal interface IBuildContentCommand : ICommand
+    internal interface IBuildContentCommand : IToolCommand
     {
         void Execute(bool clean = false);
     }

@@ -7,12 +7,12 @@ using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension.Components
 {
-    internal interface IToolCommand
+    internal interface IToolCommand : ICommand
     {
         Task RegisterAsync(IPackageBridge package);
     }
 
-    internal abstract class ToolCommand : _BaseCommand, ICommand, IToolCommand
+    internal abstract class ToolCommand : _BaseCommand, IToolCommand
     {
         protected abstract int Id { get; }
 

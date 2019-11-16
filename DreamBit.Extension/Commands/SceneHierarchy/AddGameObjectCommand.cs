@@ -1,10 +1,9 @@
-﻿using System.Windows.Input;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Models;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
-    internal interface IAddGameObjectCommand : ICommand { }
+    internal interface IAddGameObjectCommand : IToolCommand { }
     internal sealed class AddGameObjectCommand : ToolCommand, IAddGameObjectCommand
     {
         private readonly IEditingScene _scene;

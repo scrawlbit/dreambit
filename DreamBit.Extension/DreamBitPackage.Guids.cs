@@ -40,6 +40,7 @@
             public const int ProjectContextAddGroup = 0x2003;
             public const int AddFontCommand = 0x3005;
             public const int AddSceneCommand = 0x3007;
+            public const int EditFontCommand = 0x3008;
         }
     }
 }

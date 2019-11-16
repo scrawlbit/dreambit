@@ -1,11 +1,10 @@
 ﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Windows.Dialogs;
-using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.Project
 {
-    internal interface IAddFontCommand : ICommand { }
+    internal interface IAddFontCommand : IToolCommand { }
     internal sealed class AddFontCommand : ToolCommand, IAddFontCommand
     {
         private readonly IProjectManager _manager;

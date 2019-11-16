@@ -67,14 +67,15 @@ namespace DreamBit.Extension
 
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await _bridge.InitializeAsync();
-            await RegisterCommandAsync<BuildContentCommand>();
-            await RegisterCommandAsync<SceneEditorWindowCommand>();
-            await RegisterCommandAsync<SceneHierarchyWindowCommand>();
-            await RegisterCommandAsync<SceneInspectWindowCommand>();
-            await RegisterCommandAsync<AddFontCommand>();
-            await RegisterCommandAsync<AddGameObjectCommand>();
-            await RegisterCommandAsync<AddCameraObjectCommand>();
-            await RegisterCommandAsync<AddSceneCommand>();
+            await RegisterCommandAsync<IBuildContentCommand>();
+            await RegisterCommandAsync<ISceneEditorWindowCommand>();
+            await RegisterCommandAsync<ISceneHierarchyWindowCommand>();
+            await RegisterCommandAsync<ISceneInspectWindowCommand>();
+            await RegisterCommandAsync<IAddFontCommand>();
+            await RegisterCommandAsync<IAddGameObjectCommand>();
+            await RegisterCommandAsync<IAddCameraObjectCommand>();
+            await RegisterCommandAsync<IAddSceneCommand>();
+            await RegisterCommandAsync<IEditFontCommand>();
         }
 
         private IEnumerable<IInjectionModule> GetModules()

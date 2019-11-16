@@ -1,10 +1,9 @@
-﻿using System.Windows.Input;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Windows;
 
 namespace DreamBit.Extension.Commands
 {
-    internal interface ISceneInspectWindowCommand : ICommand { }
+    internal interface ISceneInspectWindowCommand : IToolCommand { }
     internal sealed class SceneInspectWindowCommand : ToolCommand, ISceneInspectWindowCommand
     {
         private readonly IPackageBridge _package;

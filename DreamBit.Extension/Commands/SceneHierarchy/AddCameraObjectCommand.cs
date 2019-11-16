@@ -1,9 +1,8 @@
-﻿using System.Windows.Input;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
-    internal interface IAddCameraObjectCommand : ICommand { }
+    internal interface IAddCameraObjectCommand : IToolCommand { }
     internal sealed class AddCameraObjectCommand : ToolCommand, IAddCameraObjectCommand
     {
         protected override int Id => DreamBitPackage.Guids.AddCameraObjectCommand;

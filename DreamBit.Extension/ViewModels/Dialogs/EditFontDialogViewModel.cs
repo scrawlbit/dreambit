@@ -11,6 +11,7 @@ namespace DreamBit.Extension.ViewModels.Dialogs
     public class EditFontDialogViewModel : BaseDialogViewModel
     {
         private readonly IProjectManager _manager;
+        private IHierarchyBridge _hierarchy;
         private PipelineFont _font;
         private string _name;
         private FontFamily _family;
@@ -29,12 +30,6 @@ namespace DreamBit.Extension.ViewModels.Dialogs
             SaveCommand = new DelegateCommand(Save, CanSave);
         }
 
-        public IHierarchyBridge Hierarchy { get; set; }
-        public PipelineFont Font
-        {
-            get => _font;
-            set => Set(ref _font, value);
-        }
         public string Name
         {
             get => _name;
@@ -62,17 +57,30 @@ namespace DreamBit.Extension.ViewModels.Dialogs
         }
         public ICommand SaveCommand { get; }
 
+        public void Create(IHierarchyBridge hierarchy)
+        {
+            _hierarchy = hierarchy;
+        }
+        public void Edit(PipelineFont font)
+        {
+            _font = font;
+            _name = font.Name;
+            _family = font.Family;
+            _size = font.Size;
+            _style = font.Style;
+        }
+
         private void Save()
         {
-            if (Font == null)
-                Font = _manager.AddFileOnSelectedPath<PipelineFont>(Hierarchy, Name);
+            if (_font == null)
+                _font = _manager.AddFileOnSelectedPath<PipelineFont>(_hierarchy, Name);
 
-            Font.Family = Family;
-            Font.Size = Size;
-            Font.Spacing = Spacing;
-            Font.Style = Style;
+            _font.Family = Family;
+            _font.Size = Size;
+            _font.Spacing = Spacing;
+            _font.Style = Style;
 
-            Font.Save();
+            _font.Save();
             _manager.BuildPipeline();
 
             Close();

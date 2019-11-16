@@ -92,6 +92,14 @@
           <ButtonText>Add Font</ButtonText>
         </Strings>
       </Button>
+      <Button guid="DreamBitCommandSet" id="EditFontCommand" priority="0x0000" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OPEN"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Edit</ButtonText>
+        </Strings>
+      </Button>
 
       <!-- Scene Hierarchy -->
       <Button guid="DreamBitCommandSet" id="AddGameObjectCommand" priority="0x0100" type="Button">
@@ -114,7 +122,7 @@
       <Bitmap guid="SceneHierarchyIcons" href="Resources\Toolbars\SceneHierarchyIcons.png" usedList="model, videoCamera" />
     </Bitmaps>
   </Commands>
-
+  
   <Symbols>
     <GuidSymbol name="DreamBitPackage" value="{9acdf843-80e5-4552-9a16-90a610ebb3ce}" />
     <GuidSymbol name="DreamBitCommandSet" value="{ab458d30-1a88-4abe-9d8f-f23ddf53a407}">
@@ -137,6 +145,7 @@
       <IDSymbol name="ProjectContextAddGroup" value="0x2003" />
       <IDSymbol name="AddFontCommand" value="0x3005" />
       <IDSymbol name="AddSceneCommand" value="0x3007" />
+      <IDSymbol name="EditFontCommand" value="0x3008" />
     </GuidSymbol>
 
     <!-- Scene Hierarchy -->

@@ -3,14 +3,10 @@ using DreamBit.Extension.Management;
 using DreamBit.Extension.Windows.Dialogs;
 using DreamBit.Game.Files;
 using DreamBit.Project;
-using Microsoft.VisualStudio.Shell.Interop;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.Project
 {
-    internal interface IAddSceneCommand : ICommand { }
+    internal interface IAddSceneCommand : IToolCommand { }
     internal class AddSceneCommand : ToolCommand, IAddSceneCommand
     {
         private readonly IPackageBridge _package;
