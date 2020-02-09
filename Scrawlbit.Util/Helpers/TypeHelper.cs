@@ -21,9 +21,22 @@ namespace Scrawlbit.Helpers
             return type != typeof(string) && (type.IsClass || type.IsAbstract || type.IsInterface);
         }
 
-        public static bool IsAssignableTo<T>(this Type type)
+        public static bool IsAssignableTo(this Type type, Type interfaceType)
         {
-            return typeof(T).IsAssignableFrom(type);
+            return interfaceType.IsAssignableFrom(type);
+        }
+        public static bool IsAssignableTo<TInterface>(this Type type)
+        {
+            return type.IsAssignableTo(typeof(TInterface));
+        }
+
+        public static bool IsNullable(this Type type)
+        {
+            return IsNullable(type, out _);
+        }
+        public static bool IsNullable(this Type type, out Type underlyingType)
+        {
+            return (underlyingType = Nullable.GetUnderlyingType(type)) != null;
         }
     }
 }

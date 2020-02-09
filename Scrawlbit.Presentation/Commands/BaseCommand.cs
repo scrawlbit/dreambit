@@ -1,80 +1,50 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using Scrawlbit.Notification;
-using static Scrawlbit.Presentation.Helpers.CommandHelper;
 
 namespace Scrawlbit.Presentation.Commands
 {
-    // ReSharper disable once InconsistentNaming
-    public abstract class _BaseCommand : NotificationObject
+    public class BaseCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged
+        public static readonly object NoParams = new object();
+        private readonly CommandMethod[] _canExecuteMethods;
+        private readonly CommandMethod[] _executeMethods;
+
+        public BaseCommand()
+        {
+            _canExecuteMethods = GetMethods("CanExecute");
+            _executeMethods = GetMethods("Execute");
+        }
+
+        event EventHandler ICommand.CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-    }
+        bool ICommand.CanExecute(object value)
+        {
+            if (!_canExecuteMethods.Any())
+                return true;
 
-    public abstract class BaseCommand : _BaseCommand, IBaseCommand
-    {
-        public bool CanExecute(object parameter)
-        {
-            return CanExecute();
-        }
-        public void Execute(object parameter)
-        {
-            Execute();
-        }
+            CommandMethod method = _canExecuteMethods.Single(m => m.CanExecute(value));
 
-        public virtual bool CanExecute()
-        {
-            return true;
+            return (bool)method.Execute(this, value);
         }
-        public abstract void Execute();
-    }
-
-    public abstract class BaseCommand<T> : _BaseCommand, IBaseCommand<T>
-    {
-        protected bool AllowNullValues { get; set; }
-
-        public bool CanExecute(object parameter)
+        void ICommand.Execute(object value)
         {
-            return IsParameterValid(parameter, AllowNullValues) && CanExecute((T)parameter);
-        }
-        public void Execute(object parameter)
-        {
-            Execute((T)parameter);
+            CommandMethod method = _executeMethods.Single(m => m.CanExecute(value));
+
+            method.Execute(this, value);
         }
 
-        public virtual bool CanExecute(T p)
+        private CommandMethod[] GetMethods(string name)
         {
-            return true;
+            return GetType()
+                .GetMethods()
+                .Where(i => i.Name == name)
+                .Select(i => new CommandMethod(i))
+                .OrderBy(i => !i.HasParameters)
+                .ToArray();
         }
-        public abstract void Execute(T p);
-    }
-
-    public abstract class BaseCommand<T1, T2> : _BaseCommand, IBaseCommand<T1, T2>
-    {
-        protected bool AllowNullValues { get; set; }
-
-        public bool CanExecute(object parameter)
-        {
-            var array = parameter as object[];
-            return array != null &&
-                   array.All(v => IsParameterValid(v, AllowNullValues)) &&
-                   CanExecute((T1)array[0], (T2)array[1]);
-        }
-        public void Execute(object parameter)
-        {
-            var array = (object[])parameter;
-            Execute((T1)array[0], (T2)array[1]);
-        }
-
-        public virtual bool CanExecute(T1 p1, T2 p2)
-        {
-            return true;
-        }
-        public abstract void Execute(T1 p1, T2 p2);
     }
 }

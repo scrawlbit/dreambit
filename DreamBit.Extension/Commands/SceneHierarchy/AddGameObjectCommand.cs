@@ -3,7 +3,13 @@ using DreamBit.Extension.Models;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
-    internal interface IAddGameObjectCommand : IToolCommand { }
+    internal interface IAddGameObjectCommand : IToolCommand
+    {
+        bool CanExecute(ISceneObject sceneObject);
+
+        void Execute();
+        void Execute(ISceneObject sceneObject);
+    }
     internal sealed class AddGameObjectCommand : ToolCommand, IAddGameObjectCommand
     {
         private readonly IEditingScene _scene;
@@ -15,11 +21,23 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 
         protected override int Id => DreamBitPackage.Guids.AddGameObjectCommand;
 
-        public override void Execute(object parameter)
+        public bool CanExecute(ISceneObject sceneObject)
         {
-            var target = (parameter as ISceneObject)?.Children ?? _scene.Objects;
+            return sceneObject != null;
+        }
 
-            target.Add("Game Object");
+        public override void Execute()
+        {
+            Add(_scene.Objects);
+        }
+        public void Execute(ISceneObject sceneObject)
+        {
+            Add(sceneObject.Children);
+        }
+
+        private void Add(ISceneObjectCollection collection)
+        {
+            collection.Add("Game Object");
         }
     }
 }

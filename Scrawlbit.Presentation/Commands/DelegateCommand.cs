@@ -13,11 +13,11 @@ namespace Scrawlbit.Presentation.Commands
             _canExecute = canExecute;
         }
 
-        public override void Execute()
+        public void Execute()
         {
             _execute();
         }
-        public override bool CanExecute()
+        public bool CanExecute()
         {
             if (_canExecute == null)
                 return true;
@@ -26,23 +26,22 @@ namespace Scrawlbit.Presentation.Commands
         }
     }
 
-    public class DelegateCommand<T> : BaseCommand<T>
+    public class DelegateCommand<T> : BaseCommand
     {
         private readonly Action<T> _execute;
         private readonly Func<T, bool> _canExecute;
 
-        public DelegateCommand(Action<T> execute, Func<T, bool> canExecute = null, bool allowNullValues = false)
+        public DelegateCommand(Action<T> execute, Func<T, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
-            AllowNullValues = allowNullValues;
         }
 
-        public override void Execute(T parameter)
+        public void Execute(T parameter)
         {
             _execute(parameter);
         }
-        public override bool CanExecute(T parameter)
+        public bool CanExecute(T parameter)
         {
             return _canExecute == null || _canExecute(parameter);
         }

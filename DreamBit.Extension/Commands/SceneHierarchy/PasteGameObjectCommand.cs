@@ -1,17 +1,16 @@
 ﻿using DreamBit.Extension.Models;
 using Scrawlbit.Presentation.Commands;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
-    public interface IPasteGameObjectCommand : IBaseCommand<ISceneObject> { }
-    public sealed class PasteGameObjectCommand : BaseCommand<ISceneObject>, IPasteGameObjectCommand
+    public interface IPasteGameObjectCommand : ICommand
     {
-        public PasteGameObjectCommand()
-        {
-            AllowNullValues = true;
-        }
-
-        public override void Execute(ISceneObject sceneObject)
+        void Execute(ISceneObject sceneObject);
+    }
+    public sealed class PasteGameObjectCommand : BaseCommand, IPasteGameObjectCommand
+    {
+        public void Execute(ISceneObject sceneObject)
         {
         }
     }

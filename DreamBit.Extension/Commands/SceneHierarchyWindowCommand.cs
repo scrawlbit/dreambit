@@ -15,7 +15,7 @@ namespace DreamBit.Extension.Commands
 
         protected override int Id => DreamBitPackage.Guids.SceneHierarchyWindowCommand;
 
-        public override void Execute(object parameter)
+        public override void Execute()
         {
             _package.ShowWindow<SceneHierarchyWindow>();
         }

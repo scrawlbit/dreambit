@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Shell;
+using Scrawlbit.Presentation.Commands;
+using System;
 using System.ComponentModel.Design;
 using System.Windows.Input;
-using Microsoft.VisualStudio.Shell;
-using Scrawlbit.Presentation.Commands;
 using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension.Components
@@ -12,13 +12,13 @@ namespace DreamBit.Extension.Components
         Task RegisterAsync(IPackageBridge package);
     }
 
-    internal abstract class ToolCommand : _BaseCommand, IToolCommand
+    internal abstract class ToolCommand : BaseCommand, IToolCommand
     {
         protected abstract int Id { get; }
 
-        protected virtual bool CanShow(object parameter) => true;
-        public virtual bool CanExecute(object parameter) => true;
-        public abstract void Execute(object parameter);
+        protected virtual bool CanShow() => true;
+        public virtual bool CanExecute() => true;
+        public abstract void Execute();
 
         async Task IToolCommand.RegisterAsync(IPackageBridge package)
         {
@@ -35,14 +35,14 @@ namespace DreamBit.Extension.Components
 
         private void Clicked(object sender, EventArgs e)
         {
-            Execute(null);
+            Execute();
         }
         private void BeforeQueryStatus(object sender, EventArgs e)
         {
             var command = (OleMenuCommand)sender;
 
-            command.Visible = CanShow(null);
-            command.Enabled = CanExecute(null);
+            command.Visible = CanShow();
+            command.Enabled = CanExecute();
         }
     }
 }

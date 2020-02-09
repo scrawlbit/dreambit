@@ -22,11 +22,11 @@ namespace DreamBit.Extension.Commands.Project
 
         protected override int Id => DreamBitPackage.Guids.EditFontCommand;
 
-        public override void Execute(object parameter)
+        public override void Execute()
         {
             new EditFontDialog().EditFont(_font);
         }
-        protected override bool CanShow(object parameter)
+        protected override bool CanShow()
         {
             _font = null;
 

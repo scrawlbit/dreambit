@@ -22,6 +22,19 @@ namespace Scrawlbit.Helpers
             return Enumerable.Union(source, item ?? new T[0]);
         }
 
+        public static bool All<T>(this IEnumerable<T> source, Func<T, int, bool> predicate)
+        {
+            int index = 0;
+
+            foreach (var item in source)
+            {
+                if (!predicate(item, index++))
+                    return false;
+            }
+
+            return true;
+        }
+
         public static void ForEach(this IEnumerable source, Action<object> action)
         {
             foreach (var item in source)
@@ -43,7 +56,7 @@ namespace Scrawlbit.Helpers
             foreach (var item in source)
                 action(i++, item);
         }
-        
+
         public static bool Contains(this IEnumerable source, object item)
         {
             return Enumerable.Contains(source.Cast<object>(), item);
@@ -56,16 +69,21 @@ namespace Scrawlbit.Helpers
         public static int IndexOf<T>(this IEnumerable<T> source, T item)
         {
             var index = 0;
-            
+
             foreach (var i in source)
             {
                 if (Equals(i, item))
                     return index;
-                
+
                 index++;
             }
 
             return -1;
+        }
+
+        public static bool IsAny<T>(this T item, params T[] items)
+        {
+            return items.Contains(item);
         }
     }
 }

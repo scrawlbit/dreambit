@@ -6,6 +6,8 @@ namespace DreamBit.Extension.Commands
 {
     internal interface IBuildContentCommand : IToolCommand
     {
+        bool CanExecute();
+
         void Execute(bool clean = false);
     }
     internal sealed class BuildContentCommand : ToolCommand, IBuildContentCommand
@@ -21,11 +23,12 @@ namespace DreamBit.Extension.Commands
 
         protected override int Id => DreamBitPackage.Guids.BuildContentCommand;
 
-        public override bool CanExecute(object parameter)
+        public override bool CanExecute()
         {
             return _pipeline.Loaded;
         }
-        public override void Execute(object parameter)
+
+        public override void Execute()
         {
             Execute(true);
         }

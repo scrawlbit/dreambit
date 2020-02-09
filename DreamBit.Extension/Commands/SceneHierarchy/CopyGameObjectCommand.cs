@@ -1,12 +1,17 @@
 ﻿using DreamBit.Extension.Models;
 using Scrawlbit.Presentation.Commands;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
-    internal interface ICopyGameObjectCommand : IBaseCommand<ISceneObject> { }
-    internal sealed class CopyGameObjectCommand : BaseCommand<ISceneObject>, ICopyGameObjectCommand
+    internal interface ICopyGameObjectCommand : ICommand
     {
-        public override void Execute(ISceneObject sceneObject)
+        void Execute(ISceneObject sceneObject);
+    }
+
+    internal sealed class CopyGameObjectCommand : BaseCommand, ICopyGameObjectCommand
+    {
+        public void Execute(ISceneObject sceneObject)
         {
         }
     }

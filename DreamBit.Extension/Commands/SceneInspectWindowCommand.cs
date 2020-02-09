@@ -15,7 +15,7 @@ namespace DreamBit.Extension.Commands
 
         protected override int Id => DreamBitPackage.Guids.SceneInspectWindowCommand;
 
-        public override void Execute(object parameter)
+        public override void Execute()
         {
             _package.ShowWindow<SceneInspectWindow>();
         }

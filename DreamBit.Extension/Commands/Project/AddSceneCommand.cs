@@ -23,14 +23,14 @@ namespace DreamBit.Extension.Commands.Project
 
         protected override int Id => DreamBitPackage.Guids.AddSceneCommand;
 
-        public override void Execute(object parameter)
+        public override void Execute()
         {
             var dialog = new FileNameDialog();
 
             dialog.FileNameInformed += OnFileNameInformed;
             dialog.Open("New Scene");
         }
-        protected override bool CanShow(object parameter)
+        protected override bool CanShow()
         {
             return _manager.IsSingleHierarchySelected(out _hierarchy);
         }

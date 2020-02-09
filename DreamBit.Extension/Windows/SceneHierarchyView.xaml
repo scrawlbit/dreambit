@@ -9,6 +9,7 @@
     xmlns:models="clr-namespace:DreamBit.Extension.Models"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
+    xmlns:commands="clr-namespace:Scrawlbit.Presentation.Commands;assembly=Scrawlbit.Presentation"
     mc:Ignorable="d"
     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
@@ -26,8 +27,8 @@
     <TreeView ItemsSource="{Binding Scene.Objects}">
         <TreeView.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" />
-                <MenuItem Header="Add Camera Object" Icon="{StaticResource CameraIcon}" Command="{Binding AddCameraObjectCommand}" />
+                <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" CommandParameter="{x:Static commands:BaseCommand.NoParams}" />
+                <MenuItem Header="Add Camera Object" Icon="{StaticResource CameraIcon}" Command="{Binding AddCameraObjectCommand}" CommandParameter="{x:Static commands:BaseCommand.NoParams}"  />
 
                 <Separator />
                 <MenuItem Header="Paste" Command="{Binding PasteGameObjectCommand}" />

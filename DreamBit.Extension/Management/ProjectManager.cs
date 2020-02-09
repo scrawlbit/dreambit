@@ -67,7 +67,7 @@ namespace DreamBit.Extension.Management
         }
         public void BuildPipeline()
         {
-            _buildContentCommand.Execute(null);
+            _buildContentCommand.Execute();
         }
 
         private void OnSolutionOpened(string path)

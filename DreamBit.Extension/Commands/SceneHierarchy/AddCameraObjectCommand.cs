@@ -7,7 +7,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
     {
         protected override int Id => DreamBitPackage.Guids.AddCameraObjectCommand;
 
-        public override void Execute(object parameter)
+        public override void Execute()
         {
         }
     }
