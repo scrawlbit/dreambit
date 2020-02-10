@@ -5,8 +5,6 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 {
     internal interface IAddGameObjectCommand : IToolCommand
     {
-        bool CanExecute(ISceneObject sceneObject);
-
         void Execute();
         void Execute(ISceneObject sceneObject);
     }
@@ -20,11 +18,6 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
         }
 
         protected override int Id => DreamBitPackage.Guids.AddGameObjectCommand;
-
-        public bool CanExecute(ISceneObject sceneObject)
-        {
-            return sceneObject != null;
-        }
 
         public override void Execute()
         {

@@ -24,8 +24,8 @@ namespace Scrawlbit.Presentation.Commands
 
         public bool CanExecute(object value)
         {
-            if (!HasParameters)
-                return value.IsAny(BaseCommand.NoParams, DependencyProperty.UnsetValue);
+            if (value.IsAny(null, DependencyProperty.UnsetValue))
+                return !HasParameters;
 
             if (_singleParameter != null)
                 return _singleParameter.IsAssignable(value) == true;

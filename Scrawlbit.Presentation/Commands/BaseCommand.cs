@@ -6,7 +6,6 @@ namespace Scrawlbit.Presentation.Commands
 {
     public class BaseCommand : ICommand
     {
-        public static readonly object NoParams = new object();
         private readonly CommandMethod[] _canExecuteMethods;
         private readonly CommandMethod[] _executeMethods;
 
@@ -23,12 +22,15 @@ namespace Scrawlbit.Presentation.Commands
         }
         bool ICommand.CanExecute(object value)
         {
-            if (!_canExecuteMethods.Any())
-                return true;
+            if (_canExecuteMethods.Any())
+            {
+                CommandMethod method = _canExecuteMethods.SingleOrDefault(m => m.CanExecute(value));
 
-            CommandMethod method = _canExecuteMethods.Single(m => m.CanExecute(value));
+                if (method != null)
+                    return (bool)method?.Execute(this, value);
+            }
 
-            return (bool)method.Execute(this, value);
+            return true;
         }
         void ICommand.Execute(object value)
         {
