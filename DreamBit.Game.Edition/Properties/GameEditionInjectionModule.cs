@@ -28,6 +28,7 @@ namespace DreamBit.Game.Properties
         private void Registrations()
         {
             _builder.RegisterFile<ISceneFileRegistration>().Transient<SceneFileRegistration>();
+            _builder.RegisterFile<IScriptFileRegistration>().Transient<ScriptFileRegistration>();
         }
         private void Writing()
         {

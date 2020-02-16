@@ -8,6 +8,7 @@ namespace DreamBit.Project.Registrations
         string Extension { get; }
         Type ObjectType { get; }
 
+        bool ShouldIncludeFromExternalAction(string path);
         ProjectFile CreateInstance();
     }
 }

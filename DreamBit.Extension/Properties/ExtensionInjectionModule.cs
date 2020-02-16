@@ -51,6 +51,7 @@ namespace DreamBit.Extension.Properties
             _builder.Register<IAddSceneCommand>().Singleton<AddSceneCommand>();
             _builder.Register<IEditFontCommand>().Singleton<EditFontCommand>();
             _builder.Register<IEditSceneCommand>().Singleton<EditSceneCommand>();
+            _builder.Register<IAddScriptCommand>().Singleton<AddScriptCommand>();
 
             // SceneHierarchy
             _builder.Register<IAddCameraObjectCommand>().Singleton<AddCameraObjectCommand>();

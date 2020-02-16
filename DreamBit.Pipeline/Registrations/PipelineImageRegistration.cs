@@ -17,11 +17,12 @@ namespace DreamBit.Pipeline.Registrations
         {
             _pipeline = pipeline;
         }
-
+        
         public string Type => "Image";
         public string Extension => ".png";
         public Type ObjectType => typeof(PipelineImage);
 
+        public bool ShouldIncludeFromExternalAction(string path) => true;
         public ProjectFile CreateInstance() => new PipelineImage(_pipeline);
     }
 }

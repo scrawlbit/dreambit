@@ -20,8 +20,8 @@ namespace DreamBit.Project
 
         T AddFile<T>(string fileName) where T : ProjectFile;
         ProjectFile AddFile(string path);
-        void MoveFile(string oldPath, string newPath);
-        void RemoveFile(string path);
+        bool MoveFile(string oldPath, string newPath);
+        bool RemoveFile(string path);
 
         void Load(string path);
         void Unload();
@@ -80,7 +80,7 @@ namespace DreamBit.Project
 
             return AddFile(path, Registrations.DetermineFromPath(path));
         }
-        public void MoveFile(string oldPath, string newPath)
+        public bool MoveFile(string oldPath, string newPath)
         {
             EnsureProjectLoaded();
 
@@ -88,7 +88,7 @@ namespace DreamBit.Project
             ProjectFile existent = _files.GetByPath(newPath);
 
             if (file == null)
-                return;
+                return false;
 
             var args = new MovedEventArgs();
 
@@ -103,22 +103,27 @@ namespace DreamBit.Project
 
             file.OnMoved(args);
             IndicateChanges();
+
+            return true;
         }
-        public void RemoveFile(string path)
+        public bool RemoveFile(string path)
         {
             EnsureProjectLoaded();
 
-            if (!path.StartsWith(Folder)) return;
+            if (!path.StartsWith(Folder))
+                return false;
 
             ProjectFile file = _files.GetByPath(path);
 
             if (file == null)
-                return;
+                return false;
 
             _files.Remove(file);
 
             file.OnRemoved();
             IndicateChanges();
+
+            return true;
         }
 
         public void IncludeFile(ProjectFile file)
@@ -166,6 +171,9 @@ namespace DreamBit.Project
             if (!path.StartsWith(Folder))
                 return null;
 
+            if (_fileManager.FileExists(path) && !registration.ShouldIncludeFromExternalAction(path))
+                return null;
+
             ProjectFile file = _files.GetByPath(path);
 
             if (file == null)
@@ -185,7 +193,7 @@ namespace DreamBit.Project
             {
                 file.OnReplaced();
             }
-            
+
             return file;
         }
         private void IndicateChanges()

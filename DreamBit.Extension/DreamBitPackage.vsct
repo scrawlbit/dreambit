@@ -76,7 +76,15 @@
       </Button>
 
       <!-- Project -->
-      <Button guid="DreamBitCommandSet" id="AddSceneCommand" priority="0x0100" type="Button">
+      <Button guid="DreamBitCommandSet" id="AddScriptCommand" priority="0x0100" type="Button">
+        <Parent guid="DreamBitCommandSet" id="ProjectContextAddGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Script...</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="DreamBitCommandSet" id="AddSceneCommand" priority="0x0101" type="Button">
         <Parent guid="DreamBitCommandSet" id="ProjectContextAddGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -84,7 +92,7 @@
           <ButtonText>Scene...</ButtonText>
         </Strings>
       </Button>
-      <Button guid="DreamBitCommandSet" id="AddFontCommand" priority="0x0101" type="Button">
+      <Button guid="DreamBitCommandSet" id="AddFontCommand" priority="0x0102" type="Button">
         <Parent guid="DreamBitCommandSet" id="ProjectContextAddGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -130,7 +138,7 @@
       <Bitmap guid="SceneHierarchyIcons" href="Resources\Toolbars\SceneHierarchyIcons.png" usedList="model, videoCamera" />
     </Bitmaps>
   </Commands>
-  
+
   <Symbols>
     <GuidSymbol name="DreamBitPackage" value="{9acdf843-80e5-4552-9a16-90a610ebb3ce}" />
     <GuidSymbol name="DreamBitCommandSet" value="{ab458d30-1a88-4abe-9d8f-f23ddf53a407}">
@@ -155,6 +163,7 @@
       <IDSymbol name="AddSceneCommand" value="0x3007" />
       <IDSymbol name="EditFontCommand" value="0x3008" />
       <IDSymbol name="EditSceneCommand" value="0x3009" />
+      <IDSymbol name="AddScriptCommand" value="0x3010" />
     </GuidSymbol>
 
     <!-- Scene Hierarchy -->

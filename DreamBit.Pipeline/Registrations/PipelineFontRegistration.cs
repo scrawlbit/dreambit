@@ -25,6 +25,7 @@ namespace DreamBit.Pipeline.Registrations
         public string Extension => ".spritefont";
         public Type ObjectType => typeof(PipelineFont);
 
+        public bool ShouldIncludeFromExternalAction(string path) => true;
         public ProjectFile CreateInstance() => new PipelineFont(_pipeline, _fileManager);
     }
 }

@@ -3,6 +3,7 @@ using DreamBit.Extension.Components;
 using DreamBit.Modularization.Management;
 using DreamBit.Pipeline;
 using DreamBit.Project;
+using System;
 using System.IO;
 
 namespace DreamBit.Extension.Management
@@ -57,6 +58,9 @@ namespace DreamBit.Extension.Management
         }
         public T AddFileOnSelectedPath<T>(IHierarchyBridge hierarchy, string name) where T : ProjectFile
         {
+            if (!hierarchy.IsFolder)
+                throw new Exception("The hierarchy item must be a folder.");
+
             string folder = hierarchy.IsFolder ? hierarchy.Path : hierarchy.Folder;
             string fileName = Path.Combine(folder, name);
             T file = _project.AddFile<T>(fileName);
@@ -88,24 +92,33 @@ namespace DreamBit.Extension.Management
         }
         private void OnItemsAdded(string[] paths)
         {
-            foreach (var path in paths)
-                _project.AddFile(path);
+            bool shouldSave = false;
 
-            SaveAll();
+            foreach (var path in paths)
+                shouldSave |= _project.AddFile(path) != null;
+
+            if (shouldSave)
+                SaveAll();
         }
         private void OnItemsMoved(string[] oldPaths, string[] newPaths)
         {
-            for (int i = 0; i < oldPaths.Length; i++)
-                _project.MoveFile(oldPaths[i], newPaths[i]);
+            bool shouldSave = false;
 
-            SaveAll();
+            for (int i = 0; i < oldPaths.Length; i++)
+                shouldSave |= _project.MoveFile(oldPaths[i], newPaths[i]);
+
+            if (shouldSave)
+                SaveAll();
         }
         private void OnItemsRemoved(string[] paths)
         {
-            foreach (var path in paths)
-                _project.RemoveFile(path);
+            bool shouldSave = false;
 
-            SaveAll();
+            foreach (var path in paths)
+                shouldSave |= _project.RemoveFile(path);
+
+            if (shouldSave)
+                SaveAll();
         }
 
         private void SaveAll()

@@ -77,6 +77,7 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<IAddSceneCommand>();
             await RegisterCommandAsync<IEditFontCommand>();
             await RegisterCommandAsync<IEditSceneCommand>();
+            await RegisterCommandAsync<IAddScriptCommand>();
         }
 
         private IEnumerable<IInjectionModule> GetModules()

@@ -26,6 +26,7 @@ namespace DreamBit.Game.Registrations
         public string Extension => ".scene";
         public Type ObjectType => typeof(SceneFile);
 
+        public bool ShouldIncludeFromExternalAction(string path) => true;
         public ProjectFile CreateInstance() => new SceneFile(_pipeline, _fileManager, _jsonParser);
     }
 }

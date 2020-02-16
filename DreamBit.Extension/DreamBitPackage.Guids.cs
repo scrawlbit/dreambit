@@ -42,6 +42,7 @@
             public const int AddSceneCommand = 0x3007;
             public const int EditFontCommand = 0x3008;
             public const int EditSceneCommand = 0x3009;
+            public const int AddScriptCommand = 0x3010;
         }
     }
 }

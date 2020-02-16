@@ -49,6 +49,7 @@
     <Compile Include="Commands\BuildContentCommand.cs" />
     <Compile Include="Commands\Project\AddFontCommand.cs" />
     <Compile Include="Commands\Project\AddSceneCommand.cs" />
+    <Compile Include="Commands\Project\AddScriptCommand.cs" />
     <Compile Include="Commands\Project\EditFontCommand.cs" />
     <Compile Include="Commands\Project\EditSceneCommand.cs" />
     <Compile Include="Commands\SceneEditorWindowCommand.cs" />
