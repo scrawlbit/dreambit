@@ -59,9 +59,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DreamBit.Game\DreamBit.Game.csproj">
+    <ProjectReference Include="..\Old.DreamBit.Game\Old.DreamBit.Game.csproj">
       <Project>{58873eaf-2068-4c98-9931-25551ff5d825}</Project>
-      <Name>DreamBit.Game</Name>
+      <Name>Old.DreamBit.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\DreamBit.General\DreamBit.General.csproj">
       <Project>{8c104190-7f8d-451f-bcf8-48936609e988}</Project>

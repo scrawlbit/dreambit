@@ -29,11 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamBit.Project.Tests", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrawlbit.MonoGame", "Scrawlbit.MonoGame\Scrawlbit.MonoGame.csproj", "{CEA07D37-3E41-4A6C-9CB7-A1597E59C44A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamBit.Game", "DreamBit.Game\DreamBit.Game.csproj", "{58873EAF-2068-4C98-9931-25551FF5D825}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Old.DreamBit.Game", "Old.DreamBit.Game\Old.DreamBit.Game.csproj", "{58873EAF-2068-4C98-9931-25551FF5D825}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamBit.Game.Edition", "DreamBit.Game.Edition\DreamBit.Game.Edition.csproj", "{592CDA1D-61C2-462C-9317-3131BBE091A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Old.DreamBit.Game.Edition", "Old.DreamBit.Game.Edition\Old.DreamBit.Game.Edition.csproj", "{592CDA1D-61C2-462C-9317-3131BBE091A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamBit.Game.Tests", "DreamBit.Game.Tests\DreamBit.Game.Tests.csproj", "{1D60D34E-285F-4C61-B2A8-19D67075DB44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Old.DreamBit.Game.Tests", "Old.DreamBit.Game.Tests\Old.DreamBit.Game.Tests.csproj", "{1D60D34E-285F-4C61-B2A8-19D67075DB44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrawlbit.MonoGame.Tests", "Scrawlbit.MonoGame.Tests\Scrawlbit.MonoGame.Tests.csproj", "{087B7A9B-EA05-4A14-B2D1-1D98B395DE5C}"
 EndProject
