@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrawlbit.MonoGame.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamBit.Resources", "DreamBit.Resources\DreamBit.Resources.csproj", "{B87B7AC3-1B01-4F7F-B344-E53A33A635A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamBit.Game", "DreamBit.Game\DreamBit.Game.csproj", "{27A20E44-ED2A-4CBD-8A24-0402FAC62EFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{B87B7AC3-1B01-4F7F-B344-E53A33A635A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B87B7AC3-1B01-4F7F-B344-E53A33A635A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B87B7AC3-1B01-4F7F-B344-E53A33A635A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27A20E44-ED2A-4CBD-8A24-0402FAC62EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27A20E44-ED2A-4CBD-8A24-0402FAC62EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27A20E44-ED2A-4CBD-8A24-0402FAC62EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27A20E44-ED2A-4CBD-8A24-0402FAC62EFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

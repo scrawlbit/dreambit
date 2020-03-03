@@ -83,6 +83,7 @@
     <Compile Include="Interop\Services\DeviceService.cs" />
     <Compile Include="Interop\Services\GraphicsDeviceService.cs" />
     <Compile Include="Interop\Util\Disposer.cs" />
+    <Compile Include="Management\Editor.cs" />
     <Compile Include="Management\ProjectManager.cs" />
     <Compile Include="Models\EditingScene.cs" />
     <Compile Include="Models\SceneObject.cs" />
@@ -154,6 +155,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Game\DreamBit.Game.csproj">
+      <Project>{27a20e44-ed2a-4cbd-8a24-0402fac62eff}</Project>
+      <Name>DreamBit.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DreamBit.General\DreamBit.General.csproj">
       <Project>{8c104190-7f8d-451f-bcf8-48936609e988}</Project>
       <Name>DreamBit.General</Name>

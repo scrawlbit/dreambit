@@ -86,7 +86,7 @@ namespace DreamBit.Extension
             yield return new ProjectInjectionModule();
             yield return new PipelineInjectionModule();
             yield return new GeneralInjectionModule();
-            yield return new GameEditionInjectionModule();
+            yield return new GameInjectionModule();
         }
         private Task RegisterCommandAsync<T>() where T : class, IToolCommand
         {
