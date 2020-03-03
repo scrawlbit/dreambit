@@ -1,4 +1,4 @@
-﻿using DreamBit.Extension.Models;
+﻿using DreamBit.Game.Elements;
 using Scrawlbit.Presentation.Commands;
 using System.Windows.Input;
 
@@ -6,11 +6,11 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 {
     public interface IPasteGameObjectCommand : ICommand
     {
-        void Execute(ISceneObject sceneObject);
+        void Execute(GameObject gameObject);
     }
     public sealed class PasteGameObjectCommand : BaseCommand, IPasteGameObjectCommand
     {
-        public void Execute(ISceneObject sceneObject)
+        public void Execute(GameObject gameObject)
         {
         }
     }

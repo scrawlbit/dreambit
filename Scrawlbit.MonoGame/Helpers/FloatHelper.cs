@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using System;
 
-namespace DreamBit.Game.Helpers
+namespace Scrawlbit.MonoGame.Helpers
 {
-    public static class MonoGameHelper
+    public static class FloatHelper
     {
         public static float PositiveAngle(this float angle)
         {
@@ -25,10 +24,6 @@ namespace DreamBit.Game.Helpers
         {
             return MathHelper.Max(scale, minimum);
         }
-        public static Vector2 MinimumScale(this Vector2 scale, float minimum = 0.1f)
-        {
-            return Vector2.Max(scale, new Vector2(minimum));
-        }
 
         public static bool SetTo(this float value, ref float variable)
         {
@@ -43,19 +38,6 @@ namespace DreamBit.Game.Helpers
             }
 
             return false;
-        }
-
-        public static SpriteEffects GetEffects(bool flipHorizontally, bool flipVertically)
-        {
-            var effects = SpriteEffects.None;
-
-            if (flipHorizontally)
-                effects |= SpriteEffects.FlipHorizontally;
-
-            if (flipVertically)
-                effects |= SpriteEffects.FlipVertically;
-
-            return effects;
         }
     }
 }

@@ -1,40 +1,28 @@
-﻿using System.Windows.Input;
-using DreamBit.Extension.Commands.SceneHierarchy;
-using DreamBit.Extension.Models;
+﻿using DreamBit.Extension.Commands.SceneHierarchy;
+using DreamBit.Extension.Management;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.ViewModels
 {
     internal class SceneHierarchyViewModel : BaseViewModel
     {
         public SceneHierarchyViewModel(
-            IEditingScene scene,
+            IEditor editor,
             IAddGameObjectCommand addGameObjectCommand,
             IAddCameraObjectCommand addCameraObjectCommand,
             ICopyGameObjectCommand copyGameObjectCommand,
             IPasteGameObjectCommand pasteGameObjectCommand,
             IRemoveGameObjectCommand removeGameObjectCommand)
         {
-            Scene = scene;
+            Editor = editor;
             AddGameObjectCommand = addGameObjectCommand;
             AddCameraObjectCommand = addCameraObjectCommand;
             CopyGameObjectCommand = copyGameObjectCommand;
             PasteGameObjectCommand = pasteGameObjectCommand;
             RemoveGameObjectCommand = removeGameObjectCommand;
-
-            Scene.Objects.Add("Camera");
-
-            var player = Scene.Objects.Add("Player");
-
-            player.IsExpanded = true;
-            player.IsSelected = true;
-            player.Children.Add("Base");
-
-            scene.Objects.Add("Background");
-            scene.Objects.Add("Ground");
-            scene.Objects.Add("Foreground");
         }
 
-        public IEditingScene Scene { get; }
+        public IEditor Editor { get; }
         public ICommand AddGameObjectCommand { get; }
         public ICommand AddCameraObjectCommand { get; }
         public ICommand CopyGameObjectCommand { get; }

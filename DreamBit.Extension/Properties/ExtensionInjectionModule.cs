@@ -3,7 +3,6 @@ using DreamBit.Extension.Commands.Project;
 using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
-using DreamBit.Extension.Models;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
 using DreamBit.Modularization.Management;
@@ -35,7 +34,6 @@ namespace DreamBit.Extension.Properties
             Commands();
             Components();
             Management();
-            Models();
             ViewModels();
         }
 
@@ -73,10 +71,6 @@ namespace DreamBit.Extension.Properties
         {
             _builder.Register<IProjectManager>().Singleton<ProjectManager>();
             _builder.Register<IEditor>().Singleton<Editor>();
-        }
-        private void Models()
-        {
-            _builder.Register<IEditingScene>().Singleton<EditingScene>();
         }
         private void ViewModels()
         {

@@ -27,5 +27,10 @@ namespace Scrawlbit.MonoGame.Helpers
 
             return new Point((int)x, (int)y);
         }
+
+        public static Vector2 MinimumScale(this Vector2 scale, float minimum = 0.1f)
+        {
+            return Vector2.Max(scale, new Vector2(minimum));
+        }
     }
 }

@@ -83,7 +83,6 @@
     <Compile Include="Exceptions\ContentNotRegisteredException.cs" />
     <Compile Include="Factory\GameObjectComponentFactory.cs" />
     <Compile Include="Helpers\GameObjectHelper.cs" />
-    <Compile Include="Helpers\MonoGameHelper.cs" />
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\PropertyInfoHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />

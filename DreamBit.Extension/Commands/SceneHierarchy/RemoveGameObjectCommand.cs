@@ -1,4 +1,5 @@
-﻿using DreamBit.Extension.Models;
+﻿using DreamBit.Extension.Management;
+using DreamBit.Game.Elements;
 using Scrawlbit.Presentation.Commands;
 using System.Windows.Input;
 
@@ -6,23 +7,23 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 {
     internal interface IRemoveGameObjectCommand : ICommand
     {
-        void Execute(ISceneObject sceneObject);
+        void Execute(GameObject gameObject);
     }
 
     internal sealed class RemoveGameObjectCommand : BaseCommand, IRemoveGameObjectCommand
     {
-        private readonly IEditingScene _scene;
+        private readonly IEditor _editor;
 
-        public RemoveGameObjectCommand(IEditingScene scene)
+        public RemoveGameObjectCommand(IEditor editor)
         {
-            _scene = scene;
+            _editor = editor;
         }
 
-        public void Execute(ISceneObject sceneObject)
+        public void Execute(GameObject gameObject)
         {
-            var target = sceneObject.Parent?.Children ?? _scene.Objects;
+            var target = gameObject.Parent?.Children ?? _editor.OpenedScene.Objects;
 
-            target.Remove(sceneObject);
+            target.Remove(gameObject);
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using Scrawlbit.Collections;
-
-namespace DreamBit.Game.Elements
+﻿namespace DreamBit.Game.Elements
 {
     public sealed class Scene
     {
         public Scene()
         {
-            Objects = new ExtendedObservableCollection<GameObject>();
+            Objects = new GameObjectCollection();
         }
 
-        public IObservableCollection<GameObject> Objects { get; }
+        public IGameObjectCollection Objects { get; }
     }
 }

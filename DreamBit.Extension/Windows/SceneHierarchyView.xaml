@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
-    xmlns:models="clr-namespace:DreamBit.Extension.Models"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
+    xmlns:elements="clr-namespace:DreamBit.Game.Elements;assembly=DreamBit.Game"
     mc:Ignorable="d"
     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
@@ -23,7 +23,7 @@
         <Image x:Key="ModelIcon" Source="../Resources/Icons/Graphics3D_16x.png" x:Shared="False" />
     </controls:WindowView.Resources>
 
-    <TreeView ItemsSource="{Binding Scene.Objects}">
+    <TreeView ItemsSource="{Binding Editor.OpenedScene.Objects}">
         <TreeView.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" />
@@ -37,8 +37,8 @@
         <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                 <Setter Property="Tag" Value="{Binding DataContext, ElementName=View}" />
-                <Setter Property="IsExpanded" Value="{Binding Path=(models:ISceneObject.IsExpanded), Mode=TwoWay}" />
-                <Setter Property="IsSelected" Value="{Binding Path=(models:ISceneObject.IsSelected), Mode=TwoWay}" />
+                <Setter Property="IsExpanded" Value="{Binding Path=(elements:GameObject.IsExpanded), Mode=TwoWay}" />
+                <Setter Property="IsSelected" Value="{Binding Path=(elements:GameObject.IsSelected), Mode=TwoWay}" />
                 <Setter Property="ContextMenu">
                     <Setter.Value>
                         <ContextMenu>

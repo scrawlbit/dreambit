@@ -1,36 +1,54 @@
 ﻿using DreamBit.Extension.Components;
-using DreamBit.Extension.Models;
+using DreamBit.Extension.Management;
+using DreamBit.Game.Elements;
+using Scrawlbit.Collections;
+using System.Linq;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
     internal interface IAddGameObjectCommand : IToolCommand
     {
         void Execute();
-        void Execute(ISceneObject sceneObject);
+        void Execute(GameObject gameObject);
     }
     internal sealed class AddGameObjectCommand : ToolCommand, IAddGameObjectCommand
     {
-        private readonly IEditingScene _scene;
+        private readonly IEditor _editor;
 
-        public AddGameObjectCommand(IEditingScene scene)
+        public AddGameObjectCommand(IEditor editor)
         {
-            _scene = scene;
+            _editor = editor;
         }
 
         protected override int Id => DreamBitPackage.Guids.AddGameObjectCommand;
 
         public override void Execute()
         {
-            Add(_scene.Objects);
+            Add(_editor.OpenedScene.Objects);
         }
-        public void Execute(ISceneObject sceneObject)
+        public void Execute(GameObject gameObject)
         {
-            Add(sceneObject.Children);
+            Add(gameObject.Children);
+
+            gameObject.IsExpanded = true;
         }
 
-        private void Add(ISceneObjectCollection collection)
+        private void Add(IGameObjectCollection collection)
         {
-            collection.Add("Game Object");
+            GameObject[] objects = collection.ToArray();
+
+            string name = "Game Object";
+            string finalName = name;
+            int i = 0;
+
+            while (objects.Any(o => o.Name == finalName))
+                finalName = string.Format("{0} {1}", name, ++i);
+
+            collection.Add(new GameObject
+            {
+                Name = finalName,
+                IsSelected = true
+            });
         }
     }
 }

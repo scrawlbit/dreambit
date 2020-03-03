@@ -1,8 +1,8 @@
 ﻿using DreamBit.Game.Content;
 using DreamBit.Game.Drawing;
-using DreamBit.Game.Helpers;
 using DreamBit.Game.Reading.Attributes;
 using Microsoft.Xna.Framework;
+using Scrawlbit.MonoGame.Helpers;
 
 namespace DreamBit.Game.Elements.Components
 {
@@ -44,7 +44,7 @@ namespace DreamBit.Game.Elements.Components
                 GameObject.Transform.Rotation,
                 Origin,
                 GameObject.Transform.Scale,
-                MonoGameHelper.GetEffects(FlipHorizontally, FlipVertically)
+                SpriteEffectsHelper.GetEffects(FlipHorizontally, FlipVertically)
             );
         }
     }
