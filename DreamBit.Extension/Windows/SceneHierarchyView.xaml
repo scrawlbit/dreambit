@@ -9,6 +9,7 @@
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
     xmlns:elements="clr-namespace:DreamBit.Game.Elements;assembly=DreamBit.Game"
+    xmlns:treeViews="clr-namespace:DreamBit.Extension.Controls.TreeViews"
     mc:Ignorable="d"
     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
@@ -71,7 +72,9 @@
 
         <TreeView.ItemTemplate>
             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                <TextBlock Text="{Binding Name}" />
+                <treeViews:EditableTreeViewItemText Text="{Binding Name, Mode=TwoWay}"
+                                                    Loaded="OnTextLoaded"
+                                                    Changed="OnTextChanged"/>
             </HierarchicalDataTemplate>
         </TreeView.ItemTemplate>
     </TreeView>
