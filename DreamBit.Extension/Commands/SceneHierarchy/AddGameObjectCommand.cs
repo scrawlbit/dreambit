@@ -8,6 +8,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 {
     internal interface IAddGameObjectCommand : IToolCommand
     {
+        bool CanExecute();
         void Execute();
         void Execute(GameObject gameObject);
     }
@@ -22,6 +23,10 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 
         protected override int Id => DreamBitPackage.Guids.AddGameObjectCommand;
 
+        public override bool CanExecute()
+        {
+            return _editor.OpenedScene != null;
+        }
         public override void Execute()
         {
             Add(_editor.OpenedScene.Objects);
