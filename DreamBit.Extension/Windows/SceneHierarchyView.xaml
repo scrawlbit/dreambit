@@ -10,6 +10,8 @@
     xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
     xmlns:elements="clr-namespace:DreamBit.Game.Elements;assembly=DreamBit.Game"
     xmlns:treeViews="clr-namespace:DreamBit.Extension.Controls.TreeViews"
+    xmlns:dragAndDrop="clr-namespace:Scrawlbit.Presentation.DragAndDrop;assembly=Scrawlbit.Presentation"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
@@ -34,6 +36,12 @@
                 <MenuItem Header="Paste" Command="{Binding PasteGameObjectCommand}" />
             </ContextMenu>
         </TreeView.ContextMenu>
+
+        <behaviors:Interaction.Behaviors>
+            <treeViews:TreeViewMultiSelectBehavior SelectedValue="{Binding Editor.SelectedObject, Mode=TwoWay}" SelectedValues="{Binding Editor.SelectedObjects}" />
+            <treeViews:ExtendedTreeViewDroppableBehavior DropCommand="{Binding MoveGameObjectCommand}" />
+            <dragAndDrop:MultipleChildDraggableBehavior SelectedChildrenValues="{Binding Editor.SelectedObjects}" />
+        </behaviors:Interaction.Behaviors>
 
         <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">

@@ -57,6 +57,7 @@
     <Compile Include="Commands\SceneHierarchy\AddCameraObjectCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\AddGameObjectCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\CopyGameObjectCommand.cs" />
+    <Compile Include="Commands\SceneHierarchy\MoveGameObjectCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\PasteGameObjectCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\RemoveGameObjectCommand.cs" />
     <Compile Include="Commands\SceneInspectWindowCommand.cs" />
@@ -69,6 +70,11 @@
     <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
       <DependentUpon>EditableTreeViewItemText.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TreeViews\ExtendedTreeViewDroppableBehavior.cs" />
+    <Compile Include="Controls\TreeViews\TreeViewItemAdorner.cs" />
+    <Compile Include="Controls\TreeViews\TreeViewItemsMultiSelectBehavior.cs" />
+    <Compile Include="Controls\TreeViews\TreeViewLastItemAdorner.cs" />
+    <Compile Include="Controls\TreeViews\TreeViewMultiSelectBehavior.cs" />
     <Compile Include="Controls\WindowView.cs" />
     <Compile Include="Converters\TreeViewMarginConverter.cs" />
     <Compile Include="DreamBitPackage.Guids.cs">
@@ -94,7 +100,6 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
-    <Compile Include="Resources\ThemeResources.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\EditFontDialogViewModel.cs" />
@@ -218,6 +223,10 @@
     <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\DragAndDrop.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles\Theme.xaml">
       <Generator>MSBuild:Compile</Generator>

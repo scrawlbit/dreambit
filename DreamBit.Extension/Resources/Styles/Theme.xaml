@@ -3,6 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/TreeView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/DragAndDrop.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

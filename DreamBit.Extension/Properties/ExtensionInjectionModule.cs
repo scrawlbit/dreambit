@@ -57,6 +57,7 @@ namespace DreamBit.Extension.Properties
             _builder.Register<ICopyGameObjectCommand>().Singleton<CopyGameObjectCommand>();
             _builder.Register<IPasteGameObjectCommand>().Singleton<PasteGameObjectCommand>();
             _builder.Register<IRemoveGameObjectCommand>().Singleton<RemoveGameObjectCommand>();
+            _builder.Register<IMoveGameObjectCommand>().Singleton<MoveGameObjectCommand>();
         }
         private void Components()
         {

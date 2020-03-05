@@ -6,6 +6,8 @@ namespace DreamBit.Game.Elements
     {
         void Add(GameObject gameObject);
         void Remove(GameObject gameObject);
+        void Move(int oldIndex, int newIndex);
+        void Insert(int index, GameObject gameObject);
     }
 
     internal class GameObjectCollection : ExtendedObservableCollection<GameObject>, IGameObjectCollection
@@ -29,6 +31,14 @@ namespace DreamBit.Game.Elements
         {
             if (Remove(gameObject))
                 gameObject.Parent = null;
+        }
+        void IGameObjectCollection.Insert(int index, GameObject gameObject)
+        {
+            if (!Contains(gameObject))
+            {
+                Insert(index, gameObject);
+                gameObject.Parent = _parent;
+            }
         }
     }
 }

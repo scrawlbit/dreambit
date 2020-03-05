@@ -16,8 +16,10 @@ using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Mapping;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows;
 using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension
@@ -78,6 +80,18 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<IEditFontCommand>();
             await RegisterCommandAsync<IEditSceneCommand>();
             await RegisterCommandAsync<IAddScriptCommand>();
+
+            ApplyTheme();
+
+            Assembly.Load("Microsoft.Xaml.Behaviors");
+        }
+
+        private static void ApplyTheme()
+        {
+            var path = new Uri("pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Theme.xaml");
+            var resource = new ResourceDictionary { Source = path };
+
+            Application.Current.Resources.MergedDictionaries.Add(resource);
         }
 
         private IEnumerable<IInjectionModule> GetModules()

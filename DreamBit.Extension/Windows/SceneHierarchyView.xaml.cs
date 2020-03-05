@@ -1,6 +1,7 @@
 ﻿using DreamBit.Extension.Controls.TreeViews;
 using DreamBit.Extension.Helpers;
 using DreamBit.Extension.ViewModels;
+using Scrawlbit.Presentation.DragAndDrop;
 using Scrawlbit.Presentation.Helpers;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,28 +10,28 @@ namespace DreamBit.Extension.Windows
 {
     public partial class SceneHierarchyView
     {
+        private readonly SceneHierarchyViewModel _viewModel;
+
         public SceneHierarchyView()
         {
             InitializeComponent();
             if (this.IsInDesignMode()) return;
 
-            LoadViewModel<SceneHierarchyViewModel>();
+            _viewModel = LoadViewModel<SceneHierarchyViewModel>();
         }
 
         private void OnTextLoaded(object sender, RoutedEventArgs e)
         {
-            // TODO
+            var editable = (EditableTreeViewItemText)sender;
+            var border = editable.ParentsUntil<Border>();
 
-            //var editable = (EditableTreeViewItemText)sender;
-            //var border = editable.ParentsUntil<Border>();
+            border.AddBehavior<TreeViewDraggableBehavior>();
+            border.AddBehavior(new ExtendedTreeViewDroppableBehavior
+            {
+                DropCommand = _viewModel.MoveGameObjectCommand
+            });
 
-            //border.AddBehavior<TreeViewDraggableBehavior>();
-            //border.AddBehavior(new ExtendedTreeViewDroppableBehavior
-            //{
-            //    DropCommand = ViewModel.MoveGameObjectCommand
-            //});
-
-            //editable.Loaded -= OnTextLoaded;
+            editable.Loaded -= OnTextLoaded;
         }
         private void OnTextChanged(object sender, (object OldValue, object NewValue) e)
         {

@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="DroppableAdornerBorderBrush" Color="Gray" Opacity="0.5" />
+    <SolidColorBrush x:Key="DroppableAdornerBackgroundBrush" Color="#007ACC" Opacity="0.3" />
+    <SolidColorBrush x:Key="DroppableAdornerLineBrush" Color="#007ACC" />
+
+</ResourceDictionary>

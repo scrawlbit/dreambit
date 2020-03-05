@@ -1,5 +1,4 @@
-﻿using DreamBit.Extension.Resources;
-using DreamBit.Extension.ViewModels.Dialogs;
+﻿using DreamBit.Extension.ViewModels.Dialogs;
 using Microsoft.VisualStudio.PlatformUI;
 using StartupLocation = System.Windows.WindowStartupLocation;
 
@@ -12,8 +11,6 @@ namespace DreamBit.Extension.Controls
             HasMaximizeButton = false;
             HasMinimizeButton = false;
             WindowStartupLocation = StartupLocation.CenterOwner;
-
-            this.ApplyTheme();
         }
 
         protected T LoadViewModel<T>() where T : BaseDialogViewModel

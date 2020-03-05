@@ -12,7 +12,8 @@ namespace DreamBit.Extension.ViewModels
             IAddCameraObjectCommand addCameraObjectCommand,
             ICopyGameObjectCommand copyGameObjectCommand,
             IPasteGameObjectCommand pasteGameObjectCommand,
-            IRemoveGameObjectCommand removeGameObjectCommand)
+            IRemoveGameObjectCommand removeGameObjectCommand,
+            IMoveGameObjectCommand moveGameObjectCommand)
         {
             Editor = editor;
             AddGameObjectCommand = addGameObjectCommand;
@@ -20,6 +21,7 @@ namespace DreamBit.Extension.ViewModels
             CopyGameObjectCommand = copyGameObjectCommand;
             PasteGameObjectCommand = pasteGameObjectCommand;
             RemoveGameObjectCommand = removeGameObjectCommand;
+            MoveGameObjectCommand = moveGameObjectCommand;
         }
 
         public IEditor Editor { get; }
@@ -28,5 +30,6 @@ namespace DreamBit.Extension.ViewModels
         public ICommand CopyGameObjectCommand { get; }
         public ICommand PasteGameObjectCommand { get; }
         public ICommand RemoveGameObjectCommand { get; }
+        public ICommand MoveGameObjectCommand { get; }
     }
 }
