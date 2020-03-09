@@ -15,7 +15,7 @@ namespace Scrawlbit.Notification.Notificator
 
         public Notificator Notificator { get; }
         public PropertyInfo Property { get; set; }
-        
+
         public virtual NotificationConstruction Changing(Action onPropertyChanging)
         {
             Notificator.AddHandler((object s, PropertyChangingEventArgs e) =>
@@ -50,6 +50,10 @@ namespace Scrawlbit.Notification.Notificator
             });
 
             return Construction();
+        }
+        public virtual NotificationConstruction Changed<TProperty>(Action<TProperty> onPropertyChanged)
+        {
+            return Changed<TProperty>((o, n) => onPropertyChanged(n));
         }
         public virtual NotificationConstruction Changed<TProperty>(OnPropertyChanged<TProperty> onPropertyChanged)
         {
@@ -95,6 +99,11 @@ namespace Scrawlbit.Notification.Notificator
             return Construction();
         }
         public NotificationConstruction<T, TProperty> Changed(Action onPropertyChanged)
+        {
+            _notificationConstructor.Changed(onPropertyChanged);
+            return Construction();
+        }
+        public NotificationConstruction<T, TProperty> Changed(Action<TProperty> onPropertyChanged)
         {
             _notificationConstructor.Changed(onPropertyChanged);
             return Construction();

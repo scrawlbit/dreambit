@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Elements;
+using DreamBit.Game.Files;
 using Scrawlbit.Collections;
 using Scrawlbit.Notification;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ namespace DreamBit.Extension.Management
 {
     public interface IEditor : INotifyPropertyChanged
     {
+        SceneFile OpenedSceneFile { get; set; }
         Scene OpenedScene { get; set; }
         GameObject SelectedObject { get; set; }
         IObservableCollection<GameObject> SelectedObjects { get; }
@@ -14,6 +16,7 @@ namespace DreamBit.Extension.Management
 
     public class Editor : NotificationObject, IEditor
     {
+        private SceneFile _openedSceneFile;
         private Scene _openedScene;
         private GameObject _selectedObject;
 
@@ -22,6 +25,11 @@ namespace DreamBit.Extension.Management
             SelectedObjects = new ExtendedObservableCollection<GameObject>();
         }
 
+        public SceneFile OpenedSceneFile
+        {
+            get => _openedSceneFile;
+            set => Set(ref _openedSceneFile, value);
+        }
         public Scene OpenedScene
         {
             get => _openedScene;

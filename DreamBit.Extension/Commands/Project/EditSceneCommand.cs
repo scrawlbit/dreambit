@@ -26,6 +26,7 @@ namespace DreamBit.Extension.Commands.Project
 
         public override void Execute()
         {
+            _editor.OpenedSceneFile = _scene;
             _editor.OpenedScene = _scene.Scene;
         }
         protected override bool CanShow()
