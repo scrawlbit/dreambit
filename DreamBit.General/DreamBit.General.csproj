@@ -38,6 +38,12 @@
     <Compile Include="Management\FileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\GeneralInjectionModule.cs" />
+    <Compile Include="State\CompositeStateCommand.cs" />
+    <Compile Include="State\IStateCommand.cs" />
+    <Compile Include="State\StateTransaction.cs" />
+    <Compile Include="State\IStateUnit.cs" />
+    <Compile Include="State\StateManager.cs" />
+    <Compile Include="State\StateScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scrawlbit.Json\Scrawlbit.Json.csproj">
@@ -49,5 +55,6 @@
       <Name>Scrawlbit.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

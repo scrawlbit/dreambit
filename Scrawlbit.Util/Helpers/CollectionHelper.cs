@@ -14,6 +14,11 @@ namespace Scrawlbit.Helpers
 
             return item;
         }
+        public static bool Pop<T>(this ICollection<T> collection, out T item)
+        {
+            item = collection.LastOrDefault();
+            return collection.Remove(item);
+        }
 
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
         {

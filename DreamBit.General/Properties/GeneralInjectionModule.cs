@@ -1,4 +1,5 @@
-﻿using DreamBit.Modularization.Management;
+﻿using DreamBit.General.State;
+using DreamBit.Modularization.Management;
 using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Json;
 
@@ -12,12 +13,21 @@ namespace DreamBit.Modularization.Properties
         {
             _builder = builder;
 
-            Components();
+            Management();
+            State();
+            Other();
         }
 
-        private void Components()
+        private void Management()
         {
             _builder.Register<IFileManager>().Singleton<FileManager>();
+        }
+        private void State()
+        {
+            _builder.Register<IStateManager>().Singleton<StateManager>();
+        }
+        private void Other()
+        {
             _builder.Register<IJsonParser>().Transient<JsonParser>();
         }
     }
