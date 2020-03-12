@@ -1,6 +1,8 @@
 ﻿using DreamBit.Extension.Controls.TreeViews;
 using DreamBit.Extension.Helpers;
 using DreamBit.Extension.ViewModels;
+using DreamBit.Game.Elements;
+using DreamBit.General.State;
 using Scrawlbit.Presentation.DragAndDrop;
 using Scrawlbit.Presentation.Helpers;
 using System.Windows;
@@ -11,13 +13,17 @@ namespace DreamBit.Extension.Windows
     public partial class SceneHierarchyView
     {
         private readonly SceneHierarchyViewModel _viewModel;
+        private readonly IStateManager _stateManager;
 
         public SceneHierarchyView()
         {
             InitializeComponent();
-            if (this.IsInDesignMode()) return;
+
+            if (this.IsInDesignMode())
+                return;
 
             _viewModel = LoadViewModel<SceneHierarchyViewModel>();
+            DreamBitPackage.Container.Inject(out _stateManager);
         }
 
         private void OnTextLoaded(object sender, RoutedEventArgs e)
@@ -35,17 +41,13 @@ namespace DreamBit.Extension.Windows
         }
         private void OnTextChanged(object sender, (object OldValue, object NewValue) e)
         {
-            // TODO
+            var editable = (EditableTreeViewItemText)sender;
+            var gameObject = (GameObject)editable.DataContext;
 
-            //var editable = (EditableTreeViewItemText)sender;
-            //var gameObject = (IGameObject)editable.DataContext;
+            string description = $"{e.OldValue} renamed to {e.NewValue}";
+            IStateCommand command = gameObject.State().SetProperty(g => g.Name, e.OldValue, e.NewValue, description);
 
-            //gameObject.TrackProperty(
-            //    p => p.Name,
-            //    e.OldValue,
-            //    e.NewValue,
-            //    Resource.GameObjectRenameStringFormat.FormatWith(e.OldValue, e.NewValue)
-            //);
+            _stateManager.Add(command);
         }
     }
 }

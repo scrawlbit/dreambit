@@ -54,6 +54,7 @@
     <Compile Include="Helpers\IntHelper.cs" />
     <Compile Include="Helpers\LazyHelper.cs" />
     <Compile Include="Helpers\ListHelper.cs" />
+    <Compile Include="Helpers\MemberHelper.cs" />
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
