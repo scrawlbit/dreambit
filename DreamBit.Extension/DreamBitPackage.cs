@@ -80,6 +80,8 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<IEditFontCommand>();
             await RegisterCommandAsync<IEditSceneCommand>();
             await RegisterCommandAsync<IAddScriptCommand>();
+            await RegisterCommandAsync<IUndoCommand>();
+            await RegisterCommandAsync<IRedoCommand>();
 
             ApplyTheme();
 

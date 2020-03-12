@@ -9,6 +9,7 @@ namespace DreamBit.General.State
         IReadOnlyObservableCollection<IStateUnit> Dos { get; }
         IReadOnlyObservableCollection<IStateUnit> Undos { get; }
 
+        void Execute(IStateCommand state);
         void Add(IStateCommand state);
         void Do(int levels = 1);
         void Undo(int levels = 1);
@@ -32,6 +33,11 @@ namespace DreamBit.General.State
         public IReadOnlyObservableCollection<IStateUnit> Dos => _dos;
         public IReadOnlyObservableCollection<IStateUnit> Undos => _undos;
 
+        public void Execute(IStateCommand state)
+        {
+            state.Do();
+            Add(state);
+        }
         public void Add(IStateCommand state)
         {
             if (_transaction != null)

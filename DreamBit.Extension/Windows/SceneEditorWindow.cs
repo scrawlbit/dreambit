@@ -25,6 +25,8 @@ namespace DreamBit.Extension.Windows
             }
 
             UpdateCaption();
+
+            InitializeToolbar(DreamBitPackage.Guids.SceneEditorToolbar);
         }
 
         private void UpdateCaption(string name = null)

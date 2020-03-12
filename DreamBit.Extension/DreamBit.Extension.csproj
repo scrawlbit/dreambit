@@ -52,6 +52,8 @@
     <Compile Include="Commands\Project\AddScriptCommand.cs" />
     <Compile Include="Commands\Project\EditFontCommand.cs" />
     <Compile Include="Commands\Project\EditSceneCommand.cs" />
+    <Compile Include="Commands\UndoCommand.cs" />
+    <Compile Include="Commands\RedoCommand.cs" />
     <Compile Include="Commands\SceneEditorWindowCommand.cs" />
     <Compile Include="Commands\SceneHierarchyWindowCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\AddCameraObjectCommand.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Helpers\ControlHelper.cs" />
     <Compile Include="Helpers\DesignHelper.cs" />
     <Compile Include="Helpers\ErrorHelper.cs" />
+    <Compile Include="Helpers\ExtendedStateHelper.cs" />
     <Compile Include="Helpers\MarshalHelper.cs" />
     <Compile Include="Interop\Controls\DrawEventArgs.cs" />
     <Compile Include="Interop\Controls\DrawingSurface.cs" />
@@ -218,6 +221,7 @@
     <Content Include="Resources\Icons\VideoCamera_16x.png" />
     <Content Include="Resources\Logo.ico" />
     <Content Include="Resources\Toolbars\SceneHierarchyIcons.png" />
+    <Content Include="Resources\Toolbars\SceneEditorIcons.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">

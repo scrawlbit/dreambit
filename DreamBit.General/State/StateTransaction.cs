@@ -32,7 +32,7 @@ namespace DreamBit.General.State
         }
         public void End()
         {
-            _manager.Add(new CompositeStateCommand(_states, _description));
+            _manager.Execute(new CompositeStateCommand(_states, _description));
             Ended();
         }
     }

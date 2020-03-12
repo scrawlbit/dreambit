@@ -24,6 +24,11 @@
 
             // Scene Editor
             public const string SceneEditorWindow = "bcd03dc6-67bf-4064-80a1-fbbbd463d158";
+            public const string SceneEditorIcons = "b95623e8-f268-4d05-8801-60c8a4901134";
+            public const int SceneEditorToolbar = 0x4001;
+            public const int SceneEditorToolbarGroup = 0x2004;
+            public const int RedoCommand = 0x3011;
+            public const int UndoCommand = 0x3012;
 
             // Scene Hierarchy
             public const string SceneHierarchyWindow = "59240e5d-89c8-46c7-ac10-bc921c528b50";
