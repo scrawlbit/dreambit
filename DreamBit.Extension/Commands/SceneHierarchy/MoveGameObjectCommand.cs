@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Elements;
+using DreamBit.General.State;
 using Microsoft.Xna.Framework;
 using Scrawlbit.Collections;
 using Scrawlbit.Helpers;
@@ -19,13 +20,20 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 
     internal class MoveGameObjectCommand : BaseCommand, IMoveGameObjectCommand
     {
+        private readonly IStateManager _state;
+
+        public MoveGameObjectCommand(IStateManager state)
+        {
+            _state = state;
+        }
+
         public bool CanExecute(TreeViewDropEventArgs e)
         {
             return IsDataValid(e) && IsHierarchyValid(e);
         }
         public void Execute(TreeViewDropEventArgs e)
         {
-            //var initialObjects = e.Data.Cast<GameObject>().ToArray();
+            var initialObjects = e.Data.Cast<GameObject>().ToArray();
             var gameObjects = GetGameObjectsToMove(e);
             var data = new GameObjectMoveData[gameObjects.Length];
 
@@ -41,7 +49,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 data[i] = new GameObjectMoveData(gameObject, from, to);
             }
 
-            data.ForEach(d => Move(d.GameObject, d.From, d.To));
+            _state.Execute(new MoveGameObjectsState(initialObjects, data, GetDescription(e)));
         }
 
         private static bool IsDataValid(TreeViewDropEventArgs e)
@@ -74,8 +82,33 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 return true;
             }).ToArray();
         }
+        private static string GetDescription(TreeViewDropEventArgs e)
+        {
+            string description = "{0} moved to {1}";
+            string targetName = (e.Target as GameObject)?.Name;
 
-        private void Move(GameObject gameObject, MoveData from, MoveData to)
+            if (e.HasMultipleData)
+                return $"Game objects moved to {targetName ?? "Scene"}";
+
+            if (Equals(e.SingleSource.From, e.To))
+            {
+                if (e.DropType == DropType.Inside)
+                    targetName = e.To.Cast<GameObject>().Last().Name;
+                else if (e.DropType != DropType.InsideOnTop)
+                    targetName = (e.OriginalTarget as GameObject)?.Name;
+
+                if (e.DropType == DropType.Above)
+                    description = "{0} moved above {1}";
+                else if (e.DropType == DropType.Below || e.DropType == DropType.Inside)
+                    description = "{0} moved below {1}";
+            }
+
+            description = description.FormatWith(((GameObject)e.SingleData).Name, targetName ?? "Scene");
+
+            return description;
+        }
+
+        private static void Move(GameObject gameObject, MoveData from, MoveData to)
         {
             if (from.Collection == to.Collection)
             {
@@ -119,6 +152,10 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 Index = index;
             }
         }
+
+        #endregion
+        #region GameObjectMoveData
+
         private class GameObjectMoveData
         {
             public readonly GameObject GameObject;
@@ -130,6 +167,43 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 From = from;
                 To = to;
                 GameObject = gameObject;
+            }
+        }
+
+        #endregion
+        #region MoveGameObjectState
+
+        private class MoveGameObjectsState : IStateCommand
+        {
+            private GameObject[] _initialObjects;
+            private readonly GameObjectMoveData[] _data;
+
+            public MoveGameObjectsState(GameObject[] initialObjects, GameObjectMoveData[] data, string description)
+            {
+                _initialObjects = initialObjects;
+                _data = data;
+
+                Description = description;
+            }
+
+            public string Description { get; }
+
+            public void Do()
+            {
+                SetIsMoving(true);
+                _data.ForEach(d => Move(d.GameObject, d.From, d.To));
+                SetIsMoving(false);
+            }
+            public void Undo()
+            {
+                SetIsMoving(true);
+                _data.ForEach(d => Move(d.GameObject, d.To, d.From));
+                SetIsMoving(false);
+            }
+
+            private void SetIsMoving(bool isMoving)
+            {
+                _initialObjects.ForEach(g => g.IsMoving = isMoving);
             }
         }
 

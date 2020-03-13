@@ -11,6 +11,7 @@ namespace DreamBit.Game.Elements
         private bool _isVisible;
         private bool _isExpanded;
         private bool _isSelected;
+        private bool _isMoving;
 
         public GameObject()
         {
@@ -33,19 +34,6 @@ namespace DreamBit.Game.Elements
             get => _isVisible;
             set => Set(ref _isVisible, value);
         }
-        [JsonIgnore]
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set => Set(ref _isExpanded, value);
-        }
-        [JsonIgnore]
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set => Set(ref _isSelected, value);
-        }
-        [JsonIgnore]
         public GameObject Parent
         {
             get => _parent;
@@ -63,5 +51,24 @@ namespace DreamBit.Game.Elements
         }
         public IGameObjectCollection Children { get; }
         public IGameObjectComponentCollection Components { get; }
+
+        [JsonIgnore]
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => Set(ref _isExpanded, value);
+        }
+        [JsonIgnore]
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => Set(ref _isSelected, value);
+        }
+        [JsonIgnore]
+        public bool IsMoving
+        {
+            get => _isMoving;
+            set => Set(ref _isMoving, value);
+        }
     }
 }
