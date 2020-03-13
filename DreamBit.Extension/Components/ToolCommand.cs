@@ -27,8 +27,9 @@ namespace DreamBit.Extension.Components
             var commandService = await package.GetServiceAsync<IMenuCommandService>();
             var commandId = new CommandID(new Guid(DreamBitPackage.Guids.CommandSet), Id);
             var command = new OleMenuCommand(Clicked, commandId);
-
+            
             command.BeforeQueryStatus += BeforeQueryStatus;
+            ((ICommand)this).CanExecuteChanged += (o, e) => BeforeQueryStatus(command, e);
 
             commandService.AddCommand(command);
         }
