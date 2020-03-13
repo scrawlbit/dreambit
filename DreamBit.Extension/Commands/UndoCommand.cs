@@ -17,6 +17,7 @@ namespace DreamBit.Extension.Commands
         public UndoCommand(IStateManager state)
         {
             _state = state;
+            _state.Undos.CollectionChanged += (s, e) => QueryStatus();
         }
 
         protected override int Id => DreamBitPackage.Guids.UndoCommand;

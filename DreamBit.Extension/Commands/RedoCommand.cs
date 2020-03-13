@@ -17,6 +17,7 @@ namespace DreamBit.Extension.Commands
         public RedoCommand(IStateManager state)
         {
             _state = state;
+            _state.Dos.CollectionChanged += (s, e) => QueryStatus();
         }
 
         protected override int Id => DreamBitPackage.Guids.RedoCommand;
