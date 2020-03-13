@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DreamBit.General.State
 {
@@ -32,8 +33,16 @@ namespace DreamBit.General.State
         }
         public void End()
         {
-            _manager.Execute(new CompositeStateCommand(_states, _description));
             Ended();
+
+            if (_states.Count == 1)
+            {
+                _manager.Add(_states.Single());
+            }
+            else if (_states.Count > 1)
+            {
+                _manager.Add(new CompositeStateCommand(_states, _description));
+            }
         }
     }
 }
