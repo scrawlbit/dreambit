@@ -4,7 +4,7 @@ namespace DreamBit.Game.Elements
 {
     public interface IGameObjectCollection : IReadOnlyObservableCollection<GameObject>
     {
-        void Add(GameObject gameObject);
+        void Add(params GameObject[] gameObjects);
         void Remove(GameObject gameObject);
         void Move(int oldIndex, int newIndex);
         void Insert(int index, GameObject gameObject);
@@ -19,12 +19,15 @@ namespace DreamBit.Game.Elements
             _parent = parent;
         }
 
-        void IGameObjectCollection.Add(GameObject gameObject)
+        void IGameObjectCollection.Add(params GameObject[] gameObjects)
         {
-            if (!Contains(gameObject))
+            foreach (var gameObject in gameObjects)
             {
-                Add(gameObject);
-                gameObject.Parent = _parent;
+                if (!Contains(gameObject))
+                {
+                    Add(gameObject);
+                    gameObject.Parent = _parent;
+                }
             }
         }
         void IGameObjectCollection.Remove(GameObject gameObject)

@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="Converters\AbstractObjectConveter.cs" />
     <Compile Include="Converters\DependencyInstanceConverter.cs" />
-    <Compile Include="IJsonParser.cs" />
+    <Compile Include="JsonHelper.cs" />
     <Compile Include="JsonParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

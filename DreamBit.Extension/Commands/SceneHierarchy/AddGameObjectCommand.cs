@@ -52,6 +52,8 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             IStateCommand command = collection.State().Add(gameObject, description);
 
             _state.Execute(command);
+
+            // TODO _editor.SelectedObject = gameObject;
         }
 
         private static string GetNewName(IGameObjectCollection collection)

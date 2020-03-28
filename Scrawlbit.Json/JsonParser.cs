@@ -1,8 +1,19 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Scrawlbit.Json
 {
+    public interface IJsonParser
+    {
+        IContractResolver ContractResolver { get; set; }
+        ReferenceLoopHandling ReferenceLoopHandling { get; set; }
+        Formatting Formatting { get; set; }
+        IList<JsonConverter> Converters { get; }
+        string ParseObject(object value);
+        T ParseString<T>(string json);
+    }
+
     public class JsonParser : IJsonParser
     {
         private readonly JsonSerializerSettings _settings;
@@ -15,6 +26,11 @@ namespace Scrawlbit.Json
             Formatting = Formatting.Indented;
         }
 
+        public IContractResolver ContractResolver
+        {
+            get => _settings.ContractResolver;
+            set => _settings.ContractResolver = value;
+        }
         public ReferenceLoopHandling ReferenceLoopHandling
         {
             get => _settings.ReferenceLoopHandling;
@@ -26,7 +42,7 @@ namespace Scrawlbit.Json
             set => _settings.Formatting = value;
         }
         public IList<JsonConverter> Converters => _settings.Converters;
-        
+
         public string ParseObject(object value)
         {
             return JsonConvert.SerializeObject(value, _settings);

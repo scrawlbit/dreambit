@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Scrawlbit.Notification;
+﻿using Scrawlbit.Notification;
 using System;
 
 namespace DreamBit.Game.Elements
@@ -52,19 +51,16 @@ namespace DreamBit.Game.Elements
         public IGameObjectCollection Children { get; }
         public IGameObjectComponentCollection Components { get; }
 
-        [JsonIgnore]
         public bool IsExpanded
         {
             get => _isExpanded;
             set => Set(ref _isExpanded, value);
         }
-        [JsonIgnore]
         public bool IsSelected
         {
             get => _isSelected;
             set => Set(ref _isSelected, value);
         }
-        [JsonIgnore]
         public bool IsMoving
         {
             get => _isMoving;

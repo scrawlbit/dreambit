@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Registrations;
+using DreamBit.Game.Serialization;
 using DreamBit.Project.Helpers;
 using Scrawlbit.Injection.Configuration;
 
@@ -13,12 +14,17 @@ namespace DreamBit.Game.Properties
             _builder = builder;
 
             Registrations();
+            Serialization();
         }
 
         private void Registrations()
         {
             _builder.RegisterFile<ISceneFileRegistration>().Transient<SceneFileRegistration>();
             _builder.RegisterFile<IScriptFileRegistration>().Transient<ScriptFileRegistration>();
+        }
+        private void Serialization()
+        {
+            _builder.Register<IGameElementsParser>().Transient<GameElementsParser>();
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Scrawlbit.Collections;
+using Scrawlbit.Helpers;
+using System.Collections.Generic;
 
 namespace DreamBit.Game.Elements
 {
     public interface IGameObjectComponentCollection : IReadOnlyObservableCollection<GameObjectComponent>
     {
-        void Add(GameObjectComponent component);
+        void Add(params GameObjectComponent[] components);
         void Remove(GameObjectComponent component);
     }
 
@@ -17,12 +19,15 @@ namespace DreamBit.Game.Elements
             _target = target;
         }
 
-        void IGameObjectComponentCollection.Add(GameObjectComponent component)
+        void IGameObjectComponentCollection.Add(params GameObjectComponent[] components)
         {
-            if (component.GameObject == _target || component.GameObject == null)
+            foreach (var component in components)
             {
-                if (!Contains(component))
-                    Add(component);
+                if (component.GameObject == _target || component.GameObject == null)
+                {
+                    if (!Contains(component))
+                        Add(component);
+                }
             }
         }
         void IGameObjectComponentCollection.Remove(GameObjectComponent component)
