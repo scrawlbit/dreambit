@@ -30,6 +30,7 @@
             public const int RedoCommand = 0x3011;
             public const int UndoCommand = 0x3012;
             public const int SaveSceneCommand = 0x3013;
+            public const int CloseSceneCommand = 0x3014;
 
             // Scene Hierarchy
             public const string SceneHierarchyWindow = "59240e5d-89c8-46c7-ac10-bc921c528b50";

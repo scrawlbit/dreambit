@@ -84,6 +84,7 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<IUndoCommand>();
             await RegisterCommandAsync<IRedoCommand>();
             await RegisterCommandAsync<ISaveSceneCommand>();
+            await RegisterCommandAsync<ICloseSceneCommand>();
 
             ApplyTheme();
 

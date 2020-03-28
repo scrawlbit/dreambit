@@ -47,6 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\BuildContentCommand.cs" />
+    <Compile Include="Commands\Editor\CloseSceneCommand.cs" />
     <Compile Include="Commands\Project\AddFontCommand.cs" />
     <Compile Include="Commands\Project\AddSceneCommand.cs" />
     <Compile Include="Commands\Project\AddScriptCommand.cs" />

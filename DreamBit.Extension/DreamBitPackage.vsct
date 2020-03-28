@@ -153,6 +153,13 @@
           <ButtonText>Redo</ButtonText>
         </Strings>
       </Button>
+      <Button guid="DreamBitCommandSet" id="CloseSceneCommand" priority="0x0103" type="Button">
+        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
+        <Icon guid="SceneEditorIcons" id="close" />
+        <Strings>
+          <ButtonText>Close</ButtonText>
+        </Strings>
+      </Button>
 
       <!-- Scene Hierarchy -->
       <Button guid="DreamBitCommandSet" id="AddGameObjectCommand" priority="0x0100" type="Button">
@@ -172,7 +179,7 @@
     </Buttons>
 
     <Bitmaps>
-      <Bitmap guid="SceneEditorIcons" href="Resources\Toolbars\SceneEditorIcons.png" usedList="undo, do, save" />
+      <Bitmap guid="SceneEditorIcons" href="Resources\Toolbars\SceneEditorIcons.png" usedList="undo, do, save, close" />
       <Bitmap guid="SceneHierarchyIcons" href="Resources\Toolbars\SceneHierarchyIcons.png" usedList="model, videoCamera" />
     </Bitmaps>
   </Commands>
@@ -195,6 +202,7 @@
       <IDSymbol name="RedoCommand" value="0x3011" />
       <IDSymbol name="UndoCommand" value="0x3012" />
       <IDSymbol name="SaveSceneCommand" value="0x3013" />
+      <IDSymbol name="CloseSceneCommand" value="0x3014" />
 
       <!-- Scene Hierarchy -->
       <IDSymbol name="SceneHierarchyToolbar" value="0x4000" />
@@ -216,6 +224,7 @@
       <IDSymbol name="undo" value="1" />
       <IDSymbol name="do" value="2" />
       <IDSymbol name="save" value="3" />
+      <IDSymbol name="close" value="4" />
     </GuidSymbol>
 
     <!-- Scene Hierarchy -->
