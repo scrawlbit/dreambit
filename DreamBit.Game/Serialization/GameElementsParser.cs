@@ -9,7 +9,10 @@ namespace DreamBit.Game.Serialization
         bool DeserializeIds { get; set; }
 
         string ToJson(GameObject gameObject);
+        string ToJson(Scene scene);
+
         GameObject ToGameObject(string json);
+        Scene ToScene(string json);
     }
 
     internal class GameElementsParser : IGameElementsParser
@@ -36,9 +39,19 @@ namespace DreamBit.Game.Serialization
         {
             return _jsonParser.ParseObject(gameObject);
         }
+        public string ToJson(Scene scene)
+        {
+            return _jsonParser.ParseObject(scene);
+        }
+
         public GameObject ToGameObject(string json)
         {
             return _jsonParser.ParseString<GameObject>(json);
+        }
+
+        public Scene ToScene(string json)
+        {
+            return _jsonParser.ParseString<Scene>(json);
         }
     }
 }

@@ -52,6 +52,7 @@
     <Compile Include="Commands\Project\AddScriptCommand.cs" />
     <Compile Include="Commands\Project\EditFontCommand.cs" />
     <Compile Include="Commands\Project\EditSceneCommand.cs" />
+    <Compile Include="Commands\Project\SaveSceneCommand.cs" />
     <Compile Include="Commands\UndoCommand.cs" />
     <Compile Include="Commands\RedoCommand.cs" />
     <Compile Include="Commands\SceneEditorWindowCommand.cs" />

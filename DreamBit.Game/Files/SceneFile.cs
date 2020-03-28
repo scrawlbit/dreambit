@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Elements;
+using DreamBit.Game.Serialization;
 using DreamBit.Modularization.Management;
 using DreamBit.Pipeline;
 using DreamBit.Project;
@@ -11,15 +12,15 @@ namespace DreamBit.Game.Files
     {
         private readonly IPipeline _pipeline;
         private readonly IFileManager _fileManager;
-        private readonly IJsonParser _jsonParser;
+        private readonly IGameElementsParser _parser;
         private bool _loaded;
         private Scene _scene;
 
-        internal SceneFile(IPipeline pipeline, IFileManager fileManager, IJsonParser jsonParser)
+        internal SceneFile(IPipeline pipeline, IFileManager fileManager, IGameElementsParser parser)
         {
             _pipeline = pipeline;
             _fileManager = fileManager;
-            _jsonParser = jsonParser;
+            _parser = parser;
         }
 
         public Scene Scene
@@ -35,14 +36,14 @@ namespace DreamBit.Game.Files
         {
             string json = _fileManager.ReadAllText(Path);
 
-            _scene = _jsonParser.ParseString<Scene>(json);
+            _scene = _parser.ToScene(json);
             _loaded = true;
         }
         public void Save()
         {
             _scene = _scene ?? new Scene();
 
-            string json = _jsonParser.ParseObject(_scene);
+            string json = _parser.ToJson(_scene);
 
             _fileManager.WriteAllText(Path, json, Encoding.UTF8);
             _loaded = true;

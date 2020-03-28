@@ -45,6 +45,7 @@ namespace DreamBit.Extension.Properties
             _builder.Register<ISceneInspectWindowCommand>().Singleton<SceneInspectWindowCommand>();
             _builder.Register<IRedoCommand>().Singleton<RedoCommand>();
             _builder.Register<IUndoCommand>().Singleton<UndoCommand>();
+            _builder.Register<ISaveSceneCommand>().Singleton<SaveSceneCommand>();
 
             // Project
             _builder.Register<IAddFontCommand>().Singleton<AddFontCommand>();

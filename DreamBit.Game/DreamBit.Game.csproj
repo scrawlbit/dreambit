@@ -49,6 +49,7 @@
     <Compile Include="Registrations\SceneFileRegistration.cs" />
     <Compile Include="Registrations\ScriptFileRegistration.cs" />
     <Compile Include="Serialization\Converters\GameObjectConverter.cs" />
+    <Compile Include="Serialization\Converters\SceneConverter.cs" />
     <Compile Include="Serialization\Converters\Vector2Converter.cs" />
     <Compile Include="Serialization\GameElementsParser.cs" />
   </ItemGroup>

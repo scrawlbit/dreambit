@@ -132,14 +132,21 @@
       </Button>
 
       <!-- Scene Editor -->
-      <Button guid="DreamBitCommandSet" id="UndoCommand" priority="0x0100" type="Button">
+      <Button guid="DreamBitCommandSet" id="SaveSceneCommand" priority="0x0100" type="Button">
+        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
+        <Icon guid="SceneEditorIcons" id="save" />
+        <Strings>
+          <ButtonText>Save</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="DreamBitCommandSet" id="UndoCommand" priority="0x0101" type="Button">
         <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
         <Icon guid="SceneEditorIcons" id="undo" />
         <Strings>
           <ButtonText>Undo</ButtonText>
         </Strings>
       </Button>
-      <Button guid="DreamBitCommandSet" id="RedoCommand" priority="0x0101" type="Button">
+      <Button guid="DreamBitCommandSet" id="RedoCommand" priority="0x0102" type="Button">
         <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
         <Icon guid="SceneEditorIcons" id="do" />
         <Strings>
@@ -165,7 +172,7 @@
     </Buttons>
 
     <Bitmaps>
-      <Bitmap guid="SceneEditorIcons" href="Resources\Toolbars\SceneEditorIcons.png" usedList="undo, do" />
+      <Bitmap guid="SceneEditorIcons" href="Resources\Toolbars\SceneEditorIcons.png" usedList="undo, do, save" />
       <Bitmap guid="SceneHierarchyIcons" href="Resources\Toolbars\SceneHierarchyIcons.png" usedList="model, videoCamera" />
     </Bitmaps>
   </Commands>
@@ -198,15 +205,17 @@
       <IDSymbol name="ProjectContextAddGroup" value="0x2003" />
       <IDSymbol name="AddFontCommand" value="0x3005" />
       <IDSymbol name="AddSceneCommand" value="0x3007" />
+      <IDSymbol name="AddScriptCommand" value="0x3010" />
       <IDSymbol name="EditFontCommand" value="0x3008" />
       <IDSymbol name="EditSceneCommand" value="0x3009" />
-      <IDSymbol name="AddScriptCommand" value="0x3010" />
+      <IDSymbol name="SaveSceneCommand" value="0x3013" />
     </GuidSymbol>
 
     <!-- Scene Editor -->
     <GuidSymbol name="SceneEditorIcons" value="{b95623e8-f268-4d05-8801-60c8a4901134}">
       <IDSymbol name="undo" value="1" />
       <IDSymbol name="do" value="2" />
+      <IDSymbol name="save" value="3" />
     </GuidSymbol>
 
     <!-- Scene Hierarchy -->
