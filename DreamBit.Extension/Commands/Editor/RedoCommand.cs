@@ -2,7 +2,7 @@
 using DreamBit.General.State;
 using System.Linq;
 
-namespace DreamBit.Extension.Commands
+namespace DreamBit.Extension.Commands.Editor
 {
     internal interface IRedoCommand : IToolCommand
     {

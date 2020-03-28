@@ -29,6 +29,7 @@
             public const int SceneEditorToolbarGroup = 0x2004;
             public const int RedoCommand = 0x3011;
             public const int UndoCommand = 0x3012;
+            public const int SaveSceneCommand = 0x3013;
 
             // Scene Hierarchy
             public const string SceneHierarchyWindow = "59240e5d-89c8-46c7-ac10-bc921c528b50";
@@ -48,7 +49,6 @@
             public const int AddScriptCommand = 0x3010;
             public const int EditFontCommand = 0x3008;
             public const int EditSceneCommand = 0x3009;
-            public const int SaveSceneCommand = 0x3013;
         }
     }
 }

@@ -52,9 +52,9 @@
     <Compile Include="Commands\Project\AddScriptCommand.cs" />
     <Compile Include="Commands\Project\EditFontCommand.cs" />
     <Compile Include="Commands\Project\EditSceneCommand.cs" />
-    <Compile Include="Commands\Project\SaveSceneCommand.cs" />
-    <Compile Include="Commands\UndoCommand.cs" />
-    <Compile Include="Commands\RedoCommand.cs" />
+    <Compile Include="Commands\Editor\SaveSceneCommand.cs" />
+    <Compile Include="Commands\Editor\UndoCommand.cs" />
+    <Compile Include="Commands\Editor\RedoCommand.cs" />
     <Compile Include="Commands\SceneEditorWindowCommand.cs" />
     <Compile Include="Commands\SceneHierarchyWindowCommand.cs" />
     <Compile Include="Commands\SceneHierarchy\AddCameraObjectCommand.cs" />

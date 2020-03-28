@@ -194,6 +194,7 @@
       <IDSymbol name="SceneEditorToolbarGroup" value="0x2004" />
       <IDSymbol name="RedoCommand" value="0x3011" />
       <IDSymbol name="UndoCommand" value="0x3012" />
+      <IDSymbol name="SaveSceneCommand" value="0x3013" />
 
       <!-- Scene Hierarchy -->
       <IDSymbol name="SceneHierarchyToolbar" value="0x4000" />
@@ -208,7 +209,6 @@
       <IDSymbol name="AddScriptCommand" value="0x3010" />
       <IDSymbol name="EditFontCommand" value="0x3008" />
       <IDSymbol name="EditSceneCommand" value="0x3009" />
-      <IDSymbol name="SaveSceneCommand" value="0x3013" />
     </GuidSymbol>
 
     <!-- Scene Editor -->

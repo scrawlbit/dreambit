@@ -1,4 +1,5 @@
 ﻿using DreamBit.Extension.Commands;
+using DreamBit.Extension.Commands.Editor;
 using DreamBit.Extension.Commands.Project;
 using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Components;

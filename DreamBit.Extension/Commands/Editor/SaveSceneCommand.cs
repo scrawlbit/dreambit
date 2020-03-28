@@ -1,7 +1,7 @@
 ﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 
-namespace DreamBit.Extension.Commands.Project
+namespace DreamBit.Extension.Commands.Editor
 {
     internal interface ISaveSceneCommand : IToolCommand { }
     internal class SaveSceneCommand : ToolCommand, ISaveSceneCommand
