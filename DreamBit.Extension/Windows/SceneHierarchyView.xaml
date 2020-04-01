@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
@@ -13,8 +12,6 @@
     xmlns:dragAndDrop="clr-namespace:Scrawlbit.Presentation.DragAndDrop;assembly=Scrawlbit.Presentation"
     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
-    Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
-    Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
     d:DataContext="{d:DesignInstance viewModels:SceneHierarchyViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300"
     x:Name="View">
