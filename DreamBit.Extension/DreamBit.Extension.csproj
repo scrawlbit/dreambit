@@ -71,6 +71,9 @@
     <Compile Include="Components\ToolCommand.cs" />
     <Compile Include="Components\ToolWindow.cs" />
     <Compile Include="Controls\DialogView.cs" />
+    <Compile Include="Controls\Input\CheckBox.xaml.cs">
+      <DependentUpon>CheckBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Input\IconButton.cs" />
     <Compile Include="Controls\Containers\ExpansionPanel.cs" />
     <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
@@ -239,6 +242,10 @@
     <Content Include="Resources\Toolbars\SceneEditorIcons.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Input\CheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

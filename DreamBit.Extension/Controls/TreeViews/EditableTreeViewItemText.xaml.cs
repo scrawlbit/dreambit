@@ -9,9 +9,8 @@ namespace DreamBit.Extension.Controls.TreeViews
 {
     public partial class EditableTreeViewItemText : UserControl
     {
-        public delegate void TextChangedEventArgs(object sender, (object OldValue, object NewValue) e);
+        public delegate void TextChangedEventArgs(object sender, (string OldValue, string NewValue) e);
         private static readonly DependencyProperty<EditableTreeViewItemText, string> TextProperty;
-        public event TextChangedEventArgs Changed;
 
         static EditableTreeViewItemText()
         {
@@ -26,6 +25,7 @@ namespace DreamBit.Extension.Controls.TreeViews
             Loaded += OnLoaded;
         }
 
+        public event TextChangedEventArgs Changed;
         public string Text
         {
             get { return TextProperty.Get(this); }
@@ -95,7 +95,9 @@ namespace DreamBit.Extension.Controls.TreeViews
 
             Text = newValue;
             CancelEdition();
-            Changed?.Invoke(this, (oldValue, newValue));
+
+            if (oldValue != newValue)
+                Changed?.Invoke(this, (oldValue, newValue));
         }
         private void CancelEdition()
         {

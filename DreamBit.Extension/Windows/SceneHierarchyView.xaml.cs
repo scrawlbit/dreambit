@@ -39,7 +39,7 @@ namespace DreamBit.Extension.Windows
 
             editable.Loaded -= OnTextLoaded;
         }
-        private void OnTextChanged(object sender, (object OldValue, object NewValue) e)
+        private void OnTextChanged(object sender, (string OldValue, string NewValue) e)
         {
             var editable = (EditableTreeViewItemText)sender;
             var gameObject = (GameObject)editable.DataContext;
