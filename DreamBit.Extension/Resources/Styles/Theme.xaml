@@ -1,10 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
     <ResourceDictionary.MergedDictionaries>
+        <!-- STYLES -->
+        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/VisualStudio.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Border.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/WindowView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/TreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/DragAndDrop.xaml" />
+
+        <!-- CONTROLS -->
+        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/SceneInspect/InspectPanel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

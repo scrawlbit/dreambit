@@ -71,6 +71,8 @@
     <Compile Include="Components\ToolCommand.cs" />
     <Compile Include="Components\ToolWindow.cs" />
     <Compile Include="Controls\DialogView.cs" />
+    <Compile Include="Controls\Input\IconButton.cs" />
+    <Compile Include="Controls\SceneInspect\InspectPanel.cs" />
     <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
       <DependentUpon>EditableTreeViewItemText.xaml</DependentUpon>
     </Compile>
@@ -89,6 +91,7 @@
     <Compile Include="Helpers\ErrorHelper.cs" />
     <Compile Include="Helpers\ExtendedStateHelper.cs" />
     <Compile Include="Helpers\MarshalHelper.cs" />
+    <Compile Include="Helpers\TreeViewItemHelper.cs" />
     <Compile Include="Interop\Controls\DrawEventArgs.cs" />
     <Compile Include="Interop\Controls\DrawingSurface.cs" />
     <Compile Include="Interop\Controls\GameControl.cs" />
@@ -105,10 +108,14 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
+    <Compile Include="Resources\Styles\SceneInspect\InspectPanelStyle.cs">
+      <DependentUpon>InspectPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\EditFontDialogViewModel.cs" />
     <Compile Include="ViewModels\SceneHierarchyViewModel.cs" />
+    <Compile Include="ViewModels\SceneInspectViewModel.cs" />
     <Compile Include="Windows\Dialogs\EditFontDialog.xaml.cs">
       <DependentUpon>EditFontDialog.xaml</DependentUpon>
     </Compile>
@@ -132,6 +139,9 @@
     </Compile>
     <Compile Include="Windows\SceneInspectWindow.cs">
       <DependentUpon>SceneInspectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SceneInspect\ObjectInspect.xaml.cs">
+      <DependentUpon>ObjectInspect.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -217,10 +227,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DreamBitPackage.ico" />
+    <Resource Include="Resources\Icons\16\glyphDown.png" />
+    <Resource Include="Resources\Icons\16\glyphDown.white.png" />
     <Content Include="Resources\Icons\Cancel_16x.png" />
     <Content Include="Resources\Icons\Copy_16x.png" />
     <Content Include="Resources\Icons\Graphics3D_16x.png" />
     <Content Include="Resources\Icons\VideoCamera_16x.png" />
+    <Resource Include="Resources\Images\DottedRepeat.png" />
     <Content Include="Resources\Logo.ico" />
     <Content Include="Resources\Toolbars\SceneHierarchyIcons.png" />
     <Content Include="Resources\Toolbars\SceneEditorIcons.png" />
@@ -230,7 +243,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Border.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Styles\DragAndDrop.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\SceneInspect\InspectPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -239,6 +264,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\VisualStudio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -269,6 +298,10 @@
     <Page Include="Windows\SceneInspectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SceneInspect\ObjectInspect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup />

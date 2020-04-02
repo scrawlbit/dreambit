@@ -1,0 +1,128 @@
+﻿<ResourceDictionary
+    x:Class="DreamBit.Extension.Resources.Styles.SceneInspect.InspectPanelStyle"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sceneInspect="clr-namespace:DreamBit.Extension.Controls.SceneInspect"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input">
+
+    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" x:Key="PropertyNameStyle">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="5 0" />
+    </Style>
+
+    <Style TargetType="sceneInspect:InspectPanel">
+        <Style.Resources>
+            <!--CONVERTERS-->
+            <converters:ValueConverterGroup x:Key="VisibleIfNotNullConverter">
+                <converters:IsNullConverter />
+                <converters:InverseBooleanConverter />
+                <BooleanToVisibilityConverter />
+            </converters:ValueConverterGroup>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="FontSize" Value="9" />
+                <Setter Property="MinHeight" Value="0" />
+                <Setter Property="Margin" Value="0 1"></Setter>
+            </Style>
+
+            <!--<Style TargetType="states:ColorPicker">
+                <Setter Property="FontSize" Value="9" />
+                <Setter Property="MinHeight" Value="0" />
+                <Setter Property="Margin" Value="0 1 0 2" />
+            </Style>
+
+            <Style TargetType="states:FloatBox">
+                <Setter Property="Margin" Value="0 1" />
+            </Style>
+
+            <Style TargetType="dragAndDrop:FileReferenceBox">
+                <Setter Property="Margin" Value="0 1" />
+                <Setter Property="FontSize" Value="10" />
+            </Style>
+
+            <Style TargetType="states:CheckBox">
+                <Setter Property="Margin" Value="0 1" />
+            </Style>
+
+            <Style TargetType="states:TextBox">
+                <Setter Property="FontSize" Value="9" />
+            </Style>-->
+        </Style.Resources>
+
+        <!--TEMPLATE-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="sceneInspect:InspectPanel">
+                    <Border Margin="0 0 0 10" Style="{DynamicResource PanelBorderStyle}" Focusable="True">
+                        <StackPanel Background="{DynamicResource VisualStudioBackgroundBrush1}">
+                            <Grid Name="MainGrid">
+                                <!--SIZE-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--TITLE-->
+                                <TextBlock Name="Title" Grid.Column="0" Text="{TemplateBinding Header}" Padding="5 1 5 3" />
+
+                                <!--DOTTED TITLE BACKGROUND-->
+                                <Rectangle Name="DottedRepeater" Grid.Column="1" Height="5" Margin="2 0 5 0">
+                                    <Rectangle.OpacityMask>
+                                        <ImageBrush ImageSource="../../Images/DottedRepeat.png" TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 4 5" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+
+                                <!--MENU-->
+                                <input:IconButton x:Name="MenuButton"
+                                                  Grid.Column="2"
+                                                  Margin="0 1 5 0"
+                                                  Visibility="{TemplateBinding Menu, Converter={StaticResource VisibleIfNotNullConverter}}"
+                                                  Tag="{TemplateBinding MenuDataContext}"
+                                                  ContextMenu="{TemplateBinding Menu}"
+                                                  Click="OnMenuButtonClick"
+                                                  PressedColorBrush="{DynamicResource VisualStudioPanelButtonPressedBrush}"
+                                                  Style="{DynamicResource ExtraSmallIconButtonStyle}"/>
+                            </Grid>
+
+                            <!--CONTENT-->
+                            <StackPanel Background="{DynamicResource VisualStudioBackgroundBrush2}">
+                                <StackPanel.Resources>
+
+                                </StackPanel.Resources>
+
+                                <ContentPresenter Content="{TemplateBinding Content}"
+												ContentTemplate="{TemplateBinding ContentTemplate}"
+												Margin="5 4 5 4" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Highlight, RelativeSource={RelativeSource Self}}" Value="False">
+                            <Setter TargetName="DottedRepeater" Property="Fill" Value="{DynamicResource VisualStudioDottedRepeatBrush}" />
+                            <Setter TargetName="MenuButton" Property="Icon" Value="../../Icons/16/glyphDown.png" />
+                            <Setter TargetName="MenuButton" Property="MouseOverColorBrush" Value="{DynamicResource VisualStudioPanelButtonHoverBrush1}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Highlight, RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter TargetName="MainGrid" Property="Background" Value="{DynamicResource VisualStudioFocusedPanelBrush}" />
+                            <Setter TargetName="Title" Property="Foreground" Value="{DynamicResource WhiteBrush}" />
+                            <Setter TargetName="DottedRepeater" Property="Fill" Value="{DynamicResource WhiteBrush}" />
+                            <Setter TargetName="MenuButton" Property="MouseOverColorBrush" Value="{DynamicResource VisualStudioPanelButtonHoverBrush2}" />
+                            <Setter TargetName="MenuButton" Property="Icon" Value="../../Icons/16/glyphDown.white.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Menu.IsOpen, RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter TargetName="MenuButton" Property="Background" Value="{DynamicResource VisualStudioPanelButtonPressedBrush}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

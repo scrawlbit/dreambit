@@ -4,7 +4,7 @@ namespace Scrawlbit.Helpers
 {
     public static class ExpressionHelper
     {
-        public static string GetExpressionText(LambdaExpression expression)
+        public static string GetExpressionText(this LambdaExpression expression)
         {
             var text = string.Empty;
 

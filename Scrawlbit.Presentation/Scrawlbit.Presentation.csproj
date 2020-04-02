@@ -49,7 +49,9 @@
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CommandMethod.cs" />
     <Compile Include="Commands\CommandParameter.cs" />
+    <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
+    <Compile Include="Helpers\BindingHelper.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Converters\ArrayConverter.cs" />

@@ -1,0 +1,67 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input">
+
+    <Style TargetType="input:IconButton">
+        <Setter Property="Width" Value="33" />
+        <Setter Property="Height" Value="33" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Radius" Value="1" />
+        <Setter Property="MouseOverColorBrush" Value="{DynamicResource VisualStudioButtonHoverBrush}" />
+        <Setter Property="PressedColorBrush" Value="{DynamicResource VisualStudioButtonPressedBrush}" />
+        <Setter Property="CheckedBrush" Value="{DynamicResource VisualStudioButtonCheckedBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="input:IconButton">
+                    <Border Name="Border"
+                            Margin="0"
+                            Padding="{TemplateBinding Padding}"
+                            CornerRadius="{TemplateBinding Radius}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                        <Setter Property="Background" Value="{Binding MouseOverColorBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsPressed, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                        <Setter Property="Background" Value="{Binding PressedColorBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                        <Setter Property="BorderBrush" Value="{Binding CheckedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Image Source="{TemplateBinding Icon}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="input:IconButton" BasedOn="{StaticResource {x:Type input:IconButton}}" x:Key="SmallIconButtonStyle">
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Padding" Value="2" />
+    </Style>
+
+    <Style TargetType="input:IconButton" BasedOn="{StaticResource {x:Type input:IconButton}}" x:Key="ExtraSmallIconButtonStyle">
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Padding" Value="1" />
+    </Style>
+
+</ResourceDictionary>

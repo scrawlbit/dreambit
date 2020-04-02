@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DreamBit.Extension.Helpers;
+using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace DreamBit.Extension.Converters
 {
@@ -20,28 +18,9 @@ namespace DreamBit.Extension.Converters
 
             return new Thickness(Length * item.GetDepth(), 0, 0, 0);
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return DependencyProperty.UnsetValue;
-        }
-    }
-
-    public static class TreeViewItemExtensions
-    {
-        public static int GetDepth(this TreeViewItem item)
-        {
-            return item.GetAncestors().TakeWhile(e => !(e is TreeView)).OfType<TreeViewItem>().Count();
-        }
-
-        public static IEnumerable<DependencyObject> GetAncestors(this DependencyObject child)
-        {
-            var parent = VisualTreeHelper.GetParent(child);
-            while (parent != null)
-            {
-                yield return parent;
-                parent = VisualTreeHelper.GetParent(parent);
-            }
         }
     }
 }

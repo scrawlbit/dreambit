@@ -5,7 +5,41 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
+    xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
+    xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance viewModels:SceneInspectViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300">
 
+    <UserControl.Resources>
+        <!--<components:InterfaceTemplateSelector x:Key="InterfaceTemplateSelector" />-->
+
+        <converters:ValueConverterGroup x:Key="VisibleIfNotNullConverter">
+            <converters:IsNullConverter />
+            <converters:InverseBooleanConverter />
+            <BooleanToVisibilityConverter />
+        </converters:ValueConverterGroup>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Visibility="{Binding Editor.SelectedObject, Converter={StaticResource VisibleIfNotNullConverter}}">
+
+            <partials:ObjectInspect />
+
+        </StackPanel>
+        
+    </Grid>
+    
 </controls:WindowView>
