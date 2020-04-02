@@ -37,6 +37,10 @@ namespace DreamBit.General.State
                 Undo = () => obj.SetProperty(p, oldValue)
             };
         }
+        public static IStateCommand SetProperty<T, TProperty>(this Target<T> target, Expression<Func<T, TProperty>> property, ValueChangedEventArgs<TProperty> args, string stateDescription)
+        {
+            return SetProperty(target, property, args.OldValue, args.NewValue, stateDescription);
+        }
 
         #region Target
 

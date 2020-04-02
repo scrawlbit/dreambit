@@ -1,4 +1,5 @@
-﻿using Scrawlbit.Helpers;
+﻿using DreamBit.General.State;
+using Scrawlbit.Helpers;
 using Scrawlbit.Presentation.Dependency;
 using Scrawlbit.Presentation.Helpers;
 using System.Windows;
@@ -9,7 +10,7 @@ namespace DreamBit.Extension.Controls.TreeViews
 {
     public partial class EditableTreeViewItemText : UserControl
     {
-        public delegate void TextChangedEventArgs(object sender, (string OldValue, string NewValue) e);
+        public delegate void TextChangedEventArgs(object sender, ValueChangedEventArgs<string> e);
         private static readonly DependencyProperty<EditableTreeViewItemText, string> TextProperty;
 
         static EditableTreeViewItemText()

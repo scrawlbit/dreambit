@@ -11,13 +11,13 @@ namespace DreamBit.Extension.Windows.SceneInspect
             InitializeComponent();
         }
 
-        private void OnIsVisibleChanged(object sender, bool oldValue, bool newValue)
+        private void OnIsVisibleChanged(object sender, ValueChangedEventArgs<bool> e)
         {
             var viewModel = (SceneInspectViewModel)DataContext;
             GameObject obj = viewModel.Editor.SelectedObject;
 
-            string description = $"{obj.Name} changed to {(newValue ? "" : "not ")}visible";
-            IStateCommand command = obj.State().SetProperty(g => g.IsVisible, oldValue, newValue, description);
+            string description = $"{obj.Name} changed to {(e.NewValue ? "" : "not ")}visible";
+            IStateCommand command = obj.State().SetProperty(g => g.IsVisible, e, description);
 
             viewModel.State.Add(command);
         }

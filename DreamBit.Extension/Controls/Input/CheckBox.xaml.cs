@@ -1,11 +1,12 @@
-﻿using Scrawlbit.Presentation.Dependency;
+﻿using DreamBit.General.State;
+using Scrawlbit.Presentation.Dependency;
 using System.Windows;
 
 namespace DreamBit.Extension.Controls.Input
 {
     public partial class CheckBox
     {
-        public delegate void CheckBoxEventArgs(object sender, bool oldValue, bool newValue);
+        public delegate void CheckBoxEventArgs(object sender, ValueChangedEventArgs<bool> e);
         private static readonly DependencyProperty<CheckBox, bool> IsCheckedProperty;
         private bool _initialValue;
 
@@ -36,7 +37,7 @@ namespace DreamBit.Extension.Controls.Input
             var currentValue = Toggle.IsChecked ?? false;
 
             if (currentValue != _initialValue)
-                Changed?.Invoke(this, _initialValue, currentValue);
+                Changed?.Invoke(this, (_initialValue, currentValue));
         }
     }
 }

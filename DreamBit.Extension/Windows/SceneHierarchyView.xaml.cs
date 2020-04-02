@@ -39,13 +39,13 @@ namespace DreamBit.Extension.Windows
 
             editable.Loaded -= OnTextLoaded;
         }
-        private void OnTextChanged(object sender, (string OldValue, string NewValue) e)
+        private void OnTextChanged(object sender, ValueChangedEventArgs<string> e)
         {
             var editable = (EditableTreeViewItemText)sender;
             var gameObject = (GameObject)editable.DataContext;
 
             string description = $"{e.OldValue} renamed to {e.NewValue}";
-            IStateCommand command = gameObject.State().SetProperty(g => g.Name, e.OldValue, e.NewValue, description);
+            IStateCommand command = gameObject.State().SetProperty(g => g.Name, e, description);
 
             _stateManager.Add(command);
         }

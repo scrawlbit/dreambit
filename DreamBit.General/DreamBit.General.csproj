@@ -45,6 +45,7 @@
     <Compile Include="State\IStateUnit.cs" />
     <Compile Include="State\StateManager.cs" />
     <Compile Include="State\StateScope.cs" />
+    <Compile Include="State\ValueChanged.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scrawlbit.Json\Scrawlbit.Json.csproj">
