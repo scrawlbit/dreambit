@@ -5,25 +5,25 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace DreamBit.Extension.Controls.SceneInspect
+namespace DreamBit.Extension.Controls.Containers
 {
-    public class InspectPanel : ContentControl
+    public class ExpansionPanel : ContentControl
     {
-        public static readonly DependencyProperty<InspectPanel, string> HeaderProperty;
-        public static readonly DependencyProperty<InspectPanel, ContextMenu> MenuProperty;
-        public static readonly DependencyProperty<InspectPanel, object> MenuDataContextProperty;
-        public static readonly DependencyProperty<InspectPanel, bool> HighlightProperty;
+        public static readonly DependencyProperty<ExpansionPanel, string> HeaderProperty;
+        public static readonly DependencyProperty<ExpansionPanel, ContextMenu> MenuProperty;
+        public static readonly DependencyProperty<ExpansionPanel, object> MenuDataContextProperty;
+        public static readonly DependencyProperty<ExpansionPanel, bool> HighlightProperty;
 
-        static InspectPanel()
+        static ExpansionPanel()
         {
-            var dependency = new DependencyRegistry<InspectPanel>();
+            var dependency = new DependencyRegistry<ExpansionPanel>();
 
             HeaderProperty = dependency.Property(i => i.Header);
             MenuProperty = dependency.Property(i => i.Menu);
             MenuDataContextProperty = dependency.Property(i => i.MenuDataContext);
             HighlightProperty = dependency.Property(i => i.Highlight);
         }
-        public InspectPanel()
+        public ExpansionPanel()
         {
             if (ApplicationHelper.IsInDesignMode())
                 return;

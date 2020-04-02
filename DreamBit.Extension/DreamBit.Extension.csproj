@@ -72,7 +72,7 @@
     <Compile Include="Components\ToolWindow.cs" />
     <Compile Include="Controls\DialogView.cs" />
     <Compile Include="Controls\Input\IconButton.cs" />
-    <Compile Include="Controls\SceneInspect\InspectPanel.cs" />
+    <Compile Include="Controls\Containers\ExpansionPanel.cs" />
     <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
       <DependentUpon>EditableTreeViewItemText.xaml</DependentUpon>
     </Compile>
@@ -108,8 +108,8 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
-    <Compile Include="Resources\Styles\SceneInspect\InspectPanelStyle.cs">
-      <DependentUpon>InspectPanel.xaml</DependentUpon>
+    <Compile Include="Resources\Styles\ExpansionPanelStyle.cs">
+      <DependentUpon>ExpansionPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
@@ -243,7 +243,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\Styles\Button.xaml">
+    <Page Include="Resources\Styles\IconButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -255,7 +255,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Styles\SceneInspect\InspectPanel.xaml">
+    <Page Include="Resources\Styles\ExpansionPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

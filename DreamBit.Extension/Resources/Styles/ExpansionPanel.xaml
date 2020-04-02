@@ -1,17 +1,17 @@
 ﻿<ResourceDictionary
-    x:Class="DreamBit.Extension.Resources.Styles.SceneInspect.InspectPanelStyle"
+    x:Class="DreamBit.Extension.Resources.Styles.SceneInspect.ExpansionPanelStyle"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sceneInspect="clr-namespace:DreamBit.Extension.Controls.SceneInspect"
-    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
-    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input">
+    xmlns:containers="clr-namespace:DreamBit.Extension.Controls.Containers"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation">
 
     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" x:Key="PropertyNameStyle">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="5 0" />
     </Style>
 
-    <Style TargetType="sceneInspect:InspectPanel">
+    <Style TargetType="containers:ExpansionPanel">
         <Style.Resources>
             <!--CONVERTERS-->
             <converters:ValueConverterGroup x:Key="VisibleIfNotNullConverter">
@@ -57,7 +57,7 @@
         <!--TEMPLATE-->
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="sceneInspect:InspectPanel">
+                <ControlTemplate TargetType="containers:ExpansionPanel">
                     <Border Margin="0 0 0 10" Style="{DynamicResource PanelBorderStyle}" Focusable="True">
                         <StackPanel Background="{DynamicResource VisualStudioBackgroundBrush1}">
                             <Grid Name="MainGrid">
