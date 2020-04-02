@@ -1,16 +1,16 @@
 ﻿<controls:WindowView
     x:Class="DreamBit.Extension.Windows.SceneHierarchyView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
-    xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
-    xmlns:elements="clr-namespace:DreamBit.Game.Elements;assembly=DreamBit.Game"
     xmlns:treeViews="clr-namespace:DreamBit.Extension.Controls.TreeViews"
+    xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
+    xmlns:elements="clr-namespace:DreamBit.Game.Elements;assembly=DreamBit.Game"
+    xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
     xmlns:dragAndDrop="clr-namespace:Scrawlbit.Presentation.DragAndDrop;assembly=Scrawlbit.Presentation"
-    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:SceneHierarchyViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300"
@@ -34,11 +34,11 @@
             </ContextMenu>
         </TreeView.ContextMenu>
 
-        <behaviors:Interaction.Behaviors>
+        <i:Interaction.Behaviors>
             <treeViews:TreeViewMultiSelectBehavior SelectedValue="{Binding Editor.SelectedObject, Mode=TwoWay}" SelectedValues="{Binding Editor.SelectedObjects}" />
             <treeViews:ExtendedTreeViewDroppableBehavior DropCommand="{Binding MoveGameObjectCommand}" />
             <dragAndDrop:MultipleChildDraggableBehavior SelectedChildrenValues="{Binding Editor.SelectedObjects}" />
-        </behaviors:Interaction.Behaviors>
+        </i:Interaction.Behaviors>
 
         <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">

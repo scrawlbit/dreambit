@@ -36,7 +36,12 @@
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Visibility="{Binding Editor.SelectedObject, Converter={StaticResource VisibleIfNotNullConverter}}">
 
+            <!--INFORMATION-->
             <partials:ObjectInspect />
+
+            <!--TRANSFORM-->
+            <partials:TransformInspect />
+
 
         </StackPanel>
         

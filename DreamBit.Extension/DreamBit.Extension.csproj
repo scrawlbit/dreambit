@@ -74,6 +74,9 @@
     <Compile Include="Controls\Input\CheckBox.xaml.cs">
       <DependentUpon>CheckBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Input\FloatBox.xaml.cs">
+      <DependentUpon>FloatBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Input\IconButton.cs" />
     <Compile Include="Controls\Containers\ExpansionPanel.cs" />
     <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
@@ -145,6 +148,9 @@
     </Compile>
     <Compile Include="Windows\SceneInspect\ObjectInspect.xaml.cs">
       <DependentUpon>ObjectInspect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SceneInspect\TransformInspect.xaml.cs">
+      <DependentUpon>TransformInspect.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +252,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Input\FloatBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -307,6 +317,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\SceneInspect\ObjectInspect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SceneInspect\TransformInspect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
