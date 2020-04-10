@@ -25,7 +25,6 @@ namespace DreamBit.Extension.Module.Selection
         private bool _hasMultipleSelection;
         private Rectangle _area;
         private Vector2 _areaOffset;
-        private bool _trackingChanges;
 
         public SelectionObject(IEditor editor)
         {
@@ -113,16 +112,12 @@ namespace DreamBit.Extension.Module.Selection
 
         private void Refresh()
         {
-            _trackingChanges = false;
-
             IsVisible = _mode.IsVisible();
             Transform.Position = _mode.Position();
             Transform.Rotation = _mode.Rotation();
             Transform.Scale = _mode.Scale();
             UpdateName();
             UpdateArea();
-
-            _trackingChanges = true;
         }
     }
 }
