@@ -108,6 +108,12 @@
     <Compile Include="Interop\Util\Disposer.cs" />
     <Compile Include="Management\Editor.cs" />
     <Compile Include="Management\ProjectManager.cs" />
+    <Compile Include="Module\Selection\ISelectionMode.cs" />
+    <Compile Include="Module\Selection\MultipleSelectionMode.cs" />
+    <Compile Include="Module\Selection\NoSelectionMode.cs" />
+    <Compile Include="Module\Selection\SingleSelectionMode.cs" />
+    <Compile Include="Module\Selection\SelectionObject.cs" />
+    <Compile Include="Module\Selection\SelectionTransform.cs" />
     <Compile Include="Module\TestGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DreamBitPackage.cs">

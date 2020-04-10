@@ -4,12 +4,14 @@ using DreamBit.Extension.Commands.Project;
 using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
+using DreamBit.Extension.Module.Selection;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
 using DreamBit.Modularization.Management;
 using Microsoft.VisualStudio.Shell;
 using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Mapping;
+using System;
 
 namespace DreamBit.Extension.Properties
 {
@@ -35,6 +37,7 @@ namespace DreamBit.Extension.Properties
             Commands();
             Components();
             Management();
+            Module();
             ViewModels();
         }
 
@@ -77,6 +80,10 @@ namespace DreamBit.Extension.Properties
         {
             _builder.Register<IProjectManager>().Singleton<ProjectManager>();
             _builder.Register<IEditor>().Singleton<Editor>();
+        }
+        private void Module()
+        {
+            _builder.Register<ISelectionObject>().Singleton<SelectionObject>();
         }
         private void ViewModels()
         {

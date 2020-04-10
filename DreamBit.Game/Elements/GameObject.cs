@@ -1,5 +1,8 @@
-﻿using Scrawlbit.Notification;
+﻿using Microsoft.Xna.Framework;
+using Scrawlbit.MonoGame.Helpers;
+using Scrawlbit.Notification;
 using System;
+using System.Linq;
 
 namespace DreamBit.Game.Elements
 {
@@ -65,6 +68,44 @@ namespace DreamBit.Game.Elements
         {
             get => _isMoving;
             set => Set(ref _isMoving, value);
+        }
+
+        public Rectangle Area()
+        {
+            Rectangle[] areas =
+            {
+                // TODO calculo de área de componentess
+                Rectangle.Empty, //gameObject.ImageArea(),
+                Rectangle.Empty //gameObject.TextArea()
+            };
+
+            var points = areas.SelectMany(a => new[]
+            {
+                a.LeftTop(),
+                a.RightTop(),
+                a.RightBottom(),
+                a.LeftBottom()
+            }).ToArray();
+
+            var minX = points.Min(p => p.X);
+            var minY = points.Min(p => p.Y);
+            var maxX = points.Max(p => p.X);
+            var maxY = points.Max(p => p.Y);
+
+            var matrix = Transform.Matrix;
+            var leftTop = VectorHelper.Transform(minX, minY, matrix);
+            var rightBottom = VectorHelper.Transform(maxX, maxY, matrix);
+
+            return new Rectangle(leftTop.ToPoint(), (rightBottom - leftTop).ToPoint());
+        }
+        public Rectangle TotalArea()
+        {
+            var area = Area();
+
+            foreach (var child in Children)
+                area = Rectangle.Union(area, child.TotalArea());
+
+            return area;
         }
     }
 }

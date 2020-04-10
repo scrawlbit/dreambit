@@ -39,6 +39,7 @@
     <Compile Include="Elements\GameObjectCollection.cs" />
     <Compile Include="Elements\GameObjectComponent.cs" />
     <Compile Include="Elements\GameObjectComponentCollection.cs" />
+    <Compile Include="Elements\GameObjectHelper.cs" />
     <Compile Include="Elements\Scene.cs" />
     <Compile Include="Elements\Transform.cs" />
     <Compile Include="Elements\TransformChange.cs" />

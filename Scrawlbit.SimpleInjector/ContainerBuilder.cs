@@ -28,7 +28,8 @@ namespace Scrawlbit.Injection
 
         public IContainer Build()
         {
-            _container.ResolveUnregisteredType += ResolveFuncFactories;
+            _container.ResolveUnregisteredType += ResolveUnregisteredType;
+            _container.Options.SuppressLifestyleMismatchVerification = true;
             _container.RegisterInstance<IContainer>(_resolver);
 
             _builder.Build();
@@ -36,7 +37,12 @@ namespace Scrawlbit.Injection
             return _resolver;
         }
 
-        private void ResolveFuncFactories(object sender, UnregisteredTypeEventArgs e)
+        private void ResolveUnregisteredType(object sender, UnregisteredTypeEventArgs e)
+        {
+            ResolveFuncFactories(e);
+            ResolveLazyObjects(e);
+        }
+        private void ResolveFuncFactories(UnregisteredTypeEventArgs e)
         {
             var type = e.UnregisteredServiceType;
 
@@ -45,16 +51,29 @@ namespace Scrawlbit.Injection
 
             var instanceType = type.GetGenericArguments().First();
             var registration = _container.GetRegistration(instanceType, true);
-            
-            Func<object> getInstance = () => registration.GetInstance();
+
+            e.Register(registration.GetInstance);
+        }
+        private void ResolveLazyObjects(UnregisteredTypeEventArgs e)
+        {
+            var type = e.UnregisteredServiceType;
+
+            if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Lazy<>))
+                return;
+
+            var instanceType = type.GetGenericArguments().First();
+            var lazyType = typeof(Lazy<>).MakeGenericType(instanceType);
+            var registration = _container.GetRegistration(instanceType, true);
+
+            Func<object> getInstance = registration.GetInstance;
 
             var funcType = typeof(Func<>).MakeGenericType(instanceType);
-            
             var call = Expression.Call(Expression.Constant(getInstance.Target), getInstance.Method);
             var cast = Expression.Convert(call, instanceType);
             var lambda = Expression.Lambda(funcType, cast);
-            
-            e.Register(lambda);
+            var compiled = lambda.Compile();
+
+            e.Register(() => Activator.CreateInstance(lazyType, compiled));
         }
     }
 }

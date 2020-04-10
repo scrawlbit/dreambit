@@ -9,9 +9,9 @@ namespace DreamBit.Pipeline.Translators
     {
         private readonly Lazy<IPipeline> _pipeline;
 
-        public GlobalPropertiesTranslator(Func<IPipeline> pipeline)
+        public GlobalPropertiesTranslator(Lazy<IPipeline> pipeline)
         {
-            _pipeline = new Lazy<IPipeline>(pipeline);
+            _pipeline = pipeline;
         }
 
         private IGlobalProperties GlobalProperties => _pipeline.Value.GlobalProperties;

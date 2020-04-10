@@ -12,7 +12,7 @@
     d:DesignHeight="450" d:DesignWidth="800">
 
     <containers:ExpansionPanel Header="Transform">
-        <Grid DataContext="{Binding Editor.SelectedObject}">
+        <Grid DataContext="{Binding Editor.Selection}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
