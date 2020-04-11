@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Scrawlbit.Helpers;
 using System;
+using System.Globalization;
 
 namespace DreamBit.Game.Serialization.Converters
 {
@@ -12,15 +13,16 @@ namespace DreamBit.Game.Serialization.Converters
         {
             JToken token = JToken.Load(reader);
             string[] parts = token.ToString().Split(';');
-            float x = parts[0].ToFloat();
-            float y = parts[1].ToFloat();
+            float x = parts[0].ToFloat(CultureInfo.InvariantCulture);
+            float y = parts[1].ToFloat(CultureInfo.InvariantCulture);
 
             return new Vector2(x, y);
         }
         public override void WriteJson(JsonWriter writer, Vector2 value, JsonSerializer serializer)
         {
-            string s = $"{value.X};{value.Y}";
-            JToken token = JToken.FromObject(s);
+            string x = value.X.ToString(CultureInfo.InvariantCulture);
+            string y = value.Y.ToString(CultureInfo.InvariantCulture);
+            JToken token = JToken.FromObject($"{x};{y}");
 
             token.WriteTo(writer);
         }

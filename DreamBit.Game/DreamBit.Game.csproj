@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\Components\ImageRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
     <Compile Include="Elements\GameObjectCollection.cs" />
     <Compile Include="Elements\GameObjectComponent.cs" />
@@ -49,7 +50,10 @@
     <Compile Include="Properties\GameInjectionModule.cs" />
     <Compile Include="Registrations\SceneFileRegistration.cs" />
     <Compile Include="Registrations\ScriptFileRegistration.cs" />
+    <Compile Include="Serialization\Converters\ColorConverter.cs" />
+    <Compile Include="Serialization\Converters\GameObjectComponentConverter.cs" />
     <Compile Include="Serialization\Converters\GameObjectConverter.cs" />
+    <Compile Include="Serialization\Converters\ProjectFileConverter.cs" />
     <Compile Include="Serialization\Converters\SceneConverter.cs" />
     <Compile Include="Serialization\Converters\Vector2Converter.cs" />
     <Compile Include="Serialization\GameElementsParser.cs" />

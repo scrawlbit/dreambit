@@ -31,11 +31,11 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Scale" />
             <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Rotation" />
 
-            <TextBlock Grid.Column="1" Grid.Row="0" Text="X" Style="{StaticResource PropertyNameStyle}" />
-            <TextBlock Grid.Column="1" Grid.Row="1" Text="X" Style="{StaticResource PropertyNameStyle}" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="X" Style="{DynamicResource PropertyNameStyle}" />
 
-            <TextBlock Grid.Column="3" Grid.Row="0" Text="Y" Style="{StaticResource PropertyNameStyle}" />
-            <TextBlock Grid.Column="3" Grid.Row="1" Text="Y" Style="{StaticResource PropertyNameStyle}" />
+            <TextBlock Grid.Column="3" Grid.Row="0" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+            <TextBlock Grid.Column="3" Grid.Row="1" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
 
             <!-- POSITION -->
             <!--<input:FloatBox Grid.Row="0" Grid.Column="2" Value="{Binding Transform.X, Mode=TwoWay}" StateManager="{StaticResource PositionStateManager}" />

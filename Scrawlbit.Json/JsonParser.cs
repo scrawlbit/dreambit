@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -21,6 +22,7 @@ namespace Scrawlbit.Json
         public JsonParser()
         {
             _settings = new JsonSerializerSettings();
+            _settings.Culture = CultureInfo.InvariantCulture;
 
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             Formatting = Formatting.Indented;

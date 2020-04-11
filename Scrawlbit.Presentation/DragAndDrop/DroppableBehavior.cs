@@ -59,12 +59,17 @@ namespace Scrawlbit.Presentation.DragAndDrop
 
         protected virtual void OnDragEnter(object sender, DragEventArgs e)
         {
-            IsFiles = CanDropFiles && ((DataObject)e.Data).ContainsFileDropList();
+            DataObject data = (DataObject)e.Data;
+
+            IsFiles = CanDropFiles && data.ContainsFileDropList();
 
             if (IsFiles)
-                Data = ((DataObject)e.Data).GetFileDropList().Cast<object>().ToArray();
+                Data = data.GetFileDropList().Cast<object>().ToArray();
             else
-                Data = e.Data.GetData(typeof(object[])) as object[];
+                Data = data.GetData(typeof(object[])) as object[];
+
+            if (Data == null)
+                Data = new[] { data.GetText() };
 
             if (Data?.Length == 0)
                 Data = null;

@@ -2,6 +2,7 @@
 using DreamBit.Extension.Commands.Editor;
 using DreamBit.Extension.Commands.Project;
 using DreamBit.Extension.Commands.SceneHierarchy;
+using DreamBit.Extension.Commands.SceneInspect;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Module.Selection;
@@ -66,6 +67,9 @@ namespace DreamBit.Extension.Properties
             _builder.Register<IPasteGameObjectCommand>().Singleton<PasteGameObjectCommand>();
             _builder.Register<IRemoveGameObjectCommand>().Singleton<RemoveGameObjectCommand>();
             _builder.Register<IMoveGameObjectCommand>().Singleton<MoveGameObjectCommand>();
+
+            // SceneInspect
+            _builder.Register<IDropOnInspectCommand>().Singleton<DropOnInspectCommand>();
         }
         private void Components()
         {

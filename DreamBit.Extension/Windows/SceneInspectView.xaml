@@ -1,13 +1,15 @@
 ﻿<controls:WindowView
     x:Class="DreamBit.Extension.Windows.SceneInspectView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
-    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
+    xmlns:dragAndDrop="clr-namespace:Scrawlbit.Presentation.DragAndDrop;assembly=Scrawlbit.Presentation"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:SceneInspectViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300">
@@ -29,11 +31,10 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                     Visibility="{Binding Editor.SelectedObject, Converter={StaticResource VisibleIfNotNullConverter}}">
 
             <!--INFORMATION-->
@@ -42,9 +43,13 @@
             <!--TRANSFORM-->
             <partials:TransformInspect />
 
-
         </StackPanel>
-        
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Transparent">
+            <i:Interaction.Behaviors>
+                <dragAndDrop:DroppableBehavior DropCommand="{Binding DropOnInspectCommand}" />
+            </i:Interaction.Behaviors>
+        </Grid>
     </Grid>
-    
+
 </controls:WindowView>

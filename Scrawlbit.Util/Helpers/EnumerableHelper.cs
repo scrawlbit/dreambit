@@ -85,5 +85,10 @@ namespace Scrawlbit.Helpers
         {
             return items.Contains(item);
         }
+
+        public static IEnumerable<T> NotNulls<T>(this IEnumerable<T> source)
+        {
+            return source.Where(i => !Equals(i, null));
+        }
     }
 }

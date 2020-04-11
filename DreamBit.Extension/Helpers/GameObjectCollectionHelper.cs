@@ -5,7 +5,7 @@ using static DreamBit.General.State.StateHelper;
 
 namespace DreamBit.Extension.Helpers
 {
-    public static class ExtendedStateHelper
+    public static class GameObjectCollectionHelper
     {
         public static IStateCommand Add(this Target<IGameObjectCollection> target, GameObject gameObject, string stateDescription)
         {

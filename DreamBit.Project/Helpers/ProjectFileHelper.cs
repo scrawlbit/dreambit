@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DreamBit.Project.Helpers
@@ -13,6 +14,15 @@ namespace DreamBit.Project.Helpers
         public static ProjectFile GetByPath(this IEnumerable<ProjectFile> files, string path)
         {
             return files.SingleOrDefault(f => f.Path == path);
+        }
+        public static IEnumerable<ProjectFile> GetByPaths(this IEnumerable<ProjectFile> files, IEnumerable<string> paths)
+        {
+            return paths.Select(files.GetByPath);
+        }
+
+        public static ProjectFile GetById(this IEnumerable<ProjectFile> files, Guid id)
+        {
+            return files.SingleOrDefault(f => f.Id == id);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Scrawlbit.Json
 {
@@ -8,6 +9,12 @@ namespace Scrawlbit.Json
         public static JToken SetProperty(this JObject obj, string property, object value, JsonSerializer serializer = null)
         {
             return obj[property] = JToken.FromObject(value, serializer);
+        }
+        public static JToken SetProperty(this JObject obj, JsonProperty property, object from, JsonSerializer serializer = null)
+        {
+            object value = property.ValueProvider.GetValue(from);
+
+            return obj.SetProperty(property.PropertyName, value, serializer);
         }
 
         public static bool TryGetPropertyValue<T>(this JObject obj, string property, out T value)

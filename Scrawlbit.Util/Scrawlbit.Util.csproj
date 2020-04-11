@@ -45,6 +45,7 @@
     <Compile Include="Comparison\FuncEqualityComparer.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="Helpers\ByteHelper.cs" />
     <Compile Include="Helpers\CollectionHelper.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\EnumerableHelper.cs" />
