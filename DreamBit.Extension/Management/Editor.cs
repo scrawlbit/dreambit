@@ -40,7 +40,10 @@ namespace DreamBit.Extension.Management
             set
             {
                 if (Set(ref _openedSceneFile, value))
+                {
+                    value?.Load();
                     OpenedScene = value?.Scene;
+                }
             }
         }
         public Scene OpenedScene
@@ -49,7 +52,11 @@ namespace DreamBit.Extension.Management
             private set
             {
                 if (Set(ref _openedScene, value))
+                {
                     _state.Reset();
+                    SelectedObject = null;
+                    SelectedObjects.Clear();
+                }
             }
         }
         public GameObject SelectedObject
