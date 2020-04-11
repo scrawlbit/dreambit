@@ -15,11 +15,6 @@ namespace DreamBit.Project.Helpers
         {
             return files.SingleOrDefault(f => f.Path == path);
         }
-        public static IEnumerable<ProjectFile> GetByPaths(this IEnumerable<ProjectFile> files, IEnumerable<string> paths)
-        {
-            return paths.Select(files.GetByPath);
-        }
-
         public static ProjectFile GetById(this IEnumerable<ProjectFile> files, Guid id)
         {
             return files.SingleOrDefault(f => f.Id == id);

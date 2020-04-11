@@ -6,12 +6,9 @@ using DreamBit.General.State;
 using DreamBit.Pipeline.Files;
 using DreamBit.Project;
 using DreamBit.Project.Helpers;
-using Scrawlbit.Helpers;
 using Scrawlbit.Presentation.Commands;
 using Scrawlbit.Presentation.DragAndDrop;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+using System;
 using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.SceneInspect
@@ -37,39 +34,50 @@ namespace DreamBit.Extension.Commands.SceneInspect
 
         public bool CanExecute(DropEventArgs args)
         {
-            if (_editor.SelectedObjects.Count != 1)
+            if (_editor.SelectedObjects.Count != 1 && args.Data.Length == 1)
                 return false;
 
-            foreach (var item in args.Data)
-            {
-                if (!(item is string path)) return false;
-                if (!path.StartsWith(_project.Folder)) return false;
-            }
+            string path = args.Data[0] as string;
 
-            return true;
+            if (path?.StartsWith(_project.Folder) != true)
+                return false;
+
+            GameObject gameObject = _editor.SelectedObject;
+            ProjectFile file = _project.Files.GetByPath(path);
+
+            return CanAddComponent(gameObject, file);
         }
         public void Execute(DropEventArgs args)
         {
-            ProjectFile[] files = _project.Files.GetByPaths(args.Data.Cast<string>()).NotNulls().ToArray();
+            string path = (string)args.Data[0];
+            ProjectFile file = _project.Files.GetByPath(path);
             GameObject gameObject = _editor.SelectedObject;
-            var components = new List<GameObjectComponent>();
+            GameObjectComponent component = CreateComponent(file);
 
-            foreach (var file in files)
+            string name = component.GetType().Name;
+            string description = $"{name} added to {gameObject.Name}";
+            IStateCommand command = gameObject.Components.State().Add(component, description);
+
+            _state.Execute(command);
+        }
+
+        private static bool CanAddComponent(GameObject gameObject, ProjectFile file)
+        {
+            switch (file)
             {
-                if (file is PipelineImage image)
-                    components.Add(new ImageRenderer { Image = image });
+                case PipelineImage _: return !gameObject.Components.Contains<ImageRenderer>();
             }
 
-            using (_state.Scope($"Components added to {gameObject.Name}"))
+            return false;
+        }
+        private static GameObjectComponent CreateComponent(ProjectFile file)
+        {
+            switch (file)
             {
-                foreach (var component in components)
-                {
-                    string name = component.GetType().Name;
-                    string description = $"{name} added to {gameObject.Name}";
-                    IStateCommand command = gameObject.Components.State().Add(component, description);
+                case PipelineImage image: return new ImageRenderer { Image = image };
 
-                    _state.Execute(command);
-                }
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(file));
             }
         }
     }

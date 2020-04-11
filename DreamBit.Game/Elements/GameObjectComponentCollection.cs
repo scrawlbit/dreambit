@@ -1,11 +1,12 @@
 ﻿using Scrawlbit.Collections;
-using Scrawlbit.Helpers;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace DreamBit.Game.Elements
 {
     public interface IGameObjectComponentCollection : IReadOnlyObservableCollection<GameObjectComponent>
     {
+        bool Contains<TComponent>() where TComponent : GameObjectComponent;
+
         void Add(params GameObjectComponent[] components);
         void Remove(GameObjectComponent component);
     }
@@ -17,6 +18,11 @@ namespace DreamBit.Game.Elements
         public GameObjectComponentCollection(GameObject target)
         {
             _target = target;
+        }
+
+        public bool Contains<TComponent>() where TComponent : GameObjectComponent
+        {
+            return this.Any(c => c is TComponent);
         }
 
         void IGameObjectComponentCollection.Add(params GameObjectComponent[] components)
