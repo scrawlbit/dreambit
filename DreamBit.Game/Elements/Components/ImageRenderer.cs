@@ -1,4 +1,4 @@
-﻿using DreamBit.Pipeline.Files;
+﻿using DreamBit.Game.Content;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Game.Elements.Components
@@ -14,6 +14,6 @@ namespace DreamBit.Game.Elements.Components
         public bool FlipVertically { get; set; }
         public bool FlipHorizontally { get; set; }
         public Vector2 Origin { get; set; }
-        public PipelineImage Image { get; set; }
+        public Image Image { get; set; }
     }
 }

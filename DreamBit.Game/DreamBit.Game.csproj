@@ -35,6 +35,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content\ContentFactory.cs" />
+    <Compile Include="Content\IContent.cs" />
+    <Compile Include="Content\Image.cs" />
     <Compile Include="Elements\Components\ImageRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
     <Compile Include="Elements\GameObjectCollection.cs" />
@@ -53,7 +56,7 @@
     <Compile Include="Serialization\Converters\ColorConverter.cs" />
     <Compile Include="Serialization\Converters\GameComponentConverter.cs" />
     <Compile Include="Serialization\Converters\GameObjectConverter.cs" />
-    <Compile Include="Serialization\Converters\ProjectFileConverter.cs" />
+    <Compile Include="Serialization\Converters\ContentConverter.cs" />
     <Compile Include="Serialization\Converters\SceneConverter.cs" />
     <Compile Include="Serialization\Converters\Vector2Converter.cs" />
     <Compile Include="Serialization\GameElementsParser.cs" />
