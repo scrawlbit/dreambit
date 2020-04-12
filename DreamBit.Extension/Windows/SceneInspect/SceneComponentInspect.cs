@@ -66,7 +66,7 @@ namespace DreamBit.Extension.Windows.SceneInspect
             menu.Items.Add(item);
             item.Header = "Remove";
 
-            BindingOperations.SetBinding(item, MenuItem.CommandProperty, new ContextMenuBinding(nameof(ViewModel.RemoveGameObjectComponentCommand)));
+            BindingOperations.SetBinding(item, MenuItem.CommandProperty, new ContextMenuBinding(nameof(ViewModel.RemoveGameComponentCommand)));
             BindingOperations.SetBinding(item, MenuItem.CommandParameterProperty, new Binding());
 
             Menu = menu;

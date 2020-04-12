@@ -11,17 +11,17 @@ namespace DreamBit.Extension.ViewModels
             IEditor editor,
             IStateManager state,
             IDropOnInspectCommand dropOnInspectCommand,
-            IRemoveGameObjectComponentCommand removeGameObjectComponentCommand)
+            IRemoveGameComponentCommand removeGameComponentCommand)
         {
             Editor = editor;
             State = state;
             DropOnInspectCommand = dropOnInspectCommand;
-            RemoveGameObjectComponentCommand = removeGameObjectComponentCommand;
+            RemoveGameComponentCommand = removeGameComponentCommand;
         }
 
         public IEditor Editor { get; }
         public IStateManager State { get; }
         public ICommand DropOnInspectCommand { get; }
-        public ICommand RemoveGameObjectComponentCommand { get; }
+        public ICommand RemoveGameComponentCommand { get; }
     }
 }

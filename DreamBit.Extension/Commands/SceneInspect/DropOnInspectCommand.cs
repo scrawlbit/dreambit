@@ -52,7 +52,7 @@ namespace DreamBit.Extension.Commands.SceneInspect
             string path = (string)args.Data[0];
             ProjectFile file = _project.Files.GetByPath(path);
             GameObject gameObject = _editor.SelectedObject;
-            GameObjectComponent component = CreateComponent(file);
+            GameComponent component = CreateComponent(file);
 
             string name = component.GetType().Name;
             string description = $"{name} added to {gameObject.Name}";
@@ -70,7 +70,7 @@ namespace DreamBit.Extension.Commands.SceneInspect
 
             return false;
         }
-        private static GameObjectComponent CreateComponent(ProjectFile file)
+        private static GameComponent CreateComponent(ProjectFile file)
         {
             switch (file)
             {

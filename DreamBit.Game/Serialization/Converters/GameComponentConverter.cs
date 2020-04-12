@@ -8,22 +8,22 @@ using System;
 
 namespace DreamBit.Game.Serialization.Converters
 {
-    internal class GameObjectComponentConverter : JsonConverter<GameObjectComponent>
+    internal class GameComponentConverter : JsonConverter<GameComponent>
     {
         private const string Type = "Type";
         private const string Image = "Image";
 
-        public override GameObjectComponent ReadJson(JsonReader reader, Type objectType, GameObjectComponent existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override GameComponent ReadJson(JsonReader reader, Type objectType, GameComponent existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             JObject jObject = JObject.Load(reader);
             string typeName = jObject[Type].ToString();
-            GameObjectComponent component = CreateInstance(typeName);
+            GameComponent component = CreateInstance(typeName);
 
             serializer.Populate(jObject.CreateReader(), component);
 
             return component;
         }
-        public override void WriteJson(JsonWriter writer, GameObjectComponent value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, GameComponent value, JsonSerializer serializer)
         {
             JsonObjectContract contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(value.GetType());
             JObject obj = new JObject();
@@ -41,7 +41,7 @@ namespace DreamBit.Game.Serialization.Converters
             obj.WriteTo(writer);
         }
 
-        private static string GetTypeName(GameObjectComponent value)
+        private static string GetTypeName(GameComponent value)
         {
             switch (value)
             {
@@ -49,7 +49,7 @@ namespace DreamBit.Game.Serialization.Converters
                 default: return null;
             }
         }
-        private static GameObjectComponent CreateInstance(string typeName)
+        private static GameComponent CreateInstance(string typeName)
         {
             switch (typeName)
             {

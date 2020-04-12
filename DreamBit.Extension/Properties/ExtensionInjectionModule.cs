@@ -69,7 +69,7 @@ namespace DreamBit.Extension.Properties
 
             // SceneInspect
             _builder.Register<IDropOnInspectCommand>().Singleton<DropOnInspectCommand>();
-            _builder.Register<IRemoveGameObjectComponentCommand>().Singleton<RemoveGameObjectComponentCommand>();
+            _builder.Register<IRemoveGameComponentCommand>().Singleton<RemoveGameComponentCommand>();
         }
         private void Components()
         {

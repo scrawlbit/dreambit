@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Scrawlbit.Json;
 using System;
 using System.Linq;
+using GameComponent = DreamBit.Game.Elements.GameComponent;
 
 namespace DreamBit.Game.Serialization.Converters
 {
@@ -26,7 +27,7 @@ namespace DreamBit.Game.Serialization.Converters
             instance.Transform.RelativeRotation = obj[nameof(Transform.Rotation)].ToObject<float>(serializer);
             instance.Transform.RelativeScale = obj[nameof(Transform.Scale)].ToObject<Vector2>(serializer);
 
-            if (obj.TryGetPropertyValue(nameof(GameObject.Components), serializer, out GameObjectComponent[] components))
+            if (obj.TryGetPropertyValue(nameof(GameObject.Components), serializer, out GameComponent[] components))
                 instance.Components.Add(components);
 
             if (obj.TryGetPropertyValue(nameof(GameObject.Children), serializer, out GameObject[] children))

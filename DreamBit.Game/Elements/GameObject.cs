@@ -21,7 +21,7 @@ namespace DreamBit.Game.Elements
             Transform = new Transform();
             IsVisible = true;
             Children = new GameObjectCollection(this);
-            Components = new GameObjectComponentCollection(this);
+            Components = new GameComponentCollection(this);
         }
 
         public Guid Id { get; internal set; }
@@ -52,7 +52,7 @@ namespace DreamBit.Game.Elements
             }
         }
         public IGameObjectCollection Children { get; }
-        public IGameObjectComponentCollection Components { get; }
+        public IGameComponentCollection Components { get; }
 
         public bool IsExpanded
         {

@@ -66,7 +66,7 @@
     <Compile Include="Commands\SceneHierarchy\RemoveGameObjectCommand.cs" />
     <Compile Include="Commands\SceneInspectWindowCommand.cs" />
     <Compile Include="Commands\SceneInspect\DropOnInspectCommand.cs" />
-    <Compile Include="Commands\SceneInspect\RemoveGameObjectComponentCommand.cs" />
+    <Compile Include="Commands\SceneInspect\RemoveGameComponentCommand.cs" />
     <Compile Include="Components\PackageBridge.cs" />
     <Compile Include="Components\HierarchyBridge.cs" />
     <Compile Include="Components\SolutionMonitor.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Helpers\ControlHelper.cs" />
     <Compile Include="Helpers\DesignHelper.cs" />
     <Compile Include="Helpers\ErrorHelper.cs" />
-    <Compile Include="Helpers\GameObjectComponentCollectionHelper.cs" />
+    <Compile Include="Helpers\GameComponentCollectionHelper.cs" />
     <Compile Include="Helpers\GameObjectCollectionHelper.cs" />
     <Compile Include="Helpers\MarshalHelper.cs" />
     <Compile Include="Helpers\TreeViewItemHelper.cs" />

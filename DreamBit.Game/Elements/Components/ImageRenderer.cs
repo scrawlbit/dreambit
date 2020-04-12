@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace DreamBit.Game.Elements.Components
 {
-    public class ImageRenderer : GameObjectComponent
+    public class ImageRenderer : GameComponent
     {
         public ImageRenderer()
         {

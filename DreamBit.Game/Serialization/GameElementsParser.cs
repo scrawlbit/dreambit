@@ -31,7 +31,7 @@ namespace DreamBit.Game.Serialization
             _jsonParser.Converters.Add(new Vector2Converter());
             _jsonParser.Converters.Add(new ProjectFileConverter(project));
             _jsonParser.Converters.Add(new ColorConverter());
-            _jsonParser.Converters.Add(new GameObjectComponentConverter());
+            _jsonParser.Converters.Add(new GameComponentConverter());
         }
 
         public bool DeserializeIds

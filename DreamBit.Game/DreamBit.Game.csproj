@@ -38,8 +38,8 @@
     <Compile Include="Elements\Components\ImageRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
     <Compile Include="Elements\GameObjectCollection.cs" />
-    <Compile Include="Elements\GameObjectComponent.cs" />
-    <Compile Include="Elements\GameObjectComponentCollection.cs" />
+    <Compile Include="Elements\GameComponent.cs" />
+    <Compile Include="Elements\GameComponentCollection.cs" />
     <Compile Include="Elements\GameObjectHelper.cs" />
     <Compile Include="Elements\Scene.cs" />
     <Compile Include="Elements\Transform.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="Registrations\SceneFileRegistration.cs" />
     <Compile Include="Registrations\ScriptFileRegistration.cs" />
     <Compile Include="Serialization\Converters\ColorConverter.cs" />
-    <Compile Include="Serialization\Converters\GameObjectComponentConverter.cs" />
+    <Compile Include="Serialization\Converters\GameComponentConverter.cs" />
     <Compile Include="Serialization\Converters\GameObjectConverter.cs" />
     <Compile Include="Serialization\Converters\ProjectFileConverter.cs" />
     <Compile Include="Serialization\Converters\SceneConverter.cs" />

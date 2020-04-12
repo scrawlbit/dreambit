@@ -4,11 +4,11 @@ using static DreamBit.General.State.StateHelper;
 
 namespace DreamBit.Extension.Helpers
 {
-    public static class GameObjectComponentCollectionHelper
+    public static class GameComponentCollectionHelper
     {
-        public static IStateCommand Add(this Target<IGameObjectComponentCollection> target, GameObjectComponent component, string stateDescription)
+        public static IStateCommand Add(this Target<IGameComponentCollection> target, GameComponent component, string stateDescription)
         {
-            IGameObjectComponentCollection source = target.Object;
+            IGameComponentCollection source = target.Object;
 
             return new StateCommand
             {

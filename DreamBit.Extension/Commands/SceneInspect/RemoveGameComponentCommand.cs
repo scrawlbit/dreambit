@@ -6,25 +6,25 @@ using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.SceneInspect
 {
-    public interface IRemoveGameObjectComponentCommand : ICommand
+    public interface IRemoveGameComponentCommand : ICommand
     {
-        bool CanExecute(GameObjectComponent component);
-        void Execute(GameObjectComponent component);
+        bool CanExecute(GameComponent component);
+        void Execute(GameComponent component);
     }
-    internal class RemoveGameObjectComponentCommand : BaseCommand, IRemoveGameObjectComponentCommand
+    internal class RemoveGameComponentCommand : BaseCommand, IRemoveGameComponentCommand
     {
         private readonly IEditor _editor;
 
-        public RemoveGameObjectComponentCommand(IEditor editor)
+        public RemoveGameComponentCommand(IEditor editor)
         {
             _editor = editor;
         }
 
-        public bool CanExecute(GameObjectComponent component)
+        public bool CanExecute(GameComponent component)
         {
             return _editor.SelectedObject?.Components.Contains(component) == true;
         }
-        public void Execute(GameObjectComponent component)
+        public void Execute(GameComponent component)
         {
             _editor.SelectedObject.Components.Remove(component);
         }

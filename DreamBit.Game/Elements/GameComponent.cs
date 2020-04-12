@@ -1,6 +1,6 @@
 ﻿namespace DreamBit.Game.Elements
 {
-    public abstract partial class GameObjectComponent
+    public abstract partial class GameComponent
     {
         public bool Started { get; private set; }
         public GameObject GameObject { get; private set; }
