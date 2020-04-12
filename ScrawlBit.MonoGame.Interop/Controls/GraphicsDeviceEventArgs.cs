@@ -9,7 +9,7 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DreamBit.Extension.Interop.Controls
+namespace ScrawlBit.MonoGame.Interop.Controls
 {
     /// <summary>
     /// Arguments used for Device related events.

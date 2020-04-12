@@ -1,6 +1,6 @@
-﻿using DreamBit.Extension.Interop.Controls;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ScrawlBit.MonoGame.Interop.Controls;
 
 namespace DreamBit.Extension.Module
 {
@@ -10,7 +10,7 @@ namespace DreamBit.Extension.Module
 
         public Vector2 Position { get; set; }
 
-        public override void LoadContent()
+        public override void Initialize()
         {
             _pixel = new Texture2D(GraphicsDevice, 1, 1);
             _pixel.SetData(new[] { Color.White });

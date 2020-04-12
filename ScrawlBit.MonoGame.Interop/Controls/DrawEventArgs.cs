@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace DreamBit.Extension.Interop.Controls
+namespace ScrawlBit.MonoGame.Interop.Controls
 {
     /// <summary>
     /// Provides data for the Draw event.

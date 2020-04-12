@@ -102,14 +102,6 @@
     <Compile Include="Helpers\GameObjectCollectionHelper.cs" />
     <Compile Include="Helpers\MarshalHelper.cs" />
     <Compile Include="Helpers\TreeViewItemHelper.cs" />
-    <Compile Include="Interop\Controls\DrawEventArgs.cs" />
-    <Compile Include="Interop\Controls\DrawingSurface.cs" />
-    <Compile Include="Interop\Controls\GameControl.cs" />
-    <Compile Include="Interop\Controls\GameModule.cs" />
-    <Compile Include="Interop\Controls\GraphicsDeviceEventArgs.cs" />
-    <Compile Include="Interop\Services\DeviceService.cs" />
-    <Compile Include="Interop\Services\GraphicsDeviceService.cs" />
-    <Compile Include="Interop\Util\Disposer.cs" />
     <Compile Include="Management\Editor.cs" />
     <Compile Include="Management\ProjectManager.cs" />
     <Compile Include="Module\Selection\ISelectionMode.cs" />
@@ -225,6 +217,10 @@
     <ProjectReference Include="..\Scrawlbit.Json\Scrawlbit.Json.csproj">
       <Project>{33b87f35-abdd-46da-8abd-48067b369a71}</Project>
       <Name>Scrawlbit.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScrawlBit.MonoGame.Interop\ScrawlBit.MonoGame.Interop.csproj">
+      <Project>{31b17e6b-8816-42ab-9cb6-eadc341b6200}</Project>
+      <Name>ScrawlBit.MonoGame.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scrawlbit.MonoGame\Scrawlbit.MonoGame.csproj">
       <Project>{cea07d37-3e41-4a6c-9cb7-a1597e59c44a}</Project>

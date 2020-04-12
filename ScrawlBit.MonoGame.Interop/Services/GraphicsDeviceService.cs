@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Interop;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DreamBit.Extension.Interop.Services
+namespace ScrawlBit.MonoGame.Interop.Services
 {
     /// <summary>
     /// Helper class responsible for creating and managing the GraphicsDevice.

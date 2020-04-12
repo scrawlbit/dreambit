@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using DreamBit.Extension.Interop.Services;
+using ScrawlBit.MonoGame.Interop.Services;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DreamBit.Extension.Interop.Controls
+namespace ScrawlBit.MonoGame.Interop.Controls
 {
     public abstract class GameModule
     {
@@ -31,11 +31,7 @@ namespace DreamBit.Extension.Interop.Controls
             ServiceProvider = container;
         }
 
-        public virtual void Initialize()
-        {
-            LoadContent();
-        }
-        public virtual void LoadContent() { }
+        public virtual void Initialize() { }
         public virtual void Draw() { }
     }
 }

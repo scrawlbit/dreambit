@@ -46,10 +46,10 @@
 using System;
 using System.Windows;
 using System.Windows.Interop;
-using DreamBit.Extension.Interop.Util;
+using ScrawlBit.MonoGame.Interop.Util;
 using SharpDX.Direct3D9;
 
-namespace DreamBit.Extension.Interop.Services
+namespace ScrawlBit.MonoGame.Interop.Services
 {
     internal static class DeviceService
     {

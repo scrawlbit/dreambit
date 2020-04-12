@@ -20,7 +20,7 @@
 
 using System;
 
-namespace DreamBit.Extension.Interop.Util
+namespace ScrawlBit.MonoGame.Interop.Util
 {
     internal static class Disposer
     {

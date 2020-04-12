@@ -24,10 +24,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using DreamBit.Extension.Interop.Services;
+using ScrawlBit.MonoGame.Interop.Services;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DreamBit.Extension.Interop.Controls
+namespace ScrawlBit.MonoGame.Interop.Controls
 {
     public class DrawingSurface : ContentControl, IDisposable
     {

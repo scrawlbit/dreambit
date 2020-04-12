@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DreamBit.Extension.Interop.Controls
+namespace ScrawlBit.MonoGame.Interop.Controls
 {
     public class GameControl : ContentControl
     {

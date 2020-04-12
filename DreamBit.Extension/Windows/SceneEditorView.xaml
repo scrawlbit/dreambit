@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
-    xmlns:interop="clr-namespace:DreamBit.Extension.Interop.Controls"
+    xmlns:interop="clr-namespace:ScrawlBit.MonoGame.Interop.Controls;assembly=ScrawlBit.MonoGame.Interop"
     mc:Ignorable="d"
     MinWidth="800"
     MinHeight="600"
