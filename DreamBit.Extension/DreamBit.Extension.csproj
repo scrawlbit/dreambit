@@ -66,6 +66,7 @@
     <Compile Include="Commands\SceneHierarchy\RemoveGameObjectCommand.cs" />
     <Compile Include="Commands\SceneInspectWindowCommand.cs" />
     <Compile Include="Commands\SceneInspect\DropOnInspectCommand.cs" />
+    <Compile Include="Commands\SceneInspect\RemoveGameObjectComponentCommand.cs" />
     <Compile Include="Components\PackageBridge.cs" />
     <Compile Include="Components\HierarchyBridge.cs" />
     <Compile Include="Components\SolutionMonitor.cs" />
@@ -155,9 +156,13 @@
     <Compile Include="Windows\SceneInspectWindow.cs">
       <DependentUpon>SceneInspectView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SceneInspect\ImageRendererInspect.xaml.cs">
+      <DependentUpon>ImageRendererInspect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SceneInspect\ObjectInspect.xaml.cs">
       <DependentUpon>ObjectInspect.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SceneInspect\SceneInspectPartial.cs" />
     <Compile Include="Windows\SceneInspect\TransformInspect.xaml.cs">
       <DependentUpon>TransformInspect.xaml</DependentUpon>
     </Compile>
@@ -324,6 +329,10 @@
     <Page Include="Windows\SceneInspectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SceneInspect\ImageRendererInspect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SceneInspect\ObjectInspect.xaml">
       <SubType>Designer</SubType>

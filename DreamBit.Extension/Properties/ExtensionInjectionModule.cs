@@ -12,7 +12,6 @@ using DreamBit.Modularization.Management;
 using Microsoft.VisualStudio.Shell;
 using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Mapping;
-using System;
 
 namespace DreamBit.Extension.Properties
 {
@@ -70,6 +69,7 @@ namespace DreamBit.Extension.Properties
 
             // SceneInspect
             _builder.Register<IDropOnInspectCommand>().Singleton<DropOnInspectCommand>();
+            _builder.Register<IRemoveGameObjectComponentCommand>().Singleton<RemoveGameObjectComponentCommand>();
         }
         private void Components()
         {

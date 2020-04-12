@@ -1,0 +1,28 @@
+﻿<partials:SceneInspectPartial
+    x:Class="DreamBit.Extension.Windows.SceneInspect.ImageRendererInspect"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:containers="clr-namespace:DreamBit.Extension.Controls.Containers"
+    xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
+    xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance components:ImageRenderer, IsDesignTimeCreatable=False}"
+    d:DesignHeight="450" d:DesignWidth="800"
+    x:Name="Control">
+
+    <containers:ExpansionPanel Header="Image Renderer" MenuDataContext="{Binding ViewModel, ElementName=Control}">
+
+        <containers:ExpansionPanel.Menu>
+            <ContextMenu>
+                <MenuItem Header="Remove"
+                          Command="{data:ContextMenuBinding RemoveGameObjectComponentCommand}"
+                          CommandParameter="{Binding}" />
+            </ContextMenu>
+        </containers:ExpansionPanel.Menu>
+        
+    </containers:ExpansionPanel>
+
+</partials:SceneInspectPartial>

@@ -10,12 +10,14 @@
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:converters="clr-namespace:DreamBit.Extension.Converters"
     xmlns:dragAndDrop="clr-namespace:Scrawlbit.Presentation.DragAndDrop;assembly=Scrawlbit.Presentation"
+    xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
+    xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:SceneInspectViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <!--<components:InterfaceTemplateSelector x:Key="InterfaceTemplateSelector" />-->
+        <data:InterfaceTemplateSelector x:Key="InterfaceTemplateSelector" />
     </UserControl.Resources>
 
     <Grid>
@@ -30,12 +32,23 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Visibility="{Binding Editor.SelectedObject, Converter={converters:VisibleIfNotNullConverter}}">
 
-            <!--INFORMATION-->
+            <!-- INFORMATION -->
             <partials:ObjectInspect />
 
-            <!--TRANSFORM-->
+            <!-- TRANSFORM -->
             <partials:TransformInspect />
 
+            <!-- COMPONENTS -->
+            <ItemsControl ItemsSource="{Binding Editor.SelectedObject.Components}" ItemTemplateSelector="{StaticResource InterfaceTemplateSelector}">
+                <ItemsControl.Resources>
+
+                    <!-- IMAGE RENDERER -->
+                    <DataTemplate DataType="{x:Type components:ImageRenderer}">
+                        <partials:ImageRendererInspect />
+                    </DataTemplate>
+
+                </ItemsControl.Resources>
+            </ItemsControl>
         </StackPanel>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Transparent">
