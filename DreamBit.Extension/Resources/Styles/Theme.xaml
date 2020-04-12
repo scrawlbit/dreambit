@@ -2,14 +2,14 @@
 
     <ResourceDictionary.MergedDictionaries>
         <!-- STYLES -->
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/VisualStudio.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Border.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/IconButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/WindowView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/ComboBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/TreeView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/DragAndDrop.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/DreamBit.Extension;component/Resources/Styles/ExpansionPanel.xaml" />
+        <ResourceDictionary Source="VisualStudio.xaml" />
+        <ResourceDictionary Source="Border.xaml" />
+        <ResourceDictionary Source="IconButton.xaml" />
+        <ResourceDictionary Source="WindowView.xaml" />
+        <ResourceDictionary Source="ComboBox.xaml" />
+        <ResourceDictionary Source="TreeView.xaml" />
+        <ResourceDictionary Source="DragAndDrop.xaml" />
+        <ResourceDictionary Source="ExpansionPanel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

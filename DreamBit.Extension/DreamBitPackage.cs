@@ -15,12 +15,15 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Scrawlbit.Injection;
 using Scrawlbit.Injection.Configuration;
 using Scrawlbit.Mapping;
+using Scrawlbit.Presentation.Converters;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using Task = System.Threading.Tasks.Task;
 
 namespace DreamBit.Extension
@@ -86,9 +89,9 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<ISaveSceneCommand>();
             await RegisterCommandAsync<ICloseSceneCommand>();
 
-            ApplyTheme();
-
             Assembly.Load("Microsoft.Xaml.Behaviors");
+
+            ApplyTheme();
         }
 
         private static void ApplyTheme()
