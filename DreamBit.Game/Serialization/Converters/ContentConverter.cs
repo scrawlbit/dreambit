@@ -10,12 +10,12 @@ namespace DreamBit.Game.Serialization.Converters
     internal class ContentConverter : JsonConverter<IContent>
     {
         private readonly IProject _project;
-        private readonly IContentFactory _factory;
+        private readonly IContentManager _contentManager;
 
-        public ContentConverter(IProject project, IContentFactory factory)
+        public ContentConverter(IProject project, IContentManager contentManager)
         {
             _project = project;
-            _factory = factory;
+            _contentManager = contentManager;
         }
 
         public override IContent ReadJson(JsonReader reader, Type objectType, IContent existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -28,7 +28,7 @@ namespace DreamBit.Game.Serialization.Converters
                 ProjectFile file = _project.Files.GetById(id.Value);
 
                 if (file != null)
-                    return _factory.Create(file);
+                    return _contentManager.Load(file);
             }
 
             return null;

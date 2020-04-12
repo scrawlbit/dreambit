@@ -4,6 +4,6 @@ namespace DreamBit.Game.Content
 {
     public interface IContent
     {
-        ProjectFile File { get; }
+        IProjectFile File { get; }
     }
 }

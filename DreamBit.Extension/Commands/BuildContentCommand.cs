@@ -12,12 +12,10 @@ namespace DreamBit.Extension.Commands
     }
     internal sealed class BuildContentCommand : ToolCommand, IBuildContentCommand
     {
-        private readonly IProject _project;
         private readonly IPipeline _pipeline;
 
-        public BuildContentCommand(IProject project, IPipeline pipeline)
+        public BuildContentCommand(IPipeline pipeline)
         {
-            _project = project;
             _pipeline = pipeline;
         }
 
@@ -34,7 +32,7 @@ namespace DreamBit.Extension.Commands
         }
         public void Execute(bool clean)
         {
-            _pipeline.Build($"{_project.Folder}\\bin\\Windows", clean);
+            _pipeline.Build(_pipeline.BuiltContentFolder, clean);
         }
     }
 }

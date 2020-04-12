@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Content;
+using DreamBit.Game.Drawing;
 using DreamBit.Game.Registrations;
 using DreamBit.Game.Serialization;
 using DreamBit.Project.Helpers;
@@ -15,13 +16,19 @@ namespace DreamBit.Game.Properties
             _builder = builder;
 
             Content();
+            Drawing();
             Registrations();
             Serialization();
         }
 
         private void Content()
         {
-            _builder.Register<IContentFactory>().Singleton<ContentFactory>();
+            _builder.Register<IContentManager>().Singleton<ContentManager>();
+            _builder.Register<IContentLoader>().Singleton<ContentManager>();
+        }
+        private void Drawing()
+        {
+            _builder.Register<IContentDrawer>().Singleton<ContentDrawer>();
         }
         private void Registrations()
         {

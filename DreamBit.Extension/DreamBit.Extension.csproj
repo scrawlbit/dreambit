@@ -104,6 +104,7 @@
     <Compile Include="Helpers\TreeViewItemHelper.cs" />
     <Compile Include="Management\Editor.cs" />
     <Compile Include="Management\ProjectManager.cs" />
+    <Compile Include="Module\SceneEditorGame.cs" />
     <Compile Include="Module\Selection\ISelectionMode.cs" />
     <Compile Include="Module\Selection\MultipleSelectionMode.cs" />
     <Compile Include="Module\Selection\NoSelectionMode.cs" />

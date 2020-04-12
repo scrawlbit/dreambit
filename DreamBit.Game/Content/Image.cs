@@ -6,15 +6,23 @@ namespace DreamBit.Game.Content
 {
     public class Image : IContent
     {
-        public Image(PipelineImage file)
+        private readonly IContentLoader _loader;
+        private Texture2D _texture;
+
+        public Image(IPipelineImage file, IContentLoader loader)
         {
+            _loader = loader;
+
             File = file;
         }
 
-        public PipelineImage File { get; }
-        public Texture2D Texture { get; }
+        public IPipelineImage File { get; }
+        public Texture2D Texture
+        {
+            get => _texture ?? (_texture = _loader.Load<Texture2D>(File));
+        }
         public int Height => Texture.Height;
         public int Width => Texture.Width;
-        ProjectFile IContent.File => File;
+        IProjectFile IContent.File => File;
     }
 }

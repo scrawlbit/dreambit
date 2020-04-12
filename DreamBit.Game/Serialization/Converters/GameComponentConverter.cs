@@ -1,4 +1,5 @@
-﻿using DreamBit.Game.Elements;
+﻿using DreamBit.Game.Drawing;
+using DreamBit.Game.Elements;
 using DreamBit.Game.Elements.Components;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,6 +13,12 @@ namespace DreamBit.Game.Serialization.Converters
     {
         private const string Type = "Type";
         private const string Image = "Image";
+        private readonly IContentDrawer _contentDrawer;
+
+        public GameComponentConverter(IContentDrawer contentDrawer)
+        {
+            _contentDrawer = contentDrawer;
+        }
 
         public override GameComponent ReadJson(JsonReader reader, Type objectType, GameComponent existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
@@ -49,11 +56,11 @@ namespace DreamBit.Game.Serialization.Converters
                 default: return null;
             }
         }
-        private static GameComponent CreateInstance(string typeName)
+        private GameComponent CreateInstance(string typeName)
         {
             switch (typeName)
             {
-                case Image: return new ImageRenderer();
+                case Image: return new ImageRenderer(_contentDrawer);
                 default: throw new NotImplementedException();
             }
         }

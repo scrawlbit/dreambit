@@ -107,5 +107,88 @@ namespace DreamBit.Game.Elements
 
             return area;
         }
+
+        internal void Initialize()
+        {
+            for (int i = 0; i < Components.Count; i++)
+            {
+                Components[i].Initialize(this);
+            }
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                Children[i].Initialize();
+            }
+        }
+        internal void Update()
+        {
+            if (!IsVisible)
+                return;
+
+            for (var i = 0; i < Components.Count; i++)
+            {
+                GameComponent component = Components[i];
+
+                component.Initialize(this);
+                component.Update();
+            }
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                Children[i].Update();
+            }
+        }
+        internal void PostUpdate()
+        {
+            if (!IsVisible)
+                return;
+
+            for (var i = 0; i < Components.Count; i++)
+            {
+                GameComponent component = Components[i];
+
+                if (component.Started)
+                    component.PostUpdate();
+            }
+
+            for (int i = 0; i < Children.Count; i++)
+                Children[i].PostUpdate();
+        }
+        internal void Draw()
+        {
+            if (!IsVisible)
+                return;
+
+            Transform.ValidateTransformations();
+
+            for (var i = 0; i < Components.Count; i++)
+            {
+                GameComponent component = Components[i];
+
+                if (component.Started)
+                    component.Draw();
+            }
+
+            for (int i = 0; i < Children.Count; i++)
+                Children[i].Draw();
+        }
+        internal void Preview()
+        {
+            if (!IsVisible)
+                return;
+
+            Transform.ValidateTransformations();
+
+            for (var i = 0; i < Components.Count; i++)
+            {
+                GameComponent component = Components[i];
+
+                component.Initialize(this);
+                component.Draw();
+            }
+
+            for (int i = 0; i < Children.Count; i++)
+                Children[i].Preview();
+        }
     }
 }

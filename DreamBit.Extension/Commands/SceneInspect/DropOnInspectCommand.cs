@@ -1,6 +1,7 @@
 ﻿using DreamBit.Extension.Helpers;
 using DreamBit.Extension.Management;
 using DreamBit.Game.Content;
+using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using DreamBit.Game.Elements.Components;
 using DreamBit.General.State;
@@ -24,14 +25,16 @@ namespace DreamBit.Extension.Commands.SceneInspect
     {
         private readonly IEditor _editor;
         private readonly IProject _project;
-        private readonly IContentFactory _contentFactory;
+        private readonly IContentManager _contentManager;
+        private readonly IContentDrawer _contentDrawer;
         private readonly IStateManager _state;
 
-        public DropOnInspectCommand(IEditor editor, IProject project, IContentFactory contentFactory, IStateManager state)
+        public DropOnInspectCommand(IEditor editor, IProject project, IContentManager contentManager, IContentDrawer contentDrawer, IStateManager state)
         {
             _editor = editor;
             _project = project;
-            _contentFactory = contentFactory;
+            _contentManager = contentManager;
+            _contentDrawer = contentDrawer;
             _state = state;
         }
 
@@ -77,7 +80,7 @@ namespace DreamBit.Extension.Commands.SceneInspect
         {
             switch (file)
             {
-                case PipelineImage image: return new ImageRenderer { Image = _contentFactory.Create(image) };
+                case PipelineImage image: return new ImageRenderer(_contentDrawer) { Image = _contentManager.Load(image) };
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(file));

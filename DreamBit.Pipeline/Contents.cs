@@ -50,19 +50,19 @@ namespace DreamBit.Pipeline
 
         public void Move(IProjectFile file, string oldPath)
         {
-            oldPath = oldPath.AsContentPath();
+            oldPath = oldPath.AsImportPath();
 
             if (!_contentImporter.IsPathIncluded(oldPath))
                 return;
 
-            string newPath = file.GetContentPath();
+            string newPath = file.GetImportPath();
 
             _contentImporter.Move(oldPath, newPath);
             _manager.NotifyChanges();
         }
         public void Remove(IProjectFile file)
         {
-            string path = file.GetContentPath();
+            string path = file.GetImportPath();
 
             if (!_contentImporter.IsPathIncluded(path))
                 return;
@@ -78,7 +78,7 @@ namespace DreamBit.Pipeline
 
         private T Add<T>(IProjectFile file, Func<string, T> factory) where T : ContentImport
         {
-            string path = file.GetContentPath();
+            string path = file.GetImportPath();
             T import = (T)_contentImporter.GetByPath(path);
 
             if (import == null)

@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Content;
+using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using DreamBit.Game.Serialization.Converters;
 using DreamBit.Project;
@@ -22,7 +23,7 @@ namespace DreamBit.Game.Serialization
         private readonly IJsonParser _jsonParser;
         private readonly GameObjectConverter _gameObjectConverter;
 
-        public GameElementsParser(IJsonParser jsonParser, IProject project, IContentFactory contentFactory)
+        public GameElementsParser(IJsonParser jsonParser, IProject project, IContentManager contentManager, IContentDrawer contentDrawer)
         {
             _jsonParser = jsonParser;
             _gameObjectConverter = new GameObjectConverter();
@@ -30,9 +31,9 @@ namespace DreamBit.Game.Serialization
             _jsonParser.Converters.Add(_gameObjectConverter);
             _jsonParser.Converters.Add(new SceneConverter());
             _jsonParser.Converters.Add(new Vector2Converter());
-            _jsonParser.Converters.Add(new ContentConverter(project, contentFactory));
+            _jsonParser.Converters.Add(new ContentConverter(project, contentManager));
             _jsonParser.Converters.Add(new ColorConverter());
-            _jsonParser.Converters.Add(new GameComponentConverter());
+            _jsonParser.Converters.Add(new GameComponentConverter(contentDrawer));
         }
 
         public bool DeserializeIds

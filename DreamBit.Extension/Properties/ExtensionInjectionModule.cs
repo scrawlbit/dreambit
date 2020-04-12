@@ -5,6 +5,7 @@ using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Commands.SceneInspect;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
+using DreamBit.Extension.Module;
 using DreamBit.Extension.Module.Selection;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
@@ -88,6 +89,7 @@ namespace DreamBit.Extension.Properties
         private void Module()
         {
             _builder.Register<ISelectionObject>().Singleton<SelectionObject>();
+            _builder.Register<SceneEditorGame>();
         }
         private void ViewModels()
         {

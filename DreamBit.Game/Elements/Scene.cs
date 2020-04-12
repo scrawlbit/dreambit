@@ -8,5 +8,11 @@
         }
 
         public IGameObjectCollection Objects { get; }
+
+        public void Preview()
+        {
+            for (int i = 0; i < Objects.Count; i++)
+                Objects[i].Preview();
+        }
     }
 }

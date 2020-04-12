@@ -2,6 +2,7 @@
 using DreamBit.Pipeline.Imports;
 using DreamBit.Pipeline.MonoGame;
 using DreamBit.Project;
+using Scrawlbit.Notification;
 using _Path = System.IO.Path;
 
 namespace DreamBit.Pipeline
@@ -12,6 +13,7 @@ namespace DreamBit.Pipeline
         string Path { get; }
         IGlobalProperties GlobalProperties { get; }
         IContents Contents { get; }
+        string BuiltContentFolder { get; }
 
         void Load();
         void Unload();
@@ -24,13 +26,14 @@ namespace DreamBit.Pipeline
         void NotifyChanges();
     }
 
-    internal class Pipeline : IPipeline, IPipelineManager
+    internal class Pipeline : NotificationObject, IPipeline, IPipelineManager
     {
         private readonly IProject _project;
         private readonly IPipelineFile _file;
         private readonly IPipelineBuilder _builder;
         private readonly GlobalProperties _globalProperties;
         private readonly Contents _contents;
+        private bool _loaded;
         private bool _hasChanges;
 
         public Pipeline(
@@ -46,10 +49,15 @@ namespace DreamBit.Pipeline
             _globalProperties = new GlobalProperties();
         }
 
-        public bool Loaded { get; private set; }
+        public bool Loaded
+        {
+            get => _loaded;
+            private set => Set(ref _loaded, value);
+        }
         public string Path { get; private set; }
         public IGlobalProperties GlobalProperties => _globalProperties;
         public IContents Contents => _contents;
+        public string BuiltContentFolder => $@"{_project.Folder}\bin\Windows";
 
         public void Load()
         {
