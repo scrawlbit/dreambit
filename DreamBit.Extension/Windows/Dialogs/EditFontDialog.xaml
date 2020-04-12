@@ -20,7 +20,6 @@
     d:DesignHeight="300" d:DesignWidth="300">
     
     <controls:DialogView.Resources>
-        <converters:VisibilityConverter x:Key="VisibilityConverter" />
         
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Margin" Value="0 0 0 2" />
@@ -32,7 +31,7 @@
     </controls:DialogView.Resources>
 
     <StackPanel Margin="5">
-        <StackPanel Visibility="{Binding IsNew, Converter={StaticResource VisibilityConverter}}">
+        <StackPanel Visibility="{Binding IsNew, Converter={converters:VisibilityConverter}}">
             <TextBlock Text="{x:Static r:FileResources.Name}" />
             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>

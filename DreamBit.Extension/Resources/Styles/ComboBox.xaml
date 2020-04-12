@@ -4,13 +4,10 @@
     xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation">
 
     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}" x:Key="EnumComboBoxStyle">
-        <Style.Resources>
-            <converters:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter" />
-        </Style.Resources>
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />
+                    <TextBlock Text="{Binding Converter={converters:EnumDisplayNameConverter}}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>

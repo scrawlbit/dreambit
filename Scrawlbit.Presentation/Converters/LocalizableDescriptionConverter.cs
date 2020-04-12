@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Scrawlbit.Presentation.Attributes;
+using System;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
-using Scrawlbit.Presentation.Attributes;
 
 namespace Scrawlbit.Presentation.Converters
 {
-    [ValueConversion(typeof(object), typeof(String))]
-    public class LocalizableDescriptionConverter : IValueConverter
+    [ValueConversion(typeof(object), typeof(string))]
+    public class LocalizableDescriptionConverter : ConverterMarkupExtension
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null)
             {
@@ -26,11 +26,6 @@ namespace Scrawlbit.Presentation.Converters
             }
 
             return string.Empty;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:containers="clr-namespace:DreamBit.Extension.Controls.Containers"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
-    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation">
+    xmlns:converters="clr-namespace:DreamBit.Extension.Converters">
 
     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" x:Key="PropertyNameStyle">
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -13,13 +13,6 @@
 
     <Style TargetType="containers:ExpansionPanel">
         <Style.Resources>
-            <!--CONVERTERS-->
-            <converters:ValueConverterGroup x:Key="VisibleIfNotNullConverter">
-                <converters:IsNullConverter />
-                <converters:InverseBooleanConverter />
-                <BooleanToVisibilityConverter />
-            </converters:ValueConverterGroup>
-
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
@@ -82,7 +75,7 @@
                                 <input:IconButton x:Name="MenuButton"
                                                   Grid.Column="2"
                                                   Margin="0 1 5 0"
-                                                  Visibility="{TemplateBinding Menu, Converter={StaticResource VisibleIfNotNullConverter}}"
+                                                  Visibility="{TemplateBinding Menu, Converter={converters:VisibleIfNotNullConverter}}"
                                                   Tag="{TemplateBinding MenuDataContext}"
                                                   ContextMenu="{TemplateBinding Menu}"
                                                   Click="OnMenuButtonClick"
