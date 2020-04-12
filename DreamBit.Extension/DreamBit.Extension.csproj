@@ -162,7 +162,7 @@
     <Compile Include="Windows\SceneInspect\ObjectInspect.xaml.cs">
       <DependentUpon>ObjectInspect.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SceneInspect\SceneInspectPartial.cs" />
+    <Compile Include="Windows\SceneInspect\SceneComponentInspect.cs" />
     <Compile Include="Windows\SceneInspect\TransformInspect.xaml.cs">
       <DependentUpon>TransformInspect.xaml</DependentUpon>
     </Compile>

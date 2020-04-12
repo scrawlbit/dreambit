@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:containers="clr-namespace:DreamBit.Extension.Controls.Containers"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
-    xmlns:converters="clr-namespace:DreamBit.Extension.Converters">
+    xmlns:converters="clr-namespace:DreamBit.Extension.Converters"
+    xmlns:inspect="clr-namespace:DreamBit.Extension.Windows.SceneInspect">
 
     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" x:Key="PropertyNameStyle">
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -118,4 +119,7 @@
         </Setter>
     </Style>
 
+    <Style TargetType="containers:ExpansionPanel" BasedOn="{StaticResource {x:Type containers:ExpansionPanel}}" x:Key="ExpansionPanelStyle">
+    </Style>
+    
 </ResourceDictionary>
