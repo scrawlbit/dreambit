@@ -6,15 +6,16 @@ namespace Scrawlbit.Json
 {
     public static class JsonHelper
     {
-        public static JToken SetProperty(this JObject obj, string property, object value, JsonSerializer serializer = null)
+        public static void SetProperty(this JObject obj, string property, object value, JsonSerializer serializer = null)
         {
-            return obj[property] = JToken.FromObject(value, serializer);
+            if (value != null)
+                obj[property] = JToken.FromObject(value, serializer);
         }
-        public static JToken SetProperty(this JObject obj, JsonProperty property, object from, JsonSerializer serializer = null)
+        public static void SetProperty(this JObject obj, JsonProperty property, object from, JsonSerializer serializer = null)
         {
             object value = property.ValueProvider.GetValue(from);
 
-            return obj.SetProperty(property.PropertyName, value, serializer);
+            obj.SetProperty(property.PropertyName, value, serializer);
         }
 
         public static bool TryGetPropertyValue<T>(this JObject obj, string property, out T value)

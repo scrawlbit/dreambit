@@ -4,7 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DreamBit.Game.Content
 {
-    public class Image : IContent
+    public interface IImage : IContent
+    {
+        new IPipelineImage File { get; }
+        Texture2D Texture { get; }
+        int Height { get; }
+        int Width { get; }
+    }
+
+    internal class Image : IImage
     {
         private readonly IContentLoader _loader;
         private Texture2D _texture;

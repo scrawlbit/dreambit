@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Content\ContentManager.cs" />
+    <Compile Include="Content\Font.cs" />
     <Compile Include="Content\IContent.cs" />
     <Compile Include="Content\IContentLoader.cs" />
     <Compile Include="Content\IContentManager.cs" />
@@ -44,6 +45,7 @@
     <Compile Include="Drawing\DrawBatch.cs" />
     <Compile Include="Drawing\DrawBatchData.cs" />
     <Compile Include="Elements\Components\ImageRenderer.cs" />
+    <Compile Include="Elements\Components\TextRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
     <Compile Include="Elements\GameObjectCollection.cs" />
     <Compile Include="Elements\GameComponent.cs" />

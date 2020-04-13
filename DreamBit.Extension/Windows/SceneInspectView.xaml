@@ -47,6 +47,11 @@
                         <partials:ImageRendererInspect />
                     </DataTemplate>
 
+                    <!-- TEXT RENDERER -->
+                    <DataTemplate DataType="{x:Type components:TextRenderer}">
+                        <partials:TextRendererInspect />
+                    </DataTemplate>
+                    
                 </ItemsControl.Resources>
             </ItemsControl>
         </StackPanel>

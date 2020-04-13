@@ -6,6 +6,7 @@ namespace DreamBit.Game.Content
     public interface IContentManager
     {
         IContent Load(IProjectFile file);
-        Image Load(IPipelineImage file);
+        IImage Load(IPipelineImage file);
+        IFont Load(IPipelineFont file);
     }
 }

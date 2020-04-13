@@ -5,20 +5,32 @@ using Scrawlbit.MonoGame.Helpers;
 
 namespace DreamBit.Game.Elements.Components
 {
-    public class ImageRenderer : GameComponent
+    public class TextRenderer : GameComponent
     {
         private readonly IContentDrawer _drawer;
+        private string _text;
         private Vector2 _origin;
         private Vector2? _offset;
 
-        public ImageRenderer(IContentDrawer drawer)
+        public TextRenderer(IContentDrawer drawer)
         {
             _drawer = drawer;
 
-            Color = Color.White;
+            Color = Color.Black;
             Origin = Vector2.One / 2;
         }
 
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                value = value?.Trim();
+                value = value != "" ? value : null;
+
+                _text = value;
+            }
+        }
         public Color Color { get; set; }
         public Vector2 Origin
         {
@@ -31,20 +43,20 @@ namespace DreamBit.Game.Elements.Components
         }
         public bool FlipVertically { get; set; }
         public bool FlipHorizontally { get; set; }
-        public IImage Image { get; set; }
+        public IFont Font { get; set; }
 
         protected internal override void Draw()
         {
-            if (Image == null)
+            if (Font == null || Text == null)
                 return;
 
             if (_offset == null)
-                _offset = new Vector2(Image.Width, Image.Height) * Origin;
+                _offset = Font.MeasureString(Text) * Origin;
 
-            _drawer.Draw(
-                Image,
+            _drawer.DrawString(
+                Font,
+                Text,
                 GameObject.Transform.Position,
-                null,
                 Color,
                 GameObject.Transform.Rotation,
                 _offset,

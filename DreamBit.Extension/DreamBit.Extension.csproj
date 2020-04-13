@@ -156,6 +156,9 @@
       <DependentUpon>ObjectInspect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SceneInspect\SceneComponentInspect.cs" />
+    <Compile Include="Windows\SceneInspect\TextRendererInspect.xaml.cs">
+      <DependentUpon>TextRendererInspect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SceneInspect\TransformInspect.xaml.cs">
       <DependentUpon>TransformInspect.xaml</DependentUpon>
     </Compile>
@@ -332,6 +335,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SceneInspect\ObjectInspect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SceneInspect\TextRendererInspect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

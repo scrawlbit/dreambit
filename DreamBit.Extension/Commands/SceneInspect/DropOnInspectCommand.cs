@@ -71,7 +71,8 @@ namespace DreamBit.Extension.Commands.SceneInspect
         {
             switch (file)
             {
-                case PipelineImage _: return !gameObject.Components.Contains<ImageRenderer>();
+                case IPipelineImage _: return !gameObject.Components.Contains<ImageRenderer>();
+                case IPipelineFont _: return !gameObject.Components.Contains<TextRenderer>();
             }
 
             return false;
@@ -80,7 +81,8 @@ namespace DreamBit.Extension.Commands.SceneInspect
         {
             switch (file)
             {
-                case PipelineImage image: return new ImageRenderer(_contentDrawer) { Image = _contentManager.Load(image) };
+                case IPipelineImage image: return new ImageRenderer(_contentDrawer) { Image = _contentManager.Load(image) };
+                case IPipelineFont font: return new TextRenderer(_contentDrawer) { Font = _contentManager.Load(font) };
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(file));
