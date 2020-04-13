@@ -34,7 +34,7 @@ namespace DreamBit.Game.Elements.Components
                 null,
                 Color,
                 GameObject.Transform.Rotation,
-                Origin,
+                new Vector2(Image.Width, Image.Height) * Origin,
                 GameObject.Transform.Scale,
                 SpriteEffectsHelper.GetEffects(FlipHorizontally, FlipVertically)
             );
