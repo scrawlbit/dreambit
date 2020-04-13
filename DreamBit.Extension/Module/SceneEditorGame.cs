@@ -39,9 +39,8 @@ namespace DreamBit.Extension.Module
             if (_editor.OpenedScene == null)
                 return;
 
-            _contentDrawer.Begin();
-            _editor.OpenedScene.Preview();
-            _contentDrawer.End();
+            using (_contentDrawer.Batch())
+                _editor.OpenedScene.Preview();
         }
 
         private void InitializeContentManager()

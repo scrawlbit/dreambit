@@ -41,6 +41,8 @@
     <Compile Include="Content\IContentManager.cs" />
     <Compile Include="Content\Image.cs" />
     <Compile Include="Drawing\ContentDrawer.cs" />
+    <Compile Include="Drawing\DrawBatch.cs" />
+    <Compile Include="Drawing\DrawBatchData.cs" />
     <Compile Include="Elements\Components\ImageRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
     <Compile Include="Elements\GameObjectCollection.cs" />

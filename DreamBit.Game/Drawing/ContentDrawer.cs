@@ -1,6 +1,8 @@
 ﻿using DreamBit.Game.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DreamBit.Game.Drawing
 {
@@ -9,8 +11,7 @@ namespace DreamBit.Game.Drawing
         SpriteBatch SpriteBatch { get; set; }
         GraphicsDevice GraphicsDevice { get; }
 
-        void Begin();
-        void End();
+        IDrawBatch Batch(SpriteSortMode? sortMode = null, BlendState blendState = null, SamplerState samplerState = null, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, Effect effect = null, Matrix? transformMatrix = null);
 
         void Draw(Image image, Rectangle rectangle, Color color);
         void Draw(Image image, Vector2 position, Color color);
@@ -20,16 +21,37 @@ namespace DreamBit.Game.Drawing
 
     internal class ContentDrawer : IContentDrawer
     {
+        private readonly ICollection<DrawBatch> _batches;
+
+        public ContentDrawer()
+        {
+            _batches = new List<DrawBatch>();
+        }
+
         public SpriteBatch SpriteBatch { get; set; }
         public GraphicsDevice GraphicsDevice => SpriteBatch.GraphicsDevice;
 
-        public void Begin()
+        public IDrawBatch Batch(SpriteSortMode? sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix? transformMatrix)
         {
-            SpriteBatch.Begin();
-        }
-        public void End()
-        {
-            SpriteBatch.End();
+            var previous = _batches.LastOrDefault();
+            var next = new DrawBatch(SpriteBatch, sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformMatrix);
+
+            if (!next.Equals(previous))
+            {
+                previous?.End();
+                next.Begin();
+                _batches.Add(next);
+
+                next.Ended = () =>
+                {
+                    next.End();
+                    previous?.Begin();
+
+                    _batches.Remove(next);
+                };
+            }
+
+            return next;
         }
 
         public void Draw(Image image, Rectangle rectangle, Color color)
