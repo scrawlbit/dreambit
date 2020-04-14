@@ -4,7 +4,6 @@ using DreamBit.Pipeline.Files;
 using Scrawlbit.Helpers;
 using Scrawlbit.Presentation.Commands;
 using System.Windows.Input;
-using DreamBit.Resources;
 
 namespace DreamBit.Extension.ViewModels.Dialogs
 {
@@ -22,7 +21,7 @@ namespace DreamBit.Extension.ViewModels.Dialogs
         public EditFontDialogViewModel(IProjectManager manager)
         {
             _manager = manager;
-            _name = PipelineResources.Segoe;
+            _name = "Segoe";
             _family = FontFamily.SegoeUI;
             _size = 12;
             _style = FontStyle.Regular;

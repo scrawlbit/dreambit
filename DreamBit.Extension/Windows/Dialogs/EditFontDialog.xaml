@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:r="clr-namespace:DreamBit.Resources;assembly=DreamBit.Resources"
     xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:bindings="clr-namespace:Scrawlbit.Presentation.Bindings;assembly=Scrawlbit.Presentation"
     xmlns:pipeline="clr-namespace:DreamBit.Pipeline.Files;assembly=DreamBit.Pipeline"
@@ -32,7 +31,7 @@
 
     <StackPanel Margin="5">
         <StackPanel Visibility="{Binding IsNew, Converter={converters:VisibilityConverter}}">
-            <TextBlock Text="{x:Static r:FileResources.Name}" />
+            <TextBlock Text="Name" />
             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
@@ -47,32 +46,32 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0 5 5 0">
-                <TextBlock Text="{x:Static r:PipelineResources.Family}" />
+                <TextBlock Text="Family" />
                 <ComboBox ItemsSource="{bindings:EnumCollectionBinding Source={x:Type pipeline:FontFamily}}"
                           SelectedItem="{Binding Family, Mode=TwoWay}"
                           Style="{StaticResource EnumComboBoxStyle}" />
             </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="1" Margin="5 5 0 0">
-                <TextBlock Text="{x:Static r:PipelineResources.Style}" />
+                <TextBlock Text="Style" />
                 <ComboBox ItemsSource="{bindings:EnumCollectionBinding Source={x:Type pipeline:FontStyle}}"
                           SelectedItem="{Binding Style, Mode=TwoWay}"
                           Style="{StaticResource EnumComboBoxStyle}" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 5 0">
-                <TextBlock Text="{x:Static r:PipelineResources.Size}" />
+                <TextBlock Text="Size" />
                 <TextBox Text="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="5 5 0 0">
-                <TextBlock Text="{x:Static r:PipelineResources.Spacing}" />
+                <TextBlock Text="Spacing" />
                 <TextBox Text="{Binding Spacing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </Grid>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5 0 0">
-            <Button Command="{Binding SaveCommand}" Content="{x:Static r:InteractionResources.Save}" Padding="5 2" />
+            <Button Command="{Binding SaveCommand}" Content="Save" Padding="5 2" />
         </StackPanel>
     </StackPanel>
         
