@@ -26,6 +26,8 @@ namespace DreamBit.Extension.Controls.Input
         public FloatBox()
         {
             InitializeComponent();
+
+            Increment = 1;
         }
 
         public event FloatBoxEventArgs Changed;
@@ -40,6 +42,7 @@ namespace DreamBit.Extension.Controls.Input
             get => IsReadOnlyProperty.Get(this);
             set => IsReadOnlyProperty.Set(this, value);
         }
+        public float Increment { get; set; }
 
         private void OnValueChanged()
         {
@@ -52,13 +55,13 @@ namespace DreamBit.Extension.Controls.Input
             {
                 if (e.Key == Key.Up)
                 {
-                    Increment(1);
+                    IncrementValue(Increment);
                     UpdateEditingText();
                     e.Handled = true;
                 }
                 else if (e.Key == Key.Down)
                 {
-                    Increment(-1);
+                    IncrementValue(-Increment);
                     UpdateEditingText();
                     e.Handled = true;
                 }
@@ -119,7 +122,7 @@ namespace DreamBit.Extension.Controls.Input
                 EditingText.CaretIndex = EditingText.Text.Length;
         }
 
-        private void Increment(float value)
+        private void IncrementValue(float value)
         {
             if (!IsRotation)
             {

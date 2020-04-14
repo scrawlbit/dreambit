@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:containers="clr-namespace:DreamBit.Extension.Controls.Containers"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
-    xmlns:converters="clr-namespace:DreamBit.Extension.Converters"
-    xmlns:inspect="clr-namespace:DreamBit.Extension.Windows.SceneInspect">
+    xmlns:converters="clr-namespace:DreamBit.Extension.Converters">
 
     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" x:Key="PropertyNameStyle">
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -21,7 +20,7 @@
             <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="FontSize" Value="9" />
                 <Setter Property="MinHeight" Value="0" />
-                <Setter Property="Margin" Value="0 1"></Setter>
+                <Setter Property="Margin" Value="0 1" />
             </Style>
 
             <!--<Style TargetType="states:ColorPicker">

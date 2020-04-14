@@ -38,15 +38,15 @@
             <TextBlock Grid.Column="3" Grid.Row="1" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
 
             <!-- POSITION -->
-            <!--<input:FloatBox Grid.Row="0" Grid.Column="2" Value="{Binding Transform.X, Mode=TwoWay}" StateManager="{StaticResource PositionStateManager}" />
-            <input:FloatBox Grid.Row="0" Grid.Column="4" Value="{Binding Transform.Y, Mode=TwoWay}" StateManager="{StaticResource PositionStateManager}" />-->
+            <input:FloatBox Grid.Row="0" Grid.Column="2" Value="{Binding X, Mode=TwoWay}" />
+            <input:FloatBox Grid.Row="0" Grid.Column="4" Value="{Binding Y, Mode=TwoWay}" />
 
             <!-- SCALE -->
-            <!--<input:FloatBox Grid.Row="1" Grid.Column="2" Value="{Binding Transform.ScaleX, Mode=TwoWay}" StateManager="{StaticResource ScaleStateManager}" />
-            <input:FloatBox Grid.Row="1" Grid.Column="4" Value="{Binding Transform.ScaleY, Mode=TwoWay}" StateManager="{StaticResource ScaleStateManager}" />-->
+            <input:FloatBox Grid.Row="1" Grid.Column="2" Value="{Binding ScaleX, Mode=TwoWay}" Increment="0.1" />
+            <input:FloatBox Grid.Row="1" Grid.Column="4" Value="{Binding ScaleY, Mode=TwoWay}" Increment="0.1" />
 
             <!-- ROTATION -->
-            <!--<input:FloatBox Grid.Row="2" Grid.Column="2" Value="{Binding Transform.Rotation, Mode=TwoWay}" IsRotation="True" StateManager="{StaticResource RotationStateManager}" />-->
+            <input:FloatBox Grid.Row="2" Grid.Column="2" Value="{Binding Rotation, Mode=TwoWay}" IsRotation="True" />
         </Grid>
     </containers:ExpansionPanel>
     
