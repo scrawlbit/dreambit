@@ -5,7 +5,8 @@ namespace DreamBit.Game.Elements
 {
     public interface IGameComponentCollection : IReadOnlyObservableCollection<GameComponent>
     {
-        bool Contains<TComponent>() where TComponent : GameComponent;
+        T Find<T>() where T : GameComponent;
+        bool Contains<T>() where T : GameComponent;
 
         void Add(params GameComponent[] components);
         void Remove(GameComponent component);
@@ -20,6 +21,10 @@ namespace DreamBit.Game.Elements
             _target = target;
         }
 
+        public T Find<T>() where T : GameComponent
+        {
+            return this.OfType<T>().FirstOrDefault();
+        }
         public bool Contains<TComponent>() where TComponent : GameComponent
         {
             return this.Any(c => c is TComponent);

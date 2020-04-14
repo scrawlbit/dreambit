@@ -8,8 +8,6 @@ namespace DreamBit.Game.Elements.Components
     public class ImageRenderer : GameComponent
     {
         private readonly IContentDrawer _drawer;
-        private Vector2 _origin;
-        private Vector2? _offset;
 
         public ImageRenderer(IContentDrawer drawer)
         {
@@ -20,26 +18,19 @@ namespace DreamBit.Game.Elements.Components
         }
 
         public Color Color { get; set; }
-        public Vector2 Origin
-        {
-            get => _origin;
-            set
-            {
-                _origin = value;
-                _offset = null;
-            }
-        }
+        public Vector2 Origin { get; set; }
         public bool FlipVertically { get; set; }
         public bool FlipHorizontally { get; set; }
         public IImage Image { get; set; }
+        public Vector2 Size
+        {
+            get => new Vector2(Image.Width, Image.Height);
+        }
 
         protected internal override void Draw()
         {
             if (Image == null)
                 return;
-
-            if (_offset == null)
-                _offset = new Vector2(Image.Width, Image.Height) * Origin;
 
             _drawer.Draw(
                 Image,
@@ -47,7 +38,7 @@ namespace DreamBit.Game.Elements.Components
                 null,
                 Color,
                 GameObject.Transform.Rotation,
-                _offset,
+                Size * Origin,
                 GameObject.Transform.Scale,
                 SpriteEffectsHelper.GetEffects(FlipHorizontally, FlipVertically)
             );

@@ -1,6 +1,7 @@
 ﻿using DreamBit.Game.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Scrawlbit.MonoGame.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +21,8 @@ namespace DreamBit.Game.Drawing
 
         void DrawString(IFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects = SpriteEffects.None, float depth = 0);
         void DrawString(IFont font, string text, Vector2 position, Color color, float rotation = 0, Vector2? origin = null, Vector2? scale = null, SpriteEffects effects = SpriteEffects.None, float depth = 0);
+
+        void DrawRectangle(Rectangle rect, Color color, float thickness = 1f);
     }
 
     internal class ContentDrawer : IContentDrawer
@@ -101,6 +104,11 @@ namespace DreamBit.Game.Drawing
                 effects,
                 depth
             );
+        }
+
+        public void DrawRectangle(Rectangle rect, Color color, float thickness)
+        {
+            SpriteBatch.DrawRectangle(rect, color, thickness);
         }
     }
 }

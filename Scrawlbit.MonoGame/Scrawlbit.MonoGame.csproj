@@ -40,6 +40,7 @@
     <Compile Include="Helpers\MatrixHelper.cs" />
     <Compile Include="Helpers\PointHelper.cs" />
     <Compile Include="Helpers\RectangleHelper.cs" />
+    <Compile Include="Helpers\SpriteBatchHelper.cs" />
     <Compile Include="Helpers\SpriteEffectsHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="Helpers\VectorHelper.cs" />

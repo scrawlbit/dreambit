@@ -1,4 +1,4 @@
-﻿using DreamBit.Extension.Module.Selection;
+﻿using DreamBit.Extension.Module;
 using DreamBit.Game.Elements;
 using DreamBit.Game.Files;
 using DreamBit.General.State;

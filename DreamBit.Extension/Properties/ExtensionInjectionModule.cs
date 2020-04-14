@@ -6,7 +6,6 @@ using DreamBit.Extension.Commands.SceneInspect;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Module;
-using DreamBit.Extension.Module.Selection;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
 using DreamBit.Modularization.Management;

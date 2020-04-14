@@ -15,7 +15,7 @@ namespace DreamBit.Extension.Module
         private readonly IEditor _editor;
         private readonly IPipeline _pipeline;
         private readonly IContentLoader _contentLoader;
-        private readonly IContentDrawer _contentDrawer;
+        private readonly IContentDrawer _drawer;
         private ContentManager _contentManager;
 
         public SceneEditorGame(IEditor editor, IPipeline pipeline, IContentLoader contentLoader, IContentDrawer contentDrawer)
@@ -23,14 +23,14 @@ namespace DreamBit.Extension.Module
             _editor = editor;
             _pipeline = pipeline;
             _contentLoader = contentLoader;
-            _contentDrawer = contentDrawer;
+            _drawer = contentDrawer;
 
             _pipeline.Notify().On(p => p.Loaded).Changed(InitializeContentManager);
         }
 
         public override void Initialize()
         {
-            _contentDrawer.SpriteBatch = SpriteBatch;
+            _drawer.SpriteBatch = SpriteBatch;
         }
         public override void Draw()
         {
@@ -39,8 +39,13 @@ namespace DreamBit.Extension.Module
             if (_editor.OpenedScene == null)
                 return;
 
-            using (_contentDrawer.Batch())
+            using (_drawer.Batch())
+            {
                 _editor.OpenedScene.Preview();
+
+                if (!_editor.Selection.Area.IsEmpty)
+                    _drawer.DrawRectangle(_editor.Selection.Area, Color.Yellow);
+            }
         }
 
         private void InitializeContentManager()

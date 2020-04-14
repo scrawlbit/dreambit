@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DreamBit.Game.Elements.Components;
+using Microsoft.Xna.Framework;
 using Scrawlbit.MonoGame.Helpers;
 using Scrawlbit.Notification;
 using System;
@@ -74,9 +75,8 @@ namespace DreamBit.Game.Elements
         {
             Rectangle[] areas =
             {
-                // TODO calculo de área de componentess
-                Rectangle.Empty, //gameObject.ImageArea(),
-                Rectangle.Empty //gameObject.TextArea()
+                ImageArea(),
+                TextArea()
             };
 
             var points = areas.SelectMany(a => new[]
@@ -189,6 +189,29 @@ namespace DreamBit.Game.Elements
 
             for (int i = 0; i < Children.Count; i++)
                 Children[i].Preview();
+        }
+
+        private Rectangle ImageArea()
+        {
+            ImageRenderer renderer = Components.Find<ImageRenderer>();
+
+            if (renderer?.Image?.Texture == null)
+                return Rectangle.Empty;
+
+            return CalculateComponentArea(renderer.Origin, renderer.Image.Texture.Size());
+        }
+        private Rectangle TextArea()
+        {
+            TextRenderer renderer = Components.Find<TextRenderer>();
+
+            if (renderer?.Text == null || renderer.Font?.SpriteFont == null)
+                return Rectangle.Empty;
+
+            return CalculateComponentArea(renderer.Origin, renderer.Size);
+        }
+        private static Rectangle CalculateComponentArea(Vector2 origin, Vector2 size)
+        {
+            return new Rectangle((-origin).ToPoint(), size.ToPoint());
         }
     }
 }
