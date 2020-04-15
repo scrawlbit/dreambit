@@ -14,7 +14,7 @@ namespace DreamBit.Extension.Module
         bool HasSelection { get; }
         bool HasMultipleSelection { get; }
         string Name { get; }
-        bool IsVisible { get; set; }
+        bool? IsVisible { get; set; }
         float X { get; set; }
         float Y { get; set; }
         float Rotation { get; set; }
@@ -31,7 +31,7 @@ namespace DreamBit.Extension.Module
         private bool _hasOneSelection;
         private bool _hasMultipleSelection;
         private string _name;
-        private bool _isVisible;
+        private bool? _isVisible;
         private Vector2 _position;
         private float _rotation;
         private Vector2 _scale;
@@ -65,7 +65,7 @@ namespace DreamBit.Extension.Module
             get => _name;
             private set => Set(ref _name, value);
         }
-        public bool IsVisible
+        public bool? IsVisible
         {
             get => _isVisible;
             set => Set(ref _isVisible, value);
@@ -114,7 +114,7 @@ namespace DreamBit.Extension.Module
             Vector2 scale = DetermineScale();
 
             Name = DetermineName();
-            IsVisible = _gameObjects.All(g => g.IsVisible);
+            IsVisible = DetermineIsVisible();
             X = position.X;
             Y = position.Y;
             Rotation = DetermineRotation();
@@ -123,6 +123,15 @@ namespace DreamBit.Extension.Module
             Area = DetermineArea(area);
         }
 
+        private bool? DetermineIsVisible()
+        {
+            bool[] values = _gameObjects.Select(g => g.IsVisible).Distinct().ToArray();
+
+            if (values.Length == 1)
+                return values[0];
+
+            return null;
+        }
         private string DetermineName()
         {
             if (HasMultipleSelection) return "Selection";
