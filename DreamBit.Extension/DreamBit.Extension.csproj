@@ -105,6 +105,7 @@
     <Compile Include="Management\Editor.cs" />
     <Compile Include="Management\ProjectManager.cs" />
     <Compile Include="Module\SceneEditorGame.cs" />
+    <Compile Include="Module\SelectionData.cs" />
     <Compile Include="Module\SelectionObject.cs" />
     <Compile Include="Module\TestGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
