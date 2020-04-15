@@ -1,4 +1,5 @@
 ﻿using DreamBit.Extension.Module;
+using DreamBit.General.State;
 using System.Windows;
 
 namespace DreamBit.Extension.Windows.SceneInspect
@@ -12,13 +13,9 @@ namespace DreamBit.Extension.Windows.SceneInspect
 
         private ISelectionObject Selection => (ISelectionObject)Panel.DataContext;
 
-        private void StartEditing(object sender, RoutedEventArgs e)
+        private void OnIsVisibleChanged(object sender, ValueChangedEventArgs<bool?> e)
         {
-            Selection.InEdition = true;
-        }
-        private void StopEditing(object sender, RoutedEventArgs e)
-        {
-            Selection.InEdition = false;
+            Selection.ValidateChanges();
         }
     }
 }

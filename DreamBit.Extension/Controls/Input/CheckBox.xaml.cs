@@ -6,9 +6,9 @@ namespace DreamBit.Extension.Controls.Input
 {
     public partial class CheckBox
     {
-        public delegate void CheckBoxEventArgs(object sender, ValueChangedEventArgs<bool> e);
+        public delegate void CheckBoxEventArgs(object sender, ValueChangedEventArgs<bool?> e);
         public static readonly DependencyProperty<CheckBox, bool?> IsCheckedProperty;
-        private bool _initialValue;
+        private bool? _initialValue;
 
         static CheckBox()
         {
@@ -35,14 +35,12 @@ namespace DreamBit.Extension.Controls.Input
 
         private void OnGotFocus(object sender, RoutedEventArgs e)
         {
-            _initialValue = Toggle.IsChecked ?? false;
+            _initialValue = Toggle.IsChecked;
         }
         private void OnLostFocus(object sender, RoutedEventArgs e)
         {
-            var currentValue = Toggle.IsChecked ?? false;
-
-            if (currentValue != _initialValue)
-                Changed?.Invoke(this, (_initialValue, currentValue));
+            if (IsChecked != _initialValue)
+                Changed?.Invoke(this, (_initialValue, IsChecked));
         }
     }
 }

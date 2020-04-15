@@ -17,11 +17,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <input:CheckBox Grid.Column="0"
-                        IsChecked="{Binding IsVisible, Mode=TwoWay}"
-                        IsThreeState="True"
-                        GotFocus="StartEditing"
-                        LostFocus="StopEditing" />
+        <input:CheckBox Grid.Column="0" IsChecked="{Binding IsVisible, Mode=TwoWay}" IsThreeState="True" Changed="OnIsVisibleChanged" />
 
         <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="5 0 0 0" />
     </Grid>

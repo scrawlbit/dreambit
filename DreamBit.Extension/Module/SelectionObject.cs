@@ -1,5 +1,6 @@
 ﻿using DreamBit.Extension.Management;
 using DreamBit.Game.Elements;
+using DreamBit.General.State;
 using Microsoft.Xna.Framework;
 using Scrawlbit.Helpers;
 using Scrawlbit.Notification;
@@ -12,7 +13,6 @@ namespace DreamBit.Extension.Module
 {
     public interface ISelectionObject : INotifyPropertyChanged
     {
-        bool InEdition { get; set; }
         bool HasSelection { get; }
         bool HasMultipleSelection { get; }
         string Name { get; }
@@ -23,14 +23,16 @@ namespace DreamBit.Extension.Module
         float ScaleX { get; set; }
         float ScaleY { get; set; }
         Rectangle Area { get; }
+
+        void ValidateChanges();
     }
 
     internal class SelectionObject : NotificationObject, ISelectionObject
     {
         private readonly IEditor _editor;
+        private readonly IStateManager _state;
         private readonly IDictionary<GameObject, SelectionData> _data;
         private GameObject[] _gameObjects;
-        private bool _inEdition;
         private bool _hasSelection;
         private bool _hasOneSelection;
         private bool _hasMultipleSelection;
@@ -42,28 +44,17 @@ namespace DreamBit.Extension.Module
         private Rectangle _area;
         private bool _applyChanges;
 
-        public SelectionObject(IEditor editor)
+        public SelectionObject(IEditor editor, IStateManager state)
         {
             _editor = editor;
-            _editor.SelectedObjects.CollectionChanged += (s, e) => Update();
-
+            _state = state;
             _data = new Dictionary<GameObject, SelectionData>();
+            
+            _editor.SelectedObjects.CollectionChanged += (s, e) => Update();
 
             Update();
         }
 
-        public bool InEdition
-        {
-            get => _inEdition;
-            set
-            {
-                if (!Set(ref _inEdition, value))
-                    return;
-
-                if (value)
-                    CopyData();
-            }
-        }
         public bool HasSelection
         {
             get => _hasSelection;
@@ -89,9 +80,6 @@ namespace DreamBit.Extension.Module
             get => _isVisible;
             set
             {
-                if (!InEdition)
-                    return;
-
                 if (HasOneSelection)
                     value = value ?? false;
 
@@ -104,7 +92,7 @@ namespace DreamBit.Extension.Module
             get => _position.X;
             set
             {
-                if (InEdition && Set(ref _position.X, EnsurePrecision(value)))
+                if (Set(ref _position.X, EnsurePrecision(value)))
                     ApplyChanges();
             }
         }
@@ -113,7 +101,7 @@ namespace DreamBit.Extension.Module
             get => _position.Y;
             set
             {
-                if (InEdition && Set(ref _position.Y, EnsurePrecision(value)))
+                if (Set(ref _position.Y, EnsurePrecision(value)))
                     ApplyChanges();
             }
         }
@@ -122,7 +110,7 @@ namespace DreamBit.Extension.Module
             get => _rotation;
             set
             {
-                if (InEdition && Set(ref _rotation, EnsurePrecision(value)))
+                if (Set(ref _rotation, EnsurePrecision(value)))
                     ApplyChanges();
             }
         }
@@ -131,7 +119,7 @@ namespace DreamBit.Extension.Module
             get => _scale.X;
             set
             {
-                if (InEdition && Set(ref _scale.X, EnsurePrecision(value)))
+                if (Set(ref _scale.X, EnsurePrecision(value)))
                     ApplyChanges();
             }
         }
@@ -140,7 +128,7 @@ namespace DreamBit.Extension.Module
             get => _scale.Y;
             set
             {
-                if (InEdition && Set(ref _scale.Y, EnsurePrecision(value)))
+                if (Set(ref _scale.Y, EnsurePrecision(value)))
                     ApplyChanges();
             }
         }
@@ -150,16 +138,27 @@ namespace DreamBit.Extension.Module
             private set => Set(ref _area, value);
         }
 
+        public void ValidateChanges()
+        {
+            using (_state.Scope("Selection updated"))
+            {
+                foreach (var item in _data)
+                {
+                    GameObject gameObject = item.Key;
+                    SelectionData data = item.Value;
+
+                    ValidateIsVisibleChange(gameObject, data);
+                }
+            }
+
+            CopyData();
+        }
+
         private void Update()
         {
-            _inEdition = true;
             _applyChanges = false;
 
             _gameObjects = _editor.SelectedObjects.ToArray();
-            _data.Clear();
-
-            foreach (var gameObject in _gameObjects)
-                _data[gameObject] = new SelectionData();
 
             HasSelection = _gameObjects.Length > 0;
             HasOneSelection = _gameObjects.Length == 1;
@@ -178,7 +177,8 @@ namespace DreamBit.Extension.Module
             ScaleY = scale.Y;
             Area = DetermineArea(area);
 
-            _inEdition = false;
+            CopyData(true);
+
             _applyChanges = true;
         }
         private void ApplyChanges()
@@ -192,16 +192,6 @@ namespace DreamBit.Extension.Module
             }
         }
 
-        private void CopyData()
-        {
-            foreach (var item in _data)
-            {
-                item.Value.IsVisible = item.Key.IsVisible;
-                item.Value.Position = item.Key.Transform.Position;
-                item.Value.Rotation = item.Key.Transform.Rotation;
-                item.Value.Scale = item.Key.Transform.Scale;
-            }
-        }
         private bool? DetermineIsVisible()
         {
             bool[] values = _gameObjects.Select(g => g.IsVisible).Distinct().ToArray();
@@ -253,6 +243,39 @@ namespace DreamBit.Extension.Module
             Vector2 location = _position - offset;
 
             return new Rectangle(location.ToPoint(), area.Size);
+        }
+        private void CopyData(bool reset = false)
+        {
+            if (reset)
+            {
+                _data.Clear();
+
+                foreach (var gameObject in _gameObjects)
+                    _data[gameObject] = new SelectionData();
+            }
+
+            foreach (var item in _data)
+            {
+                GameObject gameObject = item.Key;
+                SelectionData data = item.Value;
+
+                data.IsVisible = gameObject.IsVisible;
+                data.Position = gameObject.Transform.Position;
+                data.Rotation = gameObject.Transform.Rotation;
+                data.Scale = gameObject.Transform.Scale;
+            }
+        }
+
+        private void ValidateIsVisibleChange(GameObject gameObject, SelectionData data)
+        {
+            if (gameObject.IsVisible == data.IsVisible)
+                return;
+
+            string value = gameObject.IsVisible ? "visible" : "invisible";
+            string description = $"{gameObject.Name} set to {value}";
+            IStateCommand command = gameObject.State().SetProperty(g => g.IsVisible, data.IsVisible, gameObject.IsVisible, description);
+
+            _state.Add(command);
         }
 
         private static float EnsurePrecision(float value)
