@@ -85,16 +85,28 @@ namespace DreamBit.Game.Elements
                 a.RightTop(),
                 a.RightBottom(),
                 a.LeftBottom()
-            }).ToArray();
+            }).Select(p => p.ToVector2()).ToArray();
 
             var minX = points.Min(p => p.X);
             var minY = points.Min(p => p.Y);
             var maxX = points.Max(p => p.X);
             var maxY = points.Max(p => p.Y);
 
-            var matrix = Transform.Matrix;
-            var leftTop = VectorHelper.Transform(minX, minY, matrix);
-            var rightBottom = VectorHelper.Transform(maxX, maxY, matrix);
+            var leftTop = VectorHelper.Transform(minX, minY, Transform.Matrix);
+            var rightBottom = VectorHelper.Transform(maxX, maxY, Transform.Matrix);
+
+            if (Transform.Rotation != 0)
+            {
+                points = new[] { leftTop, rightBottom };
+
+                minX = points.Min(p => p.X);
+                minY = points.Min(p => p.Y);
+                maxX = points.Max(p => p.X);
+                maxY = points.Max(p => p.Y);
+
+                leftTop = new Vector2(minX, minY);
+                rightBottom = new Vector2(maxX, maxY);
+            }
 
             return new Rectangle(leftTop.ToPoint(), (rightBottom - leftTop).ToPoint());
         }
@@ -198,7 +210,7 @@ namespace DreamBit.Game.Elements
             if (renderer?.Image?.Texture == null)
                 return Rectangle.Empty;
 
-            return CalculateComponentArea(renderer.Origin, renderer.Image.Texture.Size());
+            return CalculateComponentArea(renderer.Origin, renderer.Image.Size);
         }
         private Rectangle TextArea()
         {

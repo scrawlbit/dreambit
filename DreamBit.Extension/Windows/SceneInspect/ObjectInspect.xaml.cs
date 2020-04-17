@@ -1,4 +1,5 @@
-﻿using DreamBit.Extension.Module;
+﻿using DreamBit.Extension.Controls.Input;
+using DreamBit.Extension.Module;
 using DreamBit.General.State;
 using System.Windows;
 
@@ -11,11 +12,9 @@ namespace DreamBit.Extension.Windows.SceneInspect
             InitializeComponent();
         }
 
-        private ISelectionObject Selection => (ISelectionObject)Panel.DataContext;
-
-        private void OnIsVisibleChanged(object sender, ValueChangedEventArgs<bool?> e)
+        private void OnIsVisibleChanged(CheckBox sender, ValueChangedEventArgs<bool?> e)
         {
-            Selection.ValidateChanges();
+            ((ISelectionObject)sender.DataContext).ValidateChanges();
         }
     }
 }

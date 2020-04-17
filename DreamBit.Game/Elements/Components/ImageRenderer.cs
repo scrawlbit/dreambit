@@ -22,10 +22,6 @@ namespace DreamBit.Game.Elements.Components
         public bool FlipVertically { get; set; }
         public bool FlipHorizontally { get; set; }
         public IImage Image { get; set; }
-        public Vector2 Size
-        {
-            get => new Vector2(Image.Width, Image.Height);
-        }
 
         protected internal override void Draw()
         {
@@ -38,7 +34,7 @@ namespace DreamBit.Game.Elements.Components
                 null,
                 Color,
                 GameObject.Transform.Rotation,
-                Size * Origin,
+                Image.Size * Origin,
                 GameObject.Transform.Scale,
                 SpriteEffectsHelper.GetEffects(FlipHorizontally, FlipVertically)
             );

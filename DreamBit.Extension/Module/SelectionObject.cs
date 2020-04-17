@@ -1,10 +1,10 @@
 ﻿using DreamBit.Extension.Management;
 using DreamBit.Game.Elements;
+using DreamBit.Game.Helpers;
 using DreamBit.General.State;
 using Microsoft.Xna.Framework;
-using Scrawlbit.Helpers;
+using Scrawlbit.MonoGame.Helpers;
 using Scrawlbit.Notification;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,8 +22,8 @@ namespace DreamBit.Extension.Module
         float Rotation { get; set; }
         float ScaleX { get; set; }
         float ScaleY { get; set; }
-        Rectangle Area { get; }
 
+        Rectangle Area();
         void ValidateChanges();
     }
 
@@ -33,6 +33,7 @@ namespace DreamBit.Extension.Module
         private readonly IStateManager _state;
         private readonly IDictionary<GameObject, SelectionData> _data;
         private GameObject[] _gameObjects;
+        private Matrix _initialMatrix;
         private bool _hasSelection;
         private bool _hasOneSelection;
         private bool _hasMultipleSelection;
@@ -41,7 +42,6 @@ namespace DreamBit.Extension.Module
         private Vector2 _position;
         private float _rotation;
         private Vector2 _scale;
-        private Rectangle _area;
         private bool _applyChanges;
 
         public SelectionObject(IEditor editor, IStateManager state)
@@ -49,7 +49,7 @@ namespace DreamBit.Extension.Module
             _editor = editor;
             _state = state;
             _data = new Dictionary<GameObject, SelectionData>();
-            
+
             _editor.SelectedObjects.CollectionChanged += (s, e) => Update();
 
             Update();
@@ -92,7 +92,7 @@ namespace DreamBit.Extension.Module
             get => _position.X;
             set
             {
-                if (Set(ref _position.X, EnsurePrecision(value)))
+                if (Set(ref _position.X, value.EnsurePrecision()))
                     ApplyChanges();
             }
         }
@@ -101,7 +101,7 @@ namespace DreamBit.Extension.Module
             get => _position.Y;
             set
             {
-                if (Set(ref _position.Y, EnsurePrecision(value)))
+                if (Set(ref _position.Y, value.EnsurePrecision()))
                     ApplyChanges();
             }
         }
@@ -110,7 +110,7 @@ namespace DreamBit.Extension.Module
             get => _rotation;
             set
             {
-                if (Set(ref _rotation, EnsurePrecision(value)))
+                if (Set(ref _rotation, value.EnsurePrecision()))
                     ApplyChanges();
             }
         }
@@ -119,7 +119,7 @@ namespace DreamBit.Extension.Module
             get => _scale.X;
             set
             {
-                if (Set(ref _scale.X, EnsurePrecision(value)))
+                if (Set(ref _scale.X, value.EnsurePrecision()))
                     ApplyChanges();
             }
         }
@@ -128,16 +128,27 @@ namespace DreamBit.Extension.Module
             get => _scale.Y;
             set
             {
-                if (Set(ref _scale.Y, EnsurePrecision(value)))
+                if (Set(ref _scale.Y, value.EnsurePrecision()))
                     ApplyChanges();
             }
         }
-        public Rectangle Area
+        private Vector2 Position
         {
-            get => _area;
-            private set => Set(ref _area, value);
+            get => _position;
+        }
+        private Vector2 Scale
+        {
+            get => _scale;
         }
 
+        public Rectangle Area()
+        {
+            Rectangle area = _gameObjects.TotalArea();
+            Vector2 offset = Position - area.Location.ToVector2();
+            Vector2 location = Position - offset;
+
+            return new Rectangle(location.ToPoint(), area.Size);
+        }
         public void ValidateChanges()
         {
             using (_state.Scope("Selection updated"))
@@ -148,6 +159,9 @@ namespace DreamBit.Extension.Module
                     SelectionData data = item.Value;
 
                     ValidateIsVisibleChange(gameObject, data);
+                    ValidatePositionChange(gameObject, data);
+                    ValidateRotationChange(gameObject, data);
+                    ValidateScaleChange(gameObject, data);
                 }
             }
 
@@ -164,8 +178,7 @@ namespace DreamBit.Extension.Module
             HasOneSelection = _gameObjects.Length == 1;
             HasMultipleSelection = _gameObjects.Length > 1;
 
-            Rectangle area = _gameObjects.TotalArea();
-            Vector2 position = DeterminePosition(area);
+            Vector2 position = DeterminePosition();
             Vector2 scale = DetermineScale();
 
             Name = DetermineName();
@@ -175,7 +188,6 @@ namespace DreamBit.Extension.Module
             Rotation = DetermineRotation();
             ScaleX = scale.X;
             ScaleY = scale.Y;
-            Area = DetermineArea(area);
 
             CopyData(true);
 
@@ -186,9 +198,20 @@ namespace DreamBit.Extension.Module
             if (!_applyChanges)
                 return;
 
+            Matrix offset = _initialMatrix.Invert();
+            Matrix changes = offset * DetermineMatrix();
+
             foreach (var gameObject in _gameObjects)
             {
-                gameObject.IsVisible = IsVisible ?? _data[gameObject].IsVisible;
+                SelectionData data = _data[gameObject];
+                Matrix transform = data.Matrix * changes;
+
+                transform.Decompose(out Vector2 position, out float rotation, out Vector2 scale);
+
+                gameObject.IsVisible = IsVisible ?? data.IsVisible;
+                gameObject.Transform.Position = position.EnsurePrecision();
+                gameObject.Transform.Rotation = rotation.EnsurePrecision();
+                gameObject.Transform.Scale = scale.EnsurePrecision();
             }
         }
 
@@ -208,10 +231,11 @@ namespace DreamBit.Extension.Module
 
             return null;
         }
-        private Vector2 DeterminePosition(Rectangle area)
+        private Vector2 DeterminePosition()
         {
             if (HasMultipleSelection)
             {
+                Rectangle area = _gameObjects.TotalArea();
                 float x = MathHelper.Lerp(area.Left, area.Right, 0.5f);
                 float y = MathHelper.Lerp(area.Top, area.Bottom, 0.5f);
 
@@ -237,12 +261,9 @@ namespace DreamBit.Extension.Module
 
             return Vector2.One;
         }
-        private Rectangle DetermineArea(Rectangle area)
+        private Matrix DetermineMatrix()
         {
-            Vector2 offset = _position - area.Location.ToVector2();
-            Vector2 location = _position - offset;
-
-            return new Rectangle(location.ToPoint(), area.Size);
+            return MatrixHelper.Create(Position, Rotation, Scale);
         }
         private void CopyData(bool reset = false)
         {
@@ -263,7 +284,10 @@ namespace DreamBit.Extension.Module
                 data.Position = gameObject.Transform.Position;
                 data.Rotation = gameObject.Transform.Rotation;
                 data.Scale = gameObject.Transform.Scale;
+                data.Matrix = gameObject.Transform.Matrix;
             }
+
+            _initialMatrix = DetermineMatrix();
         }
 
         private void ValidateIsVisibleChange(GameObject gameObject, SelectionData data)
@@ -277,10 +301,38 @@ namespace DreamBit.Extension.Module
 
             _state.Add(command);
         }
-
-        private static float EnsurePrecision(float value)
+        private void ValidatePositionChange(GameObject gameObject, SelectionData data)
         {
-            return (float)Math.Round(value, 3);
+            if (gameObject.Transform.Position == data.Position)
+                return;
+
+            string value = gameObject.Transform.Position.Text();
+            string description = $"{gameObject.Name} position changed to {value}";
+            IStateCommand command = gameObject.Transform.State().SetProperty(t => t.Position, data.Position, gameObject.Transform.Position, description);
+
+            _state.Add(command);
+        }
+        private void ValidateRotationChange(GameObject gameObject, SelectionData data)
+        {
+            if (gameObject.Transform.Rotation == data.Rotation)
+                return;
+
+            string value = gameObject.Transform.Rotation.Text();
+            string description = $"{gameObject.Name} rotation changed to {value}";
+            IStateCommand command = gameObject.Transform.State().SetProperty(t => t.Rotation, data.Rotation, gameObject.Transform.Rotation, description);
+
+            _state.Add(command);
+        }
+        private void ValidateScaleChange(GameObject gameObject, SelectionData data)
+        {
+            if (gameObject.Transform.Scale == data.Scale)
+                return;
+
+            string value = gameObject.Transform.Scale.Text();
+            string description = $"{gameObject.Name} scale changed to {value}";
+            IStateCommand command = gameObject.Transform.State().SetProperty(t => t.Scale, data.Scale, gameObject.Transform.Scale, description);
+
+            _state.Add(command);
         }
     }
 }

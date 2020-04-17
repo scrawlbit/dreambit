@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DreamBit.Game.Helpers;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Scrawlbit.Helpers;
@@ -20,9 +21,8 @@ namespace DreamBit.Game.Serialization.Converters
         }
         public override void WriteJson(JsonWriter writer, Vector2 value, JsonSerializer serializer)
         {
-            string x = value.X.ToString(CultureInfo.InvariantCulture);
-            string y = value.Y.ToString(CultureInfo.InvariantCulture);
-            JToken token = JToken.FromObject($"{x};{y}");
+            string text = value.Text();
+            JToken token = JToken.FromObject(text);
 
             token.WriteTo(writer);
         }

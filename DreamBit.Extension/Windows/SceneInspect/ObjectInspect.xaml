@@ -11,7 +11,7 @@
     d:DesignHeight="450" d:DesignWidth="800"
     Padding="5">
 
-    <Grid DataContext="{Binding Editor.Selection}" Name="Panel">
+    <Grid DataContext="{Binding Editor.Selection}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />

@@ -43,8 +43,10 @@ namespace DreamBit.Extension.Module
             {
                 _editor.OpenedScene.Preview();
 
-                if (!_editor.Selection.Area.IsEmpty)
-                    _drawer.DrawRectangle(_editor.Selection.Area, Color.Yellow);
+                Rectangle selecionArea = _editor.Selection.Area();
+
+                if (!selecionArea.IsEmpty)
+                    _drawer.DrawRectangle(selecionArea, Color.Yellow);
             }
         }
 

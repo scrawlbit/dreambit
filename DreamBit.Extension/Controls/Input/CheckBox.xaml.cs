@@ -6,7 +6,7 @@ namespace DreamBit.Extension.Controls.Input
 {
     public partial class CheckBox
     {
-        public delegate void CheckBoxEventArgs(object sender, ValueChangedEventArgs<bool?> e);
+        public delegate void CheckBoxEventArgs(CheckBox sender, ValueChangedEventArgs<bool?> e);
         public static readonly DependencyProperty<CheckBox, bool?> IsCheckedProperty;
         private bool? _initialValue;
 

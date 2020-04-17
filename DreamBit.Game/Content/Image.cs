@@ -1,6 +1,8 @@
 ﻿using DreamBit.Pipeline.Files;
 using DreamBit.Project;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Scrawlbit.MonoGame.Helpers;
 
 namespace DreamBit.Game.Content
 {
@@ -10,6 +12,7 @@ namespace DreamBit.Game.Content
         Texture2D Texture { get; }
         int Height { get; }
         int Width { get; }
+        Vector2 Size { get; }
     }
 
     internal class Image : IImage
@@ -31,6 +34,7 @@ namespace DreamBit.Game.Content
         }
         public int Height => Texture.Height;
         public int Width => Texture.Width;
+        public Vector2 Size => Texture.Size();
         IProjectFile IContent.File => File;
     }
 }
