@@ -116,12 +116,6 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 return;
             }
 
-            var a = gameObject.Transform.Matrix;
-            var b = to.Parent?.Transform.Matrix ?? Matrix.Identity;
-            var c = a * b.Invert();
-
-            c.Decompose(out Vector2 position, out float rotation, out Vector2 scale);
-
             from.Collection.Remove(gameObject);
 
             if (to.Index > to.Collection.Count)
@@ -131,10 +125,6 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 
             if (to.Parent != null)
                 to.Parent.IsExpanded = true;
-
-            gameObject.Transform.Position = position;
-            gameObject.Transform.Rotation = rotation;
-            gameObject.Transform.Scale = scale;
         }
 
         #region MoveData

@@ -50,8 +50,11 @@ namespace DreamBit.Game.Elements
                 if (_baseTransform != null)
                     _baseTransform.Invalidated -= OnBaseTransformInvalidated;
 
-                InvalidateTransformations(TransformChange.Relative);
+                ValidateTransformations();
+                
                 _baseTransform = value;
+                _lastChange = TransformChange.Real;
+                IsTransformationsValid = false;
 
                 if (_baseTransform != null)
                     _baseTransform.Invalidated += OnBaseTransformInvalidated;
