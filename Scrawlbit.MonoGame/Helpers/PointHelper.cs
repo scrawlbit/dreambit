@@ -10,22 +10,5 @@ namespace Scrawlbit.MonoGame.Helpers
         {
             return point == Zero;
         }
-        
-        public static Point LeftTop(this Rectangle rect)
-        {
-            return new Point(rect.Left, rect.Top);
-        }
-        public static Point RightTop(this Rectangle rect)
-        {
-            return new Point(rect.Right, rect.Top);
-        }
-        public static Point LeftBottom(this Rectangle rect)
-        {
-            return new Point(rect.Left, rect.Bottom);
-        }
-        public static Point RightBottom(this Rectangle rect)
-        {
-            return new Point(rect.Right, rect.Bottom);
-        }
     }
 }

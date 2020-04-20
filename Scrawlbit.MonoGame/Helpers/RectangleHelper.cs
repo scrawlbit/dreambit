@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Scrawlbit.MonoGame.Helpers
 {
@@ -53,6 +55,63 @@ namespace Scrawlbit.MonoGame.Helpers
         public static bool HasSize(this Rectangle rectangle)
         {
             return rectangle.Size != Point.Zero;
+        }
+
+        public static Point LeftTop(this Rectangle rect)
+        {
+            return new Point(rect.Left, rect.Top);
+        }
+        public static Point RightTop(this Rectangle rect)
+        {
+            return new Point(rect.Right, rect.Top);
+        }
+        public static Point LeftBottom(this Rectangle rect)
+        {
+            return new Point(rect.Left, rect.Bottom);
+        }
+        public static Point RightBottom(this Rectangle rect)
+        {
+            return new Point(rect.Right, rect.Bottom);
+        }
+
+        public static Rectangle Union(IEnumerable<Rectangle> rectangles)
+        {
+            return Union(rectangles.ToArray());
+        }
+        public static Rectangle Union(params Rectangle[] rectangles)
+        {
+            Rectangle union = Rectangle.Empty;
+
+            for (int i = 0; i < rectangles.Length; i++)
+            {
+                if (i == 0)
+                    union = rectangles[i];
+                else
+                    union = Rectangle.Union(union, rectangles[i]);
+            }
+
+            return union;
+        }
+
+        public static Rectangle Transform(Rectangle rectangle, Matrix matrix)
+        {
+            var points = new Vector2[]
+            {
+                rectangle.LeftTop().ToVector2(),
+                rectangle.RightTop().ToVector2(),
+                rectangle.RightBottom().ToVector2(),
+                rectangle.LeftBottom().ToVector2()
+            };
+
+            for (int i = 0; i < points.Length; i++)
+                points[i] = Vector2.Transform(points[i], matrix);
+
+            var minX = points.Min(p => p.X);
+            var minY = points.Min(p => p.Y);
+            var maxX = points.Max(p => p.X);
+            var maxY = points.Max(p => p.Y);
+
+            return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
         }
     }
 }

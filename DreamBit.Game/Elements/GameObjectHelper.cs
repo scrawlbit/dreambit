@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Scrawlbit.MonoGame.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DreamBit.Game.Elements
 {
@@ -7,17 +9,7 @@ namespace DreamBit.Game.Elements
     {
         public static Rectangle TotalArea(this IEnumerable<GameObject> gameObjects)
         {
-            var area = Rectangle.Empty;
-
-            foreach (var gameObject in gameObjects)
-            {
-                if (area.IsEmpty)
-                    area = gameObject.TotalArea();
-                else
-                    area = Rectangle.Union(area, gameObject.TotalArea());
-            }
-
-            return area;
+            return RectangleHelper.Union(gameObjects.Select(g => g.TotalArea()));
         }
     }
 }

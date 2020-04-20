@@ -73,51 +73,17 @@ namespace DreamBit.Game.Elements
 
         public Rectangle Area()
         {
-            Rectangle[] areas =
-            {
-                ImageArea(),
-                TextArea()
-            };
+            Rectangle content = ContentArea();
+            Rectangle position = PositionArea();
 
-            var points = areas.SelectMany(a => new[]
-            {
-                a.LeftTop(),
-                a.RightTop(),
-                a.RightBottom(),
-                a.LeftBottom()
-            }).Select(p => p.ToVector2()).ToArray();
-
-            var minX = points.Min(p => p.X);
-            var minY = points.Min(p => p.Y);
-            var maxX = points.Max(p => p.X);
-            var maxY = points.Max(p => p.Y);
-
-            var leftTop = VectorHelper.Transform(minX, minY, Transform.Matrix);
-            var rightBottom = VectorHelper.Transform(maxX, maxY, Transform.Matrix);
-
-            if (Transform.Rotation != 0)
-            {
-                points = new[] { leftTop, rightBottom };
-
-                minX = points.Min(p => p.X);
-                minY = points.Min(p => p.Y);
-                maxX = points.Max(p => p.X);
-                maxY = points.Max(p => p.Y);
-
-                leftTop = new Vector2(minX, minY);
-                rightBottom = new Vector2(maxX, maxY);
-            }
-
-            return new Rectangle(leftTop.ToPoint(), (rightBottom - leftTop).ToPoint());
+            return Rectangle.Union(content, position);
         }
         public Rectangle TotalArea()
         {
-            var area = Area();
+            Rectangle content = TotalContentArea();
+            Rectangle position = PositionArea();
 
-            foreach (var child in Children)
-                area = Rectangle.Union(area, child.TotalArea());
-
-            return area;
+            return Rectangle.Union(content, position);
         }
 
         internal void Initialize()
@@ -201,6 +167,30 @@ namespace DreamBit.Game.Elements
 
             for (int i = 0; i < Children.Count; i++)
                 Children[i].Preview();
+        }
+
+        private Rectangle PositionArea()
+        {
+            return new Rectangle(Transform.Position.ToPoint(), Point.Zero);
+        }
+        private Rectangle ContentArea()
+        {
+            Rectangle content = RectangleHelper.Union(ImageArea(), TextArea());
+            Rectangle area = RectangleHelper.Transform(content, Transform.Matrix);
+
+            return area;
+        }
+        private Rectangle TotalContentArea()
+        {
+            Rectangle area = ContentArea();
+
+            foreach (var child in Children.Select(c => c.TotalContentArea()))
+            {
+                if (!child.IsEmpty)
+                    area = Rectangle.Union(area, child);
+            }
+
+            return area;
         }
 
         private Rectangle ImageArea()
