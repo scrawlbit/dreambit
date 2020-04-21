@@ -5,7 +5,7 @@ using System;
 
 namespace DreamBit.Game.Elements
 {
-    public sealed class Transform : ITransformationValues
+    public sealed class Transform : ITransform
     {
         private readonly TransformationValues _relative;
         private readonly TransformationValues _real;
@@ -18,8 +18,8 @@ namespace DreamBit.Game.Elements
             _relative = new TransformationValues(this, TransformChange.Relative);
             _real = new TransformationValues(this, TransformChange.Real);
 
-            _lastChange = TransformChange.Relative;
-            ((ITransformationValues)_relative).Scale = Vector2.One;
+            _lastChange = TransformChange.Real;
+            _real.Scale = Vector2.One;
         }
 
         public event Action Invalidated;
@@ -55,8 +55,8 @@ namespace DreamBit.Game.Elements
             }
         }
 
-        private ITransformationValues Real => _real;
-        public ITransformationValues Relative => _relative;
+        private ITransform Real => _real;
+        public ITransform Relative => _relative;
         public Vector2 Position
         {
             get => Real.Position;
@@ -123,7 +123,7 @@ namespace DreamBit.Game.Elements
                 to.Rotation = MathHelper.TwoPi + to.Rotation;
         }
 
-        private class TransformationValues : ITransformationValues
+        private class TransformationValues : ITransform
         {
             private readonly Transform _transform;
             private readonly TransformChange _changesType;
@@ -139,7 +139,7 @@ namespace DreamBit.Game.Elements
             public float Rotation;
             public Vector2 Scale;
 
-            Vector2 ITransformationValues.Position
+            Vector2 ITransform.Position
             {
                 get
                 {
@@ -155,7 +155,7 @@ namespace DreamBit.Game.Elements
                     }
                 }
             }
-            float ITransformationValues.Rotation
+            float ITransform.Rotation
             {
                 get
                 {
@@ -173,7 +173,7 @@ namespace DreamBit.Game.Elements
                     }
                 }
             }
-            Vector2 ITransformationValues.Scale
+            Vector2 ITransform.Scale
             {
                 get
                 {
@@ -191,7 +191,7 @@ namespace DreamBit.Game.Elements
                     }
                 }
             }
-            Matrix ITransformationValues.Matrix
+            Matrix ITransform.Matrix
             {
                 get
                 {

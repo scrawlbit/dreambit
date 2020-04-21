@@ -2,7 +2,7 @@
 
 namespace DreamBit.Game.Elements
 {
-    public interface ITransformationValues
+    public interface ITransform
     {
         Vector2 Position { get; set; }
         float Rotation { get; set; }

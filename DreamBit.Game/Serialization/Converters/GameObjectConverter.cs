@@ -23,9 +23,9 @@ namespace DreamBit.Game.Serialization.Converters
 
             instance.Name = obj[nameof(GameObject.Name)].ToString();
             instance.IsVisible = obj[nameof(GameObject.IsVisible)].ToObject<bool>(serializer);
-            instance.Transform.Relative.Position = obj[nameof(Transform.Position)].ToObject<Vector2>(serializer);
-            instance.Transform.Relative.Rotation = obj[nameof(Transform.Rotation)].ToObject<float>(serializer);
-            instance.Transform.Relative.Scale = obj[nameof(Transform.Scale)].ToObject<Vector2>(serializer);
+            instance.Transform.Position = obj[nameof(Transform.Position)].ToObject<Vector2>(serializer);
+            instance.Transform.Rotation = obj[nameof(Transform.Rotation)].ToObject<float>(serializer);
+            instance.Transform.Scale = obj[nameof(Transform.Scale)].ToObject<Vector2>(serializer);
 
             if (obj.TryGetPropertyValue(nameof(GameObject.Components), serializer, out GameComponent[] components))
                 instance.Components.Add(components);
@@ -42,9 +42,9 @@ namespace DreamBit.Game.Serialization.Converters
             obj.SetProperty(nameof(GameObject.Id), value.Id, serializer);
             obj.SetProperty(nameof(GameObject.Name), value.Name, serializer);
             obj.SetProperty(nameof(GameObject.IsVisible), value.IsVisible, serializer);
-            obj.SetProperty(nameof(Transform.Position), value.Transform.Relative.Position, serializer);
-            obj.SetProperty(nameof(Transform.Rotation), value.Transform.Relative.Rotation, serializer);
-            obj.SetProperty(nameof(Transform.Scale), value.Transform.Relative.Scale, serializer);
+            obj.SetProperty(nameof(Transform.Position), value.Transform.Position, serializer);
+            obj.SetProperty(nameof(Transform.Rotation), value.Transform.Rotation, serializer);
+            obj.SetProperty(nameof(Transform.Scale), value.Transform.Scale, serializer);
 
             if (value.Components.Any())
                 obj.SetProperty(nameof(GameObject.Components), value.Components, serializer);
