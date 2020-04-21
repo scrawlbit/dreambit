@@ -21,14 +21,14 @@ namespace DreamBit.Extension.Windows.SceneInspect
         private void OnFlipHorizontallyChanged(CheckBox sender, ValueChangedEventArgs<bool?> e)
         {
             string description = $"{ImageRenderer.GameObject.Name}'s image renderer flipped horizontally";
-            IStateCommand command = ImageRenderer.State().SetProperty(i => i.FlipHorizontally, e, description);
+            IStateCommand command = ImageRenderer.State().SetProperty(i => i.FlipHorizontally, e.AsBoolean(), description);
 
             ViewModel.State.Add(command);
         }
         private void OnFlipVerticallyChanged(CheckBox sender, ValueChangedEventArgs<bool?> e)
         {
             string description = $"{ImageRenderer.GameObject.Name}'s image renderer flipped vertically";
-            IStateCommand command = ImageRenderer.State().SetProperty(i => i.FlipVertically, e, description);
+            IStateCommand command = ImageRenderer.State().SetProperty(i => i.FlipVertically, e.AsBoolean(), description);
 
             ViewModel.State.Add(command);
         }

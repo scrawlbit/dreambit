@@ -62,6 +62,10 @@ namespace DreamBit.General.State
 
             return (oldValue, newValue);
         }
+        public static ValueChangedEventArgs<bool> AsBoolean(this ValueChangedEventArgs<bool?> e)
+        {
+            return (e.OldValue.Value, e.NewValue.Value);
+        }
 
         #region Target
 
