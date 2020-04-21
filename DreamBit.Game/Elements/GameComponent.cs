@@ -1,6 +1,8 @@
-﻿namespace DreamBit.Game.Elements
+﻿using Scrawlbit.Notification;
+
+namespace DreamBit.Game.Elements
 {
-    public abstract partial class GameComponent
+    public abstract partial class GameComponent : NotificationObject
     {
         public bool Started { get; private set; }
         public GameObject GameObject { get; private set; }
