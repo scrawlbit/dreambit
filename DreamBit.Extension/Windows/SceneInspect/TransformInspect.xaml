@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:containers="clr-namespace:DreamBit.Extension.Controls.Containers"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    xmlns:objects="clr-namespace:DreamBit.Extension.Controls.Objects"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:SceneInspectViewModel, IsDesignTimeCreatable=False}"
@@ -38,12 +39,14 @@
             <TextBlock Grid.Column="3" Grid.Row="1" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
 
             <!-- POSITION -->
-            <input:FloatBox Grid.Row="0" Grid.Column="2" Value="{Binding X, Mode=TwoWay}" Changed="OnTransformChanged" />
-            <input:FloatBox Grid.Row="0" Grid.Column="4" Value="{Binding Y, Mode=TwoWay}" Changed="OnTransformChanged" />
+            <objects:Vector2Wrapper x:Name="Position" Value="{Binding Position, Mode=TwoWay}" />
+            <input:FloatBox Grid.Row="0" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Position}" Changed="OnTransformChanged" />
+            <input:FloatBox Grid.Row="0" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Position}" Changed="OnTransformChanged" />
 
             <!-- SCALE -->
-            <input:FloatBox Grid.Row="1" Grid.Column="2" Value="{Binding ScaleX, Mode=TwoWay}" Increment="0.1" Changed="OnTransformChanged" />
-            <input:FloatBox Grid.Row="1" Grid.Column="4" Value="{Binding ScaleY, Mode=TwoWay}" Increment="0.1" Changed="OnTransformChanged" />
+            <objects:Vector2Wrapper x:Name="Scale" Value="{Binding Scale, Mode=TwoWay}" />
+            <input:FloatBox Grid.Row="1" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Scale}" Increment="0.1" Changed="OnTransformChanged" />
+            <input:FloatBox Grid.Row="1" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Scale}" Increment="0.1" Changed="OnTransformChanged" />
 
             <!-- ROTATION -->
             <input:FloatBox Grid.Row="2" Grid.Column="2" Value="{Binding Rotation, Mode=TwoWay}" IsRotation="True" Changed="OnTransformChanged" />

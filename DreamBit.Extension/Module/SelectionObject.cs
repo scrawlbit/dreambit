@@ -18,11 +18,9 @@ namespace DreamBit.Extension.Module
         bool HasMultipleSelection { get; }
         string Name { get; }
         bool? IsVisible { get; set; }
-        float X { get; set; }
-        float Y { get; set; }
+        Vector2 Position { get; set; }
         float Rotation { get; set; }
-        float ScaleX { get; set; }
-        float ScaleY { get; set; }
+        Vector2 Scale { get; set; }
 
         Rectangle Area();
         void ValidateChanges();
@@ -88,21 +86,12 @@ namespace DreamBit.Extension.Module
                     ApplyChanges();
             }
         }
-        public float X
+        public Vector2 Position
         {
-            get => _position.X;
+            get => _position;
             set
             {
-                if (Set(ref _position.X, value.EnsurePrecision()))
-                    ApplyChanges();
-            }
-        }
-        public float Y
-        {
-            get => _position.Y;
-            set
-            {
-                if (Set(ref _position.Y, value.EnsurePrecision()))
+                if (Set(ref _position, value.EnsurePrecision()))
                     ApplyChanges();
             }
         }
@@ -118,34 +107,17 @@ namespace DreamBit.Extension.Module
                     ApplyChanges();
             }
         }
-        public float ScaleX
+        public Vector2 Scale
         {
-            get => _scale.X;
+            get => _scale;
             set
             {
                 value = value.EnsurePrecision();
                 value = value.MinimumScale();
 
-                if (Set(ref _scale.X, value))
+                if (Set(ref _scale, value))
                     ApplyChanges();
             }
-        }
-        public float ScaleY
-        {
-            get => _scale.Y;
-            set
-            {
-                if (Set(ref _scale.Y, value.EnsurePrecision()))
-                    ApplyChanges();
-            }
-        }
-        private Vector2 Position
-        {
-            get => _position;
-        }
-        private Vector2 Scale
-        {
-            get => _scale;
         }
 
         public Rectangle Area()
@@ -185,16 +157,11 @@ namespace DreamBit.Extension.Module
             HasOneSelection = _gameObjects.Length == 1;
             HasMultipleSelection = _gameObjects.Length > 1;
 
-            Vector2 position = DeterminePosition();
-            Vector2 scale = DetermineScale();
-
             Name = DetermineName();
             IsVisible = DetermineIsVisible();
-            X = position.X;
-            Y = position.Y;
+            Position = DeterminePosition();
             Rotation = DetermineRotation();
-            ScaleX = scale.X;
-            ScaleY = scale.Y;
+            Scale = DetermineScale();
 
             CopyData(true);
 
