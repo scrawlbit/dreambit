@@ -14,6 +14,7 @@ namespace DreamBit.Extension.Module
     public interface ISelectionObject : INotifyPropertyChanged
     {
         bool HasSelection { get; }
+        bool HasOneSelection { get; }
         bool HasMultipleSelection { get; }
         string Name { get; }
         bool? IsVisible { get; set; }
@@ -110,7 +111,10 @@ namespace DreamBit.Extension.Module
             get => _rotation;
             set
             {
-                if (Set(ref _rotation, value.EnsurePrecision()))
+                value = value.EnsurePrecision();
+                value = value.PositiveAngle();
+
+                if (Set(ref _rotation, value))
                     ApplyChanges();
             }
         }
@@ -119,7 +123,10 @@ namespace DreamBit.Extension.Module
             get => _scale.X;
             set
             {
-                if (Set(ref _scale.X, value.EnsurePrecision()))
+                value = value.EnsurePrecision();
+                value = value.MinimumScale();
+
+                if (Set(ref _scale.X, value))
                     ApplyChanges();
             }
         }
