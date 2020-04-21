@@ -6,9 +6,54 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:ImageRenderer, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800"
     Header="Image Renderer">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!-- LABELS -->
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Image" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Color" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Flip" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="Origin" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Size" />
+
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="1" Grid.Row="3" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="1" Grid.Row="4" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+
+        <TextBlock Grid.Column="3" Grid.Row="2" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="3" Grid.Row="3" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="3" Grid.Row="4" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+
+        <!-- FLIP -->
+        <input:CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding FlipHorizontally, Mode=TwoWay}" />
+        <input:CheckBox Grid.Row="2" Grid.Column="4" IsChecked="{Binding FlipVertically, Mode=TwoWay}" />
+
+        <!--ORIGIN-->
+        <!--<input:FloatBox Grid.Row="3" Grid.Column="2" Component="{Binding OriginX, Mode=TwoWay}" />
+        <input:FloatBox Grid.Row="3" Grid.Column="4" Component="{Binding OriginY, Mode=TwoWay}" />-->
+        
+        <!--TEXTURE SIZE-->
+        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Image.Width, Mode=OneWay}" IsReadOnly="True" />
+        <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding Image.Height, Mode=OneWay}" IsReadOnly="True" />
+    </Grid>
 
 </partials:SceneComponentInspect>
