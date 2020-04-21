@@ -4,21 +4,21 @@ using System.Windows;
 
 namespace DreamBit.Extension.Controls.Objects
 {
-    internal class Vector2Wrapper : FrameworkElement
+    internal class Vector2Proxy : FrameworkElement
     {
-        public static readonly DependencyProperty<Vector2Wrapper, Vector2> ValueProperty;
-        public static readonly DependencyProperty<Vector2Wrapper, float> XProperty;
-        public static readonly DependencyProperty<Vector2Wrapper, float> YProperty;
+        public static readonly DependencyProperty<Vector2Proxy, Vector2> ValueProperty;
+        public static readonly DependencyProperty<Vector2Proxy, float> XProperty;
+        public static readonly DependencyProperty<Vector2Proxy, float> YProperty;
 
-        static Vector2Wrapper()
+        static Vector2Proxy()
         {
-            var registry = new DependencyRegistry<Vector2Wrapper>();
+            var registry = new DependencyRegistry<Vector2Proxy>();
 
             ValueProperty = registry.Property(v => v.Value, v => v.OnValueChanged());
             XProperty = registry.Property(v => v.X, v => v.OnXChanged());
             YProperty = registry.Property(v => v.Y, v => v.OnYChanged());
         }
-        public Vector2Wrapper()
+        public Vector2Proxy()
         {
             Visibility = Visibility.Collapsed;
         }

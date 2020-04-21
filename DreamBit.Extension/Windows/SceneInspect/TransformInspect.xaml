@@ -39,12 +39,12 @@
             <TextBlock Grid.Column="3" Grid.Row="1" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
 
             <!-- POSITION -->
-            <objects:Vector2Wrapper x:Name="Position" Value="{Binding Position, Mode=TwoWay}" />
+            <objects:Vector2Proxy x:Name="Position" Value="{Binding Position, Mode=TwoWay}" />
             <input:FloatBox Grid.Row="0" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Position}" Changed="OnTransformChanged" />
             <input:FloatBox Grid.Row="0" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Position}" Changed="OnTransformChanged" />
 
             <!-- SCALE -->
-            <objects:Vector2Wrapper x:Name="Scale" Value="{Binding Scale, Mode=TwoWay}" />
+            <objects:Vector2Proxy x:Name="Scale" Value="{Binding Scale, Mode=TwoWay}" />
             <input:FloatBox Grid.Row="1" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Scale}" Increment="0.1" Changed="OnTransformChanged" />
             <input:FloatBox Grid.Row="1" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Scale}" Increment="0.1" Changed="OnTransformChanged" />
 

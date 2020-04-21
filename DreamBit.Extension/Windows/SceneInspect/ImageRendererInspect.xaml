@@ -49,7 +49,7 @@
         <input:CheckBox Grid.Row="2" Grid.Column="4" IsChecked="{Binding FlipVertically, Mode=TwoWay}" />
 
         <!--ORIGIN-->
-        <objects:Vector2Wrapper x:Name="Origin" Value="{Binding Origin, Mode=TwoWay}" />
+        <objects:Vector2Proxy x:Name="Origin" Value="{Binding Origin, Mode=TwoWay}" />
         <input:FloatBox Grid.Row="3" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Origin}" Increment="0.1" />
         <input:FloatBox Grid.Row="3" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Origin}" Increment="0.1" />
 

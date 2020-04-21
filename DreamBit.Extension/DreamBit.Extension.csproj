@@ -90,7 +90,7 @@
     <Compile Include="Controls\TreeViews\TreeViewLastItemAdorner.cs" />
     <Compile Include="Controls\TreeViews\TreeViewMultiSelectBehavior.cs" />
     <Compile Include="Controls\WindowView.cs" />
-    <Compile Include="Controls\Objects\Vector2Wrapper.cs" />
+    <Compile Include="Controls\Objects\Vector2Proxy.cs" />
     <Compile Include="Converters\TreeViewMarginConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="DreamBitPackage.Guids.cs">
