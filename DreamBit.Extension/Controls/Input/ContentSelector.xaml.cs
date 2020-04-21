@@ -2,7 +2,6 @@
 using DreamBit.Game.Content;
 using DreamBit.Project;
 using DreamBit.Project.Helpers;
-using Microsoft.VisualStudio.PlatformUI;
 using Scrawlbit.Helpers;
 using Scrawlbit.Presentation.Commands;
 using Scrawlbit.Presentation.Dependency;

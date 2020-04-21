@@ -4,12 +4,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:DreamBit.Extension.Resources"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800"
     x:Name="Control">
 
     <Border Padding="4 2 4 2"
-            BorderThickness="1">
+            BorderThickness="1"
+            BorderBrush="{DynamicResource {x:Static resources:Colors.ComboBoxBorderBrushKey}}"
+            Background="{DynamicResource {x:Static resources:Colors.ComboBoxBackgroundBrushKey}}">
 
         <TextBlock Text="{Binding ContentData.File.Name, ElementName=Control}" />
     </Border>

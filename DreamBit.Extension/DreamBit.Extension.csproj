@@ -122,6 +122,7 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
+    <Compile Include="Resources\Colors.cs" />
     <Compile Include="Resources\Styles\ExpansionPanel.xaml.cs">
       <DependentUpon>ExpansionPanel.xaml</DependentUpon>
     </Compile>
