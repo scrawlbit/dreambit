@@ -39,6 +39,14 @@ namespace DreamBit.Game.Elements.Components
             get => Font?.MeasureString(Text ?? "") ?? Vector2.Zero;
         }
 
+        internal Rectangle Area()
+        {
+            if (Text == null || Font?.SpriteFont == null)
+                return Rectangle.Empty;
+
+            return new Rectangle((Size * -Origin).ToPoint(), Size.ToPoint());
+        }
+
         protected internal override void Draw()
         {
             if (Font == null || Text == null)

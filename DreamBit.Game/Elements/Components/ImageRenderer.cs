@@ -48,6 +48,14 @@ namespace DreamBit.Game.Elements.Components
             set => Set(ref _image, value);
         }
 
+        internal Rectangle Area()
+        {
+            if (Image?.Texture == null)
+                return Rectangle.Empty;
+
+            return new Rectangle((Image.Size * -Origin).ToPoint(), Image.Size.ToPoint());
+        }
+
         protected internal override void Draw()
         {
             if (Image == null)

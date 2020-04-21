@@ -1,5 +1,6 @@
 ﻿using DreamBit.Game.Elements.Components;
 using Microsoft.Xna.Framework;
+using Scrawlbit.Helpers;
 using Scrawlbit.MonoGame.Helpers;
 using Scrawlbit.Notification;
 using System;
@@ -175,7 +176,12 @@ namespace DreamBit.Game.Elements
         }
         private Rectangle ContentArea()
         {
-            Rectangle content = RectangleHelper.Union(ImageArea(), TextArea());
+            Rectangle?[] areas = new[] {
+                Components.Find<TextRenderer>()?.Area(),
+                Components.Find<ImageRenderer>()?.Area()
+            };
+
+            Rectangle content = RectangleHelper.Union(areas.NotNulls());
             Rectangle area = RectangleHelper.Transform(content, Transform.Matrix);
 
             return area;
@@ -191,29 +197,6 @@ namespace DreamBit.Game.Elements
             }
 
             return area;
-        }
-
-        private Rectangle ImageArea()
-        {
-            ImageRenderer renderer = Components.Find<ImageRenderer>();
-
-            if (renderer?.Image?.Texture == null)
-                return Rectangle.Empty;
-
-            return CalculateComponentArea(renderer.Origin, renderer.Image.Size);
-        }
-        private Rectangle TextArea()
-        {
-            TextRenderer renderer = Components.Find<TextRenderer>();
-
-            if (renderer?.Text == null || renderer.Font?.SpriteFont == null)
-                return Rectangle.Empty;
-
-            return CalculateComponentArea(renderer.Origin, renderer.Size);
-        }
-        private static Rectangle CalculateComponentArea(Vector2 origin, Vector2 size)
-        {
-            return new Rectangle((-origin).ToPoint(), size.ToPoint());
         }
     }
 }

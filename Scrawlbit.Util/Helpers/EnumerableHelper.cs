@@ -86,9 +86,13 @@ namespace Scrawlbit.Helpers
             return items.Contains(item);
         }
 
-        public static IEnumerable<T> NotNulls<T>(this IEnumerable<T> source)
+        public static IEnumerable<T> NotNulls<T>(this IEnumerable<T> source) where T : class
         {
             return source.Where(i => !Equals(i, null));
+        }
+        public static IEnumerable<T> NotNulls<T>(this IEnumerable<T?> source) where T : struct
+        {
+            return source.Where(i => !Equals(i, null)).Cast<T>();
         }
     }
 }
