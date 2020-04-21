@@ -11,7 +11,7 @@ namespace DreamBit.Extension.Controls.Input
 {
     public partial class FloatBox
     {
-        public delegate void FloatBoxEventArgs(FloatBox sender, ValueChangedEventArgs<float> e);
+        public delegate void FloatBoxEventHandler(FloatBox sender, ValueChangedEventArgs<float> e);
         private static readonly DependencyProperty<FloatBox, float> ValueProperty;
         private static readonly DependencyProperty<FloatBox, bool> IsReadOnlyProperty;
         private float _initialValue;
@@ -30,7 +30,7 @@ namespace DreamBit.Extension.Controls.Input
             Increment = 1;
         }
 
-        public event FloatBoxEventArgs Changed;
+        public event FloatBoxEventHandler Changed;
         public float Value
         {
             get => ValueProperty.Get(this);

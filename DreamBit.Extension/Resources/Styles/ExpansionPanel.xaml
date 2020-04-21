@@ -23,27 +23,23 @@
                 <Setter Property="Margin" Value="0 1" />
             </Style>
 
-            <!--<Style TargetType="states:ColorPicker">
+            <Style TargetType="input:CheckBox">
+                <Setter Property="Margin" Value="0 1" />
+            </Style>
+
+            <Style TargetType="input:FloatBox">
+                <Setter Property="Margin" Value="0 1" />
+            </Style>
+            
+            <Style TargetType="input:ColorPicker">
                 <Setter Property="FontSize" Value="9" />
                 <Setter Property="MinHeight" Value="0" />
                 <Setter Property="Margin" Value="0 1 0 2" />
             </Style>
 
-            <Style TargetType="states:FloatBox">
-                <Setter Property="Margin" Value="0 1" />
-            </Style>
-
-            <Style TargetType="dragAndDrop:FileReferenceBox">
+            <!--<Style TargetType="dragAndDrop:FileReferenceBox">
                 <Setter Property="Margin" Value="0 1" />
                 <Setter Property="FontSize" Value="10" />
-            </Style>
-
-            <Style TargetType="states:CheckBox">
-                <Setter Property="Margin" Value="0 1" />
-            </Style>
-
-            <Style TargetType="states:TextBox">
-                <Setter Property="FontSize" Value="9" />
             </Style>-->
         </Style.Resources>
 
