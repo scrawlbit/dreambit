@@ -76,6 +76,10 @@
     <Compile Include="Controls\Input\CheckBox.xaml.cs">
       <DependentUpon>CheckBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Input\ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Input\ColorPickerChangedEventArgs.cs" />
     <Compile Include="Controls\Input\FloatBox.xaml.cs">
       <DependentUpon>FloatBox.xaml</DependentUpon>
     </Compile>
@@ -96,6 +100,7 @@
     <Compile Include="DreamBitPackage.Guids.cs">
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ControlHelper.cs" />
     <Compile Include="Helpers\DesignHelper.cs" />
     <Compile Include="Helpers\ErrorHelper.cs" />
@@ -179,6 +184,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit">
+      <Version>3.8.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.204" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -256,6 +264,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Input\CheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Input\ColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

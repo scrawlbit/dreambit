@@ -41,5 +41,12 @@ namespace DreamBit.Extension.Windows.SceneInspect
 
             ViewModel.State.Add(command);
         }
+        private void OnColorChanged(ColorPicker sender, ColorPickerChangedEventArgs e)
+        {
+            string description = $"{ImageRenderer.GameObject.Name}'s image renderer color changed to {e.ColorName}";
+            IStateCommand command = ImageRenderer.State().SetProperty(i => i.Color, e, description);
+
+            ViewModel.State.Add(command);
+        }
     }
 }

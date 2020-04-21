@@ -44,6 +44,9 @@
         <TextBlock Grid.Column="3" Grid.Row="3" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
         <TextBlock Grid.Column="3" Grid.Row="4" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
 
+        <!-- COLOR -->
+        <input:ColorPicker Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Color="{Binding Color, Mode=TwoWay}" FontSize="11" Changed="OnColorChanged" />
+        
         <!-- FLIP -->
         <input:CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding FlipHorizontally, Mode=TwoWay}" Changed="OnFlipHorizontallyChanged" />
         <input:CheckBox Grid.Row="2" Grid.Column="4" IsChecked="{Binding FlipVertically, Mode=TwoWay}" Changed="OnFlipVerticallyChanged" />
