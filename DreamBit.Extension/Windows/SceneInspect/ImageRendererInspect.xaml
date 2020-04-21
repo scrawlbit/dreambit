@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:content="clr-namespace:DreamBit.Game.Content;assembly=DreamBit.Game"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
     xmlns:objects="clr-namespace:DreamBit.Extension.Controls.Objects"
     mc:Ignorable="d"
@@ -43,6 +44,11 @@
         <TextBlock Grid.Column="3" Grid.Row="2" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
         <TextBlock Grid.Column="3" Grid.Row="3" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
         <TextBlock Grid.Column="3" Grid.Row="4" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+
+        <!--FILE REFERENCE-->
+        <input:ContentSelector Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
+                               ContentData="{Binding Image, Mode=TwoWay}"
+                               ContentType="{x:Type content:IImage}"/>
 
         <!-- COLOR -->
         <input:ColorPicker Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Color="{Binding Color, Mode=TwoWay}" FontSize="11" Changed="OnColorChanged" />

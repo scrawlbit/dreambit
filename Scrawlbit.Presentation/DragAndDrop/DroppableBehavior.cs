@@ -76,6 +76,9 @@ namespace Scrawlbit.Presentation.DragAndDrop
 
             _canBeDropped = Data != null;
 
+            DropType = 0;
+            LastDropType = 0;
+
             e.Handled = true;
         }
         protected virtual void OnDragOver(object sender, DragEventArgs e)

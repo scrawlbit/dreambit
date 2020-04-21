@@ -18,6 +18,17 @@ namespace DreamBit.Game.Content
 
         public MonoGameContentManager Manager { get; set; }
 
+        bool IContentManager.IsContent(IProjectFile file)
+        {
+            switch (file)
+            {
+                case IPipelineImage _:
+                case IPipelineFont _:
+                    return true;
+
+                default: return false;
+            }
+        }
         IContent IContentManager.Load(IProjectFile file)
         {
             IContentManager manager = this;

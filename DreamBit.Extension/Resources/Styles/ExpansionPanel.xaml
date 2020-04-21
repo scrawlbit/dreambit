@@ -37,10 +37,10 @@
                 <Setter Property="Margin" Value="0 1 0 2" />
             </Style>
 
-            <!--<Style TargetType="dragAndDrop:FileReferenceBox">
+            <Style TargetType="input:ContentSelector">
                 <Setter Property="Margin" Value="0 1" />
                 <Setter Property="FontSize" Value="10" />
-            </Style>-->
+            </Style>
         </Style.Resources>
 
         <!--TEMPLATE-->

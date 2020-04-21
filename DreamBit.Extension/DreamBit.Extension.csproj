@@ -80,6 +80,9 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Input\ColorPickerChangedEventArgs.cs" />
+    <Compile Include="Controls\Input\ContentSelector.xaml.cs">
+      <DependentUpon>ContentSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Input\FloatBox.xaml.cs">
       <DependentUpon>FloatBox.xaml</DependentUpon>
     </Compile>
@@ -268,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Input\ColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Input\ContentSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
