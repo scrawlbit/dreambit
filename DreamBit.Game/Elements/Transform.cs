@@ -5,27 +5,21 @@ using System;
 
 namespace DreamBit.Game.Elements
 {
-    public sealed class Transform : NotificationObject
+    public sealed class Transform : ITransformationValues
     {
-        private Matrix _transformations;
+        private readonly TransformationValues _relative;
+        private readonly TransformationValues _real;
         private Transform _baseTransform;
         private bool _isTransformationsValid;
         private TransformChange _lastChange;
 
-        // relative
-        private Vector2 _relativePosition;
-        private float _relativeRotation;
-        private Vector2 _relativeScale;
-
-        // real
-        private Vector2 _realPosition;
-        private float _realRotation;
-        private Vector2 _realScale;
-
         public Transform()
         {
+            _relative = new TransformationValues(this, TransformChange.Relative);
+            _real = new TransformationValues(this, TransformChange.Real);
+
             _lastChange = TransformChange.Relative;
-            RelativeScale = Vector2.One;
+            ((ITransformationValues)_relative).Scale = Vector2.One;
         }
 
         public event Action Invalidated;
@@ -51,7 +45,7 @@ namespace DreamBit.Game.Elements
                     _baseTransform.Invalidated -= OnBaseTransformInvalidated;
 
                 ValidateTransformations();
-                
+
                 _baseTransform = value;
                 _lastChange = TransformChange.Real;
                 IsTransformationsValid = false;
@@ -61,127 +55,26 @@ namespace DreamBit.Game.Elements
             }
         }
 
-        // relative
-        internal Vector2 RelativePosition
-        {
-            get
-            {
-                ValidateTransformations();
-                return _relativePosition;
-            }
-            set
-            {
-                if (value != _relativePosition)
-                {
-                    InvalidateTransformations(TransformChange.Relative);
-                    _relativePosition = value;
-                }
-            }
-        }
-        internal float RelativeRotation
-        {
-            get
-            {
-                ValidateTransformations();
-                return _relativeRotation;
-            }
-            set
-            {
-                value = value.PositiveAngle();
-
-                if (!value.EqualTo(_relativeRotation))
-                {
-                    InvalidateTransformations(TransformChange.Relative);
-                    _relativeRotation = value;
-                }
-            }
-        }
-        internal Vector2 RelativeScale
-        {
-            get
-            {
-                ValidateTransformations();
-                return _relativeScale;
-            }
-            set
-            {
-                value = value.MinimumScale();
-
-                if (value != _relativeScale)
-                {
-                    InvalidateTransformations(TransformChange.Relative);
-                    _relativeScale = value;
-                }
-            }
-        }
-
-        // real
+        private ITransformationValues Real => _real;
+        public ITransformationValues Relative => _relative;
         public Vector2 Position
         {
-            get
-            {
-                ValidateTransformations();
-                return _realPosition;
-            }
-            set
-            {
-                if (value != _realPosition)
-                {
-                    OnPropertyChanging(_realPosition, value);
-                    InvalidateTransformations(TransformChange.Real);
-                    _realPosition = value;
-                    OnPropertyChanged();
-                }
-            }
+            get => Real.Position;
+            set => Real.Position = value;
         }
         public float Rotation
         {
-            get
-            {
-                ValidateTransformations();
-                return _realRotation;
-            }
-            set
-            {
-                value = value.PositiveAngle();
-
-                if (!value.EqualTo(_realRotation))
-                {
-                    OnPropertyChanging(_realRotation, value);
-                    InvalidateTransformations(TransformChange.Real);
-                    _realRotation = value;
-                    OnPropertyChanged();
-                }
-            }
+            get => Real.Rotation;
+            set => Real.Rotation = value;
         }
         public Vector2 Scale
         {
-            get
-            {
-                ValidateTransformations();
-                return _realScale;
-            }
-            set
-            {
-                value = value.MinimumScale();
-
-                if (value != _realScale)
-                {
-                    OnPropertyChanging(_realScale, value);
-                    InvalidateTransformations(TransformChange.Real);
-                    _realScale = value;
-                    OnPropertyChanged();
-                }
-            }
+            get => Real.Scale;
+            set => Real.Scale = value;
         }
-
         public Matrix Matrix
         {
-            get
-            {
-                ValidateTransformations();
-                return _transformations;
-            }
+            get => Real.Matrix;
         }
 
         private void OnBaseTransformInvalidated()
@@ -210,32 +103,102 @@ namespace DreamBit.Game.Elements
         private void TransformValues()
         {
             if (_lastChange == TransformChange.Real)
-                TransformRealValuesToRelative();
+                TransformValues(_real, _relative);
             else
-                TransformRelativeValuesToReal();
+                TransformValues(_relative, _real);
         }
-        private void TransformRelativeValuesToReal()
+        private void TransformValues(TransformationValues from, TransformationValues to)
         {
-            var matrix = MatrixHelper.Create(_relativePosition, _relativeRotation, _relativeScale);
-            var baseMatrix = BaseTransform?._transformations ?? Matrix.Identity;
+            from.Matrix = MatrixHelper.Create(from.Position, from.Rotation, from.Scale);
 
-            _transformations = matrix * baseMatrix;
-            _transformations.Decompose(out _realPosition, out _realRotation, out _realScale);
+            var baseMatrix = BaseTransform?._real.Matrix ?? Matrix.Identity;
 
-            if (_realRotation < 0)
-                _realRotation = MathHelper.TwoPi + _realRotation;
+            if (to == _relative)
+                baseMatrix = baseMatrix.Invert();
+
+            to.Matrix = from.Matrix * baseMatrix;
+            to.Matrix.Decompose(out to.Position, out to.Rotation, out to.Scale);
+
+            if (to.Rotation < 0)
+                to.Rotation = MathHelper.TwoPi + to.Rotation;
         }
-        private void TransformRealValuesToRelative()
+
+        private class TransformationValues : ITransformationValues
         {
-            _transformations = MatrixHelper.Create(_realPosition, _realRotation, _realScale);
+            private readonly Transform _transform;
+            private readonly TransformChange _changesType;
 
-            var baseMatrix = BaseTransform?._transformations ?? Matrix.Identity;
-            var difference = _transformations * baseMatrix.Invert();
+            public TransformationValues(Transform transform, TransformChange changesType)
+            {
+                _transform = transform;
+                _changesType = changesType;
+            }
 
-            difference.Decompose(out _relativePosition, out _relativeRotation, out _relativeScale);
+            public Matrix Matrix;
+            public Vector2 Position;
+            public float Rotation;
+            public Vector2 Scale;
 
-            if (_relativeRotation < 0)
-                _relativeRotation = MathHelper.TwoPi + _relativeRotation;
+            Vector2 ITransformationValues.Position
+            {
+                get
+                {
+                    _transform.ValidateTransformations();
+                    return Position;
+                }
+                set
+                {
+                    if (value != Position)
+                    {
+                        _transform.InvalidateTransformations(_changesType);
+                        Position = value;
+                    }
+                }
+            }
+            float ITransformationValues.Rotation
+            {
+                get
+                {
+                    _transform.ValidateTransformations();
+                    return Rotation;
+                }
+                set
+                {
+                    value = value.PositiveAngle();
+
+                    if (!value.EqualTo(Rotation))
+                    {
+                        _transform.InvalidateTransformations(_changesType);
+                        Rotation = value;
+                    }
+                }
+            }
+            Vector2 ITransformationValues.Scale
+            {
+                get
+                {
+                    _transform.ValidateTransformations();
+                    return Scale;
+                }
+                set
+                {
+                    value = value.MinimumScale();
+
+                    if (value != Scale)
+                    {
+                        _transform.InvalidateTransformations(_changesType);
+                        Scale = value;
+                    }
+                }
+            }
+            Matrix ITransformationValues.Matrix
+            {
+                get
+                {
+                    _transform.ValidateTransformations();
+                    return Matrix;
+                }
+            }
         }
     }
 }

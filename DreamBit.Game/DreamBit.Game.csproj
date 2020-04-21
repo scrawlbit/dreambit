@@ -50,6 +50,7 @@
     <Compile Include="Elements\GameComponent.cs" />
     <Compile Include="Elements\GameComponentCollection.cs" />
     <Compile Include="Elements\GameObjectHelper.cs" />
+    <Compile Include="Elements\ITransformationValues.cs" />
     <Compile Include="Elements\Scene.cs" />
     <Compile Include="Elements\Transform.cs" />
     <Compile Include="Elements\TransformChange.cs" />
