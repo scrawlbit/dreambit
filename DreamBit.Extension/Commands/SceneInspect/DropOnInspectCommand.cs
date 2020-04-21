@@ -40,7 +40,7 @@ namespace DreamBit.Extension.Commands.SceneInspect
 
         public bool CanExecute(DropEventArgs args)
         {
-            if (_editor.SelectedObjects.Count != 1 && args.Data.Length == 1)
+            if (_editor.SelectedObjects.Count != 1 || args.Data.Length != 1)
                 return false;
 
             string path = args.Data[0] as string;
