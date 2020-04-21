@@ -45,7 +45,7 @@
     <Compile Include="State\IStateUnit.cs" />
     <Compile Include="State\StateManager.cs" />
     <Compile Include="State\StateScope.cs" />
-    <Compile Include="State\ValueChanged.cs" />
+    <Compile Include="State\ValueChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scrawlbit.Json\Scrawlbit.Json.csproj">
@@ -57,6 +57,10 @@
       <Name>Scrawlbit.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX">
+      <Version>3.7.1.189</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,8 +1,10 @@
-﻿using Scrawlbit.Util.Helpers;
+﻿using Microsoft.Xna.Framework;
+using Scrawlbit.Util.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace DreamBit.General.State
 {
@@ -40,6 +42,25 @@ namespace DreamBit.General.State
         public static IStateCommand SetProperty<T, TProperty>(this Target<T> target, Expression<Func<T, TProperty>> property, ValueChangedEventArgs<TProperty> args, string stateDescription)
         {
             return SetProperty(target, property, args.OldValue, args.NewValue, stateDescription);
+        }
+
+        public static ValueChangedEventArgs<Vector2> AsVectorChange(this ValueChangedEventArgs<float> e, Vector2 reference, bool xChange)
+        {
+            Vector2 oldValue = reference;
+            Vector2 newValue = reference;
+
+            if (xChange)
+            {
+                oldValue.X = e.OldValue;
+                newValue.X = e.NewValue;
+            }
+            else
+            {
+                oldValue.Y = e.OldValue;
+                newValue.Y = e.NewValue;
+            }
+
+            return (oldValue, newValue);
         }
 
         #region Target
