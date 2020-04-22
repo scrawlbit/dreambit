@@ -125,7 +125,9 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
-    <Compile Include="Resources\Colors.cs" />
+    <Compile Include="Resources\Styles\Colors.cs">
+      <DependentUpon>Colors.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Styles\ExpansionPanel.xaml.cs">
       <DependentUpon>ExpansionPanel.xaml</DependentUpon>
     </Compile>
@@ -296,6 +298,10 @@
     <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles\IconButton.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 
-namespace DreamBit.Extension.Resources
+namespace DreamBit.Extension.Resources.Styles
 {
     public static class Colors
     {
