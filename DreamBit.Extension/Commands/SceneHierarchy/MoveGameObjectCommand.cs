@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Elements;
+using DreamBit.Game.Elements.Components;
 using DreamBit.General.State;
 using Microsoft.Xna.Framework;
 using Scrawlbit.Collections;
@@ -29,7 +30,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
 
         public bool CanExecute(TreeViewDropEventArgs e)
         {
-            return IsDataValid(e) && IsHierarchyValid(e);
+            return IsDataValid(e) && IsHierarchyValid(e) && !IsMovingCameraInsideObject(e);
         }
         public void Execute(TreeViewDropEventArgs e)
         {
@@ -68,6 +69,19 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             }
 
             return true;
+        }
+        private static bool IsMovingCameraInsideObject(TreeViewDropEventArgs e)
+        {
+            if (e.Target is GameObject)
+            {
+                var objects = e.Data.Cast<GameObject>();
+                var components = objects.SelectMany(o => o.Components);
+                var cameras = components.OfType<Camera>();
+
+                return cameras.Any();
+            }
+
+            return false;
         }
         private GameObject[] GetGameObjectsToMove(TreeViewDropEventArgs e)
         {
