@@ -8,7 +8,8 @@
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
-    xmlns:converters="clr-namespace:DreamBit.Extension.Converters"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
+    xmlns:converters2="clr-namespace:DreamBit.Extension.Converters"
     xmlns:dragAndDrop="clr-namespace:Scrawlbit.Presentation.DragAndDrop;assembly=Scrawlbit.Presentation"
     xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
@@ -30,7 +31,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Visibility="{Binding Editor.SelectedObject, Converter={converters:VisibleIfNotNullConverter}}">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Visibility="{Binding Editor.SelectedObject, Converter={converters2:VisibleIfNotNullConverter}}">
 
             <!-- INFORMATION -->
             <partials:ObjectInspect />
@@ -39,7 +40,9 @@
             <partials:TransformInspect />
 
             <!-- COMPONENTS -->
-            <ItemsControl ItemsSource="{Binding Editor.SelectedObject.Components}" ItemTemplateSelector="{StaticResource InterfaceTemplateSelector}">
+            <ItemsControl ItemsSource="{Binding Editor.SelectedObject.Components}"
+                          ItemTemplateSelector="{StaticResource InterfaceTemplateSelector}"
+                          Visibility="{Binding Editor.Selection.HasOneSelection, Converter={converters:VisibilityConverter}}">
                 <ItemsControl.Resources>
 
                     <!-- IMAGE RENDERER -->
