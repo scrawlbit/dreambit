@@ -11,6 +11,7 @@
     <CheckBox
         Name="Toggle"
         IsChecked="{Binding IsChecked, ElementName=Control, Mode=TwoWay}"
+        IsEnabled="{Binding IsEnabled, ElementName=Control}"
         GotFocus="OnGotFocus"
         LostFocus="OnLostFocus" />
 

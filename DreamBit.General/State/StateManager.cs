@@ -35,11 +35,14 @@ namespace DreamBit.General.State
 
         public void Execute(IStateCommand state)
         {
-            state.Do();
+            state?.Do();
             Add(state);
         }
         public void Add(IStateCommand state)
         {
+            if (state == null)
+                return;
+
             if (_transaction != null)
             {
                 _transaction.Add(state);

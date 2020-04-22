@@ -55,6 +55,11 @@
                         <partials:TextRendererInspect />
                     </DataTemplate>
                     
+                    <!-- CAMERA -->
+                    <DataTemplate DataType="{x:Type components:Camera}">
+                        <partials:CameraInspect />
+                    </DataTemplate>
+                    
                 </ItemsControl.Resources>
             </ItemsControl>
         </StackPanel>

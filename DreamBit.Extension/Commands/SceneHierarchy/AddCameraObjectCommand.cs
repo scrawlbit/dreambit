@@ -38,7 +38,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             GameObject gameObject = new GameObject();
             Camera camera = new Camera(_drawer);
 
-            camera.Active = !HasActiveCamera();
+            camera.IsActive = !HasActiveCamera();
             gameObject.Name = GetNewName();
             gameObject.Components.Add(camera);
 
@@ -53,7 +53,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             var components = objects.SelectMany(g => g.Components);
             var cameras = components.OfType<Camera>();
 
-            return cameras.Any(c => c.Active);
+            return cameras.Any(c => c.IsActive);
         }
         private string GetNewName()
         {

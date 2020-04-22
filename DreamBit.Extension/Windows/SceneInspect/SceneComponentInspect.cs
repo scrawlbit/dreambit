@@ -11,13 +11,13 @@ namespace DreamBit.Extension.Windows.SceneInspect
 {
     public class SceneComponentInspect : ExpansionPanel
     {
-        private static readonly DependencyProperty<SceneComponentInspect, SceneInspectViewModel> ViewModelProperty;
+        public static readonly DependencyProperty<SceneComponentInspect, SceneInspectViewModel> ViewModelProperty;
 
         static SceneComponentInspect()
         {
             var registry = new DependencyRegistry<SceneComponentInspect>();
 
-            ViewModelProperty = registry.Property(s => s.ViewModel);
+            ViewModelProperty = registry.Property(s => s.ViewModel, s => s.OnViewModelBound());
         }
         public SceneComponentInspect()
         {
@@ -34,6 +34,10 @@ namespace DreamBit.Extension.Windows.SceneInspect
         {
             get => ViewModelProperty.Get(this);
             set => ViewModelProperty.Set(this, value);
+        }
+
+        protected virtual void OnViewModelBound()
+        {
         }
 
         private void SetViewModelBinding()

@@ -158,6 +158,9 @@
     <Compile Include="Windows\SceneInspectWindow.cs">
       <DependentUpon>SceneInspectView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SceneInspect\CameraInspect.xaml.cs">
+      <DependentUpon>CameraInspect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SceneInspect\ImageRendererInspect.xaml.cs">
       <DependentUpon>ImageRendererInspect.xaml</DependentUpon>
     </Compile>
@@ -349,6 +352,10 @@
     <Page Include="Windows\SceneInspectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SceneInspect\CameraInspect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SceneInspect\ImageRendererInspect.xaml">
       <SubType>Designer</SubType>

@@ -1,0 +1,19 @@
+﻿<partials:SceneComponentInspect
+    x:Class="DreamBit.Extension.Windows.SceneInspect.CameraInspect"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
+    xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance components:Camera, IsDesignTimeCreatable=False}"
+    d:DesignHeight="450" d:DesignWidth="800">
+
+    <StackPanel Orientation="Horizontal">
+        <input:CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" Changed="OnActiveChanged" />        
+        <TextBlock Text="Active" Margin="5 0 0 0" />        
+    </StackPanel>
+
+</partials:SceneComponentInspect>

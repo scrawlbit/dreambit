@@ -14,7 +14,7 @@ namespace DreamBit.Game.Elements.Components
         }
 
         private Vector2 Size => new Vector2(800, 600);
-        public bool Active
+        public bool IsActive
         {
             get => _active;
             set => Set(ref _active, value);
