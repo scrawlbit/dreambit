@@ -22,6 +22,7 @@ namespace DreamBit.Game.Drawing
         void DrawString(IFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects = SpriteEffects.None, float depth = 0);
         void DrawString(IFont font, string text, Vector2 position, Color color, float rotation = 0, Vector2? origin = null, Vector2? scale = null, SpriteEffects effects = SpriteEffects.None, float depth = 0);
 
+        void DrawLine(Vector2 position, float length, float angle, Color color, float thickness = 1f);
         void DrawRectangle(Rectangle rect, Color color, float thickness = 1f);
     }
 
@@ -106,6 +107,10 @@ namespace DreamBit.Game.Drawing
             );
         }
 
+        public void DrawLine(Vector2 position, float length, float angle, Color color, float thickness)
+        {
+            SpriteBatch.DrawLine(position, length, angle, color, thickness);
+        }
         public void DrawRectangle(Rectangle rect, Color color, float thickness)
         {
             SpriteBatch.DrawRectangle(rect, color, thickness);

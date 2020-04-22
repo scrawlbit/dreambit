@@ -14,6 +14,7 @@ namespace DreamBit.Game.Serialization.Converters
         private const string Type = "Type";
         private const string Image = "Image";
         private const string Text = "Text";
+        private const string Camera = "Camera";
         private readonly IContentDrawer _contentDrawer;
 
         public GameComponentConverter(IContentDrawer contentDrawer)
@@ -55,6 +56,7 @@ namespace DreamBit.Game.Serialization.Converters
             {
                 case ImageRenderer _: return Image;
                 case TextRenderer _: return Text;
+                case Camera _: return Camera;
                 default: return null;
             }
         }
@@ -64,6 +66,7 @@ namespace DreamBit.Game.Serialization.Converters
             {
                 case Image: return new ImageRenderer(_contentDrawer);
                 case Text: return new TextRenderer(_contentDrawer);
+                case Camera: return new Camera(_contentDrawer);
                 default: throw new NotImplementedException();
             }
         }

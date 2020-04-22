@@ -43,6 +43,7 @@
     <Compile Include="Content\Image.cs" />
     <Compile Include="Drawing\ContentDrawer.cs" />
     <Compile Include="Drawing\DrawBatch.cs" />
+    <Compile Include="Elements\Components\Camera.cs" />
     <Compile Include="Elements\Components\ImageRenderer.cs" />
     <Compile Include="Elements\Components\TextRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
