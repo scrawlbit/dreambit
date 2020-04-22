@@ -1,5 +1,6 @@
 ﻿using DreamBit.Extension.Helpers;
 using DreamBit.Game.Content;
+using DreamBit.General.State;
 using DreamBit.Project;
 using DreamBit.Project.Helpers;
 using Scrawlbit.Helpers;
@@ -14,6 +15,7 @@ namespace DreamBit.Extension.Controls.Input
 {
     public partial class ContentSelector
     {
+        public delegate void ContentSelectorEventHandler(ContentSelector sender, ValueChangedEventArgs<IContent> e);
         public static DependencyProperty<ContentSelector, IContent> ContentDataProperty;
         private readonly IProject _project;
         private readonly IContentManager _contentManager;
@@ -40,6 +42,7 @@ namespace DreamBit.Extension.Controls.Input
             this.AddBehavior(behavior);
         }
 
+        public event ContentSelectorEventHandler Changed;
         public IContent ContentData
         {
             get => ContentDataProperty.Get(this);
@@ -77,9 +80,15 @@ namespace DreamBit.Extension.Controls.Input
         {
             string path = (string)args.Data[0];
             ProjectFile file = _project.Files.GetByPath(path);
-            IContent content = _contentManager.Load(file);
+            IContent newValue = _contentManager.Load(file);
 
-            ContentData = content;
+            if (newValue != ContentData)
+            {
+                IContent oldValue = ContentData;
+
+                ContentData = newValue;
+                Changed?.Invoke(this, (oldValue, newValue));
+            }
         }
     }
 }

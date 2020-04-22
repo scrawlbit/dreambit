@@ -6,9 +6,70 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    xmlns:content="clr-namespace:DreamBit.Game.Content;assembly=DreamBit.Game"
+    xmlns:objects="clr-namespace:DreamBit.Extension.Controls.Objects"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:TextRenderer, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800"
     Header="Text Renderer">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!-- LABELS -->
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Font" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Text" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Color" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="Flip" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Origin" />
+        <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Text="Size" />
+
+        <TextBlock Grid.Column="1" Grid.Row="3" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="1" Grid.Row="4" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="X" Style="{DynamicResource PropertyNameStyle}" />
+
+        <TextBlock Grid.Column="3" Grid.Row="3" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="3" Grid.Row="4" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+        <TextBlock Grid.Column="3" Grid.Row="5" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
+
+        <!-- FONT -->
+        <input:ContentSelector Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" ContentData="{Binding Font, Mode=TwoWay}" ContentType="{x:Type content:IFont}" Changed="OnFontChanged"/>
+
+        <!-- TEXT -->
+        <input:TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Text, Mode=TwoWay}" Changed="OnTextChanged" />
+        
+        <!-- COLOR -->
+        <input:ColorPicker Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Color="{Binding Color, Mode=TwoWay}" FontSize="11" Changed="OnColorChanged" />
+
+        <!-- FLIP -->
+        <input:CheckBox Grid.Row="3" Grid.Column="2" IsChecked="{Binding FlipHorizontally, Mode=TwoWay}" Changed="OnFlipHorizontallyChanged" />
+        <input:CheckBox Grid.Row="3" Grid.Column="4" IsChecked="{Binding FlipVertically, Mode=TwoWay}" Changed="OnFlipVerticallyChanged" />
+
+        <!-- ORIGIN -->
+        <objects:Vector2Proxy x:Name="Origin" Value="{Binding Origin, Mode=TwoWay}" />
+        <input:FloatBox Grid.Row="4" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Origin}" Increment="0.1" Changed="OnOriginChanged" x:Name="OriginX" />
+        <input:FloatBox Grid.Row="4" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Origin}" Increment="0.1" Changed="OnOriginChanged" />
+
+        <!-- SIZE -->
+        <objects:Vector2Proxy x:Name="Size" Value="{Binding Size}" />
+        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding X, Mode=OneWay, ElementName=Size}" IsReadOnly="True" />
+        <TextBox Grid.Row="5" Grid.Column="4" Text="{Binding Y, Mode=OneWay, ElementName=Size}" IsReadOnly="True" />
+    </Grid>
 
 </partials:SceneComponentInspect>

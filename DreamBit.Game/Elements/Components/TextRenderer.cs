@@ -1,6 +1,7 @@
 ﻿using DreamBit.Game.Content;
 using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
+using Scrawlbit.Helpers;
 using Scrawlbit.MonoGame.Helpers;
 
 namespace DreamBit.Game.Elements.Components
@@ -9,6 +10,11 @@ namespace DreamBit.Game.Elements.Components
     {
         private readonly IContentDrawer _drawer;
         private string _text;
+        private Color _color;
+        private Vector2 _origin;
+        private bool _flipVertically;
+        private bool _flipHorizontally;
+        private IFont _font;
 
         public TextRenderer(IContentDrawer drawer)
         {
@@ -23,17 +29,41 @@ namespace DreamBit.Game.Elements.Components
             get => _text;
             set
             {
-                value = value?.Trim();
-                value = value != "" ? value : null;
+                value = value.IfEmptyThenNull();
 
-                _text = value;
+                if (Set(ref _text, value))
+                    OnPropertyChanged(nameof(Size));
             }
         }
-        public Color Color { get; set; }
-        public Vector2 Origin { get; set; }
-        public bool FlipVertically { get; set; }
-        public bool FlipHorizontally { get; set; }
-        public IFont Font { get; set; }
+        public Color Color
+        {
+            get => _color;
+            set => Set(ref _color, value);
+        }
+        public Vector2 Origin
+        {
+            get => _origin;
+            set => Set(ref _origin, value);
+        }
+        public bool FlipVertically
+        {
+            get => _flipVertically;
+            set => Set(ref _flipVertically, value);
+        }
+        public bool FlipHorizontally
+        {
+            get => _flipHorizontally;
+            set => Set(ref _flipHorizontally, value);
+        }
+        public IFont Font
+        {
+            get => _font;
+            set
+            {
+                if (Set(ref _font, value))
+                    OnPropertyChanged(nameof(Size));
+            }
+        }
         public Vector2 Size
         {
             get => Font?.MeasureString(Text ?? "") ?? Vector2.Zero;

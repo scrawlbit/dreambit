@@ -16,5 +16,10 @@
         {
             return string.Format(format, args);
         }
+
+        public static string IfEmptyThenNull(this string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? null : value;
+        }
     }
 }

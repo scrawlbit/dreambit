@@ -45,10 +45,8 @@
         <TextBlock Grid.Column="3" Grid.Row="3" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
         <TextBlock Grid.Column="3" Grid.Row="4" Text="Y" Style="{DynamicResource PropertyNameStyle}" />
 
-        <!--FILE REFERENCE-->
-        <input:ContentSelector Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
-                               ContentData="{Binding Image, Mode=TwoWay}"
-                               ContentType="{x:Type content:IImage}"/>
+        <!-- IMAGE -->
+        <input:ContentSelector Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" ContentData="{Binding Image, Mode=TwoWay}" ContentType="{x:Type content:IImage}" Changed="OnImageChanged" />
 
         <!-- COLOR -->
         <input:ColorPicker Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Color="{Binding Color, Mode=TwoWay}" FontSize="11" Changed="OnColorChanged" />
@@ -57,12 +55,12 @@
         <input:CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding FlipHorizontally, Mode=TwoWay}" Changed="OnFlipHorizontallyChanged" />
         <input:CheckBox Grid.Row="2" Grid.Column="4" IsChecked="{Binding FlipVertically, Mode=TwoWay}" Changed="OnFlipVerticallyChanged" />
 
-        <!--ORIGIN-->
+        <!-- ORIGIN -->
         <objects:Vector2Proxy x:Name="Origin" Value="{Binding Origin, Mode=TwoWay}" />
         <input:FloatBox Grid.Row="3" Grid.Column="2" Value="{Binding X, Mode=TwoWay, ElementName=Origin}" Increment="0.1" Changed="OnOriginChanged" x:Name="OriginX" />
         <input:FloatBox Grid.Row="3" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Origin}" Increment="0.1" Changed="OnOriginChanged" />
 
-        <!--TEXTURE SIZE-->
+        <!-- SIZE -->
         <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Image.Width, Mode=OneWay}" IsReadOnly="True" />
         <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding Image.Height, Mode=OneWay}" IsReadOnly="True" />
     </Grid>

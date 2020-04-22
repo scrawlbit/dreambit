@@ -88,6 +88,9 @@
     </Compile>
     <Compile Include="Controls\Input\IconButton.cs" />
     <Compile Include="Controls\Containers\ExpansionPanel.cs" />
+    <Compile Include="Controls\Input\TextBox.xaml.cs">
+      <DependentUpon>TextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
       <DependentUpon>EditableTreeViewItemText.xaml</DependentUpon>
     </Compile>
@@ -280,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Input\FloatBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Input\TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
