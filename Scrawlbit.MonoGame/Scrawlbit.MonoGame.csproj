@@ -43,7 +43,7 @@
     <Compile Include="Helpers\SpriteBatchHelper.cs" />
     <Compile Include="Helpers\SpriteEffectsHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
-    <Compile Include="Helpers\VectorHelper.cs" />
+    <Compile Include="Helpers\Vector2Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

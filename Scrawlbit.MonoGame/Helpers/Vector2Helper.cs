@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Scrawlbit.MonoGame.Helpers
 {
-    public static class VectorHelper
+    public static class Vector2Helper
     {
         public static bool IsEmpty(this Vector2 value)
         {
@@ -31,6 +31,14 @@ namespace Scrawlbit.MonoGame.Helpers
         public static Vector2 MinimumScale(this Vector2 scale, float minimum = 0.1f)
         {
             return Vector2.Max(scale, new Vector2(minimum));
+        }
+
+        public static Vector2 Set(this Vector2 value, float? x = null, float? y = null)
+        {
+            value.X = x ?? value.X;
+            value.Y = y ?? value.Y;
+
+            return value;
         }
     }
 }

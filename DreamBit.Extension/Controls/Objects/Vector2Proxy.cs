@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Scrawlbit.MonoGame.Helpers;
 using Scrawlbit.Presentation.Dependency;
 using System.Windows;
 
@@ -41,16 +42,18 @@ namespace DreamBit.Extension.Controls.Objects
 
         private void OnValueChanged()
         {
-            X = Value.X;
-            Y = Value.Y;
+            if (X != Value.X) X = Value.X;
+            if (Y != Value.Y) Y = Value.Y;
         }
         private void OnXChanged()
         {
-            Value = new Vector2(X, Value.Y);
+            if (X != Value.X)
+                Value = Value.Set(x: X);
         }
         private void OnYChanged()
         {
-            Value = new Vector2(Value.X, Y);
+            if (Y != Value.Y)
+                Value = Value.Set(y: Y);
         }
     }
 }

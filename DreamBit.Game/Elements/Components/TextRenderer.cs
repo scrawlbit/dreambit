@@ -15,6 +15,7 @@ namespace DreamBit.Game.Elements.Components
         private bool _flipVertically;
         private bool _flipHorizontally;
         private IFont _font;
+        private Vector2 _size;
 
         public TextRenderer(IContentDrawer drawer)
         {
@@ -32,7 +33,7 @@ namespace DreamBit.Game.Elements.Components
                 value = value.IfEmptyThenNull();
 
                 if (Set(ref _text, value))
-                    OnPropertyChanged(nameof(Size));
+                    UpdateSize();
             }
         }
         public Color Color
@@ -61,12 +62,13 @@ namespace DreamBit.Game.Elements.Components
             set
             {
                 if (Set(ref _font, value))
-                    OnPropertyChanged(nameof(Size));
+                    UpdateSize();
             }
         }
         public Vector2 Size
         {
-            get => Font?.MeasureString(Text ?? "") ?? Vector2.Zero;
+            get => _size;
+            private set => Set(ref _size, value);
         }
 
         internal Rectangle Area()
@@ -92,6 +94,11 @@ namespace DreamBit.Game.Elements.Components
                 GameObject.Transform.Scale,
                 SpriteEffectsHelper.GetEffects(FlipHorizontally, FlipVertically)
             );
+        }
+
+        private void UpdateSize()
+        {
+            Size = Font?.MeasureString(Text ?? "") ?? Vector2.Zero;
         }
     }
 }

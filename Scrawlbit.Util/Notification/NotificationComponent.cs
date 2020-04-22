@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Scrawlbit.Notification
 {
@@ -33,7 +34,7 @@ namespace Scrawlbit.Notification
             OnPropertyChanged(((MemberExpression)property.Body).Member.Name);
         }
 
-        public bool Set<T>(ref T variable, T value, string propertyName)
+        public bool Set<T>(ref T variable, T value, [CallerMemberName] string propertyName = null)
         {
             if (!Equals(value, variable))
             {

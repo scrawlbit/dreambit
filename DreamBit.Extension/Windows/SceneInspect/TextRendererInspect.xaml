@@ -67,7 +67,7 @@
         <input:FloatBox Grid.Row="4" Grid.Column="4" Value="{Binding Y, Mode=TwoWay, ElementName=Origin}" Increment="0.1" Changed="OnOriginChanged" />
 
         <!-- SIZE -->
-        <objects:Vector2Proxy x:Name="Size" Value="{Binding Size}" />
+        <objects:Vector2Proxy x:Name="Size" Value="{Binding Size, Mode=OneWay}" />
         <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding X, Mode=OneWay, ElementName=Size}" IsReadOnly="True" />
         <TextBox Grid.Row="5" Grid.Column="4" Text="{Binding Y, Mode=OneWay, ElementName=Size}" IsReadOnly="True" />
     </Grid>
