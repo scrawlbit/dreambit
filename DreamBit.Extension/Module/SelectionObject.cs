@@ -5,6 +5,7 @@ using DreamBit.General.State;
 using Microsoft.Xna.Framework;
 using Scrawlbit.MonoGame.Helpers;
 using Scrawlbit.Notification;
+using Scrawlbit.Notification.Notificator;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace DreamBit.Extension.Module
         private readonly IStateManager _state;
         private readonly IDictionary<GameObject, SelectionData> _data;
         private GameObject[] _gameObjects;
+        private Notificator<GameObject> _notifications;
         private Matrix _initialMatrix;
         private bool _hasSelection;
         private bool _hasOneSelection;
@@ -151,6 +153,8 @@ namespace DreamBit.Extension.Module
         {
             _applyChanges = false;
 
+            _notifications?.Dispose();
+            _notifications = null;
             _gameObjects = _editor.SelectedObjects.ToArray();
 
             HasSelection = _gameObjects.Length > 0;
@@ -164,6 +168,7 @@ namespace DreamBit.Extension.Module
             Scale = DetermineScale();
 
             CopyData(true);
+            TrackNameChanges();
 
             _applyChanges = true;
         }
@@ -262,6 +267,16 @@ namespace DreamBit.Extension.Module
             }
 
             _initialMatrix = DetermineMatrix();
+        }
+        private void TrackNameChanges()
+        {
+            if (!HasOneSelection)
+                return;
+
+            GameObject gameObject = _gameObjects[0];
+
+            _notifications = _gameObjects[0].Notify()
+                .On(g => g.Name).Changed(() => Name = gameObject.Name);
         }
 
         private void ValidateIsVisibleChange(GameObject gameObject, SelectionData data)
