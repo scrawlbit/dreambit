@@ -1,5 +1,7 @@
-﻿using DreamBit.Extension.Management;
+﻿using DreamBit.Extension.Helpers;
+using DreamBit.Extension.Management;
 using DreamBit.Game.Elements;
+using DreamBit.General.State;
 using Scrawlbit.Presentation.Commands;
 using System.Linq;
 using System.Windows.Input;
@@ -14,10 +16,12 @@ namespace DreamBit.Extension.Commands.SceneInspect
     internal class RemoveGameComponentCommand : BaseCommand, IRemoveGameComponentCommand
     {
         private readonly IEditor _editor;
+        private readonly IStateManager _state;
 
-        public RemoveGameComponentCommand(IEditor editor)
+        public RemoveGameComponentCommand(IEditor editor, IStateManager state)
         {
             _editor = editor;
+            _state = state;
         }
 
         public bool CanExecute(GameComponent component)
@@ -26,7 +30,10 @@ namespace DreamBit.Extension.Commands.SceneInspect
         }
         public void Execute(GameComponent component)
         {
-            _editor.SelectedObject.Components.Remove(component);
+            string description = $"{component.GameObject.Name}'s {component.Name} removed.";
+            IStateCommand command = _editor.SelectedObject.Components.State().Remove(component, description);
+
+            _state.Execute(command);
         }
     }
 }

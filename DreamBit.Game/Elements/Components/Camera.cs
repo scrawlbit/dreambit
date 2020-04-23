@@ -13,6 +13,7 @@ namespace DreamBit.Game.Elements.Components
             _drawer = drawer;
         }
 
+        public override string Name => "Camera";
         private Vector2 Size => new Vector2(800, 600);
         public bool IsActive
         {

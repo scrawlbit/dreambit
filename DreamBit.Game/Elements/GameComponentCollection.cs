@@ -10,6 +10,7 @@ namespace DreamBit.Game.Elements
 
         void Add(params GameComponent[] components);
         void Remove(GameComponent component);
+        void Insert(int index, GameComponent component);
     }
 
     internal class GameComponentCollection : ExtendedObservableCollection<GameComponent>, IGameComponentCollection
@@ -45,6 +46,11 @@ namespace DreamBit.Game.Elements
         {
             if (component.GameObject == _target || component.GameObject == null)
                 Remove(component);
+        }
+        void IGameComponentCollection.Insert(int index, GameComponent component)
+        {
+            if (!Contains(component))
+                Insert(index, component);
         }
     }
 }

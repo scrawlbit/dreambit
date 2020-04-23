@@ -25,6 +25,7 @@ namespace DreamBit.Game.Elements.Components
             Origin = Vector2.One / 2;
         }
 
+        public override string Name => "Text Renderer";
         public string Text
         {
             get => _text;

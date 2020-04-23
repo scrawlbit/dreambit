@@ -22,6 +22,7 @@ namespace DreamBit.Game.Elements.Components
             Origin = Vector2.One / 2;
         }
 
+        public override string Name => "Image Renderer";
         public Color Color
         {
             get => _color;
