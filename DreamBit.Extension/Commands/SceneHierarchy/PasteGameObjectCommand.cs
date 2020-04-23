@@ -1,10 +1,13 @@
 ﻿using DreamBit.Extension.Helpers;
 using DreamBit.Extension.Management;
 using DreamBit.Game.Elements;
+using DreamBit.Game.Elements.Components;
 using DreamBit.Game.Serialization;
 using DreamBit.General.State;
+using Scrawlbit.Helpers;
 using Scrawlbit.Presentation.Commands;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -53,6 +56,12 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 string json = Clipboard.GetText();
                 GameObject gameObject = _parser.ToGameObject(json);
 
+                if (parent != null)
+                    RemoveCamera(gameObject);
+
+                RemoveCameras(gameObject.Children);
+                FixActiveCamera(gameObject);
+
                 string parentName = parent?.Name ?? "Scene";
                 string description = $"{gameObject.Name} added to {parentName}";
                 IStateCommand command = collection.State().Add(gameObject, description);
@@ -64,6 +73,29 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             catch
             {
             }
+        }
+
+        private void RemoveCamera(GameObject gameObject)
+        {
+            Camera camera = gameObject.Components.Find<Camera>();
+
+            if (camera != null)
+                gameObject.Components.Remove(camera);
+        }
+        private void RemoveCameras(IGameObjectCollection gameObjects)
+        {
+            foreach (var gameObject in gameObjects)
+            {
+                RemoveCamera(gameObject);
+                RemoveCameras(gameObject.Children);
+            }
+        }
+        private void FixActiveCamera(GameObject gameObject)
+        {
+            Camera camera = gameObject.Components.Find<Camera>();
+            
+            if (camera?.IsActive == true && _editor.OpenedScene.GetCameras().Any(c => c.IsActive))
+                camera.IsActive = false;
         }
     }
 }
