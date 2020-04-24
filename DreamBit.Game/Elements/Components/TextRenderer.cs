@@ -8,7 +8,6 @@ namespace DreamBit.Game.Elements.Components
 {
     public class TextRenderer : GameComponent
     {
-        private readonly IContentDrawer _drawer;
         private string _text;
         private Color _color;
         private Vector2 _origin;
@@ -17,10 +16,8 @@ namespace DreamBit.Game.Elements.Components
         private IFont _font;
         private Vector2 _size;
 
-        public TextRenderer(IContentDrawer drawer)
+        public TextRenderer()
         {
-            _drawer = drawer;
-
             Color = Color.Black;
             Origin = Vector2.One / 2;
         }
@@ -80,12 +77,12 @@ namespace DreamBit.Game.Elements.Components
             return new Rectangle((Size * -Origin).ToPoint(), Size.ToPoint());
         }
 
-        protected internal override void Draw()
+        protected internal override void Draw(IContentDrawer drawer)
         {
             if (Font == null || Text == null)
                 return;
 
-            _drawer.DrawString(
+            drawer.DrawString(
                 Font,
                 Text,
                 GameObject.Transform.Position,

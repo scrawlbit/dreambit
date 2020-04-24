@@ -7,17 +7,14 @@ namespace DreamBit.Game.Elements.Components
 {
     public class ImageRenderer : GameComponent
     {
-        private readonly IContentDrawer _drawer;
         private Color _color;
         private Vector2 _origin;
         private bool _flipVertically;
         private bool _flipHorizontally;
         private IImage _image;
 
-        public ImageRenderer(IContentDrawer drawer)
+        public ImageRenderer()
         {
-            _drawer = drawer;
-
             Color = Color.White;
             Origin = Vector2.One / 2;
         }
@@ -57,12 +54,12 @@ namespace DreamBit.Game.Elements.Components
             return new Rectangle((Image.Size * -Origin).ToPoint(), Image.Size.ToPoint());
         }
 
-        protected internal override void Draw()
+        protected internal override void Draw(IContentDrawer drawer)
         {
             if (Image == null)
                 return;
 
-            _drawer.Draw(
+            drawer.Draw(
                 Image,
                 GameObject.Transform.Position,
                 null,

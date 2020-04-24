@@ -26,15 +26,13 @@ namespace DreamBit.Extension.Commands.SceneInspect
         private readonly IEditor _editor;
         private readonly IProject _project;
         private readonly IContentManager _contentManager;
-        private readonly IContentDrawer _contentDrawer;
         private readonly IStateManager _state;
 
-        public DropOnInspectCommand(IEditor editor, IProject project, IContentManager contentManager, IContentDrawer contentDrawer, IStateManager state)
+        public DropOnInspectCommand(IEditor editor, IProject project, IContentManager contentManager, IStateManager state)
         {
             _editor = editor;
             _project = project;
             _contentManager = contentManager;
-            _contentDrawer = contentDrawer;
             _state = state;
         }
 
@@ -81,8 +79,8 @@ namespace DreamBit.Extension.Commands.SceneInspect
         {
             switch (file)
             {
-                case IPipelineImage image: return new ImageRenderer(_contentDrawer) { Image = _contentManager.Load(image) };
-                case IPipelineFont font: return new TextRenderer(_contentDrawer) { Font = _contentManager.Load(font) };
+                case IPipelineImage image: return new ImageRenderer { Image = _contentManager.Load(image) };
+                case IPipelineFont font: return new TextRenderer { Font = _contentManager.Load(font) };
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(file));

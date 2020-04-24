@@ -41,7 +41,7 @@ namespace DreamBit.Extension.Module
 
             using (_drawer.Batch())
             {
-                _editor.OpenedScene.Preview();
+                _editor.OpenedScene.Preview(_drawer);
 
                 Rectangle selecionArea = _editor.Selection.Area();
 

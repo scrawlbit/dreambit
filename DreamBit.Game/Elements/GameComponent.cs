@@ -1,4 +1,6 @@
-﻿using Scrawlbit.Notification;
+﻿using DreamBit.Game.Drawing;
+using Microsoft.Xna.Framework;
+using Scrawlbit.Notification;
 
 namespace DreamBit.Game.Elements
 {
@@ -20,8 +22,8 @@ namespace DreamBit.Game.Elements
         }
 
         protected internal virtual void Start() { }
-        protected internal virtual void Update() { }
-        protected internal virtual void PostUpdate() { }
-        protected internal virtual void Draw() { }
+        protected internal virtual void Update(GameTime gameTime) { }
+        protected internal virtual void PostUpdate(GameTime gameTime) { }
+        protected internal virtual void Draw(IContentDrawer drawer) { }
     }
 }

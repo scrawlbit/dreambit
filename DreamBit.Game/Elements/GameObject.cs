@@ -1,4 +1,5 @@
-﻿using DreamBit.Game.Elements.Components;
+﻿using DreamBit.Game.Drawing;
+using DreamBit.Game.Elements.Components;
 using Microsoft.Xna.Framework;
 using Scrawlbit.Helpers;
 using Scrawlbit.MonoGame.Helpers;
@@ -99,7 +100,7 @@ namespace DreamBit.Game.Elements
                 Children[i].Initialize();
             }
         }
-        internal void Update()
+        internal void Update(GameTime gameTime)
         {
             if (!IsVisible)
                 return;
@@ -109,15 +110,15 @@ namespace DreamBit.Game.Elements
                 GameComponent component = Components[i];
 
                 component.Initialize(this);
-                component.Update();
+                component.Update(gameTime);
             }
 
             for (int i = 0; i < Children.Count; i++)
             {
-                Children[i].Update();
+                Children[i].Update(gameTime);
             }
         }
-        internal void PostUpdate()
+        internal void PostUpdate(GameTime gameTime)
         {
             if (!IsVisible)
                 return;
@@ -127,13 +128,13 @@ namespace DreamBit.Game.Elements
                 GameComponent component = Components[i];
 
                 if (component.Started)
-                    component.PostUpdate();
+                    component.PostUpdate(gameTime);
             }
 
             for (int i = 0; i < Children.Count; i++)
-                Children[i].PostUpdate();
+                Children[i].PostUpdate(gameTime);
         }
-        internal void Draw()
+        internal void Draw(IContentDrawer drawer)
         {
             if (!IsVisible)
                 return;
@@ -145,13 +146,13 @@ namespace DreamBit.Game.Elements
                 GameComponent component = Components[i];
 
                 if (component.Started)
-                    component.Draw();
+                    component.Draw(drawer);
             }
 
             for (int i = 0; i < Children.Count; i++)
-                Children[i].Draw();
+                Children[i].Draw(drawer);
         }
-        internal void Preview()
+        internal void Preview(IContentDrawer drawer)
         {
             if (!IsVisible)
                 return;
@@ -163,11 +164,11 @@ namespace DreamBit.Game.Elements
                 GameComponent component = Components[i];
 
                 component.Initialize(this);
-                component.Draw();
+                component.Draw(drawer);
             }
 
             for (int i = 0; i < Children.Count; i++)
-                Children[i].Preview();
+                Children[i].Preview(drawer);
         }
 
         private Rectangle PositionArea()

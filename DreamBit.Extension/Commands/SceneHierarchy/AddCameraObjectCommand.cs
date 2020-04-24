@@ -1,7 +1,6 @@
 ﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Helpers;
 using DreamBit.Extension.Management;
-using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using DreamBit.Game.Elements.Components;
 using DreamBit.General.State;
@@ -18,13 +17,11 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
     {
         private readonly IEditor _editor;
         private readonly IStateManager _state;
-        private readonly IContentDrawer _drawer;
 
-        public AddCameraObjectCommand(IEditor editor, IStateManager state, IContentDrawer drawer)
+        public AddCameraObjectCommand(IEditor editor, IStateManager state)
         {
             _editor = editor;
             _state = state;
-            _drawer = drawer;
         }
 
         protected override int Id => DreamBitPackage.Guids.AddCameraObjectCommand;
@@ -36,7 +33,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
         public override void Execute()
         {
             GameObject gameObject = new GameObject();
-            Camera camera = new Camera(_drawer);
+            Camera camera = new Camera();
 
             camera.IsActive = !HasActiveCamera();
             gameObject.Name = GetNewName();
