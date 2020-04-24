@@ -12,7 +12,7 @@
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:TextRenderer, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800"
-    Header="Text Renderer">
+    Header="{Binding Name}">
 
     <Grid>
         <Grid.RowDefinitions>

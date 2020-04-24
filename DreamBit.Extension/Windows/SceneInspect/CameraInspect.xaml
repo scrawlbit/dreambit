@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:Camera, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800"
-    Header="Camera">
+    Header="{Binding Name}">
 
     <StackPanel Orientation="Horizontal">
         <input:CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" Changed="OnActiveChanged" />        
