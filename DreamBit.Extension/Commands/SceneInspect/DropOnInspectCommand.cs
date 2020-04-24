@@ -4,6 +4,7 @@ using DreamBit.Game.Content;
 using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using DreamBit.Game.Elements.Components;
+using DreamBit.Game.Files;
 using DreamBit.General.State;
 using DreamBit.Pipeline.Files;
 using DreamBit.Project;
@@ -11,6 +12,7 @@ using DreamBit.Project.Helpers;
 using Scrawlbit.Presentation.Commands;
 using Scrawlbit.Presentation.DragAndDrop;
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.SceneInspect
@@ -71,6 +73,7 @@ namespace DreamBit.Extension.Commands.SceneInspect
             {
                 case IPipelineImage _: return !gameObject.Components.Contains<ImageRenderer>();
                 case IPipelineFont _: return !gameObject.Components.Contains<TextRenderer>();
+                case IScriptFile _: return !gameObject.Components.Any(c => (c as ScriptBehavior)?.File == file);
             }
 
             return false;
@@ -81,6 +84,7 @@ namespace DreamBit.Extension.Commands.SceneInspect
             {
                 case IPipelineImage image: return new ImageRenderer { Image = _contentManager.Load(image) };
                 case IPipelineFont font: return new TextRenderer { Font = _contentManager.Load(font) };
+                case IScriptFile script: return new ScriptBehavior(script);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(file));

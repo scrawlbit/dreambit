@@ -60,6 +60,11 @@
                         <partials:CameraInspect />
                     </DataTemplate>
                     
+                    <!-- SCRIPT BEHAVIOR -->
+                    <DataTemplate DataType="{x:Type components:ScriptBehavior}">
+                        <partials:ScriptBehaviorInspect />
+                    </DataTemplate>
+                    
                 </ItemsControl.Resources>
             </ItemsControl>
         </StackPanel>

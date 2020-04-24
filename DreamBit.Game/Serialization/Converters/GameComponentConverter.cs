@@ -1,5 +1,6 @@
 ﻿using DreamBit.Game.Elements;
 using DreamBit.Game.Elements.Components;
+using DreamBit.Game.Files;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -14,25 +15,56 @@ namespace DreamBit.Game.Serialization.Converters
         private const string Image = "Image";
         private const string Text = "Text";
         private const string Camera = "Camera";
+        private const string Script = "Script";
 
         public override GameComponent ReadJson(JsonReader reader, Type objectType, GameComponent existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            JObject jObject = JObject.Load(reader);
-            string typeName = jObject[Type].ToString();
-            GameComponent component = CreateInstance(typeName);
+            JObject obj = JObject.Load(reader);
 
-            serializer.Populate(jObject.CreateReader(), component);
+            if (obj.Property(Script) != null)
+                return ReadScriptBehavior(obj, serializer);
 
-            return component;
+            return ReadCommonComponent(obj, serializer);
         }
         public override void WriteJson(JsonWriter writer, GameComponent value, JsonSerializer serializer)
         {
-            JsonObjectContract contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(value.GetType());
             JObject obj = new JObject();
-            string typeName = GetTypeName(value);
 
-            if (typeName != null)
-                obj[Type] = typeName;
+            if (value is ScriptBehavior script)
+                WriteScriptBehavior(obj, script, serializer);
+            else
+                WriteCommonComponent(obj, value, serializer);
+
+            obj.WriteTo(writer);
+        }
+
+        private ScriptBehavior ReadScriptBehavior(JObject obj, JsonSerializer serializer)
+        {
+            ScriptBehavior component = new ScriptBehavior();
+
+            component.File = obj[Script].ToObject<IScriptFile>(serializer);
+
+            return component;
+        }
+        private GameComponent ReadCommonComponent(JObject obj, JsonSerializer serializer)
+        {
+            string typeName = obj[Type].ToString();
+            GameComponent component = CreateInstance(typeName);
+
+            serializer.Populate(obj.CreateReader(), component);
+
+            return component;
+        }
+
+        private void WriteScriptBehavior(JObject obj, ScriptBehavior value, JsonSerializer serializer)
+        {
+            obj.SetProperty(Script, value.File, serializer);
+        }
+        private void WriteCommonComponent(JObject obj, GameComponent value, JsonSerializer serializer)
+        {
+            JsonObjectContract contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(value.GetType());
+
+            obj[Type] = GetTypeName(value);
 
             foreach (var property in contract.Properties)
             {
@@ -40,7 +72,8 @@ namespace DreamBit.Game.Serialization.Converters
                     obj.SetProperty(property, value, serializer);
             }
 
-            obj.WriteTo(writer);
+            if (value is ScriptBehavior script)
+                obj.SetProperty(Script, script.File, serializer);
         }
 
         private static string GetTypeName(GameComponent value)
@@ -50,7 +83,8 @@ namespace DreamBit.Game.Serialization.Converters
                 case ImageRenderer _: return Image;
                 case TextRenderer _: return Text;
                 case Camera _: return Camera;
-                default: return null;
+
+                default: throw new NotImplementedException();
             }
         }
         private GameComponent CreateInstance(string typeName)
@@ -60,6 +94,7 @@ namespace DreamBit.Game.Serialization.Converters
                 case Image: return new ImageRenderer();
                 case Text: return new TextRenderer();
                 case Camera: return new Camera();
+
                 default: throw new NotImplementedException();
             }
         }

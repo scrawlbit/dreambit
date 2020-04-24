@@ -5,7 +5,8 @@ using _Path = System.IO.Path;
 
 namespace DreamBit.Game.Files
 {
-    public sealed class ScriptFile : ProjectFile
+    public interface IScriptFile : IProjectFile { }
+    public sealed class ScriptFile : ProjectFile, IScriptFile
     {
         private readonly IFileManager _fileManager;
         private readonly IProject _project;
