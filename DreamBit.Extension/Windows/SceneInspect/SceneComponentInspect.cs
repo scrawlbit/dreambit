@@ -17,7 +17,7 @@ namespace DreamBit.Extension.Windows.SceneInspect
         {
             var registry = new DependencyRegistry<SceneComponentInspect>();
 
-            ViewModelProperty = registry.Property(s => s.ViewModel, s => s.OnViewModelBound());
+            ViewModelProperty = registry.Property(s => s.ViewModel);
         }
         public SceneComponentInspect()
         {
@@ -34,10 +34,6 @@ namespace DreamBit.Extension.Windows.SceneInspect
         {
             get => ViewModelProperty.Get(this);
             set => ViewModelProperty.Set(this, value);
-        }
-
-        protected virtual void OnViewModelBound()
-        {
         }
 
         private void SetViewModelBinding()

@@ -13,6 +13,7 @@ namespace DreamBit.Project
         string FileName { get; }
         string Location { get; }
         string Path { get; }
+        string Folder { get; }
         string Type { get; }
     }
 
@@ -56,6 +57,7 @@ namespace DreamBit.Project
                 NotifyAll();
             }
         }
+        public string Folder => _Path.GetDirectoryName(Path);
         public string Type { get; internal set; }
         public string Extension { get; internal set; }
 
@@ -76,6 +78,7 @@ namespace DreamBit.Project
             OnPropertyChanged(nameof(Path));
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(FileName));
+            OnPropertyChanged(nameof(Folder));
         }
     }
 }

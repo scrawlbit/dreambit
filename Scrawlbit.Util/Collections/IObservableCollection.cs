@@ -20,13 +20,10 @@ namespace Scrawlbit.Collections
         void Clear();
     }
 
-    public interface IObservableCollection<T> : IObservableCollection, ICollection<T>, IReadOnlyObservableCollection<T>
+    public interface IObservableCollection<T> : IObservableCollection, IList<T>, IReadOnlyObservableCollection<T>
     {
         new int Count { get; }
         new T this[int index] { get; }
-
-        void Insert(int index, T item);
-        int IndexOf(T item);
 
         new void Clear();
     }

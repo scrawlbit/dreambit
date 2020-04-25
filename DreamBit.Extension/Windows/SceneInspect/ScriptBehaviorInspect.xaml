@@ -11,4 +11,14 @@
     d:DesignHeight="450" d:DesignWidth="800"
     Header="{Binding Name}">
 
+    <ItemsControl ItemsSource="{Binding Properties}">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <StackPanel>
+                    <TextBlock Text="{Binding Name}" />
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
 </partials:SceneComponentInspect>
