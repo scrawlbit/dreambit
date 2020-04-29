@@ -23,7 +23,7 @@ namespace DreamBit.Extension.Windows.SceneInspect
             if (this.IsInDesignMode())
                 return;
 
-            _regex = new Regex("public (\\w+ )?(?<Type>[\\w?]+) (?<PropertyName>\\w+) { get; set; }", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+            _regex = new Regex("public (\\w+ )?(?<Type>[\\w?]+) (?<PropertyName>\\w+) ?{ ?get; ?set; ?}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)

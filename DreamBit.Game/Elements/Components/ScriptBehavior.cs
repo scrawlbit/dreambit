@@ -43,12 +43,16 @@ namespace DreamBit.Game.Elements.Components
 
             _properties.RemoveRange(removed);
 
-            foreach (var (name, type) in properties)
+            foreach (var (name, typeName) in properties)
             {
                 Property property = _properties.SingleOrDefault(p => p.Name == name) ?? new Property();
+                Type type = DetermineType(typeName);
+
+                if (type != property.Type)
+                    property.Value = null;
 
                 property.Name = name;
-                property.Type = DetermineType(type);
+                property.Type = type;
 
                 if (property.Type == null)
                 {
