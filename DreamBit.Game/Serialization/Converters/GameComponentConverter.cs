@@ -59,6 +59,12 @@ namespace DreamBit.Game.Serialization.Converters
         private void WriteScriptBehavior(JObject obj, ScriptBehavior value, JsonSerializer serializer)
         {
             obj.SetProperty(Script, value.File, serializer);
+
+            foreach (var property in value.Properties)
+            {
+                if (!Equals(property.Value, property.DefaultValue))
+                    obj.SetProperty(property.Name, property.Value, serializer);
+            }
         }
         private void WriteCommonComponent(JObject obj, GameComponent value, JsonSerializer serializer)
         {
