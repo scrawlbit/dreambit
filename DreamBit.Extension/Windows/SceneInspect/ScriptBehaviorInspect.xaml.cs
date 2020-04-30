@@ -1,11 +1,16 @@
-﻿using DreamBit.Extension.Helpers;
+﻿using DreamBit.Extension.Controls.Input;
+using DreamBit.Extension.Helpers;
 using DreamBit.Game.Elements.Components;
+using DreamBit.General.State;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
+using CheckBox = DreamBit.Extension.Controls.Input.CheckBox;
+using TextBox = DreamBit.Extension.Controls.Input.TextBox;
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
 namespace DreamBit.Extension.Windows.SceneInspect
@@ -90,6 +95,28 @@ namespace DreamBit.Extension.Windows.SceneInspect
 
                 _script.MergeProperties(properties.ToArray());
             }
+        }
+
+        private void OnIntChanged(IntBox sender, ValueChangedEventArgs<int> e) => CreateState(sender, e.OldValue, e.NewValue);
+        private void OnBoolChanged(CheckBox sender, ValueChangedEventArgs<bool?> e) => CreateState(sender, e.OldValue, e.NewValue);
+        private void OnStringChanged(TextBox sender, ValueChangedEventArgs<string> e) => CreateState(sender, e.OldValue, e.NewValue);
+        private void OnFloatChanged(FloatBox sender, ValueChangedEventArgs<float> e) => CreateState(sender, e.OldValue, e.NewValue);
+
+        private void CreateState(Control control, object oldValue, object newValue)
+        {
+            // TODO
+            //ScriptProperty property = (ScriptProperty)control.DataContext;
+
+            //ScriptBehavior script = _script;
+            //string name = property.Name;
+            //Type type = property.Type;
+
+            //ViewModel.State.Add(new StateCommand
+            //{
+            //    Description = $"{script.GameObject.Name}'s {script.Name} - {name} changed",
+            //    Do = () => script.SetValue(name, type, newValue),
+            //    Undo = () => script.SetValue(name, type, oldValue)
+            //});
         }
     }
 }

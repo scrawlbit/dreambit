@@ -1,0 +1,15 @@
+﻿<UserControl
+    x:Class="DreamBit.Extension.Controls.Input.IntBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    xmlns:converters="clr-namespace:Scrawlbit.Presentation.Converters;assembly=Scrawlbit.Presentation"
+    mc:Ignorable="d"
+    d:DesignHeight="450" d:DesignWidth="800"
+    x:Name="Control">
+
+    <input:FloatBox x:Name="Input" Value="{Binding Value, Mode=TwoWay, Converter={converters:IntToFloatConverter}, ElementName=Control}" Changed="OnInputChanged" />
+
+</UserControl>

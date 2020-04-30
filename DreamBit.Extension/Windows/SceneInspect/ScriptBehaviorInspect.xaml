@@ -4,18 +4,65 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:ScriptBehavior, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800"
     Header="{Binding Name}">
 
+    <Control.Resources>
+        <!-- INT -->
+        <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="IntTemplate">
+            <input:IntBox Value="{Binding Value, Mode=TwoWay}" Changed="OnIntChanged" />
+        </DataTemplate>
+
+        <!-- BOOL -->
+        <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="BoolTemplate">
+            <input:CheckBox IsChecked="{Binding Value, Mode=TwoWay}" Changed="OnBoolChanged" />
+        </DataTemplate>
+
+        <!-- STRING -->
+        <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="StringTemplate">
+            <input:TextBox Text="{Binding Value, Mode=TwoWay}" Changed="OnStringChanged" />
+        </DataTemplate>
+
+        <!-- FLOAT -->
+        <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="FloatTemplate">
+            <input:FloatBox Value="{Binding Value, Mode=TwoWay}" Changed="OnFloatChanged" />
+        </DataTemplate>
+    </Control.Resources>
+
     <ItemsControl ItemsSource="{Binding Properties}">
         <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <StackPanel>
+            <DataTemplate DataType="{x:Type components:ScriptProperty}">
+                <StackPanel x:Name="Panel">
+                    
                     <TextBlock Text="{Binding Name}" />
+
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Int32}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Boolean}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:String}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource StringTemplate}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Single}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource FloatTemplate}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                    
                 </StackPanel>
             </DataTemplate>
         </ItemsControl.ItemTemplate>

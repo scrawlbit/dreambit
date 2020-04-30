@@ -51,37 +51,37 @@ namespace DreamBit.Extension.Controls.Input
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!IsReadOnly)
-            {
-                if (e.Key == Key.Up)
-                {
-                    IncrementValue(Increment);
-                    UpdateEditingText();
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    IncrementValue(-Increment);
-                    UpdateEditingText();
-                    e.Handled = true;
-                }
-                else if (e.KeyIs(Key.OemMinus, Key.Subtract))
-                {
-                    if (Equals(Value, 0f))
-                    {
-                        if (EditingText.Text.StartsWith("-"))
-                            SetEditingText(EditingText.Text.Substring(1));
-                        else
-                            SetEditingText("-" + EditingText.Text);
-                    }
-                    else
-                    {
-                        Value = -Value;
-                        UpdateEditingText();
-                    }
+            if (IsReadOnly)
+                return;
 
-                    e.Handled = true;
+            if (e.Key == Key.Up)
+            {
+                IncrementValue(Increment);
+                UpdateEditingText();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                IncrementValue(-Increment);
+                UpdateEditingText();
+                e.Handled = true;
+            }
+            else if (e.KeyIs(Key.OemMinus, Key.Subtract))
+            {
+                if (Equals(Value, 0f))
+                {
+                    if (EditingText.Text.StartsWith("-"))
+                        SetEditingText(EditingText.Text.Substring(1));
+                    else
+                        SetEditingText("-" + EditingText.Text);
                 }
+                else
+                {
+                    Value = -Value;
+                    UpdateEditingText();
+                }
+
+                e.Handled = true;
             }
         }
         private void OnKeyUp(object sender, KeyEventArgs e)

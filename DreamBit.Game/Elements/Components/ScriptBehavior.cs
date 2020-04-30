@@ -8,13 +8,13 @@ namespace DreamBit.Game.Elements.Components
 {
     public class ScriptBehavior : GameComponent
     {
-        private readonly IObservableCollection<Property> _properties;
+        private readonly IObservableCollection<ScriptProperty> _properties;
         private IScriptFile _file;
         private string _name;
 
         public ScriptBehavior(IScriptFile file = null)
         {
-            _properties = new ExtendedObservableCollection<Property>();
+            _properties = new ExtendedObservableCollection<ScriptProperty>();
 
             File = file;
         }
@@ -29,7 +29,7 @@ namespace DreamBit.Game.Elements.Components
             }
         }
         public override string Name => _name;
-        public IReadOnlyObservableCollection<Property> Properties => _properties;
+        public IReadOnlyObservableCollection<ScriptProperty> Properties => _properties;
 
         private void UpdateName()
         {
@@ -45,14 +45,15 @@ namespace DreamBit.Game.Elements.Components
 
             foreach (var (name, typeName) in properties)
             {
-                Property property = _properties.SingleOrDefault(p => p.Name == name) ?? new Property();
-                Type type = DetermineType(typeName);
+                ScriptProperty property = _properties.SingleOrDefault(p => p.Name == name) ?? new ScriptProperty();
+                (Type type, object defaultValue) = DetermineType(typeName);
 
                 if (type != property.Type)
-                    property.Value = null;
+                    property.Value = defaultValue;
 
                 property.Name = name;
                 property.Type = type;
+                property.DefaultValue = defaultValue;
 
                 if (property.Type == null)
                 {
@@ -60,33 +61,31 @@ namespace DreamBit.Game.Elements.Components
                 }
                 else if (!_properties.Contains(property))
                 {
-                    _properties.InsertOrdered(property, p => p.Name);
+                    _properties.Add(property);
                 }
             }
         }
-
-        private Type DetermineType(string name)
+        public void SetValue(string propertyName, Type propertyType, object value)
         {
+            ScriptProperty property = Properties.SingleOrDefault(p => p.Name == propertyName && p.Type == propertyType);
+
+            if (property != null)
+                property.Value = value;
+        }
+
+        private static (Type Type, object DefaultValue) DetermineType(string name)
+        {
+            (Type Type, object DefaultValue) Value<T>() => (typeof(T), default(T));
+
             switch (name)
             {
-                case "int": return typeof(int);
-                case "bool": return typeof(bool);
-                case "string": return typeof(string);
-                case "float": return typeof(float);
+                case "int": return Value<int>();
+                case "bool": return Value<bool>();
+                case "string": return Value<string>();
+                case "float": return Value<float>();
 
-                default: return null;
+                default: return (null, null);
             }
         }
-
-        #region Property
-
-        public class Property
-        {
-            public string Name { get; internal set; }
-            public Type Type { get; internal set; }
-            public object Value { get; internal set; }
-        }
-
-        #endregion
     }
 }

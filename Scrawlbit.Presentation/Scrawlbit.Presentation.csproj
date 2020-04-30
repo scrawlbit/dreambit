@@ -50,9 +50,10 @@
     <Compile Include="Commands\CommandMethod.cs" />
     <Compile Include="Commands\CommandParameter.cs" />
     <Compile Include="Converters\ConverterMarkupExtension.cs" />
+    <Compile Include="Converters\IntToFloatConverter.cs" />
     <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
-    <Compile Include="Data\InterfaceTemplateSelector.cs" />
+    <Compile Include="Data\TypeTemplateSelector.cs" />
     <Compile Include="Helpers\BindingHelper.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />

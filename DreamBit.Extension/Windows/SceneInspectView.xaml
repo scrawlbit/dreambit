@@ -17,10 +17,6 @@
     d:DataContext="{d:DesignInstance viewModels:SceneInspectViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300">
 
-    <UserControl.Resources>
-        <data:InterfaceTemplateSelector x:Key="InterfaceTemplateSelector" />
-    </UserControl.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -41,8 +37,12 @@
 
             <!-- COMPONENTS -->
             <ItemsControl ItemsSource="{Binding Editor.SelectedObject.Components}"
-                          ItemTemplateSelector="{StaticResource InterfaceTemplateSelector}"
                           Visibility="{Binding Editor.Selection.HasOneSelection, Converter={converters:VisibilityConverter}}">
+                
+                <ItemsControl.ItemTemplateSelector>
+                    <data:TypeTemplateSelector />
+                </ItemsControl.ItemTemplateSelector>
+                
                 <ItemsControl.Resources>
 
                     <!-- IMAGE RENDERER -->
