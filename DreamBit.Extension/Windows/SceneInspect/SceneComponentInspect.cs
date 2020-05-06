@@ -28,6 +28,8 @@ namespace DreamBit.Extension.Windows.SceneInspect
             SetMenuDataContextBinding();
             SetStyle();
             CreateMenu();
+
+            Focusable = false;
         }
 
         public SceneInspectViewModel ViewModel

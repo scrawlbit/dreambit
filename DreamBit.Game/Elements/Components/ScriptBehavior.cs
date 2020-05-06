@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Files;
+using Microsoft.Xna.Framework;
 using Scrawlbit.Collections;
 using Scrawlbit.Helpers;
 using System;
@@ -83,6 +84,7 @@ namespace DreamBit.Game.Elements.Components
                 case "bool": return Value<bool>();
                 case "string": return Value<string>();
                 case "float": return Value<float>();
+                case "Vector2": return Value<Vector2>();
 
                 default: return (null, null);
             }

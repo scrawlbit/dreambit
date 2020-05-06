@@ -37,7 +37,8 @@
 
             <!-- COMPONENTS -->
             <ItemsControl ItemsSource="{Binding Editor.SelectedObject.Components}"
-                          Visibility="{Binding Editor.Selection.HasOneSelection, Converter={converters:VisibilityConverter}}">
+                          Visibility="{Binding Editor.Selection.HasOneSelection, Converter={converters:VisibilityConverter}}"
+                          Focusable="False">
                 
                 <ItemsControl.ItemTemplateSelector>
                     <data:TypeTemplateSelector />

@@ -5,8 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    xmlns:objects="clr-namespace:DreamBit.Extension.Controls.Objects"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
+    xmlns:monoGame="clr-namespace:Microsoft.Xna.Framework;assembly=MonoGame.Framework"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:ScriptBehavior, IsDesignTimeCreatable=False}"
@@ -33,16 +35,31 @@
         <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="FloatTemplate">
             <input:FloatBox Value="{Binding Value, Mode=TwoWay}" Changed="OnFloatChanged" />
         </DataTemplate>
+
+        <!-- VECTOR2 -->
+        <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="Vector2Template">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <objects:Vector2Proxy x:Name="Vector2" Value="{Binding Value, Mode=TwoWay}" />
+                <input:FloatBox Grid.Column="0" Value="{Binding X, Mode=TwoWay, ElementName=Vector2}" Changed="OnVector2Changed" Uid="X" />
+                <input:FloatBox Grid.Column="1" Value="{Binding Y, Mode=TwoWay, ElementName=Vector2}" Changed="OnVector2Changed" />
+            </Grid>
+        </DataTemplate>
+
     </Control.Resources>
 
-    <ItemsControl ItemsSource="{Binding Properties}">
+    <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
         <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type components:ScriptProperty}">
-                <StackPanel x:Name="Panel">
+                <StackPanel x:Name="Panel" Focusable="False">
                     
                     <TextBlock Text="{Binding Name}" />
 
-                    <ContentControl Content="{Binding}">
+                    <ContentControl Content="{Binding}" Focusable="False">
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">
                                 <Style.Triggers>
@@ -57,6 +74,9 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Single}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource FloatTemplate}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type monoGame:Vector2}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Vector2Template}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

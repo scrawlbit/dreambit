@@ -47,7 +47,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="containers:ExpansionPanel">
-                    <Border Margin="0 0 0 10" Style="{DynamicResource PanelBorderStyle}" Focusable="True">
+                    <Border Margin="0 0 0 10" Style="{DynamicResource PanelBorderStyle}" Focusable="False">
                         <StackPanel Background="{DynamicResource VisualStudioBackgroundBrush1}">
                             <Grid Name="MainGrid">
                                 <!--SIZE-->

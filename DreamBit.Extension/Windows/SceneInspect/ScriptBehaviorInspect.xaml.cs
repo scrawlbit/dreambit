@@ -3,6 +3,7 @@ using DreamBit.Extension.Helpers;
 using DreamBit.Game.Elements.Components;
 using DreamBit.General.State;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -101,22 +102,43 @@ namespace DreamBit.Extension.Windows.SceneInspect
         private void OnBoolChanged(CheckBox sender, ValueChangedEventArgs<bool?> e) => CreateState(sender, e.OldValue, e.NewValue);
         private void OnStringChanged(TextBox sender, ValueChangedEventArgs<string> e) => CreateState(sender, e.OldValue, e.NewValue);
         private void OnFloatChanged(FloatBox sender, ValueChangedEventArgs<float> e) => CreateState(sender, e.OldValue, e.NewValue);
+        private void OnVector2Changed(FloatBox sender, ValueChangedEventArgs<float> e)
+        {
+            ScriptProperty property = (ScriptProperty)sender.DataContext;
+            Vector2 value = (Vector2)property.Value;
+            Vector2 oldValue = value;
+            Vector2 newValue = value;
+
+            if (sender.Uid == "X")
+            {
+                oldValue.X = e.OldValue;
+                newValue.X = e.NewValue;
+            }
+            else
+            {
+                oldValue.Y = e.OldValue;
+                newValue.Y = e.NewValue;
+            }
+
+            CreateState(property, oldValue, newValue);
+        }
 
         private void CreateState(Control control, object oldValue, object newValue)
         {
-            // TODO
-            //ScriptProperty property = (ScriptProperty)control.DataContext;
+            CreateState((ScriptProperty)control.DataContext, oldValue, newValue);
+        }
+        private void CreateState(ScriptProperty property, object oldValue, object newValue)
+        {
+            ScriptBehavior script = _script;
+            string name = property.Name;
+            Type type = property.Type;
 
-            //ScriptBehavior script = _script;
-            //string name = property.Name;
-            //Type type = property.Type;
-
-            //ViewModel.State.Add(new StateCommand
-            //{
-            //    Description = $"{script.GameObject.Name}'s {script.Name} - {name} changed",
-            //    Do = () => script.SetValue(name, type, newValue),
-            //    Undo = () => script.SetValue(name, type, oldValue)
-            //});
+            ViewModel.State.Add(new StateCommand
+            {
+                Description = $"{script.GameObject.Name}'s {script.Name} - {name} changed",
+                Do = () => script.SetValue(name, type, newValue),
+                Undo = () => script.SetValue(name, type, oldValue)
+            });
         }
     }
 }
