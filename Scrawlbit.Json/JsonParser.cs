@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -13,6 +14,7 @@ namespace Scrawlbit.Json
         IList<JsonConverter> Converters { get; }
         string ParseObject(object value);
         T ParseString<T>(string json);
+        object ParseString(string json, Type type);
     }
 
     public class JsonParser : IJsonParser
@@ -52,6 +54,10 @@ namespace Scrawlbit.Json
         public T ParseString<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json, _settings);
+        }
+        public object ParseString(string json, Type type)
+        {
+            return JsonConvert.DeserializeObject(json, type);
         }
     }
 }

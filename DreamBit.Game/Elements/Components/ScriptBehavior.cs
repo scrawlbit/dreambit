@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Scrawlbit.Collections;
 using Scrawlbit.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DreamBit.Game.Elements.Components
@@ -13,11 +14,15 @@ namespace DreamBit.Game.Elements.Components
         private IScriptFile _file;
         private string _name;
 
-        public ScriptBehavior(IScriptFile file = null)
+        public ScriptBehavior(IScriptFile file)
         {
             _properties = new ExtendedObservableCollection<ScriptProperty>();
 
             File = file;
+        }
+        internal ScriptBehavior(IScriptFile file, IEnumerable<ScriptProperty> properties) : this(file)
+        {
+            _properties.AddRange(properties);
         }
 
         public IScriptFile File
@@ -55,6 +60,9 @@ namespace DreamBit.Game.Elements.Components
                 property.Name = name;
                 property.Type = type;
                 property.DefaultValue = defaultValue;
+
+                if (property.Type != null && property.HasJsonValue)
+                    property.TrySetJsonValue();
 
                 if (property.Type == null)
                 {

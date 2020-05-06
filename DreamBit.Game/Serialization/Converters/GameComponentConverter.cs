@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Scrawlbit.Json;
 using System;
+using System.Collections.Generic;
 
 namespace DreamBit.Game.Serialization.Converters
 {
@@ -40,11 +41,19 @@ namespace DreamBit.Game.Serialization.Converters
 
         private ScriptBehavior ReadScriptBehavior(JObject obj, JsonSerializer serializer)
         {
-            ScriptBehavior component = new ScriptBehavior();
+            List<ScriptProperty> properties = new List<ScriptProperty>();
+            IScriptFile file = obj[Script].ToObject<IScriptFile>(serializer);
 
-            component.File = obj[Script].ToObject<IScriptFile>(serializer);
+            foreach (var p in obj.Properties())
+            {
+                if (p.Name == Script) continue;
 
-            return component;
+                object Convert(Type type) => p.Value.ToObject(type, serializer);
+
+                properties.Add(new ScriptProperty(Convert) { Name = p.Name });
+            }
+
+            return new ScriptBehavior(file, properties);
         }
         private GameComponent ReadCommonComponent(JObject obj, JsonSerializer serializer)
         {

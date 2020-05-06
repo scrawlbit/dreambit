@@ -8,7 +8,13 @@ namespace DreamBit.Game.Elements.Components
         private Type _type;
         private object _value;
         private object _defaultValue;
+        private Func<Type, object> _jsonValue;
 
+        internal ScriptProperty(Func<Type, object> jsonValue = null)
+        {
+            _jsonValue = jsonValue;
+        }
+        
         public string Name { get; internal set; }
         public Type Type
         {
@@ -24,6 +30,19 @@ namespace DreamBit.Game.Elements.Components
         {
             get => _defaultValue;
             internal set => Set(ref _defaultValue, value);
+        }
+        internal bool HasJsonValue => _jsonValue != null;
+
+        internal void TrySetJsonValue()
+        {
+            try
+            {
+                Value = _jsonValue(Type);
+            }
+            finally
+            {
+                _jsonValue = null;
+            }
         }
     }
 }
