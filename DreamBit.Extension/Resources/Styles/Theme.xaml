@@ -13,6 +13,8 @@
         <ResourceDictionary Source="TreeView.xaml" />
         <ResourceDictionary Source="DragAndDrop.xaml" />
         <ResourceDictionary Source="ExpansionPanel.xaml" />
+        <ResourceDictionary Source="TextBox.xaml" />
+        <ResourceDictionary Source="CheckBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

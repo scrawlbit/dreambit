@@ -19,6 +19,9 @@
         UsingAlphaChannel="False"
         SelectedColorChanged="OnColorChanged"
         GotFocus="OnGotFocus"
-        LostFocus="OnLostFocus" />
+        LostFocus="OnLostFocus"
+        FontSize="10"
+        Margin="0 1"
+        Padding="0" />
 
 </UserControl>
