@@ -122,6 +122,7 @@ namespace DreamBit.Extension.Windows.SceneInspect
 
             CreateState(property, oldValue, newValue);
         }
+        private void OnGameObjectChanged(GameObjectSelector sender, ValueChangedEventArgs<Guid> e) => CreateState(sender, e.OldValue, e.NewValue);
 
         private void CreateState(Control control, object oldValue, object newValue)
         {

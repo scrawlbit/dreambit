@@ -50,13 +50,18 @@
             </Grid>
         </DataTemplate>
 
+        <!-- GameObject -->
+        <DataTemplate DataType="{x:Type components:ScriptProperty}" x:Key="GameObjectTemplate">
+            <input:GameObjectSelector Id="{Binding Value, Mode=TwoWay}" Changed="OnGameObjectChanged" />
+        </DataTemplate>
+
     </Control.Resources>
 
     <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
         <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type components:ScriptProperty}">
                 <StackPanel x:Name="Panel" Focusable="False">
-                    
+
                     <TextBlock Text="{Binding Name}" Margin="0 1 0 0" />
 
                     <ContentControl Content="{Binding}" Focusable="False">
@@ -78,11 +83,14 @@
                                     <DataTrigger Binding="{Binding Type}" Value="{x:Type monoGame:Vector2}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource Vector2Template}" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Guid}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource GameObjectTemplate}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </ContentControl.Style>
                     </ContentControl>
-                    
+
                 </StackPanel>
             </DataTemplate>
         </ItemsControl.ItemTemplate>

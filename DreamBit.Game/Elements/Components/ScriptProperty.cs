@@ -45,6 +45,7 @@ namespace DreamBit.Game.Elements.Components
                 case "string": SetType<string>(); break;
                 case "float": SetType<float>(); break;
                 case "Vector2": SetType<Vector2>(); break;
+                case "GameObject": SetType<Guid>(); break;
 
                 default: SetType(null, null); break;
             }

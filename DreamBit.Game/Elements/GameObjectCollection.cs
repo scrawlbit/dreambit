@@ -1,9 +1,12 @@
 ﻿using Scrawlbit.Collections;
+using System;
 
 namespace DreamBit.Game.Elements
 {
     public interface IGameObjectCollection : IReadOnlyObservableCollection<GameObject>
     {
+        GameObject Find(Guid id);
+
         void Add(params GameObject[] gameObjects);
         void Remove(GameObject gameObject);
         void Move(int oldIndex, int newIndex);
@@ -17,6 +20,21 @@ namespace DreamBit.Game.Elements
         public GameObjectCollection(GameObject parent = null)
         {
             _parent = parent;
+        }
+
+        GameObject IGameObjectCollection.Find(Guid id)
+        {
+            foreach (var gameObject in this)
+            {
+                if (gameObject.Id == id)
+                    return gameObject;
+
+                GameObject child = gameObject.Children.Find(id);
+                if (child != null)
+                    return child;
+            }
+
+            return null;
         }
 
         void IGameObjectCollection.Add(params GameObject[] gameObjects)

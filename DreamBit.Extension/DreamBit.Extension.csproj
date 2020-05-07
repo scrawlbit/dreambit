@@ -86,6 +86,9 @@
     <Compile Include="Controls\Input\FloatBox.xaml.cs">
       <DependentUpon>FloatBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Input\GameObjectSelector.xaml.cs">
+      <DependentUpon>GameObjectSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Input\IconButton.cs" />
     <Compile Include="Controls\Containers\ExpansionPanel.cs" />
     <Compile Include="Controls\Input\IntBox.xaml.cs">
@@ -294,6 +297,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Input\FloatBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Input\GameObjectSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
