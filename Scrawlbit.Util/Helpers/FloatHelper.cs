@@ -12,5 +12,10 @@ namespace Scrawlbit.Helpers
         {
             return float.Parse(text, culture);
         }
+
+        public static float Truncate(this float value)
+        {
+            return (int)value;
+        }
     }
 }

@@ -1,5 +1,8 @@
-﻿using DreamBit.General.State;
+﻿using DreamBit.Extension.Helpers;
+using DreamBit.General.State;
 using Microsoft.Xna.Framework;
+using Scrawlbit.Helpers;
+using Scrawlbit.Presentation.Behaviors;
 using Scrawlbit.Presentation.Dependency;
 using Scrawlbit.Presentation.Helpers;
 using System;
@@ -14,7 +17,10 @@ namespace DreamBit.Extension.Controls.Input
         public delegate void FloatBoxEventHandler(FloatBox sender, ValueChangedEventArgs<float> e);
         private static readonly DependencyProperty<FloatBox, float> ValueProperty;
         private static readonly DependencyProperty<FloatBox, bool> IsReadOnlyProperty;
+        private readonly RegexInputValidationBehavior _mask;
         private float _initialValue;
+        private float _increment;
+        private bool _hasPrecision;
 
         static FloatBox()
         {
@@ -27,7 +33,15 @@ namespace DreamBit.Extension.Controls.Input
         {
             InitializeComponent();
 
+            if (this.IsInDesignMode())
+                return;
+
+            _mask = new RegexInputValidationBehavior();
+
+            Input.AddBehavior(_mask);
+
             Increment = 1;
+            HasPrecision = true;
         }
 
         public event FloatBoxEventHandler Changed;
@@ -42,11 +56,30 @@ namespace DreamBit.Extension.Controls.Input
             get => IsReadOnlyProperty.Get(this);
             set => IsReadOnlyProperty.Set(this, value);
         }
-        public float Increment { get; set; }
+        public float Increment
+        {
+            get => HasPrecision ? _increment : _increment.Truncate();
+            set => _increment = value;
+        }
+        public bool HasPrecision
+        {
+            get => _hasPrecision;
+            set
+            {
+                if (value == _hasPrecision)
+                    return;
+
+                _hasPrecision = value;
+                _mask.RegularExpression = value ? @"^-?\d*\.?\d*$" : @"^-?\d*$";
+
+                if (!value)
+                    Value = Value.Truncate();
+            }
+        }
 
         private void OnValueChanged()
         {
-            UpdateEditingText();
+            UpdateText();
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -57,28 +90,28 @@ namespace DreamBit.Extension.Controls.Input
             if (e.Key == Key.Up)
             {
                 IncrementValue(Increment);
-                UpdateEditingText();
+                UpdateText();
                 e.Handled = true;
             }
             else if (e.Key == Key.Down)
             {
                 IncrementValue(-Increment);
-                UpdateEditingText();
+                UpdateText();
                 e.Handled = true;
             }
             else if (e.KeyIs(Key.OemMinus, Key.Subtract))
             {
                 if (Equals(Value, 0f))
                 {
-                    if (EditingText.Text.StartsWith("-"))
-                        SetEditingText(EditingText.Text.Substring(1));
+                    if (Input.Text.StartsWith("-"))
+                        UpdateText(Input.Text.Substring(1));
                     else
-                        SetEditingText("-" + EditingText.Text);
+                        UpdateText("-" + Input.Text);
                 }
                 else
                 {
                     Value = -Value;
-                    UpdateEditingText();
+                    UpdateText();
                 }
 
                 e.Handled = true;
@@ -87,7 +120,7 @@ namespace DreamBit.Extension.Controls.Input
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             float value;
-            float.TryParse(EditingText.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+            float.TryParse(Input.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
 
             Value = value;
         }
@@ -97,29 +130,27 @@ namespace DreamBit.Extension.Controls.Input
             _initialValue = Value;
 
             if (Mouse.LeftButton != MouseButtonState.Pressed && Mouse.RightButton != MouseButtonState.Pressed)
-                EditingText.SelectAll();
+                Input.SelectAll();
         }
         private void OnLostFocus(object sender, RoutedEventArgs e)
         {
             if (IsRotation)
                 Value = MathHelper.WrapAngle(Value);
 
-            UpdateEditingText();
+            UpdateText();
 
             if (Value != _initialValue)
                 Changed?.Invoke(this, (_initialValue, Value));
         }
 
-        private void UpdateEditingText()
+        private void UpdateText(string value = null)
         {
-            SetEditingText(Value.ToString(CultureInfo.InvariantCulture));
-        }
-        private void SetEditingText(string value)
-        {
-            EditingText.Text = value;
+            value = value ?? Value.ToString(CultureInfo.InvariantCulture);
 
-            if (EditingText.IsFocused)
-                EditingText.CaretIndex = EditingText.Text.Length;
+            Input.Text = value;
+
+            if (Input.IsFocused)
+                Input.CaretIndex = Input.Text.Length;
         }
 
         private void IncrementValue(float value)

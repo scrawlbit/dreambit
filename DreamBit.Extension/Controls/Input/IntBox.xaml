@@ -10,6 +10,9 @@
     d:DesignHeight="450" d:DesignWidth="800"
     x:Name="Control">
 
-    <input:FloatBox x:Name="Input" Value="{Binding Value, Mode=TwoWay, Converter={converters:IntToFloatConverter}, ElementName=Control}" Changed="OnInputChanged" />
+    <input:FloatBox x:Name="Input"
+                    Value="{Binding Value, Mode=TwoWay, Converter={converters:IntToFloatConverter}, ElementName=Control}"
+                    HasPrecision="False"
+                    Changed="OnInputChanged" />
 
 </UserControl>
