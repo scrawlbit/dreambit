@@ -74,7 +74,19 @@ namespace DreamBit.Game.Elements.Components
             DefaultValue = defaultValue;
 
             if (changed)
-                Value = defaultValue;
+                TryChangeValueType();
+        }
+        private void TryChangeValueType()
+        {
+            try
+            {
+                if (Type != null)
+                    Value = Convert.ChangeType(Value, Type);
+            }
+            catch
+            {
+                Value = DefaultValue;
+            }
         }
     }
 }
