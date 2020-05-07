@@ -37,11 +37,6 @@ namespace DreamBit.Game.Elements.Components
         public override string Name => _name;
         public IReadOnlyObservableCollection<ScriptProperty> Properties => _properties;
 
-        private void UpdateName()
-        {
-            _name = File?.Name ?? "Invalid Behavior";
-            OnPropertyChanged(nameof(Name));
-        }
         public void MergeProperties((string Name, string Type)[] properties)
         {
             var names = properties.Select(p => p.Name).ToArray();
@@ -51,17 +46,11 @@ namespace DreamBit.Game.Elements.Components
 
             foreach (var (name, typeName) in properties)
             {
-                ScriptProperty property = _properties.SingleOrDefault(p => p.Name == name) ?? new ScriptProperty();
-                (Type type, object defaultValue) = DetermineType(typeName);
+                ScriptProperty property = _properties.SingleOrDefault(p => p.Name == name) ?? new ScriptProperty(name);
 
-                if (type != property.Type)
-                    property.Value = defaultValue;
+                property.SetType(typeName);
 
-                property.Name = name;
-                property.Type = type;
-                property.DefaultValue = defaultValue;
-
-                if (property.Type != null && property.HasJsonValue)
+                if (property.HasJsonValue)
                     property.TrySetJsonValue();
 
                 if (property.Type == null)
@@ -82,20 +71,10 @@ namespace DreamBit.Game.Elements.Components
                 property.Value = value;
         }
 
-        private static (Type Type, object DefaultValue) DetermineType(string name)
+        private void UpdateName()
         {
-            (Type Type, object DefaultValue) Value<T>() => (typeof(T), default(T));
-
-            switch (name)
-            {
-                case "int": return Value<int>();
-                case "bool": return Value<bool>();
-                case "string": return Value<string>();
-                case "float": return Value<float>();
-                case "Vector2": return Value<Vector2>();
-
-                default: return (null, null);
-            }
+            _name = File?.Name ?? "Invalid Behavior";
+            OnPropertyChanged(nameof(Name));
         }
     }
 }

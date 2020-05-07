@@ -1,4 +1,5 @@
-﻿using Scrawlbit.Notification;
+﻿using Microsoft.Xna.Framework;
+using Scrawlbit.Notification;
 using System;
 
 namespace DreamBit.Game.Elements.Components
@@ -10,39 +11,70 @@ namespace DreamBit.Game.Elements.Components
         private object _defaultValue;
         private Func<Type, object> _jsonValue;
 
-        internal ScriptProperty(Func<Type, object> jsonValue = null)
+        internal ScriptProperty(string name, Func<Type, object> jsonValue = null)
         {
             _jsonValue = jsonValue;
+
+            Name = name;
         }
-        
-        public string Name { get; internal set; }
+
+        public string Name { get; }
         public Type Type
         {
             get => _type;
-            internal set => Set(ref _type, value);
+            private set => Set(ref _type, value);
+        }
+        public object DefaultValue
+        {
+            get => _defaultValue;
+            private set => Set(ref _defaultValue, value);
         }
         public object Value
         {
             get => _value;
             set => Set(ref _value, value);
         }
-        public object DefaultValue
-        {
-            get => _defaultValue;
-            internal set => Set(ref _defaultValue, value);
-        }
         internal bool HasJsonValue => _jsonValue != null;
 
+        internal void SetType(string name)
+        {
+            switch (name)
+            {
+                case "int": SetType<int>(); break;
+                case "bool": SetType<bool>(); break;
+                case "string": SetType<string>(); break;
+                case "float": SetType<float>(); break;
+                case "Vector2": SetType<Vector2>(); break;
+
+                default: SetType(null, null); break;
+            }
+        }
         internal void TrySetJsonValue()
         {
             try
             {
-                Value = _jsonValue(Type);
+                if (Type != null)
+                    Value = _jsonValue(Type);
             }
             finally
             {
                 _jsonValue = null;
             }
+        }
+
+        private void SetType<T>()
+        {
+            SetType(typeof(T), default(T));
+        }
+        private void SetType(Type type, object defaultValue)
+        {
+            bool changed = type != Type;
+
+            Type = type;
+            DefaultValue = defaultValue;
+
+            if (changed)
+                Value = defaultValue;
         }
     }
 }

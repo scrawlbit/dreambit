@@ -46,11 +46,8 @@ namespace DreamBit.Game.Serialization.Converters
 
             foreach (var p in obj.Properties())
             {
-                if (p.Name == Script) continue;
-
-                object Convert(Type type) => p.Value.ToObject(type, serializer);
-
-                properties.Add(new ScriptProperty(Convert) { Name = p.Name });
+                if (p.Name != Script)
+                    properties.Add(new ScriptProperty(p.Name, t => p.Value.ToObject(t, serializer)));
             }
 
             return new ScriptBehavior(file, properties);
