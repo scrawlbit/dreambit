@@ -6,16 +6,14 @@ namespace DreamBit.Game.Elements
 {
     public abstract partial class GameComponent : NotificationObject
     {
-        public GameObject GameObject { get; private set; }
+        public GameObject GameObject { get; internal set; }
         public bool Started { get; private set; }
         public abstract string Name { get; }
 
-        internal virtual void Initialize(GameObject gameObject)
+        internal void Initialize()
         {
             if (!Started)
             {
-                GameObject = gameObject;
-
                 Start();
                 Started = true;
             }

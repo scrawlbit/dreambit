@@ -91,14 +91,10 @@ namespace DreamBit.Game.Elements
         internal void Initialize()
         {
             for (int i = 0; i < Components.Count; i++)
-            {
-                Components[i].Initialize(this);
-            }
+                Components[i].Initialize();
 
             for (int i = 0; i < Children.Count; i++)
-            {
                 Children[i].Initialize();
-            }
         }
         internal void Update(GameTime gameTime)
         {
@@ -109,14 +105,12 @@ namespace DreamBit.Game.Elements
             {
                 GameComponent component = Components[i];
 
-                component.Initialize(this);
+                component.Initialize();
                 component.Update(gameTime);
             }
 
             for (int i = 0; i < Children.Count; i++)
-            {
                 Children[i].Update(gameTime);
-            }
         }
         internal void PostUpdate(GameTime gameTime)
         {
@@ -163,7 +157,7 @@ namespace DreamBit.Game.Elements
             {
                 GameComponent component = Components[i];
 
-                component.Initialize(this);
+                component.Initialize();
                 component.Draw(drawer);
             }
 

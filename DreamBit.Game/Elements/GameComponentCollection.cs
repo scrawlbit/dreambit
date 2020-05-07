@@ -35,10 +35,10 @@ namespace DreamBit.Game.Elements
         {
             foreach (var component in components)
             {
-                if (component.GameObject == _target || component.GameObject == null)
+                if (!Contains(component) && (component.GameObject == _target || component.GameObject == null))
                 {
-                    if (!Contains(component))
-                        Add(component);
+                    Add(component);
+                    component.GameObject = _target;
                 }
             }
         }
@@ -50,7 +50,10 @@ namespace DreamBit.Game.Elements
         void IGameComponentCollection.Insert(int index, GameComponent component)
         {
             if (!Contains(component))
+            {
                 Insert(index, component);
+                component.GameObject = _target;
+            }
         }
     }
 }
