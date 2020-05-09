@@ -41,6 +41,7 @@ namespace DreamBit.Game.Elements.Components
         {
             var names = properties.Select(p => p.Name).ToArray();
             var removed = _properties.Where(p => !names.Contains(p.Name)).ToArray();
+            var order = new List<ScriptProperty>();
 
             _properties.RemoveRange(removed);
 
@@ -50,18 +51,22 @@ namespace DreamBit.Game.Elements.Components
 
                 property.SetType(typeName);
 
-                if (property.HasJsonValue)
-                    property.TrySetJsonValue();
-
                 if (property.Type == ScriptPropertyType.Unknown)
                 {
                     _properties.Remove(property);
+                    continue;
                 }
-                else if (!_properties.Contains(property))
-                {
+
+                order.Add(property);
+
+                if (property.HasJsonValue)
+                    property.TrySetJsonValue();
+
+                if (!_properties.Contains(property))
                     _properties.Add(property);
-                }
             }
+
+            _properties.OrderIndexes(order);
         }
         public void SetValue(string propertyName, ScriptPropertyType propertyType, object value)
         {

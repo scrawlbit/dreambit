@@ -32,6 +32,19 @@ namespace Scrawlbit.Collections
             items.ForEach(i => collection.Remove(i));
         }
 
+        public static void OrderIndexes<T>(this IObservableCollection<T> collection, IEnumerable<T> reference)
+        {
+            T[] itens = reference.ToArray();
+
+            for (int i = 0; i < itens.Length; i++)
+            {
+                int oldIndex = collection.IndexOf(itens[i]);
+                int newIndex = i;
+
+                collection.Move(oldIndex, newIndex);
+            }
+        }
+
         public static ExtendedObservableCollection<T> ToObservable<T>(this IEnumerable<T> source)
         {
             return new ExtendedObservableCollection<T>(source);
