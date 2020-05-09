@@ -53,7 +53,7 @@ namespace DreamBit.Game.Elements.Components
                 if (property.HasJsonValue)
                     property.TrySetJsonValue();
 
-                if (property.Type == null)
+                if (property.Type == ScriptPropertyType.Unknown)
                 {
                     _properties.Remove(property);
                 }
@@ -63,7 +63,7 @@ namespace DreamBit.Game.Elements.Components
                 }
             }
         }
-        public void SetValue(string propertyName, Type propertyType, object value)
+        public void SetValue(string propertyName, ScriptPropertyType propertyType, object value)
         {
             ScriptProperty property = Properties.SingleOrDefault(p => p.Name == propertyName && p.Type == propertyType);
 

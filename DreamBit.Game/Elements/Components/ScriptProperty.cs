@@ -6,7 +6,8 @@ namespace DreamBit.Game.Elements.Components
 {
     public class ScriptProperty : NotificationObject
     {
-        private Type _type;
+        private ScriptPropertyType _type;
+        private Type _valueType;
         private object _value;
         private object _defaultValue;
         private Func<Type, object> _jsonValue;
@@ -19,10 +20,15 @@ namespace DreamBit.Game.Elements.Components
         }
 
         public string Name { get; }
-        public Type Type
+        public ScriptPropertyType Type
         {
             get => _type;
-            private set => Set(ref _type, value);
+            set => Set(ref _type, value);
+        }
+        public Type ValueType
+        {
+            get => _valueType;
+            private set => Set(ref _valueType, value);
         }
         public object DefaultValue
         {
@@ -40,22 +46,22 @@ namespace DreamBit.Game.Elements.Components
         {
             switch (name)
             {
-                case "int": SetType<int>(); break;
-                case "bool": SetType<bool>(); break;
-                case "string": SetType<string>(); break;
-                case "float": SetType<float>(); break;
-                case "Vector2": SetType<Vector2>(); break;
-                case "GameObject": SetType<Guid>(); break;
+                case "int": SetType<int>(ScriptPropertyType.Int); break;
+                case "bool": SetType<bool>(ScriptPropertyType.Bool); break;
+                case "string": SetType<string>(ScriptPropertyType.String); break;
+                case "float": SetType<float>(ScriptPropertyType.Float); break;
+                case "Vector2": SetType<Vector2>(ScriptPropertyType.Vector2); break;
+                case "GameObject": SetType<Guid>(ScriptPropertyType.GameObject); break;
 
-                default: SetType(null, null); break;
+                default: SetType(ScriptPropertyType.Unknown, null, null); break;
             }
         }
         internal void TrySetJsonValue()
         {
             try
             {
-                if (Type != null)
-                    Value = _jsonValue(Type);
+                if (Type != ScriptPropertyType.Unknown)
+                    Value = _jsonValue(ValueType);
             }
             finally
             {
@@ -63,15 +69,16 @@ namespace DreamBit.Game.Elements.Components
             }
         }
 
-        private void SetType<T>()
+        private void SetType<T>(ScriptPropertyType type)
         {
-            SetType(typeof(T), default(T));
+            SetType(type, typeof(T), default(T));
         }
-        private void SetType(Type type, object defaultValue)
+        private void SetType(ScriptPropertyType type, Type valueType, object defaultValue)
         {
             bool changed = type != Type;
 
             Type = type;
+            ValueType = valueType;
             DefaultValue = defaultValue;
 
             if (changed)
@@ -81,8 +88,8 @@ namespace DreamBit.Game.Elements.Components
         {
             try
             {
-                if (Type != null)
-                    Value = Convert.ChangeType(Value, Type);
+                if (Type != ScriptPropertyType.Unknown)
+                    Value = Convert.ChangeType(Value, ValueType);
             }
             catch
             {

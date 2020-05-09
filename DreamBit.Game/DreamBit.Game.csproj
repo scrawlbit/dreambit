@@ -47,6 +47,7 @@
     <Compile Include="Elements\Components\ImageRenderer.cs" />
     <Compile Include="Elements\Components\ScriptBehavior.cs" />
     <Compile Include="Elements\Components\ScriptProperty.cs" />
+    <Compile Include="Elements\Components\ScriptPropertyType.cs" />
     <Compile Include="Elements\Components\TextRenderer.cs" />
     <Compile Include="Elements\GameObject.cs" />
     <Compile Include="Elements\GameObjectCollection.cs" />

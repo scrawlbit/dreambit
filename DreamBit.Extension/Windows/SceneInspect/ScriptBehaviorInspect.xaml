@@ -8,8 +8,6 @@
     xmlns:objects="clr-namespace:DreamBit.Extension.Controls.Objects"
     xmlns:partials="clr-namespace:DreamBit.Extension.Windows.SceneInspect"
     xmlns:components="clr-namespace:DreamBit.Game.Elements.Components;assembly=DreamBit.Game"
-    xmlns:monoGame="clr-namespace:Microsoft.Xna.Framework;assembly=MonoGame.Framework"
-    xmlns:system="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance components:ScriptBehavior, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800"
@@ -68,22 +66,22 @@
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Int32}">
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static components:ScriptPropertyType.Int}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Boolean}">
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static components:ScriptPropertyType.Bool}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:String}">
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static components:ScriptPropertyType.String}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource StringTemplate}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Single}">
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static components:ScriptPropertyType.Float}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource FloatTemplate}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type monoGame:Vector2}">
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static components:ScriptPropertyType.Vector2}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource Vector2Template}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="{x:Type system:Guid}">
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static components:ScriptPropertyType.GameObject}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource GameObjectTemplate}" />
                                     </DataTrigger>
                                 </Style.Triggers>

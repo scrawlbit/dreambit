@@ -132,7 +132,7 @@ namespace DreamBit.Extension.Windows.SceneInspect
         {
             ScriptBehavior script = _script;
             string name = property.Name;
-            Type type = property.Type;
+            ScriptPropertyType type = property.Type;
 
             ViewModel.State.Add(new StateCommand
             {
