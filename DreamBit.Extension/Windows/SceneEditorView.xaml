@@ -6,11 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:interop="clr-namespace:ScrawlBit.MonoGame.Interop.Controls;assembly=ScrawlBit.MonoGame.Interop"
+    xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
     mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance viewModels:SceneEditorViewModel, IsDesignTimeCreatable=False}"
+    d:DesignHeight="300" d:DesignWidth="300"
     MinWidth="800"
-    MinHeight="600"
-    d:DesignHeight="300" d:DesignWidth="300">
+    MinHeight="600">
 
-    <interop:GameControl x:Name="GameControl" />
+    <interop:GameControl Module="{Binding GameModule}" />
 
 </controls:WindowView>

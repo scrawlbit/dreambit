@@ -1,5 +1,5 @@
 ﻿using DreamBit.Extension.Helpers;
-using DreamBit.Extension.Module;
+using DreamBit.Extension.ViewModels;
 
 namespace DreamBit.Extension.Windows
 {
@@ -12,7 +12,7 @@ namespace DreamBit.Extension.Windows
             if (this.IsInDesignMode())
                 return;
 
-            GameControl.Module = DreamBitPackage.Container.Resolve<SceneEditorGame>();
+            LoadViewModel<SceneEditorViewModel>();
         }
     }
 }

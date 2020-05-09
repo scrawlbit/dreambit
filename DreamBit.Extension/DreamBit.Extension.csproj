@@ -140,6 +140,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\EditFontDialogViewModel.cs" />
+    <Compile Include="ViewModels\SceneEditorViewModel.cs" />
     <Compile Include="ViewModels\SceneHierarchyViewModel.cs" />
     <Compile Include="ViewModels\SceneInspectViewModel.cs" />
     <Compile Include="Windows\Dialogs\EditFontDialog.xaml.cs">

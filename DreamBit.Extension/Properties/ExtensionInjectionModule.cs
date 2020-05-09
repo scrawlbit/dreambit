@@ -94,6 +94,7 @@ namespace DreamBit.Extension.Properties
         {
             _builder.Register<SceneHierarchyViewModel>();
             _builder.Register<SceneInspectViewModel>();
+            _builder.Register<SceneEditorViewModel>();
 
             // dialogs
             _builder.Register<EditFontDialogViewModel>();
