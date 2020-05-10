@@ -12,9 +12,21 @@
     d:DesignHeight="450" d:DesignWidth="800"
     Header="{Binding Name}">
 
-    <StackPanel Orientation="Horizontal">
-        <input:CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" Changed="OnActiveChanged" />        
-        <TextBlock Text="Active" Margin="5 0 0 0" />        
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="87" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Active" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Target" />
+
+        <input:CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsActive, Mode=TwoWay}" Changed="OnActiveChanged" />
+        <input:GameObjectSelector Grid.Column="1" Grid.Row="1" Id="{Binding Target, Mode=TwoWay}" Changed="OnTargetChanged" />
+    </Grid>
 
 </partials:SceneComponentInspect>
