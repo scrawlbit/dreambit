@@ -10,7 +10,7 @@ using ScrawlBit.MonoGame.Interop.Controls;
 
 namespace DreamBit.Extension.Module
 {
-    public class SceneEditorGame : GameModule
+    public class EditorGameModule : GameModule
     {
         private readonly IEditor _editor;
         private readonly IPipeline _pipeline;
@@ -18,7 +18,7 @@ namespace DreamBit.Extension.Module
         private readonly IContentDrawer _drawer;
         private ContentManager _contentManager;
 
-        public SceneEditorGame(IEditor editor, IPipeline pipeline, IContentLoader contentLoader, IContentDrawer contentDrawer)
+        public EditorGameModule(IEditor editor, IPipeline pipeline, IContentLoader contentLoader, IContentDrawer contentDrawer)
         {
             _editor = editor;
             _pipeline = pipeline;

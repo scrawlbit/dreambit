@@ -5,7 +5,7 @@ using System;
 
 namespace DreamBit.Extension.Module
 {
-    public interface ISceneEditorCamera
+    public interface IEditorCamera
     {
         float MinZoom { get; }
         float MaxZoom { get; }
@@ -29,13 +29,13 @@ namespace DreamBit.Extension.Module
         Rectangle WorldToScreen(Rectangle worldRectangle);
     }
 
-    internal class SceneEditorCamera : ISceneEditorCamera
+    internal class EditorCamera : IEditorCamera
     {
         private Vector2 _size;
         private Vector2 _position;
         private float _zoom;
 
-        public SceneEditorCamera()
+        public EditorCamera()
         {
             Zoom = 1;
         }

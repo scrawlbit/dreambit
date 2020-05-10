@@ -6,7 +6,7 @@ namespace DreamBit.Extension.ViewModels
     internal class SceneEditorViewModel : BaseViewModel
     {
         public SceneEditorViewModel(
-            SceneEditorGame gameModule,
+            EditorGameModule gameModule,
             ISaveSceneCommand saveSceneCommand,
             IUndoCommand undoCommand,
             IRedoCommand redoCommand,
@@ -19,7 +19,7 @@ namespace DreamBit.Extension.ViewModels
             CloseSceneCommand = closeSceneCommand;
         }
 
-        public SceneEditorGame GameModule { get; }
+        public EditorGameModule GameModule { get; }
         public ISaveSceneCommand SaveSceneCommand { get; }
         public IUndoCommand UndoCommand { get; }
         public IRedoCommand RedoCommand { get; }
