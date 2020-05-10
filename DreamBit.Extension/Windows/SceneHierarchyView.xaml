@@ -6,6 +6,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
+    xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
     xmlns:treeViews="clr-namespace:DreamBit.Extension.Controls.TreeViews"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
     xmlns:elements="clr-namespace:DreamBit.Game.Elements;assembly=DreamBit.Game"
@@ -17,72 +18,84 @@
     x:Name="View">
 
     <controls:WindowView.Resources>
-        <Image x:Key="CameraIcon" Source="../Resources/Icons/VideoCamera_16x.png" x:Shared="False" />
-        <Image x:Key="CancelIcon" Source="../Resources/Icons/Cancel_16x.png" x:Shared="False" />
-        <Image x:Key="CopyIcon" Source="../Resources/Icons/Copy_16x.png" x:Shared="False" />
-        <Image x:Key="ModelIcon" Source="../Resources/Icons/Graphics3D_16x.png" x:Shared="False" />
+        <BitmapImage x:Key="ModelIconSource" UriSource="../Resources/Icons/16/graphics3D.png" x:Shared="False" />
+        <BitmapImage x:Key="CameraIconSource" UriSource="../Resources/Icons/16/videoCamera.png" x:Shared="False" />
+
+        <Image x:Key="ModelIcon" Source="{StaticResource ModelIconSource}" x:Shared="False" />
+        <Image x:Key="CameraIcon" Source="{StaticResource CameraIconSource}" x:Shared="False" />
+        <Image x:Key="CancelIcon" Source="../Resources/Icons/16/cancel.png" x:Shared="False" />
+        <Image x:Key="CopyIcon" Source="../Resources/Icons/16/copy.png" x:Shared="False" />
     </controls:WindowView.Resources>
 
-    <TreeView ItemsSource="{Binding Editor.OpenedScene.Objects}">
-        <TreeView.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" />
-                <MenuItem Header="Add Camera Object" Icon="{StaticResource CameraIcon}" Command="{Binding AddCameraObjectCommand}" />
+    <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top">
+            <ToolBar>
+                <input:IconButton Command="{Binding AddGameObjectCommand}" Icon="{StaticResource ModelIconSource}" ToolTip="Add Game Object" />
+                <input:IconButton Command="{Binding AddCameraObjectCommand}" Icon="{StaticResource CameraIconSource}" ToolTip="Add Camera Object" />
+            </ToolBar>
+        </ToolBarPanel>
 
-                <Separator />
-                <MenuItem Header="Paste" Command="{Binding PasteGameObjectCommand}" />
-            </ContextMenu>
-        </TreeView.ContextMenu>
+        <TreeView ItemsSource="{Binding Editor.OpenedScene.Objects}">
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" />
+                    <MenuItem Header="Add Camera Object" Icon="{StaticResource CameraIcon}" Command="{Binding AddCameraObjectCommand}" />
 
-        <i:Interaction.Behaviors>
-            <treeViews:TreeViewMultiSelectBehavior SelectedValue="{Binding Editor.SelectedObject, Mode=TwoWay}" SelectedValues="{Binding Editor.SelectedObjects}" />
-            <treeViews:ExtendedTreeViewDroppableBehavior DropCommand="{Binding MoveGameObjectCommand}" />
-            <dragAndDrop:MultipleChildDraggableBehavior SelectedChildrenValues="{Binding Editor.SelectedObjects}" />
-        </i:Interaction.Behaviors>
+                    <Separator />
+                    <MenuItem Header="Paste" Command="{Binding PasteGameObjectCommand}" />
+                </ContextMenu>
+            </TreeView.ContextMenu>
 
-        <TreeView.ItemContainerStyle>
-            <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                <Setter Property="Tag" Value="{Binding DataContext, ElementName=View}" />
-                <Setter Property="IsExpanded" Value="{Binding Path=(elements:GameObject.IsExpanded), Mode=TwoWay}" />
-                <Setter Property="IsSelected" Value="{Binding Path=(elements:GameObject.IsSelected), Mode=TwoWay}" />
-                <Setter Property="ContextMenu">
-                    <Setter.Value>
-                        <ContextMenu>
-                            <MenuItem Header="Add Game Object"
+            <i:Interaction.Behaviors>
+                <treeViews:TreeViewMultiSelectBehavior SelectedValue="{Binding Editor.SelectedObject, Mode=TwoWay}" SelectedValues="{Binding Editor.SelectedObjects}" />
+                <treeViews:ExtendedTreeViewDroppableBehavior DropCommand="{Binding MoveGameObjectCommand}" />
+                <dragAndDrop:MultipleChildDraggableBehavior SelectedChildrenValues="{Binding Editor.SelectedObjects}" />
+            </i:Interaction.Behaviors>
+
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="Tag" Value="{Binding DataContext, ElementName=View}" />
+                    <Setter Property="IsExpanded" Value="{Binding Path=(elements:GameObject.IsExpanded), Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding Path=(elements:GameObject.IsSelected), Mode=TwoWay}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Add Game Object"
                                       Icon="{StaticResource ModelIcon}"
                                       Command="{data:ContextMenuBinding AddGameObjectCommand}"
                                       CommandParameter="{Binding}" />
 
-                            <Separator/>
+                                <Separator/>
 
-                            <MenuItem Header="Copy"
-                                      Icon="{StaticResource CopyIcon}"
-                                      Command="{data:ContextMenuBinding CopyGameObjectCommand}"
-                                      CommandParameter="{Binding}" />
-                            <MenuItem Header="Paste"
-                                      Command="{data:ContextMenuBinding PasteGameObjectCommand}"
-                                      CommandParameter="{Binding}" />
+                                <MenuItem Header="Copy"
+                                          Icon="{StaticResource CopyIcon}"
+                                          Command="{data:ContextMenuBinding CopyGameObjectCommand}"
+                                          CommandParameter="{Binding}" />
+                                <MenuItem Header="Paste"
+                                          Command="{data:ContextMenuBinding PasteGameObjectCommand}"
+                                          CommandParameter="{Binding}" />
 
-                            <Separator />
+                                <Separator />
 
-                            <MenuItem Header="Remove"
-                                      Icon="{StaticResource CancelIcon}"
-                                      Command="{data:ContextMenuBinding RemoveGameObjectCommand}"
-                                      CommandParameter="{Binding}" />
-                        </ContextMenu>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </TreeView.ItemContainerStyle>
+                                <MenuItem Header="Remove"
+                                          Icon="{StaticResource CancelIcon}"
+                                          Command="{data:ContextMenuBinding RemoveGameObjectCommand}"
+                                          CommandParameter="{Binding}" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.ItemContainerStyle>
 
-        <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                <treeViews:EditableTreeViewItemText Text="{Binding Name, Mode=TwoWay}"
-                                                    Loaded="OnTextLoaded"
-                                                    Changed="OnTextChanged"/>
-            </HierarchicalDataTemplate>
-        </TreeView.ItemTemplate>
-    </TreeView>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <treeViews:EditableTreeViewItemText Text="{Binding Name, Mode=TwoWay}"
+                                                        Loaded="OnTextLoaded"
+                                                        Changed="OnTextChanged"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </DockPanel>
 
 </controls:WindowView>
 

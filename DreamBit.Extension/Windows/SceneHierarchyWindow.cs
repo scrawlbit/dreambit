@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
+using System.Runtime.InteropServices;
 
 namespace DreamBit.Extension.Windows
 {
@@ -10,8 +10,6 @@ namespace DreamBit.Extension.Windows
         {
             Caption = "Scene Hierarchy";
             Content = new SceneHierarchyView();
-
-            InitializeToolbar(DreamBitPackage.Guids.SceneHierarchyToolbar);
         }
     }
 }

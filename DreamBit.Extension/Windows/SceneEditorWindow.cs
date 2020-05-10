@@ -1,8 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using DreamBit.Extension.Components;
+﻿using DreamBit.Extension.Components;
 using DreamBit.Extension.Helpers;
 using DreamBit.Extension.Management;
 using Scrawlbit.Notification;
+using System.Runtime.InteropServices;
 
 namespace DreamBit.Extension.Windows
 {
@@ -25,8 +25,6 @@ namespace DreamBit.Extension.Windows
             }
 
             UpdateCaption();
-
-            InitializeToolbar(DreamBitPackage.Guids.SceneEditorToolbar);
         }
 
         private void UpdateCaption(string name = null)

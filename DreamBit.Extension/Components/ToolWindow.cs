@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.Design;
-using Microsoft.VisualStudio.Shell;
+﻿using Microsoft.VisualStudio.Shell;
 
 namespace DreamBit.Extension.Components
 {
@@ -8,11 +6,6 @@ namespace DreamBit.Extension.Components
     {
         protected ToolWindow() : base(null)
         {
-        }
-
-        protected void InitializeToolbar(int id)
-        {
-            ToolBar = new CommandID(new Guid(DreamBitPackage.Guids.CommandSet), id);
         }
     }
 }

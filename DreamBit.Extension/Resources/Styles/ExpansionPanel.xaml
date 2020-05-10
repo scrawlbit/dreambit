@@ -51,7 +51,7 @@
                                                   ContextMenu="{TemplateBinding Menu}"
                                                   Click="OnMenuButtonClick"
                                                   PressedColorBrush="{DynamicResource VisualStudioPanelButtonPressedBrush}"
-                                                  Style="{DynamicResource ExtraSmallIconButtonStyle}"/>
+                                                  Style="{DynamicResource SmallIconButtonStyle}"/>
                             </Grid>
 
                             <!--CONTENT-->

@@ -4,10 +4,10 @@
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input">
 
     <Style TargetType="input:IconButton">
-        <Setter Property="Width" Value="33" />
-        <Setter Property="Height" Value="33" />
+        <Setter Property="Width" Value="22" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="Padding" Value="2" />
         <Setter Property="Margin" Value="1" />
-        <Setter Property="Padding" Value="3" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Background" Value="Transparent" />
@@ -38,6 +38,9 @@
                                     <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                         <Setter Property="BorderBrush" Value="{Binding CheckedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                                        <Setter Property="Opacity" Value="0.3" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
@@ -53,12 +56,6 @@
     </Style>
 
     <Style TargetType="input:IconButton" BasedOn="{StaticResource {x:Type input:IconButton}}" x:Key="SmallIconButtonStyle">
-        <Setter Property="Width" Value="25" />
-        <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="2" />
-    </Style>
-
-    <Style TargetType="input:IconButton" BasedOn="{StaticResource {x:Type input:IconButton}}" x:Key="ExtraSmallIconButtonStyle">
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />
         <Setter Property="Padding" Value="1" />

@@ -275,10 +275,14 @@
     <Content Include="Resources\DreamBitPackage.ico" />
     <Resource Include="Resources\Icons\16\glyphDown.png" />
     <Resource Include="Resources\Icons\16\glyphDown.white.png" />
-    <Content Include="Resources\Icons\Cancel_16x.png" />
-    <Content Include="Resources\Icons\Copy_16x.png" />
-    <Content Include="Resources\Icons\Graphics3D_16x.png" />
-    <Content Include="Resources\Icons\VideoCamera_16x.png" />
+    <Resource Include="Resources\Icons\16\close.png" />
+    <Resource Include="Resources\Icons\16\redo.png" />
+    <Resource Include="Resources\Icons\16\save.png" />
+    <Resource Include="Resources\Icons\16\undo.png" />
+    <Resource Include="Resources\Icons\16\cancel.png" />
+    <Resource Include="Resources\Icons\16\copy.png" />
+    <Resource Include="Resources\Icons\16\graphics3D.png" />
+    <Resource Include="Resources\Icons\16\videoCamera.png" />
     <Resource Include="Resources\Images\DottedRepeat.png" />
     <Content Include="Resources\Logo.ico" />
     <Content Include="Resources\Toolbars\SceneHierarchyIcons.png" />
@@ -316,6 +320,10 @@
     <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\ToolBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles\CheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
