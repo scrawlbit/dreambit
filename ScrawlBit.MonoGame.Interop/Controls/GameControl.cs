@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ScrawlBit.MonoGame.Interop.Controls
 {
@@ -26,9 +27,22 @@ namespace ScrawlBit.MonoGame.Interop.Controls
 
             _surface = new DrawingSurface();
             _surface.AlwaysRefresh = true;
+            _surface.Focusable = true;
+            _surface.FocusVisualStyle = null;
+
             _surface.LoadContent += OnLoadContent;
             _surface.Draw += OnDraw;
             _surface.RenderSizeChanged += OnRenderSizeChanged;
+
+            _surface.KeyDown += OnKeyDown;
+            _surface.KeyUp += OnKeyUp;
+
+            _surface.MouseEnter += OnMouseEnter;
+            _surface.MouseMove += OnMouseMove;
+            _surface.MouseLeave += OnMouseLeave;
+            _surface.MouseDown += OnMouseDown;
+            _surface.MouseUp += OnMouseUp;
+            _surface.MouseWheel += OnMouseWheel;
 
             Content = _surface;
         }
@@ -55,7 +69,43 @@ namespace ScrawlBit.MonoGame.Interop.Controls
         }
         private void OnRenderSizeChanged(object sender, RenderSizeChangedEventArgs args)
         {
-            Module?.RenderSizeChanged(args);
+            Module?.OnRenderSizeChanged(args);
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs args)
+        {
+            Module?.OnKeyDown(args);
+        }
+        private void OnKeyUp(object sender, KeyEventArgs args)
+        {
+            Module?.OnKeyUp(args);
+        }
+
+        private void OnMouseEnter(object sender, MouseEventArgs args)
+        {
+            _surface.Focus();
+
+            Module?.OnMouseEnter(args);
+        }
+        private void OnMouseMove(object sender, MouseEventArgs args)
+        {
+            Module?.OnMouseMove(args);
+        }
+        private void OnMouseLeave(object sender, MouseEventArgs args)
+        {
+            Module?.OnMouseLeave(args);
+        }
+        private void OnMouseDown(object sender, MouseButtonEventArgs args)
+        {
+            Module?.OnMouseDown(args);
+        }
+        private void OnMouseUp(object sender, MouseButtonEventArgs args)
+        {
+            Module?.OnMouseUp(args);
+        }
+        private void OnMouseWheel(object sender, MouseWheelEventArgs args)
+        {
+            Module?.OnMouseWheel(args);
         }
 
         private void TryLoadModule()

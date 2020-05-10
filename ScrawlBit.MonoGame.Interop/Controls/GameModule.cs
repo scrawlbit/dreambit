@@ -1,7 +1,8 @@
-﻿using System;
-using System.ComponentModel.Design;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ScrawlBit.MonoGame.Interop.Services;
-using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.ComponentModel.Design;
+using System.Windows.Input;
 
 namespace ScrawlBit.MonoGame.Interop.Controls
 {
@@ -31,8 +32,19 @@ namespace ScrawlBit.MonoGame.Interop.Controls
             ServiceProvider = container;
         }
 
-        public virtual void Initialize() { }
-        public virtual void Draw() { }
-        public virtual void RenderSizeChanged(RenderSizeChangedEventArgs args) { }
+        protected internal virtual void Initialize() { }
+        protected internal virtual void Draw() { }
+
+        protected internal virtual void OnRenderSizeChanged(RenderSizeChangedEventArgs args) { }
+
+        protected internal virtual void OnKeyDown(KeyEventArgs args) { }
+        protected internal virtual void OnKeyUp(KeyEventArgs args) { }
+
+        protected internal virtual void OnMouseEnter(MouseEventArgs args) { }
+        protected internal virtual void OnMouseLeave(MouseEventArgs args) { }
+        protected internal virtual void OnMouseMove(MouseEventArgs args) { }
+        protected internal virtual void OnMouseDown(MouseButtonEventArgs args) { }
+        protected internal virtual void OnMouseUp(MouseButtonEventArgs args) { }
+        protected internal virtual void OnMouseWheel(MouseWheelEventArgs args) { }
     }
 }

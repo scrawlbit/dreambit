@@ -11,11 +11,12 @@ namespace DreamBit.Extension.Management
 {
     public interface IEditor : INotifyPropertyChanged
     {
-        IEditorCamera Camera { get; }
         SceneFile OpenedSceneFile { get; set; }
         Scene OpenedScene { get; }
         GameObject SelectedObject { get; set; }
         IObservableCollection<GameObject> SelectedObjects { get; }
+        IEditorCamera Camera { get; }
+        IEditorToolBox ToolBox { get; }
         ISelectionObject Selection { get; }
     }
 
@@ -23,20 +24,25 @@ namespace DreamBit.Extension.Management
     {
         private readonly IStateManager _state;
         private readonly Lazy<ISelectionObject> _selection;
+        private readonly Lazy<IEditorToolBox> _toolBox;
         private SceneFile _openedSceneFile;
         private Scene _openedScene;
         private GameObject _selectedObject;
 
-        public Editor(IEditorCamera camera, IStateManager state, Lazy<ISelectionObject> selection)
+        public Editor(
+            IStateManager state,
+            IEditorCamera camera,
+            Lazy<IEditorToolBox> toolBox,
+            Lazy<ISelectionObject> selection)
         {
             _state = state;
             _selection = selection;
+            _toolBox = toolBox;
 
             Camera = camera;
             SelectedObjects = new ExtendedObservableCollection<GameObject>();
         }
 
-        public IEditorCamera Camera { get; }
         public SceneFile OpenedSceneFile
         {
             get => _openedSceneFile;
@@ -68,6 +74,8 @@ namespace DreamBit.Extension.Management
             set => Set(ref _selectedObject, value);
         }
         public IObservableCollection<GameObject> SelectedObjects { get; }
+        public IEditorCamera Camera { get; }
+        public IEditorToolBox ToolBox => _toolBox.Value;
         public ISelectionObject Selection => _selection.Value;
     }
 }

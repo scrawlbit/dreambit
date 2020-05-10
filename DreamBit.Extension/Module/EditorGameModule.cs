@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Scrawlbit.Notification;
 using ScrawlBit.MonoGame.Interop.Controls;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Module
 {
@@ -28,30 +29,57 @@ namespace DreamBit.Extension.Module
             _pipeline.Notify().On(p => p.Loaded).Changed(InitializeContentManager);
         }
 
-        public override void Initialize()
+        protected override void Initialize()
         {
             _drawer.SpriteBatch = SpriteBatch;
         }
-        public override void Draw()
+        protected override void Draw()
         {
             GraphicsDevice.Clear(Color.Transparent);
 
-            if (_editor.OpenedScene == null)
-                return;
-
-            using (_drawer.Batch(transformMatrix: _editor.Camera.TransformMatrix))
+            if (_editor.OpenedScene != null)
             {
-                _editor.OpenedScene.Preview(_drawer);
-
-                Rectangle selecionArea = _editor.Selection.Area();
-
-                if (!selecionArea.IsEmpty)
-                    _drawer.DrawRectangle(selecionArea, Color.Yellow);
+                DrawScene();
+                DrawTools();
             }
         }
-        public override void RenderSizeChanged(RenderSizeChangedEventArgs args)
+        protected override void OnRenderSizeChanged(RenderSizeChangedEventArgs args)
         {
             _editor.Camera.Size = new Vector2(args.Width, args.Height);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs args)
+        {
+            _editor.ToolBox.OnKeyDown(args);
+        }
+        protected override void OnKeyUp(KeyEventArgs args)
+        {
+            _editor.ToolBox.OnKeyUp(args);
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs args)
+        {
+            _editor.ToolBox.OnMouseEnter(args);
+        }
+        protected override void OnMouseMove(MouseEventArgs args)
+        {
+            _editor.ToolBox.OnMouseMove(args);
+        }
+        protected override void OnMouseLeave(MouseEventArgs args)
+        {
+            _editor.ToolBox.OnMouseLeave(args);
+        }
+        protected override void OnMouseDown(MouseButtonEventArgs args)
+        {
+            _editor.ToolBox.OnMouseDown(args);
+        }
+        protected override void OnMouseUp(MouseButtonEventArgs args)
+        {
+            _editor.ToolBox.OnMouseUp(args);
+        }
+        protected override void OnMouseWheel(MouseWheelEventArgs args)
+        {
+            _editor.ToolBox.OnMouseWheel(args);
         }
 
         private void InitializeContentManager()
@@ -64,6 +92,25 @@ namespace DreamBit.Extension.Module
 
             _contentManager = new ContentManager(ServiceProvider, _pipeline.BuiltContentFolder);
             _contentLoader.Manager = _contentManager;
+        }
+        private void DrawScene()
+        {
+            using (_drawer.Batch(transformMatrix: _editor.Camera.TransformMatrix))
+            {
+                _editor.OpenedScene.Preview(_drawer);
+
+                Rectangle selecionArea = _editor.Selection.Area();
+
+                if (!selecionArea.IsEmpty)
+                    _drawer.DrawRectangle(selecionArea, Color.Yellow);
+            }
+        }
+        private void DrawTools()
+        {
+            using (_drawer.Batch())
+            {
+                _editor.ToolBox.Draw(_drawer);
+            }
         }
     }
 }

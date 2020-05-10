@@ -10,12 +10,12 @@ namespace DreamBit.Extension.Module
 
         public Vector2 Position { get; set; }
 
-        public override void Initialize()
+        protected override void Initialize()
         {
             _pixel = new Texture2D(GraphicsDevice, 1, 1);
             _pixel.SetData(new[] { Color.White });
         }
-        public override void Draw()
+        protected override void Draw()
         {
             GraphicsDevice.Clear(Color.Transparent);
 

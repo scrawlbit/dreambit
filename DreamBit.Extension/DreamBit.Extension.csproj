@@ -131,6 +131,9 @@
     <Compile Include="Module\SelectionData.cs" />
     <Compile Include="Module\SelectionObject.cs" />
     <Compile Include="Module\TestGame.cs" />
+    <Compile Include="Module\EditorToolBox.cs" />
+    <Compile Include="Module\Tools\EditorTool.cs" />
+    <Compile Include="Module\Tools\SelectionTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DreamBitPackage.cs">
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
