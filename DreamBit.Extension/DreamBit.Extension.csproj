@@ -48,6 +48,10 @@
   <ItemGroup>
     <Compile Include="Commands\BuildContentCommand.cs" />
     <Compile Include="Commands\Editor\CloseSceneCommand.cs" />
+    <Compile Include="Commands\Editor\ZoomInCommand.cs" />
+    <Compile Include="Commands\Editor\ZoomOutCommand.cs" />
+    <Compile Include="Commands\Editor\ZoomToFitScreenCommand.cs" />
+    <Compile Include="Commands\Editor\ZoomToOriginalSizeCommand.cs" />
     <Compile Include="Commands\Project\AddFontCommand.cs" />
     <Compile Include="Commands\Project\AddSceneCommand.cs" />
     <Compile Include="Commands\Project\AddScriptCommand.cs" />
@@ -285,6 +289,10 @@
     <Resource Include="Resources\Icons\16\graphics3D.png" />
     <Resource Include="Resources\Icons\16\videoCamera.png" />
     <Resource Include="Resources\Images\DottedRepeat.png" />
+    <Resource Include="Resources\Icons\16\zoomIn.png" />
+    <Resource Include="Resources\Icons\16\zoomOut.png" />
+    <Resource Include="Resources\Icons\16\zoomToOriginalSize.png" />
+    <Resource Include="Resources\Icons\16\zoomToFit.png" />
     <Content Include="Resources\Logo.ico" />
   </ItemGroup>
   <ItemGroup>

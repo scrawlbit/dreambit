@@ -47,10 +47,16 @@ namespace DreamBit.Extension.Properties
             _builder.Register<ISceneEditorWindowCommand>().Singleton<SceneEditorWindowCommand>();
             _builder.Register<ISceneHierarchyWindowCommand>().Singleton<SceneHierarchyWindowCommand>();
             _builder.Register<ISceneInspectWindowCommand>().Singleton<SceneInspectWindowCommand>();
-            _builder.Register<IRedoCommand>().Singleton<RedoCommand>();
-            _builder.Register<IUndoCommand>().Singleton<UndoCommand>();
+
+            // Editor
             _builder.Register<ISaveSceneCommand>().Singleton<SaveSceneCommand>();
             _builder.Register<ICloseSceneCommand>().Singleton<CloseSceneCommand>();
+            _builder.Register<IRedoCommand>().Singleton<RedoCommand>();
+            _builder.Register<IUndoCommand>().Singleton<UndoCommand>();
+            _builder.Register<IZoomInCommand>().Singleton<ZoomInCommand>();
+            _builder.Register<IZoomOutCommand>().Singleton<ZoomOutCommand>();
+            _builder.Register<IZoomToFitScreenCommand>().Singleton<ZoomToFitScreenCommand>();
+            _builder.Register<IZoomToOriginalSizeCommand>().Singleton<ZoomToOriginalSizeCommand>();
 
             // Project
             _builder.Register<IAddFontCommand>().Singleton<AddFontCommand>();

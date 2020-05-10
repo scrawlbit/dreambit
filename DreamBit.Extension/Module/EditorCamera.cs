@@ -9,14 +9,13 @@ namespace DreamBit.Extension.Module
     {
         float MinZoom { get; }
         float MaxZoom { get; }
-        float Increment { get; }
         Vector2 Size { get; set; }
         Vector2 Position { get; set; }
         float Zoom { get; set; }
         Matrix TransformMatrix { get; }
 
-        void ZoomIn(float value);
-        void ZoomOut(float value);
+        void ZoomIn();
+        void ZoomOut();
 
         Point ScreenToWorld(int x, int y);
         Vector2 ScreenToWorld(float x, float y);
@@ -42,7 +41,6 @@ namespace DreamBit.Extension.Module
 
         public float MinZoom => 0.1f;
         public float MaxZoom => 2f;
-        public float Increment => 0.1f;
         public Vector2 Size
         {
             get => _size;
@@ -73,6 +71,7 @@ namespace DreamBit.Extension.Module
             }
         }
         public Matrix TransformMatrix { get; private set; }
+        private float Increment => 0.1f;
 
         private void UpdateTransformMatrix()
         {
@@ -82,13 +81,13 @@ namespace DreamBit.Extension.Module
                 MatrixHelper.CreateTranslation(Size * .5f);
         }
 
-        public void ZoomIn(float value)
+        public void ZoomIn()
         {
-            Zoom += Math.Abs(value);
+            Zoom += Math.Abs(Increment);
         }
-        public void ZoomOut(float value)
+        public void ZoomOut()
         {
-            Zoom -= Math.Abs(value);
+            Zoom -= Math.Abs(Increment);
         }
 
         public Point ScreenToWorld(int x, int y)

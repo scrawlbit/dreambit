@@ -23,6 +23,11 @@
                 <input:IconButton Command="{Binding RedoCommand}" Icon="../Resources/Icons/16/redo.png" ToolTip="Undo" />
                 <Separator />
                 <input:IconButton Command="{Binding CloseSceneCommand}" Icon="../Resources/Icons/16/close.png" ToolTip="Close scene" />
+                <Separator />
+                <input:IconButton Command="{Binding ZoomOutCommand}" Icon="../Resources/Icons/16/zoomOut.png" ToolTip="Zoom out" />
+                <input:IconButton Command="{Binding ZoomInCommand}" Icon="../Resources/Icons/16/zoomIn.png" ToolTip="Zoom in" />
+                <input:IconButton Command="{Binding ZoomToOriginalSizeCommand}" Icon="../Resources/Icons/16/zoomToOriginalSize.png" ToolTip="Zoom to original size" />
+                <input:IconButton Command="{Binding ZoomToFitScreenCommand}" Icon="../Resources/Icons/16/zoomToFit.png" ToolTip="Zoom in" />
             </ToolBar>
         </ToolBarPanel>
 
