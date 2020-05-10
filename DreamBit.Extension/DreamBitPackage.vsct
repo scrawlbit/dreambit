@@ -17,24 +17,6 @@
           <CommandName>DreamBit</CommandName>
         </Strings>
       </Menu>
-
-      <!-- Scene Editor -->
-      <Menu guid="DreamBitCommandSet" id="SceneEditorToolbar" type="ToolWindowToolbar">
-        <CommandFlag>DefaultDocked</CommandFlag>
-        <Strings>
-          <ButtonText>Scene Editor Toolbar</ButtonText>
-          <CommandName>Scene Editor Toolbar</CommandName>
-        </Strings>
-      </Menu>
-
-      <!-- Scene Hierarchy -->
-      <Menu guid="DreamBitCommandSet" id="SceneHierarchyToolbar" type="ToolWindowToolbar">
-        <CommandFlag>DefaultDocked</CommandFlag>
-        <Strings>
-          <ButtonText>Scene Hierarchy Toolbar</ButtonText>
-          <CommandName>Scene Hierarchy Toolbar</CommandName>
-        </Strings>
-      </Menu>
     </Menus>
 
     <Groups>
@@ -49,16 +31,6 @@
       <!-- Project -->
       <Group guid="DreamBitCommandSet" id="ProjectContextAddGroup" priority="0x0000">
         <Parent guid="guidSHLMainMenu" id="cmdidShellWindowNavigate7" />
-      </Group>
-
-      <!-- Scene Editor -->
-      <Group guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" priority="0x0000">
-        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbar" />
-      </Group>
-
-      <!-- Scene Hierarchy -->
-      <Group guid="DreamBitCommandSet" id="SceneHierarchyToolbarGroup" priority="0x0000">
-        <Parent guid="DreamBitCommandSet" id="SceneHierarchyToolbar" />
       </Group>
     </Groups>
 
@@ -130,58 +102,7 @@
           <ButtonText>Edit</ButtonText>
         </Strings>
       </Button>
-
-      <!-- Scene Editor -->
-      <Button guid="DreamBitCommandSet" id="SaveSceneCommand" priority="0x0100" type="Button">
-        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
-        <Icon guid="SceneEditorIcons" id="save" />
-        <Strings>
-          <ButtonText>Save</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="DreamBitCommandSet" id="UndoCommand" priority="0x0101" type="Button">
-        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
-        <Icon guid="SceneEditorIcons" id="undo" />
-        <Strings>
-          <ButtonText>Undo</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="DreamBitCommandSet" id="RedoCommand" priority="0x0102" type="Button">
-        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
-        <Icon guid="SceneEditorIcons" id="do" />
-        <Strings>
-          <ButtonText>Redo</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="DreamBitCommandSet" id="CloseSceneCommand" priority="0x0103" type="Button">
-        <Parent guid="DreamBitCommandSet" id="SceneEditorToolbarGroup" />
-        <Icon guid="SceneEditorIcons" id="close" />
-        <Strings>
-          <ButtonText>Close</ButtonText>
-        </Strings>
-      </Button>
-
-      <!-- Scene Hierarchy -->
-      <Button guid="DreamBitCommandSet" id="AddGameObjectCommand" priority="0x0100" type="Button">
-        <Parent guid="DreamBitCommandSet" id="SceneHierarchyToolbarGroup" />
-        <Icon guid="SceneHierarchyIcons" id="model" />
-        <Strings>
-          <ButtonText>Add Game Object</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="DreamBitCommandSet" id="AddCameraObjectCommand" priority="0x0101" type="Button">
-        <Parent guid="DreamBitCommandSet" id="SceneHierarchyToolbarGroup" />
-        <Icon guid="SceneHierarchyIcons" id="videoCamera" />
-        <Strings>
-          <ButtonText>Add Camera Object</ButtonText>
-        </Strings>
-      </Button>
     </Buttons>
-
-    <Bitmaps>
-      <Bitmap guid="SceneEditorIcons" href="Resources\Toolbars\SceneEditorIcons.png" usedList="undo, do, save, close" />
-      <Bitmap guid="SceneHierarchyIcons" href="Resources\Toolbars\SceneHierarchyIcons.png" usedList="model, videoCamera" />
-    </Bitmaps>
   </Commands>
 
   <Symbols>
@@ -196,20 +117,6 @@
       <IDSymbol name="SceneHierarchyWindowCommand" value="0x3002" />
       <IDSymbol name="SceneInspectWindowCommand" value="0x3003" />
 
-      <!-- Scene Editor -->
-      <IDSymbol name="SceneEditorToolbar" value="0x4001" />
-      <IDSymbol name="SceneEditorToolbarGroup" value="0x2004" />
-      <IDSymbol name="RedoCommand" value="0x3011" />
-      <IDSymbol name="UndoCommand" value="0x3012" />
-      <IDSymbol name="SaveSceneCommand" value="0x3013" />
-      <IDSymbol name="CloseSceneCommand" value="0x3014" />
-
-      <!-- Scene Hierarchy -->
-      <IDSymbol name="SceneHierarchyToolbar" value="0x4000" />
-      <IDSymbol name="SceneHierarchyToolbarGroup" value="0x2002" />
-      <IDSymbol name="AddGameObjectCommand" value="0x3004" />
-      <IDSymbol name="AddCameraObjectCommand" value="0x3006" />
-
       <!-- Project -->
       <IDSymbol name="ProjectContextAddGroup" value="0x2003" />
       <IDSymbol name="AddFontCommand" value="0x3005" />
@@ -217,20 +124,6 @@
       <IDSymbol name="AddScriptCommand" value="0x3010" />
       <IDSymbol name="EditFontCommand" value="0x3008" />
       <IDSymbol name="EditSceneCommand" value="0x3009" />
-    </GuidSymbol>
-
-    <!-- Scene Editor -->
-    <GuidSymbol name="SceneEditorIcons" value="{b95623e8-f268-4d05-8801-60c8a4901134}">
-      <IDSymbol name="undo" value="1" />
-      <IDSymbol name="do" value="2" />
-      <IDSymbol name="save" value="3" />
-      <IDSymbol name="close" value="4" />
-    </GuidSymbol>
-
-    <!-- Scene Hierarchy -->
-    <GuidSymbol name="SceneHierarchyIcons" value="{cbe4cf96-2ec4-40fe-bb5c-f7d46a0fe701}">
-      <IDSymbol name="model" value="1" />
-      <IDSymbol name="videoCamera" value="2" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

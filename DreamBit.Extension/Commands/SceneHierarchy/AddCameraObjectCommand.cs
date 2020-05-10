@@ -1,19 +1,21 @@
-﻿using DreamBit.Extension.Components;
-using DreamBit.Extension.Helpers;
+﻿using DreamBit.Extension.Helpers;
 using DreamBit.Extension.Management;
 using DreamBit.Game.Elements;
 using DreamBit.Game.Elements.Components;
 using DreamBit.General.State;
+using Scrawlbit.Presentation.Commands;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.SceneHierarchy
 {
-    internal interface IAddCameraObjectCommand : IToolCommand
+    internal interface IAddCameraObjectCommand : ICommand
     {
         bool CanExecute();
         void Execute();
     }
-    internal sealed class AddCameraObjectCommand : ToolCommand, IAddCameraObjectCommand
+
+    internal sealed class AddCameraObjectCommand : BaseCommand, IAddCameraObjectCommand
     {
         private readonly IEditor _editor;
         private readonly IStateManager _state;
@@ -24,13 +26,11 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             _state = state;
         }
 
-        protected override int Id => DreamBitPackage.Guids.AddCameraObjectCommand;
-
-        public override bool CanExecute()
+        public bool CanExecute()
         {
             return _editor.OpenedScene != null;
         }
-        public override void Execute()
+        public void Execute()
         {
             GameObject gameObject = new GameObject();
             Camera camera = new Camera();

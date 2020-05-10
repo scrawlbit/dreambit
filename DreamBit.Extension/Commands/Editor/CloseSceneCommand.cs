@@ -1,10 +1,11 @@
-﻿using DreamBit.Extension.Components;
-using DreamBit.Extension.Management;
+﻿using DreamBit.Extension.Management;
+using Scrawlbit.Presentation.Commands;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.Editor
 {
-    internal interface ICloseSceneCommand : IToolCommand { }
-    internal class CloseSceneCommand : ToolCommand, ICloseSceneCommand
+    internal interface ICloseSceneCommand : ICommand { }
+    internal class CloseSceneCommand : BaseCommand, ICloseSceneCommand
     {
         private readonly IEditor _editor;
 
@@ -13,13 +14,11 @@ namespace DreamBit.Extension.Commands.Editor
             _editor = editor;
         }
 
-        protected override int Id => DreamBitPackage.Guids.CloseSceneCommand;
-
-        public override bool CanExecute()
+        public bool CanExecute()
         {
             return _editor.OpenedSceneFile != null;
         }
-        public override void Execute()
+        public void Execute()
         {
             _editor.OpenedSceneFile = null;
         }

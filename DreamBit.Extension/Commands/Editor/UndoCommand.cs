@@ -1,32 +1,30 @@
-﻿using DreamBit.Extension.Components;
-using DreamBit.General.State;
+﻿using DreamBit.General.State;
+using Scrawlbit.Presentation.Commands;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Commands.Editor
 {
-    internal interface IUndoCommand : IToolCommand
+    internal interface IUndoCommand : ICommand
     {
         bool CanExecute();
         void Execute();
     }
 
-    internal sealed class UndoCommand : ToolCommand, IUndoCommand
+    internal sealed class UndoCommand : BaseCommand, IUndoCommand
     {
         private readonly IStateManager _state;
 
         public UndoCommand(IStateManager state)
         {
             _state = state;
-            _state.Undos.CollectionChanged += (s, e) => QueryStatus();
         }
 
-        protected override int Id => DreamBitPackage.Guids.UndoCommand;
-
-        public override bool CanExecute()
+        public bool CanExecute()
         {
             return _state.Undos.Any();
         }
-        public override void Execute()
+        public void Execute()
         {
             _state.Undo();
         }

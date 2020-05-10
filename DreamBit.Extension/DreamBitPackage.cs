@@ -1,7 +1,5 @@
 ﻿using DreamBit.Extension.Commands;
-using DreamBit.Extension.Commands.Editor;
 using DreamBit.Extension.Commands.Project;
-using DreamBit.Extension.Commands.SceneHierarchy;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Properties;
@@ -72,16 +70,10 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<ISceneHierarchyWindowCommand>();
             await RegisterCommandAsync<ISceneInspectWindowCommand>();
             await RegisterCommandAsync<IAddFontCommand>();
-            await RegisterCommandAsync<IAddGameObjectCommand>();
-            await RegisterCommandAsync<IAddCameraObjectCommand>();
             await RegisterCommandAsync<IAddSceneCommand>();
             await RegisterCommandAsync<IEditFontCommand>();
             await RegisterCommandAsync<IEditSceneCommand>();
             await RegisterCommandAsync<IAddScriptCommand>();
-            await RegisterCommandAsync<IUndoCommand>();
-            await RegisterCommandAsync<IRedoCommand>();
-            await RegisterCommandAsync<ISaveSceneCommand>();
-            await RegisterCommandAsync<ICloseSceneCommand>();
 
             Assembly.Load("Microsoft.Xaml.Behaviors");
 
