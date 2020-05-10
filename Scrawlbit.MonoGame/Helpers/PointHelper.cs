@@ -10,5 +10,10 @@ namespace Scrawlbit.MonoGame.Helpers
         {
             return point == Zero;
         }
+
+        public static Point Transform(Point point, Matrix matrix)
+        {
+            return Vector2.Transform(point.ToVector2(), matrix).ToPoint();
+        }
     }
 }

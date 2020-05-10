@@ -39,5 +39,10 @@ namespace Scrawlbit.MonoGame.Helpers
 
             return false;
         }
+
+        public static float Clamp(this float value, float min, float max)
+        {
+            return MathHelper.Clamp(value, min, max);
+        }
     }
 }

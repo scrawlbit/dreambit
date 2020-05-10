@@ -59,6 +59,7 @@
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Helpers\Variable.cs" />
     <Compile Include="Injection\Configuration\IInjectionModule.cs" />
     <Compile Include="Injection\Configuration\IRegistration.cs" />
     <Compile Include="Injection\Configuration\IRegistrationBuilder.cs" />

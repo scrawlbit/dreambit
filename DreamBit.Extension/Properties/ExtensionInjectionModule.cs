@@ -89,6 +89,7 @@ namespace DreamBit.Extension.Properties
         {
             _builder.Register<ISelectionObject>().Singleton<SelectionObject>();
             _builder.Register<SceneEditorGame>();
+            _builder.Register<ISceneEditorCamera>().Singleton<SceneEditorCamera>();
         }
         private void ViewModels()
         {

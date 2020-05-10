@@ -39,7 +39,7 @@ namespace DreamBit.Extension.Module
             if (_editor.OpenedScene == null)
                 return;
 
-            using (_drawer.Batch())
+            using (_drawer.Batch(transformMatrix: _editor.Camera.TransformMatrix))
             {
                 _editor.OpenedScene.Preview(_drawer);
 
@@ -48,6 +48,10 @@ namespace DreamBit.Extension.Module
                 if (!selecionArea.IsEmpty)
                     _drawer.DrawRectangle(selecionArea, Color.Yellow);
             }
+        }
+        public override void RenderSizeChanged(RenderSizeChangedEventArgs args)
+        {
+            _editor.Camera.Size = new Vector2(args.Width, args.Height);
         }
 
         private void InitializeContentManager()

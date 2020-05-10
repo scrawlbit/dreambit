@@ -28,6 +28,7 @@ namespace ScrawlBit.MonoGame.Interop.Controls
             _surface.AlwaysRefresh = true;
             _surface.LoadContent += OnLoadContent;
             _surface.Draw += OnDraw;
+            _surface.RenderSizeChanged += OnRenderSizeChanged;
 
             Content = _surface;
         }
@@ -51,6 +52,10 @@ namespace ScrawlBit.MonoGame.Interop.Controls
         private void OnDraw(object sender, DrawEventArgs e)
         {
             Module?.Draw();
+        }
+        private void OnRenderSizeChanged(object sender, RenderSizeChangedEventArgs args)
+        {
+            Module?.RenderSizeChanged(args);
         }
 
         private void TryLoadModule()

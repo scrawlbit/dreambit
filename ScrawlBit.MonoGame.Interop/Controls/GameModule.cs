@@ -33,5 +33,6 @@ namespace ScrawlBit.MonoGame.Interop.Controls
 
         public virtual void Initialize() { }
         public virtual void Draw() { }
+        public virtual void RenderSizeChanged(RenderSizeChangedEventArgs args) { }
     }
 }

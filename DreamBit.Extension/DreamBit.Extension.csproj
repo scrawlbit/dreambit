@@ -122,6 +122,7 @@
     <Compile Include="Helpers\TreeViewItemHelper.cs" />
     <Compile Include="Management\Editor.cs" />
     <Compile Include="Management\ProjectManager.cs" />
+    <Compile Include="Module\SceneEditorCamera.cs" />
     <Compile Include="Module\SceneEditorGame.cs" />
     <Compile Include="Module\SelectionData.cs" />
     <Compile Include="Module\SelectionObject.cs" />
