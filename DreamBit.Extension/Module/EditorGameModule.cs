@@ -57,27 +57,27 @@ namespace DreamBit.Extension.Module
             _editor.ToolBox.OnKeyUp(args);
         }
 
-        protected override void OnMouseEnter(MouseEventArgs args)
+        protected override void OnMouseEnter(GameMouseEventArgs args)
         {
             _editor.ToolBox.OnMouseEnter(args);
         }
-        protected override void OnMouseMove(MouseEventArgs args)
+        protected override void OnMouseMove(GameMouseEventArgs args)
         {
             _editor.ToolBox.OnMouseMove(args);
         }
-        protected override void OnMouseLeave(MouseEventArgs args)
+        protected override void OnMouseLeave(GameMouseEventArgs args)
         {
             _editor.ToolBox.OnMouseLeave(args);
         }
-        protected override void OnMouseDown(MouseButtonEventArgs args)
+        protected override void OnMouseDown(GameMouseButtonEventArgs args)
         {
             _editor.ToolBox.OnMouseDown(args);
         }
-        protected override void OnMouseUp(MouseButtonEventArgs args)
+        protected override void OnMouseUp(GameMouseButtonEventArgs args)
         {
             _editor.ToolBox.OnMouseUp(args);
         }
-        protected override void OnMouseWheel(MouseWheelEventArgs args)
+        protected override void OnMouseWheel(GameMouseWheelEventArgs args)
         {
             _editor.ToolBox.OnMouseWheel(args);
         }

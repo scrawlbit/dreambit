@@ -45,6 +45,9 @@
     <Compile Include="Controls\DrawingSurface.cs" />
     <Compile Include="Controls\GameControl.cs" />
     <Compile Include="Controls\GameModule.cs" />
+    <Compile Include="Controls\GameMouseButtonEventArgs.cs" />
+    <Compile Include="Controls\GameMouseEventArgs.cs" />
+    <Compile Include="Controls\GameMouseWheelEventArgs.cs" />
     <Compile Include="Controls\GraphicsDeviceEventArgs.cs" />
     <Compile Include="Controls\RenderSizeChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

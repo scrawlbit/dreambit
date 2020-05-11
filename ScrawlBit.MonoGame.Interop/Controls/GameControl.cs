@@ -89,29 +89,29 @@ namespace ScrawlBit.MonoGame.Interop.Controls
             _surface.Focus();
             _shouldFireKeyEvents = true;
 
-            Module?.OnMouseEnter(args);
+            Module?.OnMouseEnter(new GameMouseEventArgs(args, _surface));
         }
         private void OnMouseMove(object sender, MouseEventArgs args)
         {
-            Module?.OnMouseMove(args);
+            Module?.OnMouseMove(new GameMouseEventArgs(args, _surface));
         }
         private void OnMouseLeave(object sender, MouseEventArgs args)
         {
             _shouldFireKeyEvents = false;
 
-            Module?.OnMouseLeave(args);
+            Module?.OnMouseLeave(new GameMouseEventArgs(args, _surface));
         }
         private void OnMouseDown(object sender, MouseButtonEventArgs args)
         {
-            Module?.OnMouseDown(args);
+            Module?.OnMouseDown(new GameMouseButtonEventArgs(args, _surface));
         }
         private void OnMouseUp(object sender, MouseButtonEventArgs args)
         {
-            Module?.OnMouseUp(args);
+            Module?.OnMouseUp(new GameMouseButtonEventArgs(args, _surface));
         }
         private void OnMouseWheel(object sender, MouseWheelEventArgs args)
         {
-            Module?.OnMouseWheel(args);
+            Module?.OnMouseWheel(new GameMouseWheelEventArgs(args, _surface));
         }
 
         private void TryLoadModule()

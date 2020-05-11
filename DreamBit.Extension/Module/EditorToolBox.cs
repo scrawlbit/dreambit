@@ -4,6 +4,7 @@ using DreamBit.Game.Drawing;
 using Scrawlbit.Helpers;
 using Scrawlbit.Notification;
 using Scrawlbit.Presentation.Commands;
+using ScrawlBit.MonoGame.Interop.Controls;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace DreamBit.Extension.Module
         void OnKeyDown(KeyEventArgs e);
         void OnKeyUp(KeyEventArgs e);
 
-        void OnMouseEnter(MouseEventArgs args);
-        void OnMouseMove(MouseEventArgs args);
-        void OnMouseLeave(MouseEventArgs args);
-        void OnMouseDown(MouseButtonEventArgs args);
-        void OnMouseUp(MouseButtonEventArgs args);
-        void OnMouseWheel(MouseWheelEventArgs args);
+        void OnMouseEnter(GameMouseEventArgs args);
+        void OnMouseMove(GameMouseEventArgs args);
+        void OnMouseLeave(GameMouseEventArgs args);
+        void OnMouseDown(GameMouseButtonEventArgs args);
+        void OnMouseUp(GameMouseButtonEventArgs args);
+        void OnMouseWheel(GameMouseWheelEventArgs args);
 
         void Draw(IContentDrawer drawer);
     }
@@ -35,13 +36,13 @@ namespace DreamBit.Extension.Module
         private readonly IEditor _editor;
         private IEditorTool _selected;
 
-        public EditorToolBox(IEditor editor)
+        public EditorToolBox(IEditor editor, ICameraTool cameraTool)
         {
             _editor = editor;
 
             Tools = new IEditorTool[]
             {
-                new CameraTool(),
+                cameraTool,
                 new SelectionTool()
             };
 
@@ -83,27 +84,27 @@ namespace DreamBit.Extension.Module
             Selected.OnKeyUp(args);
         }
 
-        public void OnMouseEnter(MouseEventArgs args)
+        public void OnMouseEnter(GameMouseEventArgs args)
         {
             if (CanEditScene()) Selected.OnMouseEnter(args);
         }
-        public void OnMouseMove(MouseEventArgs args)
+        public void OnMouseMove(GameMouseEventArgs args)
         {
             if (CanEditScene()) Selected.OnMouseMove(args);
         }
-        public void OnMouseLeave(MouseEventArgs args)
+        public void OnMouseLeave(GameMouseEventArgs args)
         {
             if (CanEditScene()) Selected.OnMouseLeave(args);
         }
-        public void OnMouseDown(MouseButtonEventArgs args)
+        public void OnMouseDown(GameMouseButtonEventArgs args)
         {
             if (CanEditScene()) Selected.OnMouseDown(args);
         }
-        public void OnMouseUp(MouseButtonEventArgs args)
+        public void OnMouseUp(GameMouseButtonEventArgs args)
         {
             if (CanEditScene()) Selected.OnMouseUp(args);
         }
-        public void OnMouseWheel(MouseWheelEventArgs args)
+        public void OnMouseWheel(GameMouseWheelEventArgs args)
         {
             if (CanEditScene()) Selected.OnMouseWheel(args);
         }

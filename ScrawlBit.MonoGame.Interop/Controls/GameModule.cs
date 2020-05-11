@@ -40,11 +40,11 @@ namespace ScrawlBit.MonoGame.Interop.Controls
         protected internal virtual void OnKeyDown(KeyEventArgs args) { }
         protected internal virtual void OnKeyUp(KeyEventArgs args) { }
 
-        protected internal virtual void OnMouseEnter(MouseEventArgs args) { }
-        protected internal virtual void OnMouseLeave(MouseEventArgs args) { }
-        protected internal virtual void OnMouseMove(MouseEventArgs args) { }
-        protected internal virtual void OnMouseDown(MouseButtonEventArgs args) { }
-        protected internal virtual void OnMouseUp(MouseButtonEventArgs args) { }
-        protected internal virtual void OnMouseWheel(MouseWheelEventArgs args) { }
+        protected internal virtual void OnMouseEnter(GameMouseEventArgs args) { }
+        protected internal virtual void OnMouseLeave(GameMouseEventArgs args) { }
+        protected internal virtual void OnMouseMove(GameMouseEventArgs args) { }
+        protected internal virtual void OnMouseDown(GameMouseButtonEventArgs args) { }
+        protected internal virtual void OnMouseUp(GameMouseButtonEventArgs args) { }
+        protected internal virtual void OnMouseWheel(GameMouseWheelEventArgs args) { }
     }
 }
