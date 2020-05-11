@@ -5,6 +5,7 @@ using DreamBit.Pipeline;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Scrawlbit.MonoGame.Helpers;
 using Scrawlbit.Notification;
 using ScrawlBit.MonoGame.Interop.Controls;
 using System.Windows.Input;
@@ -101,7 +102,7 @@ namespace DreamBit.Extension.Module
 
                 Rectangle selecionArea = _editor.Selection.Area();
 
-                if (!selecionArea.IsEmpty)
+                if (selecionArea.HasSize())
                     _drawer.DrawRectangle(selecionArea, Color.Yellow);
             }
         }

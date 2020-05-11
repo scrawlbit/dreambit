@@ -36,17 +36,17 @@ namespace DreamBit.Extension.Module
         private readonly IEditor _editor;
         private IEditorTool _selected;
 
-        public EditorToolBox(IEditor editor, ICameraTool cameraTool)
+        public EditorToolBox(IEditor editor, ICameraTool cameraTool, ISelectionTool selectionTool)
         {
             _editor = editor;
 
             Tools = new IEditorTool[]
             {
-                cameraTool,
-                new SelectionTool()
+                selectionTool,
+                cameraTool
             };
 
-            Selected = Tools.First();
+            Selected = selectionTool;
             SelectToolCommand = new DelegateCommand<IEditorTool>(SelectTool, CanSelectTool);
         }
 

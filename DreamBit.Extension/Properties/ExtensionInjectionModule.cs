@@ -101,6 +101,7 @@ namespace DreamBit.Extension.Properties
 
             // tools
             _builder.Register<ICameraTool>().Transient<CameraTool>();
+            _builder.Register<ISelectionTool>().Transient<SelectionTool>();
         }
         private void ViewModels()
         {
