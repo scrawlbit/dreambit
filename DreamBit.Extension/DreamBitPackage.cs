@@ -55,6 +55,11 @@ namespace DreamBit.Extension
             Container = builder.Build();
         }
 
+        public static Uri GetResourceUri(string resource)
+        {
+            return new Uri($"pack://application:,,,/DreamBit.Extension;component/{resource}");
+        }
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             BuildMapper();
@@ -82,7 +87,7 @@ namespace DreamBit.Extension
 
         private static void ApplyTheme()
         {
-            var path = new Uri("pack://application:,,,/DreamBit.Extension;component/Resources/Styles/Theme.xaml");
+            var path = GetResourceUri("Resources/Styles/Theme.xaml");
             var resource = new ResourceDictionary { Source = path };
 
             Application.Current.Resources.MergedDictionaries.Add(resource);

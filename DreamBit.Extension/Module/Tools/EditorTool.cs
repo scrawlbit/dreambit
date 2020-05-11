@@ -5,6 +5,9 @@ namespace DreamBit.Extension.Module.Tools
 {
     public interface IEditorTool
     {
+        string Icon { get; }
+        Key ShortcutKey { get; }
+
         void OnKeyDown(KeyEventArgs e);
         void OnKeyUp(KeyEventArgs e);
 
@@ -18,8 +21,11 @@ namespace DreamBit.Extension.Module.Tools
         void Draw(IContentDrawer drawer);
     }
 
-    internal class EditorTool : IEditorTool
+    internal abstract class EditorTool : IEditorTool
     {
+        public abstract string Icon { get; }
+        public abstract Key ShortcutKey { get; }
+
         public virtual void OnKeyDown(KeyEventArgs e) { }
         public virtual void OnKeyUp(KeyEventArgs e) { }
 

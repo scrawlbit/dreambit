@@ -1,4 +1,5 @@
 ﻿using DreamBit.Extension.Commands.Editor;
+using DreamBit.Extension.Management;
 using DreamBit.Extension.Module;
 
 namespace DreamBit.Extension.ViewModels
@@ -6,6 +7,7 @@ namespace DreamBit.Extension.ViewModels
     internal class SceneEditorViewModel : BaseViewModel
     {
         public SceneEditorViewModel(
+            IEditor editor,
             EditorGameModule gameModule,
             ISaveSceneCommand saveSceneCommand,
             IUndoCommand undoCommand,
@@ -16,6 +18,7 @@ namespace DreamBit.Extension.ViewModels
             IZoomToOriginalSizeCommand zoomToOriginalSizeCommand,
             IZoomToFitScreenCommand zoomToFitScreenCommand)
         {
+            Editor = editor;
             GameModule = gameModule;
             SaveSceneCommand = saveSceneCommand;
             UndoCommand = undoCommand;
@@ -27,6 +30,7 @@ namespace DreamBit.Extension.ViewModels
             ZoomToFitScreenCommand = zoomToFitScreenCommand;
         }
 
+        public IEditor Editor { get; }
         public EditorGameModule GameModule { get; }
         public ISaveSceneCommand SaveSceneCommand { get; }
         public IUndoCommand UndoCommand { get; }

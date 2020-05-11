@@ -111,6 +111,7 @@
     <Compile Include="Controls\TreeViews\TreeViewMultiSelectBehavior.cs" />
     <Compile Include="Controls\WindowView.cs" />
     <Compile Include="Controls\Objects\Vector2Proxy.cs" />
+    <Compile Include="Converters\IconSourceConverter.cs" />
     <Compile Include="Converters\TreeViewMarginConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="DreamBitPackage.Guids.cs">
@@ -132,6 +133,7 @@
     <Compile Include="Module\SelectionObject.cs" />
     <Compile Include="Module\TestGame.cs" />
     <Compile Include="Module\EditorToolBox.cs" />
+    <Compile Include="Module\Tools\CameraTool.cs" />
     <Compile Include="Module\Tools\EditorTool.cs" />
     <Compile Include="Module\Tools\SelectionTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -296,6 +298,8 @@
     <Resource Include="Resources\Icons\16\zoomOut.png" />
     <Resource Include="Resources\Icons\16\zoomToOriginalSize.png" />
     <Resource Include="Resources\Icons\16\zoomToFit.png" />
+    <Resource Include="Resources\Icons\16\dragPanel.png" />
+    <Resource Include="Resources\Icons\16\cursor.png" />
     <Content Include="Resources\Logo.ico" />
   </ItemGroup>
   <ItemGroup>

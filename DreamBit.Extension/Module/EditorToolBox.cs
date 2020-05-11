@@ -41,6 +41,7 @@ namespace DreamBit.Extension.Module
 
             Tools = new IEditorTool[]
             {
+                new CameraTool(),
                 new SelectionTool()
             };
 
@@ -58,7 +59,7 @@ namespace DreamBit.Extension.Module
 
         private bool CanSelectTool(IEditorTool tool)
         {
-            return _editor.OpenedScene != null && Tools.Contains(tool);
+            return CanEditScene() && Tools.Contains(tool);
         }
         private void SelectTool(IEditorTool tool)
         {
@@ -67,41 +68,54 @@ namespace DreamBit.Extension.Module
 
         public void OnKeyDown(KeyEventArgs args)
         {
-            Selected.OnKeyDown(args);
+            if (CanEditScene()) Selected.OnKeyDown(args);
         }
         public void OnKeyUp(KeyEventArgs args)
         {
+            if (!CanEditScene())
+                return;
+
+            IEditorTool tool = Tools.SingleOrDefault(t => t.ShortcutKey == args.Key);
+
+            if (CanSelectTool(tool))
+                SelectTool(tool);
+
             Selected.OnKeyUp(args);
         }
 
         public void OnMouseEnter(MouseEventArgs args)
         {
-            Selected.OnMouseEnter(args);
+            if (CanEditScene()) Selected.OnMouseEnter(args);
         }
         public void OnMouseMove(MouseEventArgs args)
         {
-            Selected.OnMouseMove(args);
+            if (CanEditScene()) Selected.OnMouseMove(args);
         }
         public void OnMouseLeave(MouseEventArgs args)
         {
-            Selected.OnMouseLeave(args);
+            if (CanEditScene()) Selected.OnMouseLeave(args);
         }
         public void OnMouseDown(MouseButtonEventArgs args)
         {
-            Selected.OnMouseDown(args);
+            if (CanEditScene()) Selected.OnMouseDown(args);
         }
         public void OnMouseUp(MouseButtonEventArgs args)
         {
-            Selected.OnMouseUp(args);
+            if (CanEditScene()) Selected.OnMouseUp(args);
         }
         public void OnMouseWheel(MouseWheelEventArgs args)
         {
-            Selected.OnMouseWheel(args);
+            if (CanEditScene()) Selected.OnMouseWheel(args);
         }
 
         public void Draw(IContentDrawer drawer)
         {
-            Selected.Draw(drawer);
+            if (CanEditScene()) Selected.Draw(drawer);
+        }
+
+        private bool CanEditScene()
+        {
+            return _editor.OpenedScene != null;
         }
     }
 }

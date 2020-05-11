@@ -10,6 +10,7 @@ namespace ScrawlBit.MonoGame.Interop.Controls
         public static readonly DependencyProperty ModuleProperty;
         private readonly DrawingSurface _surface;
         private bool _surfaceLoaded;
+        private bool _shouldFireKeyEvents;
 
         static GameControl()
         {
@@ -74,16 +75,19 @@ namespace ScrawlBit.MonoGame.Interop.Controls
 
         private void OnKeyDown(object sender, KeyEventArgs args)
         {
-            Module?.OnKeyDown(args);
+            if (_shouldFireKeyEvents)
+                Module?.OnKeyDown(args);
         }
         private void OnKeyUp(object sender, KeyEventArgs args)
         {
-            Module?.OnKeyUp(args);
+            if (_shouldFireKeyEvents)
+                Module?.OnKeyUp(args);
         }
 
         private void OnMouseEnter(object sender, MouseEventArgs args)
         {
             _surface.Focus();
+            _shouldFireKeyEvents = true;
 
             Module?.OnMouseEnter(args);
         }
@@ -93,6 +97,8 @@ namespace ScrawlBit.MonoGame.Interop.Controls
         }
         private void OnMouseLeave(object sender, MouseEventArgs args)
         {
+            _shouldFireKeyEvents = false;
+
             Module?.OnMouseLeave(args);
         }
         private void OnMouseDown(object sender, MouseButtonEventArgs args)

@@ -6,8 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:input="clr-namespace:DreamBit.Extension.Controls.Input"
+    xmlns:converters="clr-namespace:DreamBit.Extension.Converters"
+    xmlns:tools="clr-namespace:DreamBit.Extension.Module.Tools"
     xmlns:viewModels="clr-namespace:DreamBit.Extension.ViewModels"
     xmlns:interop="clr-namespace:ScrawlBit.MonoGame.Interop.Controls;assembly=ScrawlBit.MonoGame.Interop"
+    xmlns:data="clr-namespace:Scrawlbit.Presentation.Data;assembly=Scrawlbit.Presentation"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:SceneEditorViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="300" d:DesignWidth="300"
@@ -18,16 +21,42 @@
         <ToolBarPanel DockPanel.Dock="Top">
             <ToolBar>
                 <input:IconButton Command="{Binding SaveSceneCommand}" Icon="../Resources/Icons/16/save.png" ToolTip="Save scene" />
+
                 <Separator />
                 <input:IconButton Command="{Binding UndoCommand}" Icon="../Resources/Icons/16/undo.png" ToolTip="Redo" />
                 <input:IconButton Command="{Binding RedoCommand}" Icon="../Resources/Icons/16/redo.png" ToolTip="Undo" />
-                <Separator />
-                <input:IconButton Command="{Binding CloseSceneCommand}" Icon="../Resources/Icons/16/close.png" ToolTip="Close scene" />
+
                 <Separator />
                 <input:IconButton Command="{Binding ZoomOutCommand}" Icon="../Resources/Icons/16/zoomOut.png" ToolTip="Zoom out" />
                 <input:IconButton Command="{Binding ZoomInCommand}" Icon="../Resources/Icons/16/zoomIn.png" ToolTip="Zoom in" />
                 <input:IconButton Command="{Binding ZoomToOriginalSizeCommand}" Icon="../Resources/Icons/16/zoomToOriginalSize.png" ToolTip="Zoom to original size" />
                 <input:IconButton Command="{Binding ZoomToFitScreenCommand}" Icon="../Resources/Icons/16/zoomToFit.png" ToolTip="Zoom in" />
+
+                <Separator />
+                <ItemsControl ItemsSource="{Binding Editor.ToolBox.Tools}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type tools:IEditorTool}">
+                            <input:IconButton Command="{Binding DataContext.Editor.ToolBox.SelectToolCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=controls:WindowView}}"
+                                              CommandParameter="{Binding}"
+                                              Icon="{Binding Icon, Converter={converters:IconSourceConverter}, ConverterParameter=16}">
+                                <input:IconButton.IsChecked>
+                                    <data:ComparisonBinding>
+                                        <Binding />
+                                        <Binding Path="DataContext.Editor.ToolBox.Selected" RelativeSource="{RelativeSource FindAncestor, AncestorType=controls:WindowView}" />
+                                    </data:ComparisonBinding>
+                                </input:IconButton.IsChecked>
+                            </input:IconButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Separator />
+                <input:IconButton Command="{Binding CloseSceneCommand}" Icon="../Resources/Icons/16/close.png" ToolTip="Close scene" />
             </ToolBar>
         </ToolBarPanel>
 
