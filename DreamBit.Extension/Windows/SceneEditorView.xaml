@@ -60,7 +60,7 @@
             </ToolBar>
         </ToolBarPanel>
 
-        <interop:GameControl Module="{Binding GameModule}" />
+        <interop:GameControl Module="{Binding GameModule}" Cursor="{Binding Editor.ToolBox.Selected.Cursor}" />
     </DockPanel>
 
 </controls:WindowView>

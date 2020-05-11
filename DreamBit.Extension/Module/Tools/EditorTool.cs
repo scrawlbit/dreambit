@@ -1,4 +1,5 @@
 ﻿using DreamBit.Game.Drawing;
+using Scrawlbit.Notification;
 using ScrawlBit.MonoGame.Interop.Controls;
 using System.Windows.Input;
 
@@ -7,6 +8,7 @@ namespace DreamBit.Extension.Module.Tools
     public interface IEditorTool
     {
         string Icon { get; }
+        Cursor Cursor { get; }
         Key ShortcutKey { get; }
 
         void OnKeyDown(KeyEventArgs e);
@@ -22,9 +24,16 @@ namespace DreamBit.Extension.Module.Tools
         void Draw(IContentDrawer drawer);
     }
 
-    internal abstract class EditorTool : IEditorTool
+    internal abstract class EditorTool : NotificationObject, IEditorTool
     {
+        private Cursor _cursor;
+
         public abstract string Icon { get; }
+        public Cursor Cursor
+        {
+            get => _cursor;
+            set => Set(ref _cursor, value);
+        }
         public abstract Key ShortcutKey { get; }
 
         public virtual void OnKeyDown(KeyEventArgs e) { }

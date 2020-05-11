@@ -141,6 +141,7 @@
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\ExtensionInjectionModule.cs" />
+    <Compile Include="Resources\CustomCursors.cs" />
     <Compile Include="Resources\Styles\Colors.cs">
       <DependentUpon>Colors.xaml</DependentUpon>
     </Compile>
@@ -282,6 +283,8 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Cursors\handClose.cur" />
+    <Resource Include="Resources\Cursors\handOpen.cur" />
     <Content Include="Resources\DreamBitPackage.ico" />
     <Resource Include="Resources\Icons\16\glyphDown.png" />
     <Resource Include="Resources\Icons\16\glyphDown.white.png" />

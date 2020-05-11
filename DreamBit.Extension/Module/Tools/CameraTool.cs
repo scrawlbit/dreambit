@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DreamBit.Extension.Resources;
+using Microsoft.Xna.Framework;
 using ScrawlBit.MonoGame.Interop.Controls;
 using System.Windows.Input;
 
@@ -15,6 +16,8 @@ namespace DreamBit.Extension.Module.Tools
         public CameraTool(IEditorCamera camera)
         {
             _camera = camera;
+
+            Cursor = CustomCursors.HandOpen;
         }
 
         public override string Icon => "dragPanel";
@@ -26,8 +29,9 @@ namespace DreamBit.Extension.Module.Tools
             {
                 _initialCameraPosition = _camera.Position;
                 _initialMousePosition = args.Position;
-                //_cursorManager.CurrentCursor = _cursorManager.HandClose;
                 _isMoving = true;
+
+                Cursor = CustomCursors.HandClose;
             }
 
             args.Handled = true;
@@ -43,8 +47,9 @@ namespace DreamBit.Extension.Module.Tools
         {
             if (_isMoving && args.ChangedButton == MouseButton.Left)
             {
-                //_cursorManager.CurrentCursor = _cursorManager.HandOpen;
                 _isMoving = false;
+
+                Cursor = CustomCursors.HandOpen;
             }
 
             args.Handled = true;
