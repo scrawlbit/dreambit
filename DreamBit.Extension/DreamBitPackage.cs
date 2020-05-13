@@ -81,6 +81,7 @@ namespace DreamBit.Extension
             await RegisterCommandAsync<IAddScriptCommand>();
 
             Assembly.Load("Microsoft.Xaml.Behaviors");
+            Assembly.Load("MultiSelectTreeView");
 
             ApplyTheme();
         }

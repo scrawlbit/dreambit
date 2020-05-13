@@ -7,13 +7,13 @@ using System.Windows.Data;
 
 namespace DreamBit.Extension.Converters
 {
-    public class TreeViewMarginConverter : IValueConverter
+    public class MultiTreeViewMarginConverter : IValueConverter
     {
         public double Length { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is TreeViewItem item))
+            if (!(value is MultiSelectTreeViewItem item))
                 return new Thickness(0);
 
             return new Thickness(Length * item.GetDepth(), 0, 0, 0);

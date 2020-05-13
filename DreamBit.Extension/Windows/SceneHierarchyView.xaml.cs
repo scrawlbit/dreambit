@@ -41,8 +41,8 @@ namespace DreamBit.Extension.Windows
         }
         private void OnTextChanged(object sender, ValueChangedEventArgs<string> e)
         {
-            var editable = (EditableTreeViewItemText)sender;
-            var gameObject = (GameObject)editable.DataContext;
+            FrameworkElement element = (FrameworkElement)e.OriginalSource;
+            GameObject gameObject = (GameObject)element.DataContext;
 
             string description = $"{e.OldValue} renamed to {e.NewValue}";
             IStateCommand command = gameObject.State().SetProperty(g => g.Name, e, description);

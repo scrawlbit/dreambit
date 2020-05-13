@@ -52,6 +52,7 @@
     <Compile Include="Converters\ConverterMarkupExtension.cs" />
     <Compile Include="Converters\IntToFloatConverter.cs" />
     <Compile Include="Converters\OrConverter.cs" />
+    <Compile Include="Converters\ValueConverterGroupMarkup.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Data\ComparisonBinding.cs" />
     <Compile Include="Data\TypeTemplateSelector.cs" />

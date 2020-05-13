@@ -112,7 +112,7 @@
     <Compile Include="Controls\WindowView.cs" />
     <Compile Include="Controls\Objects\Vector2Proxy.cs" />
     <Compile Include="Converters\IconSourceConverter.cs" />
-    <Compile Include="Converters\TreeViewMarginConverter.cs" />
+    <Compile Include="Converters\MultiTreeViewMarginConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="DreamBitPackage.Guids.cs">
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
@@ -147,6 +147,9 @@
     </Compile>
     <Compile Include="Resources\Styles\ExpansionPanel.xaml.cs">
       <DependentUpon>ExpansionPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Styles\TreeView.xaml.cs">
+      <DependentUpon>TreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
@@ -205,6 +208,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MultiSelectTreeView, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\MultiSelectTreeView\MultiSelectTreeView.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />

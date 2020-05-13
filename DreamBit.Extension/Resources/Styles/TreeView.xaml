@@ -1,26 +1,30 @@
 ﻿<ResourceDictionary
+    x:Class="DreamBit.Extension.Resources.Styles.TreeViewStyle"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:DreamBit.Extension.Controls"
     xmlns:converters="clr-namespace:DreamBit.Extension.Converters"
-    xmlns:helpers="clr-namespace:DreamBit.Extension.Helpers">
+    xmlns:helpers="clr-namespace:DreamBit.Extension.Helpers"
+    xmlns:treeViews="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView">
 
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <SolidColorBrush x:Key="TreeViewItem.SelectionHighlight" Color="#FF007ACC" />
     <SolidColorBrush x:Key="TreeViewItem.InactiveSelectionHighlight" Color="#FFCCCEDB" />
+    <converters:MultiTreeViewMarginConverter x:Key="MultiTreeViewMarginConverter" Length="12" />
 
     <Style x:Key="TreeViewItemFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle/>
+                    <Rectangle />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
-        <Setter Property="helpers:ControlHelper.IsSelected" Value="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" />
-        <Setter Property="helpers:ControlHelper.IsSelectionActive" Value="{Binding IsSelectionActive, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" />
+        <Setter Property="helpers:ControlHelper.IsSelected" Value="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type treeViews:MultiSelectTreeViewItem}}}" />
+        <Setter Property="helpers:ControlHelper.IsSelectionActive" Value="{Binding IsSelectionActive, RelativeSource={RelativeSource AncestorType={x:Type treeViews:MultiSelectTreeViewItem}}}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Height" Value="16" />
@@ -107,21 +111,24 @@
         </Setter>
     </Style>
 
-    <converters:TreeViewMarginConverter x:Key="TreeViewMarginConverter" Length="12" />
-
-    <Style TargetType="TreeViewItem">
+    <Style TargetType="treeViews:MultiSelectTreeViewItem">
+        <Setter Property="helpers:ControlHelper.IsSelectionActive" Value="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource AncestorType=controls:WindowView}, FallbackValue=False}" />
+        <Setter Property="helpers:ControlHelper.ContentTemplate" Value="{Binding HeaderTemplate, RelativeSource={RelativeSource Self}}" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Padding" Value="0,1,0,1" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="BorderBrushSelected" Value="{x:Null}"/>
+        <Setter Property="BackgroundSelected" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TreeViewItem">
-                    <StackPanel>
-                        <Border x:Name="Bd"
+                <ControlTemplate TargetType="treeViews:MultiSelectTreeViewItem">
+                    <StackPanel Loaded="OnPanelLoaded">
+                        <Border x:Name="headerBorder"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -129,7 +136,7 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <Grid Background="Transparent"
                                   VerticalAlignment="Stretch"
-                                  Margin="{Binding Converter={StaticResource TreeViewMarginConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}">
+                                  Margin="{Binding Converter={StaticResource MultiTreeViewMarginConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30" />
                                     <ColumnDefinition Width="*" />
@@ -143,7 +150,9 @@
 
                                 <ContentPresenter x:Name="PART_Header"
                                                   Grid.Column="1"
+                                                  FocusManager.IsFocusScope="True"
                                                   ContentSource="Header"
+                                                  ContentTemplate="{TemplateBinding helpers:ControlHelper.ContentTemplate}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
@@ -159,22 +168,34 @@
                             <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource TreeViewItem.SelectionHighlight}"/>
+                            <Setter Property="Background" TargetName="headerBorder" Value="{StaticResource TreeViewItem.SelectionHighlight}"/>
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="true"/>
-                                <Condition Property="IsSelectionActive" Value="false"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="helpers:ControlHelper.IsSelectionActive" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource TreeViewItem.InactiveSelectionHighlight}"/>
+                            <Setter Property="Background" TargetName="headerBorder" Value="{StaticResource TreeViewItem.InactiveSelectionHighlight}"/>
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Trigger>
+                        <Trigger Property="IsEditing" Value="True">
+                            <Setter Property="helpers:ControlHelper.ContentTemplate" Value="{Binding ContentTemplateEdit, RelativeSource={RelativeSource Self}}" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ContentTemplateEdit">
+            <Setter.Value>
+                <DataTemplate>
+                    <treeViews:EditTextBox Text="{Binding DisplayName, RelativeSource={RelativeSource AncestorType=treeViews:MultiSelectTreeViewItem}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                           BorderThickness="0"
+                                           Padding="1" />
+                </DataTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
@@ -190,9 +211,10 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="TreeView">
+    <Style TargetType="treeViews:MultiSelectTreeView">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
     </Style>
 
 </ResourceDictionary>

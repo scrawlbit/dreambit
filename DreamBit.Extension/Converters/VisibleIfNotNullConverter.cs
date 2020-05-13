@@ -2,7 +2,7 @@
 
 namespace DreamBit.Extension.Converters
 {
-    internal class VisibleIfNotNullConverter : ValueConverterGroup
+    internal class VisibleIfNotNullConverter : ValueConverterGroupMarkup
     {
         public VisibleIfNotNullConverter()
         {

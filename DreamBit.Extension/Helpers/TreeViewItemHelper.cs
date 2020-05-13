@@ -12,6 +12,10 @@ namespace DreamBit.Extension.Helpers
         {
             return item.GetAncestors().TakeWhile(e => !(e is TreeView)).OfType<TreeViewItem>().Count();
         }
+        public static int GetDepth(this MultiSelectTreeViewItem item)
+        {
+            return item.GetAncestors().TakeWhile(e => !(e is MultiSelectTreeView)).OfType<MultiSelectTreeViewItem>().Count();
+        }
 
         private static IEnumerable<DependencyObject> GetAncestors(this DependencyObject child)
         {

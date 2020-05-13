@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DreamBit.General.State;
+using System.Windows;
 
 namespace DreamBit.Extension.Helpers
 {
@@ -41,6 +42,49 @@ namespace DreamBit.Extension.Helpers
         {
             element.SetValue(IsSelectionActiveProperty, value);
         }
+
+        #endregion
+
+        #region ContentTemplate
+
+        public static readonly DependencyProperty ContentTemplateProperty = DependencyProperty.RegisterAttached(
+            "ContentTemplate",
+            typeof(FrameworkTemplate),
+            typeof(ControlHelper),
+            new FrameworkPropertyMetadata(null)
+        );
+
+        public static bool GetContentTemplate(UIElement element)
+        {
+            return (bool)element.GetValue(ContentTemplateProperty);
+        }
+        public static void SetContentTemplate(UIElement element, bool value)
+        {
+            element.SetValue(ContentTemplateProperty, value);
+        }
+
+        #endregion
+
+        #region TextChanged
+
+        public delegate void TextChangedEventHandler(object sender, ValueChangedEventArgs<string> args);
+
+        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
+            "TextChanged",
+            RoutingStrategy.Bubble,
+            typeof(TextChangedEventHandler),
+            typeof(ControlHelper)
+        );
+
+        public static void AddTextChangedHandler(UIElement element, RoutedEventHandler handler)
+        {
+            element.AddHandler(TextChangedEvent, handler);
+        }
+        public static void RemoveTextChangedHandler(UIElement element, RoutedEventHandler handler)
+        {
+            element.RemoveHandler(TextChangedEvent, handler);
+        }
+
 
         #endregion
     }

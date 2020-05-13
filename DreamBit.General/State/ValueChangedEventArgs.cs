@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Windows;
 
 namespace DreamBit.General.State
 {
-    public class ValueChangedEventArgs<T> : EventArgs
+    public class ValueChangedEventArgs<T> : RoutedEventArgs
     {
         public ValueChangedEventArgs()
         {
