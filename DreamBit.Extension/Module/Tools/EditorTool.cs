@@ -10,6 +10,7 @@ namespace DreamBit.Extension.Module.Tools
         string Icon { get; }
         Cursor Cursor { get; }
         Key ShortcutKey { get; }
+        bool KeepShortcutPressed { get; }
 
         void OnKeyDown(KeyEventArgs e);
         void OnKeyUp(KeyEventArgs e);
@@ -35,6 +36,7 @@ namespace DreamBit.Extension.Module.Tools
             set => Set(ref _cursor, value);
         }
         public abstract Key ShortcutKey { get; }
+        public virtual bool KeepShortcutPressed => false;
 
         public virtual void OnKeyDown(KeyEventArgs e) { }
         public virtual void OnKeyUp(KeyEventArgs e) { }

@@ -35,6 +35,7 @@ namespace DreamBit.Extension.Module
     {
         private readonly IEditor _editor;
         private IEditorTool _selected;
+        private IEditorTool _lastTool;
 
         public EditorToolBox(IEditor editor, ICameraTool cameraTool, ISelectionTool selectionTool)
         {
@@ -69,17 +70,34 @@ namespace DreamBit.Extension.Module
 
         public void OnKeyDown(KeyEventArgs args)
         {
-            if (CanEditScene()) Selected.OnKeyDown(args);
+            if (!CanEditScene())
+                return;
+
+            if (!args.IsRepeat)
+            {
+                IEditorTool tool = Tools.SingleOrDefault(t => t.ShortcutKey == args.Key);
+
+                if (CanSelectTool(tool))
+                {
+                    if (tool.KeepShortcutPressed)
+                        _lastTool = Selected;
+
+                    SelectTool(tool);
+                }
+            }
+
+            Selected.OnKeyDown(args);
         }
         public void OnKeyUp(KeyEventArgs args)
         {
             if (!CanEditScene())
                 return;
 
-            IEditorTool tool = Tools.SingleOrDefault(t => t.ShortcutKey == args.Key);
-
-            if (CanSelectTool(tool))
-                SelectTool(tool);
+            if (args.Key == Selected.ShortcutKey && CanSelectTool(_lastTool))
+            {
+                SelectTool(_lastTool);
+                _lastTool = null;
+            }
 
             Selected.OnKeyUp(args);
         }

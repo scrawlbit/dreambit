@@ -22,6 +22,7 @@ namespace DreamBit.Extension.Module.Tools
 
         public override string Icon => "dragPanel";
         public override Key ShortcutKey => Key.Space;
+        public override bool KeepShortcutPressed => true;
 
         public override void OnMouseDown(GameMouseButtonEventArgs args)
         {
