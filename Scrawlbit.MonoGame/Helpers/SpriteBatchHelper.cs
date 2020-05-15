@@ -566,5 +566,12 @@ namespace Scrawlbit.MonoGame.Helpers
         }
         #endregion
 
+        public static Texture2D GetPixel(this SpriteBatch spriteBatch)
+        {
+            if (_pixel == null)
+                CreateThePixel(spriteBatch);
+
+            return _pixel;
+        }
     }
 }

@@ -2,9 +2,9 @@
 using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using Microsoft.Xna.Framework;
-using Scrawlbit.Collections;
 using Scrawlbit.MonoGame.Helpers;
 using ScrawlBit.MonoGame.Interop.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -15,6 +15,7 @@ namespace DreamBit.Extension.Module.Tools
     internal class SelectionTool : EditorTool, ISelectionTool
     {
         private bool _isSelecting;
+        private Point _initialPosition;
         private Rectangle _selectionArea;
         private readonly IEditor _editor;
 
@@ -31,7 +32,8 @@ namespace DreamBit.Extension.Module.Tools
             if (args.ChangedButton == MouseButton.Left)
             {
                 _isSelecting = true;
-                _selectionArea = new Rectangle(args.Position.ToPoint(), Point.Zero);
+                _initialPosition = args.Position.ToPoint();
+                _selectionArea = new Rectangle(_initialPosition, Point.Zero);
             }
 
             args.Handled = true;
@@ -40,10 +42,10 @@ namespace DreamBit.Extension.Module.Tools
         {
             if (_isSelecting)
             {
-                Point location = _selectionArea.Location;
+                Point location = _initialPosition;
                 Point size = args.Position.ToPoint() - location;
 
-                _selectionArea = new Rectangle(_selectionArea.Location, size);
+                _selectionArea = new Rectangle(location, size).Positive();
             }
 
             args.Handled = true;
@@ -68,8 +70,11 @@ namespace DreamBit.Extension.Module.Tools
 
         public override void Draw(IContentDrawer drawer)
         {
-            if (!_selectionArea.IsEmpty)
+            if (_selectionArea.HasSize())
+            {
+                drawer.Draw(_selectionArea, Color.Blue * 0.1f);
                 drawer.DrawRectangle(_selectionArea, Color.Blue);
+            }
         }
 
         private IEnumerable<GameObject> GetObjectsInArea(IGameObjectCollection gameObjects, Rectangle area)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,6 +56,23 @@ namespace Scrawlbit.MonoGame.Helpers
         public static bool HasSize(this Rectangle rectangle)
         {
             return rectangle.Size != Point.Zero;
+        }
+
+        public static Rectangle Positive(this Rectangle rectangle)
+        {
+            if (rectangle.Width < 0)
+            {
+                rectangle.Width = Math.Abs(rectangle.Width);
+                rectangle.X -= rectangle.Width;
+            }
+
+            if (rectangle.Height < 0)
+            {
+                rectangle.Height = Math.Abs(rectangle.Height);
+                rectangle.Y -= rectangle.Height;
+            }
+
+            return rectangle;
         }
 
         public static Point LeftTop(this Rectangle rect)

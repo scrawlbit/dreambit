@@ -11,10 +11,11 @@ namespace DreamBit.Game.Drawing
     {
         SpriteBatch SpriteBatch { get; set; }
         GraphicsDevice GraphicsDevice { get; }
+        Texture2D Pixel { get; }
 
         IDrawBatch Batch(SpriteSortMode? sortMode = null, BlendState blendState = null, SamplerState samplerState = null, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, Effect effect = null, Matrix? transformMatrix = null);
 
-        void Draw(IImage image, Rectangle rectangle, Color color);
+        void Draw(Rectangle rectangle, Color color);
         void Draw(IImage image, Vector2 position, Color color);
         void Draw(IImage image, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effect = SpriteEffects.None, float depth = 0);
         void Draw(IImage image, Vector2 position, Rectangle? sourceRectangle = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, SpriteEffects effect = SpriteEffects.None, float depth = 0);
@@ -37,6 +38,7 @@ namespace DreamBit.Game.Drawing
 
         public SpriteBatch SpriteBatch { get; set; }
         public GraphicsDevice GraphicsDevice => SpriteBatch.GraphicsDevice;
+        public Texture2D Pixel => SpriteBatch.GetPixel();
 
         public IDrawBatch Batch(SpriteSortMode? sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix? transformMatrix)
         {
@@ -61,9 +63,9 @@ namespace DreamBit.Game.Drawing
             return next;
         }
 
-        public void Draw(IImage image, Rectangle rectangle, Color color)
+        public void Draw(Rectangle rectangle, Color color)
         {
-            SpriteBatch.Draw(image.Texture, rectangle, color);
+            SpriteBatch.Draw(Pixel, rectangle, color);
         }
         public void Draw(IImage image, Vector2 position, Color color)
         {
