@@ -37,7 +37,8 @@
         <treeViews:MultiSelectTreeView 
             ItemsSource="{Binding Editor.OpenedScene.Objects}"
             AllowEditItems="True"
-            helpers:ControlHelper.TextChanged="OnTextChanged">
+            helpers:ControlHelper.TextChanged="OnTextChanged"
+            SelectedItems="{Binding Editor.SelectedObjects, Mode=OneWay}">
             
             <treeViews:MultiSelectTreeView.ContextMenu>
                 <ContextMenu>

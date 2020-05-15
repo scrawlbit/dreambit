@@ -2,10 +2,13 @@
 using DreamBit.Game.Elements;
 using DreamBit.Game.Files;
 using DreamBit.General.State;
+using DreamBit.Project;
 using Scrawlbit.Collections;
 using Scrawlbit.Notification;
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace DreamBit.Extension.Management
 {
@@ -13,34 +16,41 @@ namespace DreamBit.Extension.Management
     {
         SceneFile OpenedSceneFile { get; set; }
         Scene OpenedScene { get; }
-        GameObject SelectedObject { get; set; }
-        IObservableCollection<GameObject> SelectedObjects { get; }
+        GameObject SelectedObject { get; }
+        IReadOnlyObservableCollection<GameObject> SelectedObjects { get; }
         IEditorCamera Camera { get; }
         IEditorToolBox ToolBox { get; }
         ISelectionObject Selection { get; }
+
+        void SelectObjects(params GameObject[] objects);
     }
 
     internal class Editor : NotificationObject, IEditor
     {
         private readonly IStateManager _state;
-        private readonly Lazy<ISelectionObject> _selection;
         private readonly Lazy<IEditorToolBox> _toolBox;
+        private readonly Lazy<ISelectionObject> _selection;
+        private readonly IObservableCollection<GameObject> _selectedObjects;
         private SceneFile _openedSceneFile;
         private Scene _openedScene;
         private GameObject _selectedObject;
 
         public Editor(
+            IProject project,
             IStateManager state,
             IEditorCamera camera,
             Lazy<IEditorToolBox> toolBox,
             Lazy<ISelectionObject> selection)
         {
             _state = state;
-            _selection = selection;
             _toolBox = toolBox;
+            _selection = selection;
+            _selectedObjects = new ExtendedObservableCollection<GameObject>();
+            _selectedObjects.CollectionChanged += OnSelectedObjectsChanged;
+
+            project.Notify().On(p => p.Loaded).Changed(OnProjectLoadedChanged);
 
             Camera = camera;
-            SelectedObjects = new ExtendedObservableCollection<GameObject>();
         }
 
         public SceneFile OpenedSceneFile
@@ -63,19 +73,34 @@ namespace DreamBit.Extension.Management
                 if (Set(ref _openedScene, value))
                 {
                     _state.Reset();
-                    SelectedObject = null;
-                    SelectedObjects.Clear();
+                    _selectedObjects.Clear();
                 }
             }
         }
         public GameObject SelectedObject
         {
             get => _selectedObject;
-            set => Set(ref _selectedObject, value);
+            private set => Set(ref _selectedObject, value);
         }
-        public IObservableCollection<GameObject> SelectedObjects { get; }
+        public IReadOnlyObservableCollection<GameObject> SelectedObjects => _selectedObjects;
         public IEditorCamera Camera { get; }
         public IEditorToolBox ToolBox => _toolBox.Value;
         public ISelectionObject Selection => _selection.Value;
+
+        public void SelectObjects(params GameObject[] objects)
+        {
+            _selectedObjects.Clear();
+            _selectedObjects.AddRange(objects);
+        }
+
+        private void OnSelectedObjectsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SelectedObject = SelectedObjects.FirstOrDefault();
+        }
+        private void OnProjectLoadedChanged(bool loaded)
+        {
+            if (!loaded)
+                OpenedSceneFile = null;
+        }
     }
 }

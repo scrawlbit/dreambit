@@ -58,8 +58,7 @@ namespace DreamBit.Extension.Module.Tools
                 if (!area.HasSize())
                     gameObjects = gameObjects.Take(1);
 
-                _editor.SelectedObjects.Clear();
-                _editor.SelectedObjects.AddRange(gameObjects.ToArray());
+                _editor.SelectObjects(gameObjects.ToArray());
                 _selectionArea = Rectangle.Empty;
                 _isSelecting = false;
             }

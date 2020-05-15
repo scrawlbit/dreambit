@@ -42,6 +42,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
             IStateCommand command = _editor.OpenedScene.Objects.State().Add(gameObject, "Camera added to scene");
 
             _state.Execute(command);
+            _editor.SelectObjects(gameObject);
         }
 
         private bool HasActiveCamera()

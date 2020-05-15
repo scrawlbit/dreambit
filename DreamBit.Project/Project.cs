@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using DreamBit.Modularization.Management;
 using DreamBit.Project.Exceptions;
@@ -6,11 +7,12 @@ using DreamBit.Project.Helpers;
 using DreamBit.Project.Registrations;
 using DreamBit.Project.Serialization;
 using Scrawlbit.Helpers;
+using Scrawlbit.Notification;
 using _Path = System.IO.Path;
 
 namespace DreamBit.Project
 {
-    public interface IProject
+    public interface IProject : INotifyPropertyChanged
     {
         bool Loaded { get; }
         string Name { get; }
@@ -35,11 +37,12 @@ namespace DreamBit.Project
         void IncludeFile(ProjectFile file);
     }
 
-    internal partial class Project : IProject, IProjectManager
+    internal partial class Project : NotificationObject, IProject, IProjectManager
     {
         private readonly ISerializer _serializer;
         private readonly IFileManager _fileManager;
         private readonly List<ProjectFile> _files;
+        private bool _loaded;
         private bool _hasChanges;
 
         public Project(ISerializer serializer, IFileManager fileManager, IFileRegistrations registrations)
@@ -51,7 +54,11 @@ namespace DreamBit.Project
             Registrations = registrations;
         }
 
-        public bool Loaded { get; private set; }
+        public bool Loaded
+        {
+            get => _loaded;
+            private set => Set(ref _loaded, value);
+        }
         public string Name => _Path.GetFileNameWithoutExtension(Path);
         public string Folder => _Path.GetDirectoryName(Path);
         public string Path { get; private set; }

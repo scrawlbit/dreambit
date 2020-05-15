@@ -17,7 +17,7 @@ namespace Scrawlbit.Notification
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangingEventHandler PropertyChanging;
 
-        public void OnPropertyChanging<T>(T oldValue, T newValue, string propertyName)
+        public void OnPropertyChanging<T>(T oldValue, T newValue, [CallerMemberName] string propertyName = null)
         {
             PropertyChanging?.Invoke(_obj, new InternalPropertyChangingEventArgs(propertyName, oldValue, newValue));
         }
@@ -25,9 +25,13 @@ namespace Scrawlbit.Notification
         {
             OnPropertyChanging(oldValue, newValue, ((MemberExpression)property.Body).Member.Name);
         }
-        public void OnPropertyChanged(string propertyName)
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(_obj, new PropertyChangedEventArgs(propertyName));
+        }
+        public void OnPropertyChanged<T>(T oldValue, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(_obj, new InternalPropertyChangedEventArgs(propertyName, oldValue, newValue));
         }
         public void OnPropertyChanged<T, TProperty>(Expression<Func<T, TProperty>> property)
         {
@@ -38,9 +42,11 @@ namespace Scrawlbit.Notification
         {
             if (!Equals(value, variable))
             {
-                OnPropertyChanging(variable, value, propertyName);
+                T oldValue = variable;
+
+                OnPropertyChanging(oldValue, value, propertyName);
                 variable = value;
-                OnPropertyChanged(propertyName);
+                OnPropertyChanged(oldValue, value, propertyName);
 
                 return true;
             }

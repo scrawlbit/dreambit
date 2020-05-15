@@ -67,8 +67,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
                 IStateCommand command = collection.State().Add(gameObject, description);
 
                 _state.Execute(command);
-
-                // TODO _editor.SelectedObject = gameObject;
+                _editor.SelectObjects(gameObject);
             }
             catch
             {
@@ -93,7 +92,7 @@ namespace DreamBit.Extension.Commands.SceneHierarchy
         private void FixActiveCamera(GameObject gameObject)
         {
             Camera camera = gameObject.Components.Find<Camera>();
-            
+
             if (camera?.IsActive == true && _editor.OpenedScene.GetCameras().Any(c => c.IsActive))
                 camera.IsActive = false;
         }
