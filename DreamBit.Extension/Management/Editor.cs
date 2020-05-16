@@ -22,7 +22,9 @@ namespace DreamBit.Extension.Management
         IEditorToolBox ToolBox { get; }
         ISelectionObject Selection { get; }
 
+        void CleanSelection();
         void SelectObjects(params GameObject[] objects);
+        void SelectObjects(bool clear, params GameObject[] objects);
     }
 
     internal class Editor : NotificationObject, IEditor
@@ -87,9 +89,21 @@ namespace DreamBit.Extension.Management
         public IEditorToolBox ToolBox => _toolBox.Value;
         public ISelectionObject Selection => _selection.Value;
 
-        public void SelectObjects(params GameObject[] objects)
+        public void CleanSelection()
         {
             _selectedObjects.Clear();
+        }
+        public void SelectObjects(params GameObject[] objects)
+        {
+            SelectObjects(true, objects);
+        }
+        public void SelectObjects(bool clear, params GameObject[] objects)
+        {
+            if (clear)
+                CleanSelection();
+            else
+                objects = objects.Except(_selectedObjects).ToArray();
+
             _selectedObjects.AddRange(objects);
         }
 

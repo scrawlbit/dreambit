@@ -31,7 +31,7 @@ namespace DreamBit.Extension.Module.TransformStrategies
             Vector2 center = _editor.Camera.WorldToScreen(_editor.Selection.Position);
             Rectangle handle = RectangleHandle(HandlePosition(radius));
 
-            drawer.DrawCircle(center, radius, sides, Color.Yellow);
+            drawer.DrawCircle(center, radius, sides, Color.White);
             drawer.FillRectangle(handle, Color.Gray * Transparency);
         }
 

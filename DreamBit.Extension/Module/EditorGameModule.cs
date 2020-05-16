@@ -36,7 +36,7 @@ namespace DreamBit.Extension.Module
         }
         protected override void Draw()
         {
-            GraphicsDevice.Clear(Color.Transparent);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             if (_editor.OpenedScene != null)
             {
@@ -102,17 +102,7 @@ namespace DreamBit.Extension.Module
         private void DrawTools()
         {
             using (_drawer.Batch())
-            {
-                Rectangle selectionArea = _editor.Selection.Area();
-
-                if (selectionArea.HasSize())
-                {
-                    selectionArea = _editor.Camera.WorldToScreen(selectionArea);
-                    _drawer.DrawRectangle(selectionArea, Color.Yellow);
-                }
-
                 _editor.ToolBox.Draw(_drawer);
-            }
         }
     }
 }

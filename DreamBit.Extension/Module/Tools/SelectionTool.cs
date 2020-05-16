@@ -3,6 +3,7 @@ using DreamBit.Extension.Module.TransformStrategies;
 using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using Microsoft.Xna.Framework;
+using Scrawlbit.Helpers;
 using Scrawlbit.MonoGame.Helpers;
 using ScrawlBit.MonoGame.Interop.Controls;
 using System;
@@ -20,6 +21,7 @@ namespace DreamBit.Extension.Module.Tools
         private bool _isSelecting;
         private Point _initialPosition;
         private Rectangle _selectionArea;
+        private bool _addSelection;
 
         public SelectionTool(
             IEditor editor,
@@ -39,6 +41,22 @@ namespace DreamBit.Extension.Module.Tools
         public override string Icon => "cursor";
         public override Key ShortcutKey => Key.V;
 
+        public override void OnKeyDown(KeyEventArgs e)
+        {
+            if (!e.IsRepeat && e.Key.In(Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift))
+                _addSelection = true;
+        }
+        public override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Key.In(Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift))
+            {
+                if (_addSelection && _isSelecting)
+                    _editor.CleanSelection();
+
+                _addSelection = false;
+            }
+        }
+
         public override void OnMouseDown(GameMouseButtonEventArgs args)
         {
             if (args.ChangedButton == MouseButton.Left)
@@ -46,6 +64,9 @@ namespace DreamBit.Extension.Module.Tools
                 _isSelecting = true;
                 _initialPosition = args.Position.ToPoint();
                 _selectionArea = new Rectangle(_initialPosition, Point.Zero);
+
+                if (!_addSelection)
+                    _editor.CleanSelection();
             }
 
             args.Handled = true;
@@ -72,7 +93,7 @@ namespace DreamBit.Extension.Module.Tools
                 if (!area.HasSize())
                     gameObjects = gameObjects.Take(1);
 
-                _editor.SelectObjects(gameObjects.ToArray());
+                _editor.SelectObjects(false, gameObjects.ToArray());
                 _selectionArea = Rectangle.Empty;
                 _isSelecting = false;
             }
@@ -86,6 +107,17 @@ namespace DreamBit.Extension.Module.Tools
             {
                 drawer.FillRectangle(_selectionArea, Color.Blue * 0.1f);
                 drawer.DrawRectangle(_selectionArea, Color.Blue);
+            }
+
+            if (_editor.Selection.HasSelection)
+            {
+                Rectangle selectionArea = _editor.Selection.Area();
+
+                if (selectionArea.HasSize())
+                {
+                    selectionArea = _editor.Camera.WorldToScreen(selectionArea);
+                    drawer.DrawRectangle(selectionArea, Color.White);
+                }
             }
 
             for (int i = 0; i < _strategies.Length; i++)

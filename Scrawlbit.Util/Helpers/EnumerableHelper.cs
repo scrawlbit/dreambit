@@ -94,5 +94,10 @@ namespace Scrawlbit.Helpers
         {
             return source.Where(i => !Equals(i, null)).Cast<T>();
         }
+
+        public static bool In<T>(this T item, params T[] itens)
+        {
+            return itens.Contains(item);
+        }
     }
 }
