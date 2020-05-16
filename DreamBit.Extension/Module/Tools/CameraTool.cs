@@ -55,5 +55,14 @@ namespace DreamBit.Extension.Module.Tools
 
             args.Handled = true;
         }
+        public override void OnMouseWheel(GameMouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+                _camera.ZoomIn(0.02f);
+            else if (e.Delta < 0)
+                _camera.ZoomOut(0.02f);
+
+            e.Handled = true;
+        }
     }
 }
