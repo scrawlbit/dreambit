@@ -136,10 +136,10 @@
     <Compile Include="Module\Tools\CameraTool.cs" />
     <Compile Include="Module\Tools\EditorTool.cs" />
     <Compile Include="Module\Tools\SelectionTool.cs" />
-    <Compile Include="Module\TransformStrategies\ITransformStrategy.cs" />
-    <Compile Include="Module\TransformStrategies\MoveStrategy.cs" />
-    <Compile Include="Module\TransformStrategies\RotateStrategy.cs" />
-    <Compile Include="Module\TransformStrategies\ScaleStrategy.cs" />
+    <Compile Include="Module\TransformHandlers\ITransformHandler.cs" />
+    <Compile Include="Module\TransformHandlers\MoveHandler.cs" />
+    <Compile Include="Module\TransformHandlers\RotateHandler.cs" />
+    <Compile Include="Module\TransformHandlers\ScaleHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DreamBitPackage.cs">
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>

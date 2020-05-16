@@ -3,20 +3,20 @@ using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 using Scrawlbit.MonoGame.Helpers;
 
-namespace DreamBit.Extension.Module.TransformStrategies
+namespace DreamBit.Extension.Module.TransformHandlers
 {
-    internal interface IScaleStrategy : ITransformStrategy { }
-    internal class ScaleStrategy : IScaleStrategy
+    internal interface IScaleHandler : ITransformHandler { }
+    internal class ScaleHandler : IScaleHandler
     {
         private const int HandlerSize = 4;
         private readonly IEditor _editor;
 
-        public ScaleStrategy(IEditor editor)
+        public ScaleHandler(IEditor editor)
         {
             _editor = editor;
         }
 
-        public bool IsMouseOverHandler(Vector2 position)
+        public bool IsMouseOver(Vector2 position)
         {
             return false;
         }

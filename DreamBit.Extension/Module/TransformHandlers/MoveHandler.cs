@@ -2,10 +2,10 @@
 using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 
-namespace DreamBit.Extension.Module.TransformStrategies
+namespace DreamBit.Extension.Module.TransformHandlers
 {
-    internal interface IMoveStrategy : ITransformStrategy { }
-    internal class MoveStrategy : IMoveStrategy
+    internal interface IMoveHandler : ITransformHandler { }
+    internal class MoveHandler : IMoveHandler
     {
         private const int AxisSize = 60;
         private const int TrianguleSize = 11;
@@ -15,12 +15,12 @@ namespace DreamBit.Extension.Module.TransformStrategies
 
         private readonly IEditor _editor;
 
-        public MoveStrategy(IEditor editor)
+        public MoveHandler(IEditor editor)
         {
             _editor = editor;
         }
 
-        public bool IsMouseOverHandler(Vector2 position)
+        public bool IsMouseOver(Vector2 position)
         {
             return IsMouseOverMiddleHandler(position) || IsMouseOverVerticalHandler(position) || IsMouseOverHorizontalHandler(position);
         }

@@ -1,5 +1,5 @@
 ﻿using DreamBit.Extension.Management;
-using DreamBit.Extension.Module.TransformStrategies;
+using DreamBit.Extension.Module.TransformHandlers;
 using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using Microsoft.Xna.Framework;
@@ -17,7 +17,7 @@ namespace DreamBit.Extension.Module.Tools
     internal class SelectionTool : EditorTool, ISelectionTool
     {
         private readonly IEditor _editor;
-        private readonly ITransformStrategy[] _strategies;
+        private readonly ITransformHandler[] _handlers;
         private bool _isSelecting;
         private Point _initialPosition;
         private Rectangle _selectionArea;
@@ -25,16 +25,16 @@ namespace DreamBit.Extension.Module.Tools
 
         public SelectionTool(
             IEditor editor,
-            IMoveStrategy moveStrategy,
-            IRotateStrategy rotateStrategy,
-            IScaleStrategy scaleStrategy)
+            IMoveHandler moveHandler,
+            IRotateHandler rotateHandler,
+            IScaleHandler scaleHandler)
         {
             _editor = editor;
-            _strategies = new ITransformStrategy[]
+            _handlers = new ITransformHandler[]
             {
-                moveStrategy,
-                rotateStrategy,
-                scaleStrategy
+                moveHandler,
+                rotateHandler,
+                scaleHandler
             };
         }
 
@@ -59,7 +59,7 @@ namespace DreamBit.Extension.Module.Tools
 
         public override void OnMouseDown(GameMouseButtonEventArgs args)
         {
-            if (IsMouseOverHandler(args.Position, out ITransformStrategy handler))
+            if (IsMouseOverHandler(args.Position, out ITransformHandler handler))
             {
 
             }
@@ -124,15 +124,15 @@ namespace DreamBit.Extension.Module.Tools
                 }
             }
 
-            for (int i = 0; i < _strategies.Length; i++)
-                _strategies[i].Draw(drawer);
+            for (int i = 0; i < _handlers.Length; i++)
+                _handlers[i].Draw(drawer);
         }
 
-        private bool IsMouseOverHandler(Vector2 position, out ITransformStrategy handler)
+        private bool IsMouseOverHandler(Vector2 position, out ITransformHandler handler)
         {
-            for (int i = 0; i < _strategies.Length; i++)
+            for (int i = 0; i < _handlers.Length; i++)
             {
-                if ((handler = _strategies[i]).IsMouseOverHandler(position))
+                if ((handler = _handlers[i]).IsMouseOver(position))
                     return true;
             }
 

@@ -7,7 +7,7 @@ using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Module;
 using DreamBit.Extension.Module.Tools;
-using DreamBit.Extension.Module.TransformStrategies;
+using DreamBit.Extension.Module.TransformHandlers;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
 using DreamBit.Modularization.Management;
@@ -105,9 +105,9 @@ namespace DreamBit.Extension.Properties
             _builder.Register<ISelectionTool>().Transient<SelectionTool>();
 
             // transform strategies
-            _builder.Register<IMoveStrategy>().Transient<MoveStrategy>();
-            _builder.Register<IRotateStrategy>().Transient<RotateStrategy>();
-            _builder.Register<IScaleStrategy>().Transient<ScaleStrategy>();
+            _builder.Register<IMoveHandler>().Transient<MoveHandler>();
+            _builder.Register<IRotateHandler>().Transient<RotateHandler>();
+            _builder.Register<IScaleHandler>().Transient<ScaleHandler>();
         }
         private void ViewModels()
         {

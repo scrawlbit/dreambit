@@ -3,10 +3,10 @@ using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace DreamBit.Extension.Module.TransformStrategies
+namespace DreamBit.Extension.Module.TransformHandlers
 {
-    internal interface IRotateStrategy : ITransformStrategy { }
-    internal class RotateStrategy : IRotateStrategy
+    internal interface IRotateHandler : ITransformHandler { }
+    internal class RotateHandler : IRotateHandler
     {
         private const float Transparency = .7f;
         private const float RotationAngle = 1;
@@ -16,12 +16,12 @@ namespace DreamBit.Extension.Module.TransformStrategies
         private const int Square = HandleCircleSize * 2;
         private readonly IEditor _editor;
 
-        public RotateStrategy(IEditor editor)
+        public RotateHandler(IEditor editor)
         {
             _editor = editor;
         }
 
-        public bool IsMouseOverHandler(Vector2 position)
+        public bool IsMouseOver(Vector2 position)
         {
             return false;
         }
