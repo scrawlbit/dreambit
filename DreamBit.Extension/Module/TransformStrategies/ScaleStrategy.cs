@@ -16,6 +16,10 @@ namespace DreamBit.Extension.Module.TransformStrategies
             _editor = editor;
         }
 
+        public bool IsMouseOverHandler(Vector2 position)
+        {
+            return false;
+        }
         public void Draw(IContentDrawer drawer)
         {
             if (!_editor.Selection.HasSelection)

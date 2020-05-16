@@ -20,6 +20,11 @@ namespace DreamBit.Extension.Module.TransformStrategies
             _editor = editor;
         }
 
+        public bool IsMouseOverHandler(Vector2 position)
+        {
+            return IsMouseOverMiddleHandler(position) || IsMouseOverVerticalHandler(position) || IsMouseOverHorizontalHandler(position);
+        }
+
         public void Draw(IContentDrawer drawer)
         {
             if (!_editor.Selection.HasSelection)
@@ -44,6 +49,32 @@ namespace DreamBit.Extension.Module.TransformStrategies
 
             drawer.FillRectangle(handler, new Vector2(HandlerMoveSize), Color.Gray * Transparency);
             drawer.DrawRectangle(handler, new Vector2(HandlerMoveSize), Color.Gray);
+        }
+
+        private bool IsMouseOverMiddleHandler(Vector2 position)
+        {
+            var handlePosition = _editor.Camera.WorldToScreen(_editor.Selection.Position) - new Vector2(0, HandlerMoveSize);
+            var handle = new Rectangle((int)handlePosition.X, (int)handlePosition.Y, HandlerMoveSize, HandlerMoveSize);
+
+            return handle.Contains(position);
+        }
+        private bool IsMouseOverVerticalHandler(Vector2 position)
+        {
+            var handlePosition = _editor.Camera.WorldToScreen(_editor.Selection.Position);
+            var handle = new Rectangle((int)handlePosition.X, (int)handlePosition.Y - AxisSize, 0, AxisSize);
+
+            handle.Inflate(5, 0);
+
+            return handle.Contains(position);
+        }
+        private bool IsMouseOverHorizontalHandler(Vector2 position)
+        {
+            var handlePosition = _editor.Camera.WorldToScreen(_editor.Selection.Position);
+            var handle = new Rectangle((int)handlePosition.X, (int)handlePosition.Y, AxisSize, 0);
+
+            handle.Inflate(0, 5);
+
+            return handle.Contains(position);
         }
     }
 }

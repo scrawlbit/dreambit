@@ -59,7 +59,11 @@ namespace DreamBit.Extension.Module.Tools
 
         public override void OnMouseDown(GameMouseButtonEventArgs args)
         {
-            if (args.ChangedButton == MouseButton.Left)
+            if (IsMouseOverHandler(args.Position, out ITransformStrategy handler))
+            {
+
+            }
+            else if (args.ChangedButton == MouseButton.Left)
             {
                 _isSelecting = true;
                 _initialPosition = args.Position.ToPoint();
@@ -124,6 +128,17 @@ namespace DreamBit.Extension.Module.Tools
                 _strategies[i].Draw(drawer);
         }
 
+        private bool IsMouseOverHandler(Vector2 position, out ITransformStrategy handler)
+        {
+            for (int i = 0; i < _strategies.Length; i++)
+            {
+                if ((handler = _strategies[i]).IsMouseOverHandler(position))
+                    return true;
+            }
+
+            handler = null;
+            return false;
+        }
         private IEnumerable<GameObject> GetObjectsInArea(IGameObjectCollection gameObjects, Rectangle area)
         {
             foreach (var gameObject in gameObjects.Reverse())
