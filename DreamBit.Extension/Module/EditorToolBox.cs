@@ -77,7 +77,7 @@ namespace DreamBit.Extension.Module
             {
                 IEditorTool tool = Tools.SingleOrDefault(t => t.ShortcutKey == args.Key);
 
-                if (CanSelectTool(tool))
+                if (CanSelectTool(tool) && tool != Selected)
                 {
                     if (tool.KeepShortcutPressed)
                         _lastTool = Selected;
@@ -129,7 +129,11 @@ namespace DreamBit.Extension.Module
 
         public void Draw(IContentDrawer drawer)
         {
-            if (CanEditScene()) Selected.Draw(drawer);
+            if (!CanEditScene())
+                return;
+
+            _lastTool?.Draw(drawer);
+            Selected.Draw(drawer);
         }
 
         private bool CanEditScene()
