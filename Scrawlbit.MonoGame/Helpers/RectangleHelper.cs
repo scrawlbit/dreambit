@@ -75,21 +75,37 @@ namespace Scrawlbit.MonoGame.Helpers
             return rectangle;
         }
 
-        public static Point LeftTop(this Rectangle rect)
+        public static Point LeftTop(this Rectangle rectangle)
         {
-            return new Point(rect.Left, rect.Top);
+            return new Point(rectangle.Left, rectangle.Top);
         }
-        public static Point RightTop(this Rectangle rect)
+        public static Point LeftCenter(this Rectangle rectangle)
         {
-            return new Point(rect.Right, rect.Top);
+            return new Point(rectangle.Left, rectangle.Center.Y);
         }
-        public static Point LeftBottom(this Rectangle rect)
+        public static Point LeftBottom(this Rectangle rectangle)
         {
-            return new Point(rect.Left, rect.Bottom);
+            return new Point(rectangle.Left, rectangle.Bottom);
         }
-        public static Point RightBottom(this Rectangle rect)
+        public static Point CenterTop(this Rectangle rectangle)
         {
-            return new Point(rect.Right, rect.Bottom);
+            return new Point(rectangle.Center.X, rectangle.Top);
+        }
+        public static Point CenterBottom(this Rectangle rectangle)
+        {
+            return new Point(rectangle.Center.X, rectangle.Bottom);
+        }
+        public static Point RightTop(this Rectangle rectangle)
+        {
+            return new Point(rectangle.Right, rectangle.Top);
+        }
+        public static Point RightCenter(this Rectangle rectangle)
+        {
+            return new Point(rectangle.Right, rectangle.Center.Y);
+        }
+        public static Point RightBottom(this Rectangle rectangle)
+        {
+            return new Point(rectangle.Right, rectangle.Bottom);
         }
 
         public static Rectangle Union(IEnumerable<Rectangle> rectangles)

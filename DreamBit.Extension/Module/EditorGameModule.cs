@@ -97,19 +97,20 @@ namespace DreamBit.Extension.Module
         private void DrawScene()
         {
             using (_drawer.Batch(transformMatrix: _editor.Camera.TransformMatrix))
-            {
                 _editor.OpenedScene.Preview(_drawer);
-
-                Rectangle selecionArea = _editor.Selection.Area();
-
-                if (selecionArea.HasSize())
-                    _drawer.DrawRectangle(selecionArea, Color.Yellow);
-            }
         }
         private void DrawTools()
         {
             using (_drawer.Batch())
             {
+                Rectangle selectionArea = _editor.Selection.Area();
+
+                if (selectionArea.HasSize())
+                {
+                    selectionArea = _editor.Camera.WorldToScreen(selectionArea);
+                    _drawer.DrawRectangle(selectionArea, Color.Yellow);
+                }
+
                 _editor.ToolBox.Draw(_drawer);
             }
         }

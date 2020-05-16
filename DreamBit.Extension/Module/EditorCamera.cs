@@ -17,15 +17,13 @@ namespace DreamBit.Extension.Module
         void ZoomIn(float increment = 0);
         void ZoomOut(float increment = 0);
 
-        Point ScreenToWorld(int x, int y);
-        Vector2 ScreenToWorld(float x, float y);
-        Vector2 ScreenToWorld(Vector2 screenPosition);
-        Rectangle ScreenToWorld(Rectangle screenRectangle);
+        Point ScreenToWorld(Point point);
+        Vector2 ScreenToWorld(Vector2 position);
+        Rectangle ScreenToWorld(Rectangle rectangle);
 
-        Point WorldToScreen(int x, int y);
-        Vector2 WorldToScreen(float x, float y);
-        Vector2 WorldToScreen(Vector2 worldPosition);
-        Rectangle WorldToScreen(Rectangle worldRectangle);
+        Point WorldToScreen(Point point);
+        Vector2 WorldToScreen(Vector2 position);
+        Rectangle WorldToScreen(Rectangle rectangle);
     }
 
     internal class EditorCamera : IEditorCamera
@@ -96,44 +94,36 @@ namespace DreamBit.Extension.Module
             Zoom -= increment;
         }
 
-        public Point ScreenToWorld(int x, int y)
+        public Point ScreenToWorld(Point point)
         {
-            return ScreenToWorld(new Vector2(x, y)).ToPoint();
+            return ScreenToWorld(point.ToVector2()).ToPoint();
         }
-        public Vector2 ScreenToWorld(float x, float y)
+        public Vector2 ScreenToWorld(Vector2 position)
         {
-            return ScreenToWorld(new Vector2(x, y));
+            return Vector2.Transform(position, Matrix.Invert(TransformMatrix));
         }
-        public Vector2 ScreenToWorld(Vector2 screenPosition)
+        public Rectangle ScreenToWorld(Rectangle rectangle)
         {
-            return Vector2.Transform(screenPosition, Matrix.Invert(TransformMatrix));
-        }
-        public Rectangle ScreenToWorld(Rectangle screenRectangle)
-        {
-            var a = ScreenToWorld(screenRectangle.Left, screenRectangle.Top);
-            var b = ScreenToWorld(screenRectangle.Right, screenRectangle.Bottom);
-            var size = b - a;
+            Point a = ScreenToWorld(rectangle.LeftTop());
+            Point b = ScreenToWorld(rectangle.RightBottom());
+            Point size = b - a;
 
             return new Rectangle(a, size);
         }
 
-        public Point WorldToScreen(int x, int y)
+        public Point WorldToScreen(Point point)
         {
-            return WorldToScreen(new Vector2(x, y)).ToPoint();
+            return WorldToScreen(point.ToVector2()).ToPoint();
         }
-        public Vector2 WorldToScreen(float x, float y)
+        public Vector2 WorldToScreen(Vector2 position)
         {
-            return WorldToScreen(new Vector2(x, y));
+            return Vector2.Transform(position, TransformMatrix);
         }
-        public Vector2 WorldToScreen(Vector2 worldPosition)
+        public Rectangle WorldToScreen(Rectangle rectangle)
         {
-            return Vector2.Transform(worldPosition, TransformMatrix);
-        }
-        public Rectangle WorldToScreen(Rectangle worldRectangle)
-        {
-            var a = WorldToScreen(worldRectangle.Left, worldRectangle.Top);
-            var b = WorldToScreen(worldRectangle.Right, worldRectangle.Bottom);
-            var size = b - a;
+            Point a = WorldToScreen(rectangle.LeftTop());
+            Point b = WorldToScreen(rectangle.RightBottom());
+            Point size = b - a;
 
             return new Rectangle(a, size);
         }

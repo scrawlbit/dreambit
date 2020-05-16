@@ -1,4 +1,5 @@
 ﻿using DreamBit.Extension.Management;
+using DreamBit.Extension.Module.TransformStrategies;
 using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using Microsoft.Xna.Framework;
@@ -14,14 +15,25 @@ namespace DreamBit.Extension.Module.Tools
     internal interface ISelectionTool : IEditorTool { }
     internal class SelectionTool : EditorTool, ISelectionTool
     {
+        private readonly IEditor _editor;
+        private readonly ITransformStrategy[] _strategies;
         private bool _isSelecting;
         private Point _initialPosition;
         private Rectangle _selectionArea;
-        private readonly IEditor _editor;
 
-        public SelectionTool(IEditor editor)
+        public SelectionTool(
+            IEditor editor,
+            IMoveStrategy moveStrategy,
+            IRotateStrategy rotateStrategy,
+            IScaleStrategy scaleStrategy)
         {
             _editor = editor;
+            _strategies = new ITransformStrategy[]
+            {
+                moveStrategy,
+                rotateStrategy,
+                scaleStrategy
+            };
         }
 
         public override string Icon => "cursor";
@@ -72,9 +84,12 @@ namespace DreamBit.Extension.Module.Tools
         {
             if (_selectionArea.HasSize())
             {
-                drawer.Draw(_selectionArea, Color.Blue * 0.1f);
+                drawer.FillRectangle(_selectionArea, Color.Blue * 0.1f);
                 drawer.DrawRectangle(_selectionArea, Color.Blue);
             }
+
+            for (int i = 0; i < _strategies.Length; i++)
+                _strategies[i].Draw(drawer);
         }
 
         private IEnumerable<GameObject> GetObjectsInArea(IGameObjectCollection gameObjects, Rectangle area)
