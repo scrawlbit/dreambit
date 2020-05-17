@@ -3,10 +3,10 @@ using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace DreamBit.Extension.Module.TransformHandlers
+namespace DreamBit.Extension.Module.Handlers
 {
-    internal interface IRotateHandler : ITransformHandler { }
-    internal class RotateHandler : IRotateHandler
+    internal interface IRotateHandler : IEditorHandler { }
+    internal class RotateHandler : EditorHandler, IRotateHandler
     {
         private const float Transparency = .7f;
         private const float RotationAngle = 1;
@@ -21,11 +21,11 @@ namespace DreamBit.Extension.Module.TransformHandlers
             _editor = editor;
         }
 
-        public bool IsMouseOver(Vector2 position)
+        public override bool IsMouseOver(Vector2 position)
         {
             return false;
         }
-        public void Draw(IContentDrawer drawer)
+        public override void Draw(IContentDrawer drawer)
         {
             if (!_editor.Selection.HasSelection) return;
 

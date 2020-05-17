@@ -3,10 +3,10 @@ using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 using Scrawlbit.MonoGame.Helpers;
 
-namespace DreamBit.Extension.Module.TransformHandlers
+namespace DreamBit.Extension.Module.Handlers
 {
-    internal interface IScaleHandler : ITransformHandler { }
-    internal class ScaleHandler : IScaleHandler
+    internal interface IScaleHandler : IEditorHandler { }
+    internal class ScaleHandler : EditorHandler, IScaleHandler
     {
         private const int HandlerSize = 4;
         private readonly IEditor _editor;
@@ -16,11 +16,11 @@ namespace DreamBit.Extension.Module.TransformHandlers
             _editor = editor;
         }
 
-        public bool IsMouseOver(Vector2 position)
+        public override bool IsMouseOver(Vector2 position)
         {
             return false;
         }
-        public void Draw(IContentDrawer drawer)
+        public override void Draw(IContentDrawer drawer)
         {
             if (!_editor.Selection.HasSelection)
                 return;

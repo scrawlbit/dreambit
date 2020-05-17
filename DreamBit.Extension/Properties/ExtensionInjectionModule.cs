@@ -6,8 +6,8 @@ using DreamBit.Extension.Commands.SceneInspect;
 using DreamBit.Extension.Components;
 using DreamBit.Extension.Management;
 using DreamBit.Extension.Module;
+using DreamBit.Extension.Module.Handlers;
 using DreamBit.Extension.Module.Tools;
-using DreamBit.Extension.Module.TransformHandlers;
 using DreamBit.Extension.ViewModels;
 using DreamBit.Extension.ViewModels.Dialogs;
 using DreamBit.Modularization.Management;
@@ -104,10 +104,11 @@ namespace DreamBit.Extension.Properties
             _builder.Register<ICameraTool>().Transient<CameraTool>();
             _builder.Register<ISelectionTool>().Transient<SelectionTool>();
 
-            // transform strategies
+            // handlers
             _builder.Register<IMoveHandler>().Transient<MoveHandler>();
             _builder.Register<IRotateHandler>().Transient<RotateHandler>();
             _builder.Register<IScaleHandler>().Transient<ScaleHandler>();
+            _builder.Register<ISelectHandler>().Transient<SelectHandler>();
         }
         private void ViewModels()
         {

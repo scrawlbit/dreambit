@@ -1,11 +1,15 @@
 ﻿using DreamBit.Extension.Management;
+using DreamBit.Extension.Resources;
 using DreamBit.Game.Drawing;
+using DreamBit.General.State;
 using Microsoft.Xna.Framework;
+using ScrawlBit.MonoGame.Interop.Controls;
+using System.Windows.Input;
 
-namespace DreamBit.Extension.Module.TransformHandlers
+namespace DreamBit.Extension.Module.Handlers
 {
-    internal interface IMoveHandler : ITransformHandler { }
-    internal class MoveHandler : IMoveHandler
+    internal interface IMoveHandler : IEditorHandler { }
+    internal class MoveHandler : EditorHandler, IMoveHandler
     {
         private const int AxisSize = 60;
         private const int TrianguleSize = 11;
@@ -14,18 +18,70 @@ namespace DreamBit.Extension.Module.TransformHandlers
         private const float Transparency = .7f;
 
         private readonly IEditor _editor;
+        private Vector2 _initialPosition;
+        private Vector2 _initialMousePosition;
+        private bool _isMovingHorizontally;
+        private bool _isMovingVertically;
 
         public MoveHandler(IEditor editor)
         {
             _editor = editor;
+
+            Cursor = CustomCursors.HandOpen;
         }
 
-        public bool IsMouseOver(Vector2 position)
+        public override bool IsMouseOver(Vector2 position)
         {
             return IsMouseOverMiddleHandler(position) || IsMouseOverVerticalHandler(position) || IsMouseOverHorizontalHandler(position);
         }
 
-        public void Draw(IContentDrawer drawer)
+        public override void OnMouseDown(GameMouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left && _editor.Selection.HasSelection)
+            {
+                IsHandling = IsMouseOverMiddleHandler(e.Position);
+
+                _isMovingHorizontally = IsHandling || IsMouseOverHorizontalHandler(e.Position);
+                _isMovingVertically = IsHandling || IsMouseOverVerticalHandler(e.Position);
+
+                IsHandling = _isMovingHorizontally || _isMovingVertically;
+
+                if (IsHandling)
+                {
+                    _initialMousePosition = _editor.Camera.ScreenToWorld(e.Position);
+                    _initialPosition = _editor.Selection.Position;
+
+                    Cursor = CustomCursors.HandClose;
+                }
+            }
+        }
+        public override void OnMouseMove(GameMouseEventArgs e)
+        {
+            if (!IsHandling) return;
+
+            var change = _editor.Camera.ScreenToWorld(e.Position) - _initialMousePosition;
+            var position = _initialPosition;
+
+            if (_isMovingHorizontally)
+                position.X += change.X;
+
+            if (_isMovingVertically)
+                position.Y += change.Y;
+
+            _editor.Selection.Position = position;
+        }
+        public override void OnMouseUp(GameMouseButtonEventArgs e)
+        {
+            if (IsHandling && e.ChangedButton == MouseButton.Left)
+            {
+                _editor.Selection.ValidateChanges();
+
+                IsHandling = false;
+                Cursor = CustomCursors.HandOpen;
+            }
+        }
+
+        public override void Draw(IContentDrawer drawer)
         {
             if (!_editor.Selection.HasSelection)
                 return;

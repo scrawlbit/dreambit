@@ -129,17 +129,19 @@
     <Compile Include="Management\ProjectManager.cs" />
     <Compile Include="Module\EditorCamera.cs" />
     <Compile Include="Module\EditorGameModule.cs" />
+    <Compile Include="Module\Handlers\SelectHandler.cs" />
     <Compile Include="Module\SelectionData.cs" />
     <Compile Include="Module\SelectionObject.cs" />
     <Compile Include="Module\TestGame.cs" />
     <Compile Include="Module\EditorToolBox.cs" />
     <Compile Include="Module\Tools\CameraTool.cs" />
     <Compile Include="Module\Tools\EditorTool.cs" />
+    <Compile Include="Module\Tools\HandlerTool.cs" />
     <Compile Include="Module\Tools\SelectionTool.cs" />
-    <Compile Include="Module\TransformHandlers\ITransformHandler.cs" />
-    <Compile Include="Module\TransformHandlers\MoveHandler.cs" />
-    <Compile Include="Module\TransformHandlers\RotateHandler.cs" />
-    <Compile Include="Module\TransformHandlers\ScaleHandler.cs" />
+    <Compile Include="Module\Handlers\EditorHandler.cs" />
+    <Compile Include="Module\Handlers\MoveHandler.cs" />
+    <Compile Include="Module\Handlers\RotateHandler.cs" />
+    <Compile Include="Module\Handlers\ScaleHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DreamBitPackage.cs">
       <DependentUpon>DreamBitPackage.vsct</DependentUpon>
