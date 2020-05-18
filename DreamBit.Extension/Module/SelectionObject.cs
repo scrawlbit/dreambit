@@ -132,19 +132,16 @@ namespace DreamBit.Extension.Module
         }
         public void ValidateChanges()
         {
-            using (_state.Scope("Selection updated"))
-            {
-                foreach (var item in _data)
-                {
-                    GameObject gameObject = item.Key;
-                    SelectionData data = item.Value;
+            List<IStateCommand> states = GetChanges().ToList();
 
-                    ValidateIsVisibleChange(gameObject, data);
-                    ValidatePositionChange(gameObject, data);
-                    ValidateRotationChange(gameObject, data);
-                    ValidateScaleChange(gameObject, data);
-                }
-            }
+            if (!states.Any())
+                return;
+
+            states.Insert(0, new StateCommand("Update selection", undo: UpdateTransformations));
+            states.Add(new StateCommand("Update selection", @do: UpdateTransformations));
+
+            using (_state.Scope("Selection updated"))
+                states.ForEach(_state.Add);
 
             CopyData();
         }
@@ -169,6 +166,19 @@ namespace DreamBit.Extension.Module
 
             CopyData(true);
             TrackNameChanges();
+
+            _applyChanges = true;
+        }
+        private void UpdateTransformations()
+        {
+            _applyChanges = false;
+
+            IsVisible = DetermineIsVisible();
+            Position = DeterminePosition();
+            Rotation = DetermineRotation();
+            Scale = DetermineScale();
+
+            CopyData();
 
             _applyChanges = true;
         }
@@ -279,49 +289,57 @@ namespace DreamBit.Extension.Module
                 .On(g => g.Name).Changed(() => Name = gameObject.Name);
         }
 
-        private void ValidateIsVisibleChange(GameObject gameObject, SelectionData data)
+        private IEnumerable<IStateCommand> GetChanges()
         {
-            if (gameObject.IsVisible == data.IsVisible)
-                return;
+            foreach (var item in _data)
+            {
+                GameObject gameObject = item.Key;
+                SelectionData data = item.Value;
 
+                if (gameObject.IsVisible != data.IsVisible)
+                    yield return CreateIsVisibleState(gameObject, data);
+
+                if (gameObject.Transform.Position != data.Position)
+                    yield return CreatePositionState(gameObject, data);
+
+                if (gameObject.Transform.Rotation != data.Rotation)
+                    yield return CreateRotationState(gameObject, data);
+
+                if (gameObject.Transform.Scale != data.Scale)
+                    yield return CreateScaleState(gameObject, data);
+            }
+        }
+        private static IStateCommand CreateIsVisibleState(GameObject gameObject, SelectionData data)
+        {
             string value = gameObject.IsVisible ? "visible" : "invisible";
             string description = $"{gameObject.Name} set to {value}";
             IStateCommand command = gameObject.State().SetProperty(g => g.IsVisible, data.IsVisible, gameObject.IsVisible, description);
 
-            _state.Add(command);
+            return command;
         }
-        private void ValidatePositionChange(GameObject gameObject, SelectionData data)
+        private static IStateCommand CreatePositionState(GameObject gameObject, SelectionData data)
         {
-            if (gameObject.Transform.Position == data.Position)
-                return;
-
             string value = gameObject.Transform.Position.Text();
             string description = $"{gameObject.Name} position changed to {value}";
             IStateCommand command = gameObject.Transform.State().SetProperty(t => t.Position, data.Position, gameObject.Transform.Position, description);
 
-            _state.Add(command);
+            return command;
         }
-        private void ValidateRotationChange(GameObject gameObject, SelectionData data)
+        private static IStateCommand CreateRotationState(GameObject gameObject, SelectionData data)
         {
-            if (gameObject.Transform.Rotation == data.Rotation)
-                return;
-
             string value = gameObject.Transform.Rotation.Text();
             string description = $"{gameObject.Name} rotation changed to {value}";
             IStateCommand command = gameObject.Transform.State().SetProperty(t => t.Rotation, data.Rotation, gameObject.Transform.Rotation, description);
 
-            _state.Add(command);
+            return command;
         }
-        private void ValidateScaleChange(GameObject gameObject, SelectionData data)
+        private static IStateCommand CreateScaleState(GameObject gameObject, SelectionData data)
         {
-            if (gameObject.Transform.Scale == data.Scale)
-                return;
-
             string value = gameObject.Transform.Scale.Text();
             string description = $"{gameObject.Name} scale changed to {value}";
             IStateCommand command = gameObject.Transform.State().SetProperty(t => t.Scale, data.Scale, gameObject.Transform.Scale, description);
 
-            _state.Add(command);
+            return command;
         }
     }
 }
