@@ -1,5 +1,6 @@
 ﻿using DreamBit.Extension.Helpers;
 using DreamBit.Extension.Management;
+using DreamBit.Extension.Resources;
 using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
 using Scrawlbit.MonoGame.Helpers;
@@ -25,6 +26,8 @@ namespace DreamBit.Extension.Module.Handlers
         public RotateHandler(IEditor editor)
         {
             _editor = editor;
+
+            Cursor = CustomCursors.HandOpen;
         }
 
         public override bool IsMouseOver(Vector2 position)
@@ -59,7 +62,12 @@ namespace DreamBit.Extension.Module.Handlers
             if (!e.Handled && e.ChangedButton == MouseButton.Left && _editor.Selection.HasSelection)
             {
                 IsHandling = IsMouseOver(e.Position);
-                _selectionArea = _editor.Selection.Area();
+
+                if (IsHandling)
+                {
+                    _selectionArea = _editor.Selection.Area();
+                    Cursor = CustomCursors.HandClose;
+                }
             }
         }
         public override void OnMouseMove(GameMouseEventArgs e)
@@ -78,6 +86,8 @@ namespace DreamBit.Extension.Module.Handlers
             if (IsHandling && e.ChangedButton == MouseButton.Left)
             {
                 _editor.Selection.ValidateChanges();
+
+                Cursor = CustomCursors.HandOpen;
                 IsHandling = false;
             }
         }
