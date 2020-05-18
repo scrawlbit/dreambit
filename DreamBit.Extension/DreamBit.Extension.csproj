@@ -123,6 +123,7 @@
     <Compile Include="Helpers\ErrorHelper.cs" />
     <Compile Include="Helpers\GameComponentCollectionHelper.cs" />
     <Compile Include="Helpers\GameObjectCollectionHelper.cs" />
+    <Compile Include="Helpers\KeyHelper.cs" />
     <Compile Include="Helpers\MarshalHelper.cs" />
     <Compile Include="Helpers\TreeViewItemHelper.cs" />
     <Compile Include="Management\Editor.cs" />

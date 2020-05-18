@@ -1,8 +1,8 @@
-﻿using DreamBit.Extension.Management;
+﻿using DreamBit.Extension.Helpers;
+using DreamBit.Extension.Management;
 using DreamBit.Game.Drawing;
 using DreamBit.Game.Elements;
 using Microsoft.Xna.Framework;
-using Scrawlbit.Helpers;
 using Scrawlbit.MonoGame.Helpers;
 using ScrawlBit.MonoGame.Interop.Controls;
 using System.Collections.Generic;
@@ -24,14 +24,16 @@ namespace DreamBit.Extension.Module.Handlers
             _editor = editor;
         }
 
+        public override bool IsMouseOver(Vector2 position) => true;
+
         public override void OnKeyDown(KeyEventArgs e)
         {
-            if (!e.IsRepeat && e.Key.In(Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift))
+            if (!e.IsRepeat && e.Key.IsControlOrShift())
                 _addSelection = true;
         }
         public override void OnKeyUp(KeyEventArgs e)
         {
-            if (e.Key.In(Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift))
+            if (e.Key.IsControlOrShift())
             {
                 if (_addSelection && IsHandling)
                     _editor.CleanSelection();

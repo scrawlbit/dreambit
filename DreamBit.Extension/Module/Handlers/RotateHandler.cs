@@ -1,7 +1,11 @@
-﻿using DreamBit.Extension.Management;
+﻿using DreamBit.Extension.Helpers;
+using DreamBit.Extension.Management;
 using DreamBit.Game.Drawing;
 using Microsoft.Xna.Framework;
+using Scrawlbit.MonoGame.Helpers;
+using ScrawlBit.MonoGame.Interop.Controls;
 using System;
+using System.Windows.Input;
 
 namespace DreamBit.Extension.Module.Handlers
 {
@@ -9,12 +13,14 @@ namespace DreamBit.Extension.Module.Handlers
     internal class RotateHandler : EditorHandler, IRotateHandler
     {
         private const float Transparency = .7f;
-        private const float RotationAngle = 1;
         private const int HandleCircleSize = 5;
         private const int RadiusDivisor = 2;
         private const int FixedAngle = 5;
         private const int Square = HandleCircleSize * 2;
+
         private readonly IEditor _editor;
+        private bool _fixedAngle;
+        private Rectangle _selectionArea;
 
         public RotateHandler(IEditor editor)
         {
@@ -23,17 +29,68 @@ namespace DreamBit.Extension.Module.Handlers
 
         public override bool IsMouseOver(Vector2 position)
         {
-            return false;
+            Rectangle selectionArea = GetSelectionArea();
+            int sides = CalculateSides(selectionArea);
+            float radius = CalculateRadius(sides);
+            Rectangle handle = RectangleHandle(radius);
+
+            return handle.Contains(position);
         }
+
+        public override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.Key.IsControlOrShift())
+            {
+                _fixedAngle = true;
+                FixAngle();
+            }
+        }
+        public override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Key.IsControlOrShift())
+            {
+                _fixedAngle = false;
+                FixAngle();
+            }
+        }
+
+        public override void OnMouseDown(GameMouseButtonEventArgs e)
+        {
+            if (!e.Handled && e.ChangedButton == MouseButton.Left && _editor.Selection.HasSelection)
+            {
+                IsHandling = IsMouseOver(e.Position);
+                _selectionArea = _editor.Selection.Area();
+            }
+        }
+        public override void OnMouseMove(GameMouseEventArgs e)
+        {
+            if (!IsHandling) return;
+
+            Vector2 direction = _editor.Camera.ScreenToWorld(e.Position) - _editor.Selection.Position;
+            float angle = Vector2Helper.DirectionToAngle(direction);
+
+            _editor.Selection.Rotation = angle;
+
+            FixAngle();
+        }
+        public override void OnMouseUp(GameMouseButtonEventArgs e)
+        {
+            if (IsHandling && e.ChangedButton == MouseButton.Left)
+            {
+                _editor.Selection.ValidateChanges();
+                IsHandling = false;
+            }
+        }
+
         public override void Draw(IContentDrawer drawer)
         {
             if (!_editor.Selection.HasSelection) return;
 
-            Rectangle selectionArea = _editor.Selection.Area();
+            Rectangle selectionArea = GetSelectionArea();
             int sides = CalculateSides(selectionArea);
             float radius = CalculateRadius(sides);
             Vector2 center = _editor.Camera.WorldToScreen(_editor.Selection.Position);
-            Rectangle handle = RectangleHandle(HandlePosition(radius));
+            Rectangle handle = RectangleHandle(radius);
 
             drawer.DrawCircle(center, radius, sides, Color.White);
             drawer.FillRectangle(handle, Color.Gray * Transparency);
@@ -47,17 +104,24 @@ namespace DreamBit.Extension.Module.Handlers
         {
             return sides / RadiusDivisor * _editor.Camera.Zoom;
         }
-        private Vector2 HandlePosition(float radius)
+        private Rectangle RectangleHandle(float radius)
         {
             Vector2 center = _editor.Camera.WorldToScreen(_editor.Selection.Position);
             float x = (float)Math.Cos(_editor.Selection.Rotation - MathHelper.PiOver2) * radius;
             float y = (float)Math.Sin(_editor.Selection.Rotation - MathHelper.PiOver2) * radius;
+            Vector2 position = new Vector2(x, y) + center;
 
-            return new Vector2(x, y) + center;
+            return new Rectangle((int)(position.X - HandleCircleSize), (int)(position.Y - HandleCircleSize), Square, Square);
         }
-        private static Rectangle RectangleHandle(Vector2 handlePosition)
+
+        private Rectangle GetSelectionArea()
         {
-            return new Rectangle((int)(handlePosition.X - HandleCircleSize), (int)(handlePosition.Y - HandleCircleSize), Square, Square);
+            return IsHandling ? _selectionArea : _editor.Selection.Area();
+        }
+        private void FixAngle()
+        {
+            if (IsHandling && _fixedAngle)
+                _editor.Selection.Rotation = MathematicHelper.RoundAngle(_editor.Selection.Rotation, FixedAngle);
         }
     }
 }

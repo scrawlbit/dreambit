@@ -40,7 +40,7 @@ namespace DreamBit.Extension.Module.Handlers
         public bool IsHandling { get; protected set; }
         public int DrawOrder { get; set; }
 
-        public virtual bool IsMouseOver(Vector2 position) => true;
+        public virtual bool IsMouseOver(Vector2 position) => false;
 
         public virtual void OnKeyDown(KeyEventArgs e) { }
         public virtual void OnKeyUp(KeyEventArgs e) { }
