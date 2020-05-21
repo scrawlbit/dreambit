@@ -42,7 +42,7 @@ namespace DreamBit.Extension.Module.Handlers
 
         public override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key.IsControlOrShift())
+            if (e.Key.IsShift())
             {
                 _fixedAngle = true;
                 FixAngle();
@@ -50,7 +50,7 @@ namespace DreamBit.Extension.Module.Handlers
         }
         public override void OnKeyUp(KeyEventArgs e)
         {
-            if (e.Key.IsControlOrShift())
+            if (e.Key.IsShift())
             {
                 _fixedAngle = false;
                 FixAngle();
