@@ -10,7 +10,6 @@ namespace Scrawlbit.Presentation.DragAndDrop
     {
         public static readonly DependencyProperty<DroppableBehavior, ICommand> DropCommandProperty;
         public static readonly DependencyProperty<DroppableBehavior, DroppableAdorner> AdornerProperty;
-        private bool _canBeDropped;
 
         static DroppableBehavior()
         {
@@ -32,10 +31,12 @@ namespace Scrawlbit.Presentation.DragAndDrop
         }
         public bool CanDropFiles { get; set; }
         protected object[] Data { get; private set; }
+        protected object SingleData => Data?[0];
         protected bool IsFiles { get; private set; }
         protected object Target => AssociatedObject.DataContext;
         protected DropType DropType { get; private set; }
         protected DropType LastDropType { get; private set; }
+        protected bool CanBeDropped { get; private set; }
 
         protected override void OnAttached()
         {
@@ -74,7 +75,7 @@ namespace Scrawlbit.Presentation.DragAndDrop
             if (Data?.Length == 0)
                 Data = null;
 
-            _canBeDropped = Data != null;
+            CanBeDropped = Data != null;
 
             DropType = 0;
             LastDropType = 0;
@@ -97,19 +98,19 @@ namespace Scrawlbit.Presentation.DragAndDrop
                         var args = GetDropEventArgs();
 
                         if (args.Data?.Length > 0)
-                            _canBeDropped = DropCommand.CanExecute(args);
+                            CanBeDropped = DropCommand.CanExecute(args);
                     }
                 }
             }
 
-            if (!_canBeDropped)
+            if (!CanBeDropped)
                 e.Effects = DragDropEffects.None;
 
             e.Handled = true;
         }
         protected virtual void OnDragLeave(object sender, DragEventArgs e)
         {
-            _canBeDropped = false;
+            CanBeDropped = false;
             Data = null;
             LastDropType = 0;
             DropType = 0;
@@ -119,7 +120,7 @@ namespace Scrawlbit.Presentation.DragAndDrop
         }
         protected virtual void OnDrop(object sender, DragEventArgs e)
         {
-            if (_canBeDropped && !Data.Contains(Target) && DropCommand != null)
+            if (CanBeDropped && !Data.Contains(Target) && DropCommand != null)
             {
                 var args = GetDropEventArgs();
 

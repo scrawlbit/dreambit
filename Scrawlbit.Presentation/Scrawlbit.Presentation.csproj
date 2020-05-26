@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MultiSelectTreeView">
+      <HintPath>..\Libs\MultiSelectTreeView\MultiSelectTreeView.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -46,6 +49,7 @@
     <Compile Include="Behaviors\RegexInputValidationBehavior.cs" />
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Bindings\EnumCollectionBinding.cs" />
+    <Compile Include="Collections\Behaviors.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CommandMethod.cs" />
     <Compile Include="Commands\CommandParameter.cs" />
@@ -80,7 +84,7 @@
     <Compile Include="DragAndDrop\DroppableAdorner.cs" />
     <Compile Include="DragAndDrop\DroppableBehavior.cs" />
     <Compile Include="DragAndDrop\DropType.cs" />
-    <Compile Include="DragAndDrop\MultipleChildDraggableBehavior.cs" />
+    <Compile Include="DragAndDrop\MultipleDataDraggableBehavior.cs" />
     <Compile Include="DragAndDrop\TreeViewDraggableBehavior.cs" />
     <Compile Include="DragAndDrop\TreeViewDropEventArgs.cs" />
     <Compile Include="DragAndDrop\TreeViewDroppableBehavior.cs" />

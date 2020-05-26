@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace DreamBit.Extension.Controls.TreeViews
+namespace DreamBit.Extension.Controls.DragAndDrop
 {
     public class TreeViewLastItemAdorner : DroppableAdorner
     {

@@ -1,4 +1,7 @@
 ﻿using DreamBit.General.State;
+using Microsoft.Xaml.Behaviors;
+using Scrawlbit.Helpers;
+using Scrawlbit.Presentation.Collections;
 using System.Windows;
 
 namespace DreamBit.Extension.Helpers
@@ -85,6 +88,36 @@ namespace DreamBit.Extension.Helpers
             element.RemoveHandler(TextChangedEvent, handler);
         }
 
+
+        #endregion
+
+        #region AttachedBehaviors
+
+        public static readonly DependencyProperty AttachedBehaviorsProperty = DependencyProperty.RegisterAttached(
+            "AttachedBehaviors",
+            typeof(Behaviors),
+            typeof(ControlHelper),
+            new PropertyMetadata(null, AttachedBehaviorsCallback)
+        );
+
+        public static Behaviors GetAttachedBehaviors(DependencyObject obj)
+        {
+            return (Behaviors)obj.GetValue(AttachedBehaviorsProperty);
+        }
+        public static void SetAttachedBehaviors(DependencyObject obj, Behaviors value)
+        {
+            obj.SetValue(AttachedBehaviorsProperty, value);
+        }
+        private static void AttachedBehaviorsCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            BehaviorCollection behaviors = Interaction.GetBehaviors(obj);
+
+            if (e.OldValue is Behaviors oldBehaviors)
+                behaviors.RemoveRange(oldBehaviors);
+
+            if (e.NewValue is Behaviors newBehaviors)
+                behaviors.AddRange(newBehaviors);
+        }
 
         #endregion
     }

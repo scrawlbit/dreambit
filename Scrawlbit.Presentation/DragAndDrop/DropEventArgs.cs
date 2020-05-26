@@ -11,7 +11,7 @@ namespace Scrawlbit.Presentation.DragAndDrop
         public bool IsFiles { get; set; }
 
         public bool HasMultipleData => Data?.Length > 1;
-        public object SingleData => Data?.Single();
+        public object SingleData => Data?[0];
         public IEnumerable<string> Files => Data.Cast<string>();
     }
 }

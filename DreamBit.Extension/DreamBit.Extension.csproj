@@ -101,14 +101,9 @@
     <Compile Include="Controls\Input\TextBox.xaml.cs">
       <DependentUpon>TextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TreeViews\EditableTreeViewItemText.xaml.cs">
-      <DependentUpon>EditableTreeViewItemText.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TreeViews\ExtendedTreeViewDroppableBehavior.cs" />
-    <Compile Include="Controls\TreeViews\TreeViewItemAdorner.cs" />
-    <Compile Include="Controls\TreeViews\TreeViewItemsMultiSelectBehavior.cs" />
-    <Compile Include="Controls\TreeViews\TreeViewLastItemAdorner.cs" />
-    <Compile Include="Controls\TreeViews\TreeViewMultiSelectBehavior.cs" />
+    <Compile Include="Controls\DragAndDrop\AdornedTreeViewDroppableBehavior.cs" />
+    <Compile Include="Controls\DragAndDrop\TreeViewItemAdorner.cs" />
+    <Compile Include="Controls\DragAndDrop\TreeViewLastItemAdorner.cs" />
     <Compile Include="Controls\WindowView.cs" />
     <Compile Include="Controls\Objects\Vector2Proxy.cs" />
     <Compile Include="Converters\IconSourceConverter.cs" />
@@ -345,10 +340,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Input\TextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TreeViews\EditableTreeViewItemText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

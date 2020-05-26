@@ -25,6 +25,10 @@ namespace Scrawlbit.Presentation.Helpers
 
             return parentObject as T ?? parentObject.ParentsUntil<T>(stopFunction);
         }
+        public static T ClosestUntil<T>(this DependencyObject element, Func<DependencyObject, bool> stopFunction = null) where T : DependencyObject
+        {
+            return element as T ?? element.ParentsUntil<T>(stopFunction);
+        }
 
         public static IEnumerable<T> FindChildren<T>(this DependencyObject reference) where T : class
         {

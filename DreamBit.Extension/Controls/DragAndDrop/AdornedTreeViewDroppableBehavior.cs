@@ -1,11 +1,11 @@
 ﻿using Scrawlbit.Presentation.DragAndDrop;
 using Scrawlbit.Presentation.Helpers;
 using System.Windows;
-using System.Windows.Controls;
+using TreeView = System.Windows.Controls.MultiSelectTreeView;
 
-namespace DreamBit.Extension.Controls.TreeViews
+namespace DreamBit.Extension.Controls.DragAndDrop
 {
-    public class ExtendedTreeViewDroppableBehavior : TreeViewDroppableBehavior
+    public class AdornedTreeViewDroppableBehavior : TreeViewDroppableBehavior
     {
         private TreeView _treeView;
         private DroppableAdorner _lastItemAdorner;

@@ -10,13 +10,13 @@ namespace Scrawlbit.Presentation.DragAndDrop
     public class DraggableBehavior : Behavior<FrameworkElement>
     {
         private bool _isMouseClicked;
-        private MultipleChildDraggableBehavior _multipleDataBehavior;
+        private MultipleDataDraggableBehavior _multipleDataBehavior;
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            _multipleDataBehavior = AssociatedObject.FindBehaviorInParent<MultipleChildDraggableBehavior>();
+            _multipleDataBehavior = AssociatedObject.FindBehaviorInParent<MultipleDataDraggableBehavior>();
 
             AssociatedObject.AddHandler(UIElement.PreviewMouseLeftButtonDownEvent, (MouseButtonEventHandler)OnMouseButtonDown, true);
             AssociatedObject.AddHandler(UIElement.PreviewMouseLeftButtonUpEvent, (MouseButtonEventHandler)OnMouseButtonUp, true);
@@ -52,7 +52,7 @@ namespace Scrawlbit.Presentation.DragAndDrop
         private object[] GetData()
         {
             var data = new List<object>();
-            var multipleData = _multipleDataBehavior?.SelectedChildrenValues?.Cast<object>().ToArray() ?? new object[0];
+            var multipleData = _multipleDataBehavior?.Items?.Cast<object>().ToArray() ?? new object[0];
 
             if (multipleData.Contains(AssociatedObject.DataContext))
                 data.AddRange(multipleData);

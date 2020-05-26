@@ -1,37 +1,32 @@
 ﻿using Scrawlbit.Presentation.DragAndDrop;
 using Scrawlbit.Presentation.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using TreeViewItem = System.Windows.Controls.MultiSelectTreeViewItem;
 
-namespace DreamBit.Extension.Controls.TreeViews
+namespace DreamBit.Extension.Controls.DragAndDrop
 {
     public class TreeViewItemAdorner : DroppableAdorner
     {
-        private readonly TreeViewItem _item;
-        private readonly ContentPresenter _header;
-        private readonly DroppableAdorner _parentAdorner;
-        private readonly bool _isParentFirstElement;
+        private TreeViewItem _item;
+        private DroppableAdorner _parentAdorner;
+        private bool _isParentFirstElement;
+        private ContentPresenter _header;
         private DropType _dropType;
 
         public TreeViewItemAdorner(UIElement adornedElement) : base(adornedElement)
         {
-            _item = adornedElement.ParentsUntil<TreeViewItem>();
-            _header = adornedElement.FindChild<ContentPresenter>();
-
-            var parentItem = _item.ParentsUntil<TreeViewItem>();
-            _parentAdorner = parentItem?.FindBehaviorInChildren<ExtendedTreeViewDroppableBehavior>().Adorner;
-            _isParentFirstElement = parentItem?.Items[0] == _item.DataContext;
-
             BorderBrush = ApplicationHelper.FindResource<SolidColorBrush>("DroppableAdornerBorderBrush");
             BackgroundBrush = ApplicationHelper.FindResource<SolidColorBrush>("DroppableAdornerBackgroundBrush");
             LineBrush = ApplicationHelper.FindResource<SolidColorBrush>("DroppableAdornerLineBrush");
         }
+
+        public SolidColorBrush BorderBrush { get; set; }
+        public SolidColorBrush BackgroundBrush { get; set; }
+        public SolidColorBrush LineBrush { get; set; }
 
         public override void Update(DropType dropType, object[] data, object target)
         {
@@ -50,12 +45,10 @@ namespace DreamBit.Extension.Controls.TreeViews
             base.Remove();
         }
 
-        public SolidColorBrush BorderBrush { get; set; }
-        public SolidColorBrush BackgroundBrush { get; set; }
-        public SolidColorBrush LineBrush { get; set; }
-
         protected override void OnRender(DrawingContext drawingContext)
         {
+            Initialize();
+
             if (_dropType == DropType.Inside)
             {
                 DrawBox(drawingContext);
@@ -82,6 +75,20 @@ namespace DreamBit.Extension.Controls.TreeViews
                     DrawLine(drawingContext, false);
                 }
             }
+        }
+
+        private void Initialize()
+        {
+            if (_item != null)
+                return;
+
+            _item = AdornedElement.ClosestUntil<TreeViewItem>();
+            _header = AdornedElement.FindChild<ContentPresenter>();
+
+            var parentItem = _item.ParentsUntil<TreeViewItem>();
+
+            _parentAdorner = parentItem?.FindBehaviorInside<AdornedTreeViewDroppableBehavior>().Adorner;
+            _isParentFirstElement = parentItem?.Items[0] == _item.DataContext;
         }
         private void DrawBox(DrawingContext drawingContext)
         {

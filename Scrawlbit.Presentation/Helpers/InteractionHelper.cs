@@ -50,8 +50,12 @@ namespace Scrawlbit.Presentation.Helpers
         public static T FindBehaviorInParent<T>(this DependencyObject child) where T : Behavior
         {
             var parent = child.GetParent();
-            
+
             return parent?.GetBehavior<T>() ?? parent?.FindBehaviorInParent<T>();
+        }
+        public static T FindBehaviorInside<T>(this DependencyObject element) where T : Behavior
+        {
+            return element.GetBehavior<T>() ?? element.FindBehaviorInChildren<T>();
         }
     }
 }

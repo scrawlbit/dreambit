@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using TreeView = System.Windows.Controls.MultiSelectTreeView;
+using TreeViewItem = System.Windows.Controls.MultiSelectTreeViewItem;
 
 namespace Scrawlbit.Presentation.Helpers
 {

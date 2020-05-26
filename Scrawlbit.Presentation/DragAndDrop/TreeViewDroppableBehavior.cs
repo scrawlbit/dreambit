@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using Scrawlbit.Helpers;
+﻿using Scrawlbit.Helpers;
 using Scrawlbit.Presentation.Helpers;
+using System.Linq;
+using System.Windows;
+using TreeView = System.Windows.Controls.MultiSelectTreeView;
+using TreeViewItem = System.Windows.Controls.MultiSelectTreeViewItem;
 
 namespace Scrawlbit.Presentation.DragAndDrop
 {
@@ -28,7 +29,7 @@ namespace Scrawlbit.Presentation.DragAndDrop
 
             if (_treeView == null)
             {
-                _item = AssociatedObject.ParentsUntil<TreeViewItem>();
+                _item = AssociatedObject.ClosestUntil<TreeViewItem>();
                 _parentItem = _item.ParentItem();
                 _treeView = _item.ParentTreeView();
                 _canDropOnEdges = true;
