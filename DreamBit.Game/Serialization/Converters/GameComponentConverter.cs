@@ -47,7 +47,7 @@ namespace DreamBit.Game.Serialization.Converters
             foreach (var p in obj.Properties())
             {
                 if (p.Name != Script)
-                    properties.Add(new ScriptProperty(p.Name, t => p.Value.ToObject(t, serializer)));
+                    properties.Add(new ScriptProperty(p.Name, p.Value, serializer));
             }
 
             return new ScriptBehavior(file, properties);
@@ -68,8 +68,14 @@ namespace DreamBit.Game.Serialization.Converters
 
             foreach (var property in value.Properties)
             {
-                if (!Equals(property.Value, property.DefaultValue))
+                if (property.HasJsonValue)
+                {
+                    obj[property.Name] = property.JsonToken;
+                }
+                else if (!Equals(property.Value, property.DefaultValue))
+                {
                     obj.SetProperty(property.Name, property.Value, serializer);
+                }
             }
         }
         private void WriteCommonComponent(JObject obj, GameComponent value, JsonSerializer serializer)

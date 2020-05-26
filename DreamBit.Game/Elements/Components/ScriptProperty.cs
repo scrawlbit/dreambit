@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Scrawlbit.Notification;
 using System;
 
@@ -10,13 +12,17 @@ namespace DreamBit.Game.Elements.Components
         private Type _valueType;
         private object _value;
         private object _defaultValue;
-        private Func<Type, object> _jsonValue;
+        private JsonSerializer _jsonSerializer;
 
-        internal ScriptProperty(string name, Func<Type, object> jsonValue = null)
+        internal ScriptProperty(string name)
         {
-            _jsonValue = jsonValue;
-
             Name = name;
+        }
+        internal ScriptProperty(string name, JToken jsonToken, JsonSerializer jsonSerializer) : this(name)
+        {
+            _jsonSerializer = jsonSerializer;
+
+            JsonToken = jsonToken;
         }
 
         public string Name { get; }
@@ -40,7 +46,8 @@ namespace DreamBit.Game.Elements.Components
             get => _value;
             set => Set(ref _value, value);
         }
-        internal bool HasJsonValue => _jsonValue != null;
+        internal JToken JsonToken { get; private set; }
+        internal bool HasJsonValue => JsonToken != null;
 
         internal void SetType(string name)
         {
@@ -61,11 +68,12 @@ namespace DreamBit.Game.Elements.Components
             try
             {
                 if (Type != ScriptPropertyType.Unknown)
-                    Value = _jsonValue(ValueType);
+                    Value = JsonToken.ToObject(ValueType, _jsonSerializer);
             }
             finally
             {
-                _jsonValue = null;
+                _jsonSerializer = null;
+                JsonToken = null;
             }
         }
 
