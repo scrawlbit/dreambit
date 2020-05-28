@@ -109,7 +109,7 @@ namespace DreamBit.Extension.Management
 
         private void OnSelectedObjectsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            SelectedObject = SelectedObjects.FirstOrDefault();
+            SelectedObject = SelectedObjects.LastOrDefault();
         }
         private void OnProjectLoadedChanged(bool loaded)
         {

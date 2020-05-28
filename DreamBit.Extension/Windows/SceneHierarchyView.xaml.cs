@@ -2,6 +2,7 @@
 using DreamBit.Extension.ViewModels;
 using DreamBit.Game.Elements;
 using DreamBit.General.State;
+using Scrawlbit.Presentation.Helpers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +12,7 @@ namespace DreamBit.Extension.Windows
     public partial class SceneHierarchyView
     {
         private readonly IStateManager _stateManager;
+        private readonly SceneHierarchyViewModel _viewModel;
 
         public SceneHierarchyView()
         {
@@ -20,7 +22,8 @@ namespace DreamBit.Extension.Windows
                 return;
 
             DreamBitPackage.Container.Inject(out _stateManager);
-            LoadViewModel<SceneHierarchyViewModel>();
+
+            _viewModel = LoadViewModel<SceneHierarchyViewModel>();
         }
 
         private void OnPreviewSelectionChanged(object sender, PreviewSelectionChangedEventArgs e)
@@ -37,6 +40,11 @@ namespace DreamBit.Extension.Windows
             IStateCommand command = gameObject.State().SetProperty(g => g.Name, e, description);
 
             _stateManager.Add(command);
+        }
+        private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F2 && ObjectsTree.IsKeyboardFocusWithin)
+                ObjectsTree.FindTreeViewItem(_viewModel.Editor.SelectedObject).Focus();
         }
     }
 }

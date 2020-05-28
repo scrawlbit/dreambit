@@ -43,18 +43,20 @@
             </ToolBar>
         </ToolBarPanel>
 
-        <treeViews:MultiSelectTreeView 
+        <treeViews:MultiSelectTreeView
+            Name="ObjectsTree"
             ItemsSource="{Binding Editor.OpenedScene.Objects}"
             AllowEditItems="True"
             SelectedItems="{Binding Editor.SelectedObjects, Mode=OneWay}"
             helpers:ControlHelper.TextChanged="OnTextChanged"
-            PreviewSelectionChanged="OnPreviewSelectionChanged">
-            
+            PreviewSelectionChanged="OnPreviewSelectionChanged"
+            PreviewKeyDown="OnPreviewKeyDown">
+
             <i:Interaction.Behaviors>
                 <dragDrop:MultipleDataDraggableBehavior Items="{Binding Editor.SelectedObjects}" />
                 <dragDrop2:AdornedTreeViewDroppableBehavior DropCommand="{Binding MoveGameObjectCommand}" />
             </i:Interaction.Behaviors>
-            
+
             <treeViews:MultiSelectTreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add Game Object" Icon="{StaticResource ModelIcon}" Command="{Binding AddGameObjectCommand}" />
@@ -107,7 +109,7 @@
                     <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
             </treeViews:MultiSelectTreeView.ItemTemplate>
-            
+
         </treeViews:MultiSelectTreeView>
     </DockPanel>
 

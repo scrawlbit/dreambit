@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using TreeView = System.Windows.Controls.MultiSelectTreeView;
 using TreeViewItem = System.Windows.Controls.MultiSelectTreeViewItem;
 
@@ -16,12 +17,15 @@ namespace Scrawlbit.Presentation.Helpers
             if (item != null)
                 return item;
 
-            for (var i = 0; i < itemContainerGenerator.Items.Count; i++)
+            if (itemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
-                item = (TreeViewItem)itemContainerGenerator.ContainerFromIndex(i);
-                item = FindTreeViewItem(item.ItemContainerGenerator, data);
-                if (item != null)
-                    return item;
+                for (var i = 0; i < itemContainerGenerator.Items.Count; i++)
+                {
+                    item = (TreeViewItem)itemContainerGenerator.ContainerFromIndex(i);
+                    item = FindTreeViewItem(item.ItemContainerGenerator, data);
+                    if (item != null)
+                        return item;
+                }
             }
 
             return null;
