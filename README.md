@@ -4,7 +4,7 @@ This project was an effort of study and passion to XNA/Monogame.
 We stopped working on it due the little to no free time a few years ago.
 Altough it's in really initial stage, we learned a lot from game development, archtecture and programming with .Net
 
-We hope it can serve as a code reference or that maybe one day we can continue the development, or maybe even it helps the community in any ideas of engines for Monogame.
+We hope it can serve as a code reference or that maybe one day we can continue the development, or maybe even helps the community in any ideas for MonoGame engines.
 
 ---
 DreamBit is an engine developped as a VSIX extension.
