@@ -87,7 +87,7 @@ namespace DreamBit.Extension.Module
         {
             if (!_pipeline.Loaded)
             {
-                _contentManager.Dispose();
+                _contentManager?.Dispose();
                 return;
             }
 
