@@ -35,6 +35,7 @@ There's a lot of functionalities we already implemented:
 * Image Renderer component,
 * Text Renderer component,
 * Project Scripts as components (with the identification of the properties in the c# script as fields in the inspect),
+* Zoom in and out in the Scene Editor (with scroll too)
 * and a lot more...
 
 ### Development
