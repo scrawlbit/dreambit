@@ -14,13 +14,13 @@ It uses the game loop to create a canvas (within a WPF window) and render it ins
 There's also support in the Solution Explorer with menus to add Fonts, Scenes and Scripts to the content project. It also iddentify the files added to the content project and automatic includes them to the pipeline.
 
 ### Overview
-![Alt text](Examples/overview.png?raw=true "Overview")
+![Alt text](Images/overview.png?raw=true "Overview")
 
 ### Extension and windows
-![Alt text](Examples/extension.png?raw=true "Extension and windows")
+![Alt text](Images/extension.png?raw=true "Extension and windows")
 
 ### Solution explorer
-![Alt text](Examples/solution-explorer.png?raw=true "Solution Explorer")
+![Alt text](Images/solution-explorer.png?raw=true "Solution Explorer")
 
 ### Functionalities
 There's a lot of functionalities we already implemented:
