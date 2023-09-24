@@ -11,7 +11,7 @@ DreamBit is an engine developped as a VSIX extension.
 The goal is to create windows and menus to interact with the game project inside the Visual Studio, without the need of an external application.
 
 It uses the game loop to create a canvas (within a WPF window) and render it inside the Visual Studio with other windows to create game scenes.
-There's also support in the Solution Explorer with menus to add Fonts and Scenes to the content project. It also iddentify the files added to the content project and automatic includes them to the pipeline.
+There's also support in the Solution Explorer with menus to add Fonts, Scenes and Scripts to the content project. It also iddentify the files added to the content project and automatic includes them to the pipeline.
 
 ### Overview
 ![Alt text](Examples/overview.png?raw=true "Overview")
@@ -39,6 +39,8 @@ There's a lot of functionalities we already implemented:
 * and a lot more...
 
 ### Development
+It uses the MonoGame 3.7 installation version, not the new packages versions.
+
 There's a zip file with a test project to use with the development.
 It has some files to work with the extension. We would later create visual studio templates for MonoGame projects that has this file organization.
 
