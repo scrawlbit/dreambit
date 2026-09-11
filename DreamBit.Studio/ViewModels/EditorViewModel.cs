@@ -98,6 +98,16 @@ namespace DreamBit.Studio.ViewModels
             set => Set(ref _isPlaying, value);
         }
 
+        private bool _snapToGrid;
+        public bool SnapToGrid
+        {
+            get => _snapToGrid;
+            set => Set(ref _snapToGrid, value);
+        }
+
+        /// <summary>Passo do grid usado pelo snap (espelha o SceneRenderer.GridSize).</summary>
+        public int GridStep { get; set; } = 32;
+
         public GameObject AddObject()
         {
             var obj = new GameObject($"GameObject {++_counter}");

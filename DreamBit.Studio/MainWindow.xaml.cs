@@ -61,6 +61,12 @@ namespace DreamBit.Studio
 
         private void Surface_MouseWheel(object sender, MouseWheelEventArgs e) => _input.Wheel(Pos(e), e.Delta, W, H);
 
+        private void OnWindowKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete && _editor.DeleteObjectCommand.CanExecute(null))
+                _editor.DeleteObjectCommand.Execute(null);
+        }
+
         private void OnPlayToggle(object sender, RoutedEventArgs e)
         {
             _editor.IsPlaying = !_editor.IsPlaying;

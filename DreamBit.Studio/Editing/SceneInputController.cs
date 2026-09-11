@@ -54,7 +54,17 @@ namespace DreamBit.Studio.Editing
             if (_dragging && _editor.SelectedObject != null)
             {
                 var world = _editor.Camera.ScreenToWorld(screen, width, height);
-                _editor.SelectedObject.Transform.Position = ToLocalParent(_editor.SelectedObject, world) + _dragOffset;
+                var position = ToLocalParent(_editor.SelectedObject, world) + _dragOffset;
+
+                if (_editor.SnapToGrid && _editor.GridStep > 0)
+                {
+                    float step = _editor.GridStep;
+                    position = new Vector2(
+                        (float)System.Math.Round(position.X / step) * step,
+                        (float)System.Math.Round(position.Y / step) * step);
+                }
+
+                _editor.SelectedObject.Transform.Position = position;
             }
         }
 

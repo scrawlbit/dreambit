@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hosting="clr-namespace:DreamBit.Studio.Hosting"
         Title="DreamBit Studio (.NET 8 standalone)" Height="720" Width="1180"
-        Background="#1E2128" TextElement.Foreground="#D6DBE6" FontSize="12">
+        Background="#1E2128" TextElement.Foreground="#D6DBE6" FontSize="12"
+        KeyDown="OnWindowKeyDown">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="#D6DBE6" />
@@ -42,6 +43,8 @@
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
                 <Separator Width="1" Margin="8,2" Background="#3A404C" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />
+                <CheckBox Content="Snap ao grid" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="12,0,0,0"
+                          IsChecked="{Binding SnapToGrid}" />
                 <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom: {0:0.00}x'}" VerticalAlignment="Center" Margin="16,0,0,0" Foreground="#8A93A6" />
             </StackPanel>
         </Border>
