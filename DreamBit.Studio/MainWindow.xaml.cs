@@ -133,6 +133,18 @@ namespace DreamBit.Studio
 
         private void OnToggleTheme(object sender, RoutedEventArgs e) => ThemeManager.Toggle(_renderer);
 
+        private void OnActivateTab(object sender, RoutedEventArgs e)
+        {
+            if (((System.Windows.FrameworkElement)sender).DataContext is ViewModels.SceneTab tab)
+                _editor.ActivateTab(tab);
+        }
+
+        private void OnCloseTab(object sender, RoutedEventArgs e)
+        {
+            if (((System.Windows.FrameworkElement)sender).DataContext is ViewModels.SceneTab tab)
+                _editor.CloseTab(tab);
+        }
+
         private void OnPlayToggle(object sender, RoutedEventArgs e)
         {
             _editor.IsPlaying = !_editor.IsPlaying;

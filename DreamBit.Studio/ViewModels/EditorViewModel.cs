@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using DreamBit.Engine.Components;
@@ -27,6 +28,7 @@ namespace DreamBit.Studio.ViewModels
         private Ledge? _selectedLedge;
         private Ledge? _pendingLedge;
         private bool _newLedgeOneWay = true;
+        private SceneTab? _activeTab;
 
         public EditorViewModel()
         {
@@ -53,6 +55,67 @@ namespace DreamBit.Studio.ViewModels
 
             SeedSampleScene();
             History.Clear(); // a cena inicial não entra no histórico
+
+            var initialTab = new SceneTab(_scene) { IsActive = true };
+            Tabs.Add(initialTab);
+            _activeTab = initialTab;
+        }
+
+        public ObservableCollection<SceneTab> Tabs { get; } = new();
+
+        public SceneTab? ActiveTab
+        {
+            get => _activeTab;
+            set => ActivateTab(value);
+        }
+
+        public void ActivateTab(SceneTab? tab)
+        {
+            if (tab == null || _activeTab == tab)
+                return;
+
+            SelectedObject = null;
+            SelectedLedge = null;
+            CancelLedge();
+
+            if (_activeTab != null)
+                _activeTab.IsActive = false;
+
+            _activeTab = tab;
+            _activeTab.IsActive = true;
+
+            Scene = tab.Scene;
+            CurrentPath = tab.Path;
+            History.Clear();
+
+            OnPropertyChanged(nameof(ActiveTab));
+        }
+
+        public SceneTab AddSceneTab(Scene scene, string? path)
+        {
+            var tab = new SceneTab(scene, path);
+            Tabs.Add(tab);
+            ActivateTab(tab);
+            return tab;
+        }
+
+        public void CloseTab(SceneTab tab)
+        {
+            int index = Tabs.IndexOf(tab);
+            if (index < 0)
+                return;
+
+            bool wasActive = tab.IsActive;
+            Tabs.Remove(tab);
+
+            if (Tabs.Count == 0)
+            {
+                NewScene();
+                return;
+            }
+
+            if (wasActive)
+                ActivateTab(Tabs[System.Math.Min(index, Tabs.Count - 1)]);
         }
 
         public Scene Scene
@@ -167,17 +230,16 @@ namespace DreamBit.Studio.ViewModels
 
         public void NewScene()
         {
-            SelectedObject = null;
-            Scene = new Scene { Name = "Nova Cena" };
-            CurrentPath = null;
             _counter = 0;
-            History.Clear();
+            AddSceneTab(new Scene { Name = "Nova Cena" }, null);
         }
 
         public void SaveTo(string path)
         {
             SceneSerializer.Save(Scene, path);
             CurrentPath = path;
+            if (_activeTab != null)
+                _activeTab.Path = path;
             Project.RefreshScenes();
         }
 
@@ -196,10 +258,15 @@ namespace DreamBit.Studio.ViewModels
 
         public void LoadFrom(string path)
         {
-            SelectedObject = null;
-            Scene = SceneSerializer.Load(path);
-            CurrentPath = path;
-            History.Clear();
+            // se a cena já está aberta em uma aba, apenas ativa
+            var existing = Tabs.FirstOrDefault(t => string.Equals(t.Path, path, System.StringComparison.OrdinalIgnoreCase));
+            if (existing != null)
+            {
+                ActivateTab(existing);
+                return;
+            }
+
+            AddSceneTab(SceneSerializer.Load(path), path);
         }
 
         public GameObject AddObject()

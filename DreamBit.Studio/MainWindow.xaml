@@ -98,16 +98,49 @@
 
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="{DynamicResource BorderBg}" />
 
-            <!-- Editor de Cena -->
-            <Border Grid.Column="2" BorderBrush="{DynamicResource BorderBg}" BorderThickness="1">
-                <hosting:MonoGameSurface x:Name="Surface"
-                                         MouseDown="Surface_MouseDown"
-                                         MouseMove="Surface_MouseMove"
-                                         MouseUp="Surface_MouseUp"
-                                         MouseWheel="Surface_MouseWheel"
-                                         MouseDoubleClick="Surface_DoubleClick"
-                                         ClipToBounds="True" />
-            </Border>
+            <!-- Editor de Cena (abas + canvas) -->
+            <DockPanel Grid.Column="2">
+                <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tabs}" Background="{DynamicResource PanelBg}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="2,3,0,0" CornerRadius="3,3,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{DynamicResource FieldBg}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource AccentBg}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="{Binding Title}" Click="OnActivateTab" Cursor="Hand"
+                                            Background="Transparent" BorderThickness="0"
+                                            Foreground="{DynamicResource TextFg}" Padding="8,3" />
+                                    <Button Content="✕" Click="OnCloseTab" Cursor="Hand"
+                                            Background="Transparent" BorderThickness="0"
+                                            Foreground="{DynamicResource MutedFg}" Padding="4,0" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border BorderBrush="{DynamicResource BorderBg}" BorderThickness="1">
+                    <hosting:MonoGameSurface x:Name="Surface"
+                                             MouseDown="Surface_MouseDown"
+                                             MouseMove="Surface_MouseMove"
+                                             MouseUp="Surface_MouseUp"
+                                             MouseWheel="Surface_MouseWheel"
+                                             MouseDoubleClick="Surface_DoubleClick"
+                                             ClipToBounds="True" />
+                </Border>
+            </DockPanel>
 
             <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="{DynamicResource BorderBg}" />
 
