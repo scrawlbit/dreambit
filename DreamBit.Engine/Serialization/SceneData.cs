@@ -44,7 +44,13 @@ namespace DreamBit.Engine.Serialization
         public List<ParticleData> Particles { get; set; } = new();
         public List<FollowData> Follows { get; set; } = new();
         public List<TriggerData> Triggers { get; set; } = new();
+        public List<ScriptData> Scripts { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class ScriptData
+    {
+        public string Source { get; set; } = "";
     }
 
     public sealed class TriggerData

@@ -251,6 +251,9 @@ namespace DreamBit.Studio
         private void OnRemoveFollow(object sender, RoutedEventArgs e) => _editor.RemoveFollow();
         private void OnAddTrigger(object sender, RoutedEventArgs e) => _editor.AddTrigger();
         private void OnRemoveTrigger(object sender, RoutedEventArgs e) => _editor.RemoveTrigger();
+        private void OnAddScript(object sender, RoutedEventArgs e) => _editor.AddScript();
+        private void OnRemoveScript(object sender, RoutedEventArgs e) => _editor.RemoveScript();
+        private void OnCompileScript(object sender, RoutedEventArgs e) => _editor.Inspector.CompileScript();
 
         private void OnPickSound(object sender, RoutedEventArgs e)
         {

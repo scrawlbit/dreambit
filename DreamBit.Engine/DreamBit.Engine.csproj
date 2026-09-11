@@ -31,4 +31,9 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Compilação de scripts C# do usuário em runtime (componente Script). -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+  </ItemGroup>
+
 </Project>

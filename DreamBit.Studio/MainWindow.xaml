@@ -459,6 +459,28 @@
                                 HorizontalAlignment="Left" Margin="0,2"
                                 Visibility="{Binding HasTrigger, Converter={StaticResource BoolToVisInverse}}" />
 
+                        <!-- Script (C#) -->
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasScript, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveScript"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Script (C#)" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBox Text="{Binding ScriptSource, UpdateSourceTrigger=PropertyChanged}"
+                                         AcceptsReturn="True" AcceptsTab="True" Height="150" Margin="0,6,0,0"
+                                         FontFamily="Consolas" VerticalScrollBarVisibility="Auto"
+                                         HorizontalScrollBarVisibility="Auto" />
+                                <Button Content="Compilar" Click="OnCompileScript" Style="{StaticResource ToolButton}"
+                                        HorizontalAlignment="Left" Margin="0,4" />
+                                <TextBlock Text="{Binding ScriptError}" Foreground="#E06C75" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Script (C#)" Click="OnAddScript" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasScript, Converter={StaticResource BoolToVisInverse}}" />
+
                         <!-- Tilemap -->
                         <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasTilemap, Converter={StaticResource BoolToVis}}">

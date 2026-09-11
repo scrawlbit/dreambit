@@ -193,6 +193,24 @@ namespace DreamBit.Studio.ViewModels
             set { var p = Platformer; if (p != null) p.JumpSpeed = value; }
         }
 
+        // ---- Componente Script (C# em runtime) ----
+
+        private ScriptComponent? Script => _target?.Components.OfType<ScriptComponent>().FirstOrDefault();
+        public bool HasScript => Script != null;
+
+        public string ScriptSource
+        {
+            get => Script?.Source ?? string.Empty;
+            set { var s = Script; if (s != null) s.Source = value; }
+        }
+        public string ScriptError => Script?.Error ?? string.Empty;
+
+        public void CompileScript()
+        {
+            Script?.Compile();
+            Refresh();
+        }
+
         // ---- Componente TriggerZone (coletável) ----
 
         private TriggerZone? Trigger => _target?.Components.OfType<TriggerZone>().FirstOrDefault();
@@ -329,6 +347,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasScript));
+            OnPropertyChanged(nameof(ScriptSource));
+            OnPropertyChanged(nameof(ScriptError));
             OnPropertyChanged(nameof(HasTrigger));
             OnPropertyChanged(nameof(TriggerWidth));
             OnPropertyChanged(nameof(TriggerHeight));

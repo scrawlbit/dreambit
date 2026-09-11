@@ -229,6 +229,8 @@ namespace DreamBit.Engine.Serialization
                         G = trigger.Color.G,
                         B = trigger.Color.B
                     });
+                else if (component is ScriptComponent script)
+                    data.Scripts.Add(new ScriptData { Source = script.Source });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -329,6 +331,9 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(trigger.Width, trigger.Height),
                     Color = new Color(trigger.R, trigger.G, trigger.B)
                 });
+
+            foreach (var script in data.Scripts)
+                obj.AddComponent(new ScriptComponent { Source = script.Source });
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController
