@@ -151,6 +151,18 @@ namespace DreamBit.Studio
             PlayButton.Content = _editor.IsPlaying ? "⏸ Stop" : "▶ Play";
         }
 
+        private void OnPickTexture(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Imagens (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp|Todos os arquivos (*.*)|*.*"
+            };
+            if (dialog.ShowDialog() == true)
+                _editor.Inspector.SpriteTexturePath = dialog.FileName;
+        }
+
+        private void OnClearTexture(object sender, RoutedEventArgs e) => _editor.Inspector.SpriteTexturePath = string.Empty;
+
         private void OnAddSprite(object sender, RoutedEventArgs e) => _editor.AddSprite();
         private void OnRemoveSprite(object sender, RoutedEventArgs e) => _editor.RemoveSprite();
         private void OnAddRotator(object sender, RoutedEventArgs e) => _editor.AddRotator();

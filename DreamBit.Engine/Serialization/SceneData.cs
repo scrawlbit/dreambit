@@ -53,5 +53,6 @@ namespace DreamBit.Engine.Serialization
         public byte G { get; set; }
         public byte B { get; set; }
         public byte A { get; set; } = 255;
+        public string? TexturePath { get; set; }
     }
 }

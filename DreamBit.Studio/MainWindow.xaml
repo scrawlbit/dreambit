@@ -203,6 +203,13 @@
                                     <TextBox Grid.Column="2" Text="{Binding SpriteG, UpdateSourceTrigger=LostFocus}" />
                                     <TextBox Grid.Column="4" Text="{Binding SpriteB, UpdateSourceTrigger=LostFocus}" />
                                 </Grid>
+                                <TextBlock Text="Textura (PNG)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding SpriteTexturePath}" IsReadOnly="True" TextWrapping="NoWrap" />
+                                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                    <Button Content="Escolher…" Click="OnPickTexture" Style="{StaticResource ToolButton}" />
+                                    <Button Content="Limpar" Click="OnClearTexture" Style="{StaticResource ToolButton}"
+                                            Visibility="{Binding SpriteHasTexture, Converter={StaticResource BoolToVis}}" />
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                         <Button Content="+ Sprite Renderer" Click="OnAddSprite" Style="{StaticResource ToolButton}"

@@ -104,6 +104,21 @@ namespace DreamBit.Studio.ViewModels
             set { var s = Sprite; if (s != null) s.Color = new Color(s.Color.R, s.Color.G, (byte)Clamp(value)); }
         }
 
+        public string SpriteTexturePath
+        {
+            get => Sprite?.TexturePath ?? string.Empty;
+            set
+            {
+                var s = Sprite;
+                if (s != null)
+                {
+                    s.TexturePath = string.IsNullOrWhiteSpace(value) ? null : value;
+                    Refresh();
+                }
+            }
+        }
+        public bool SpriteHasTexture => !string.IsNullOrEmpty(Sprite?.TexturePath);
+
         // ---- Componente RotatorBehavior ----
 
         private RotatorBehavior? Rotator => _target?.Components.OfType<RotatorBehavior>().FirstOrDefault();
@@ -135,6 +150,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteR));
             OnPropertyChanged(nameof(SpriteG));
             OnPropertyChanged(nameof(SpriteB));
+            OnPropertyChanged(nameof(SpriteTexturePath));
+            OnPropertyChanged(nameof(SpriteHasTexture));
             OnPropertyChanged(nameof(HasRotator));
             OnPropertyChanged(nameof(RotatorSpeed));
         }
