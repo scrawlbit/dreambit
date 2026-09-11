@@ -343,6 +343,18 @@ namespace DreamBit.Studio.ViewModels
             _pendingLedge = null;
         }
 
+        /// <summary>Exclui a última ledge adicionada à cena (reversível).</summary>
+        public void DeleteLastLedge()
+        {
+            if (Scene.Ledges.Count == 0)
+                return;
+
+            var ledge = Scene.Ledges[Scene.Ledges.Count - 1];
+            History.Do(new EditorAction("Excluir última ledge",
+                doAction: () => { if (SelectedLedge == ledge) SelectedLedge = null; Scene.RemoveLedge(ledge); },
+                undoAction: () => Scene.AddLedge(ledge)));
+        }
+
         /// <summary>Seleciona a ledge mais próxima do ponto (em mundo), dentro do limite.</summary>
         public bool TrySelectLedgeAt(Vector2 world, float maxDistance)
         {

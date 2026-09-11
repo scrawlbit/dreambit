@@ -94,14 +94,21 @@ namespace DreamBit.Studio
                 _editor.CancelLedge();
             else if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return))
                 _editor.FinishLedge();
-            else if (e.Key == Key.Delete && _editor.DeleteObjectCommand.CanExecute(null))
-                _editor.DeleteObjectCommand.Execute(null);
+            else if (e.Key == Key.Delete)
+            {
+                if (_editor.DeleteObjectCommand.CanExecute(null))
+                    _editor.DeleteObjectCommand.Execute(null);
+                else
+                    _editor.DeleteLastLedge(); // sem seleção: remove a última ledge
+            }
             else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null))
                 _editor.UndoCommand.Execute(null);
             else if (ctrl && e.Key == Key.Y && _editor.RedoCommand.CanExecute(null))
                 _editor.RedoCommand.Execute(null);
             else if (ctrl && e.Key == Key.D)
                 _editor.DuplicateSelected();
+            else if (ctrl && (e.Key == Key.D0 || e.Key == Key.NumPad0))
+                _editor.Camera.Zoom = 1f; // zoom 100%
             else if (!(e.OriginalSource is System.Windows.Controls.TextBox) && TryNudge(e.Key))
                 e.Handled = true;
         }
