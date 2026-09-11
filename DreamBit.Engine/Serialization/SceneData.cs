@@ -39,7 +39,15 @@ namespace DreamBit.Engine.Serialization
         public List<RotatorData> Rotators { get; set; } = new();
         public List<AnimatorData> Animators { get; set; } = new();
         public List<TilemapData> Tilemaps { get; set; } = new();
+        public List<PlatformerData> Platformers { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class PlatformerData
+    {
+        public float Gravity { get; set; } = 1400f;
+        public float HalfHeight { get; set; } = 24f;
+        public float HorizontalSpeed { get; set; }
     }
 
     public sealed class TilemapData

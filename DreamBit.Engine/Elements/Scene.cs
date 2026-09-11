@@ -43,13 +43,17 @@ namespace DreamBit.Engine.Elements
         public GameObject Add(GameObject gameObject)
         {
             _objects.Add(gameObject);
+            gameObject.SetScene(this);
             return gameObject;
         }
 
         public bool Remove(GameObject gameObject)
         {
             gameObject.Parent?.RemoveChild(gameObject);
-            return _objects.Remove(gameObject);
+            bool removed = _objects.Remove(gameObject);
+            if (removed)
+                gameObject.SetScene(null);
+            return removed;
         }
 
         public void Update(GameTime gameTime)

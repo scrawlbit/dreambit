@@ -155,6 +155,27 @@ namespace DreamBit.Studio.ViewModels
             set { var a = Animator; if (a != null) a.Loop = value; }
         }
 
+        // ---- Componente PlatformerController ----
+
+        private PlatformerController? Platformer => _target?.Components.OfType<PlatformerController>().FirstOrDefault();
+        public bool HasPlatformer => Platformer != null;
+
+        public float PlatGravity
+        {
+            get => Platformer?.Gravity ?? 0f;
+            set { var p = Platformer; if (p != null) p.Gravity = value; }
+        }
+        public float PlatHalfHeight
+        {
+            get => Platformer?.HalfHeight ?? 0f;
+            set { var p = Platformer; if (p != null) p.HalfHeight = value; }
+        }
+        public float PlatHorizontalSpeed
+        {
+            get => Platformer?.HorizontalSpeed ?? 0f;
+            set { var p = Platformer; if (p != null) p.HorizontalSpeed = value; }
+        }
+
         // ---- Componente TilemapRenderer ----
 
         private TilemapRenderer? Tilemap => _target?.Components.OfType<TilemapRenderer>().FirstOrDefault();
@@ -201,6 +222,10 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteHasTexture));
             OnPropertyChanged(nameof(HasTilemap));
             OnPropertyChanged(nameof(TilemapPath));
+            OnPropertyChanged(nameof(HasPlatformer));
+            OnPropertyChanged(nameof(PlatGravity));
+            OnPropertyChanged(nameof(PlatHalfHeight));
+            OnPropertyChanged(nameof(PlatHorizontalSpeed));
             OnPropertyChanged(nameof(HasAnimator));
             OnPropertyChanged(nameof(AnimTexturePath));
             OnPropertyChanged(nameof(AnimFrameWidth));

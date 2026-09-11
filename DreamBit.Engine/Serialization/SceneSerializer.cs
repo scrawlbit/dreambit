@@ -99,6 +99,13 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is TilemapRenderer tilemap)
                     data.Tilemaps.Add(new TilemapData { TmxPath = tilemap.TmxPath });
+                else if (component is PlatformerController platformer)
+                    data.Platformers.Add(new PlatformerData
+                    {
+                        Gravity = platformer.Gravity,
+                        HalfHeight = platformer.HalfHeight,
+                        HorizontalSpeed = platformer.HorizontalSpeed
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -158,6 +165,14 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var tilemap in data.Tilemaps)
                 obj.AddComponent(new TilemapRenderer { TmxPath = tilemap.TmxPath });
+
+            foreach (var platformer in data.Platformers)
+                obj.AddComponent(new PlatformerController
+                {
+                    Gravity = platformer.Gravity,
+                    HalfHeight = platformer.HalfHeight,
+                    HorizontalSpeed = platformer.HorizontalSpeed
+                });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

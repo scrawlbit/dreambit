@@ -36,6 +36,16 @@ namespace DreamBit.Engine.Elements
         public ReadOnlyObservableCollection<GameObject> Children { get; }
         public ReadOnlyObservableCollection<SceneComponent> Components { get; }
 
+        /// <summary>Cena a que este objeto pertence (definida ao ser adicionado).</summary>
+        public Scene? Scene { get; internal set; }
+
+        internal void SetScene(Scene? scene)
+        {
+            Scene = scene;
+            foreach (var child in _children)
+                child.SetScene(scene);
+        }
+
         public string Name
         {
             get => _name;
@@ -71,6 +81,7 @@ namespace DreamBit.Engine.Elements
             child.Parent = this;
             child.Transform.Parent = Transform;
             _children.Add(child);
+            child.SetScene(Scene);
         }
 
         public void RemoveChild(GameObject child)
@@ -79,6 +90,7 @@ namespace DreamBit.Engine.Elements
             {
                 child.Parent = null;
                 child.Transform.Parent = null;
+                child.SetScene(null);
             }
         }
 

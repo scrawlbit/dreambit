@@ -180,6 +180,8 @@ namespace DreamBit.Studio
         private void OnAddAnimator(object sender, RoutedEventArgs e) => _editor.AddAnimator();
         private void OnRemoveAnimator(object sender, RoutedEventArgs e) => _editor.RemoveAnimator();
         private void OnRemoveTilemap(object sender, RoutedEventArgs e) => _editor.RemoveTilemap();
+        private void OnAddPlatformer(object sender, RoutedEventArgs e) => _editor.AddPlatformer();
+        private void OnRemovePlatformer(object sender, RoutedEventArgs e) => _editor.RemovePlatformer();
 
         private void OnImportTmx(object sender, RoutedEventArgs e)
         {

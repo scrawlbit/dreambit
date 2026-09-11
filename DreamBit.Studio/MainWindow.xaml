@@ -288,6 +288,27 @@
                                 HorizontalAlignment="Left" Margin="0,2"
                                 Visibility="{Binding HasRotator, Converter={StaticResource BoolToVisInverse}}" />
 
+                        <!-- Platformer Controller -->
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasPlatformer, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemovePlatformer"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Platformer (cai nas ledges)" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Gravidade" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding PlatGravity, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                <TextBlock Text="Meia-altura (pés)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding PlatHalfHeight, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                <TextBlock Text="Velocidade horizontal" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding PlatHorizontalSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Platformer" Click="OnAddPlatformer" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasPlatformer, Converter={StaticResource BoolToVisInverse}}" />
+
                         <!-- Tilemap -->
                         <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasTilemap, Converter={StaticResource BoolToVis}}">

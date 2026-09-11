@@ -529,6 +529,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(tilemap);
         }
 
+        public void AddPlatformer()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<PlatformerController>().Any())
+                return;
+
+            var platformer = new PlatformerController();
+            History.Do(new EditorAction("Adicionar Platformer",
+                doAction: () => obj.AddComponent(platformer),
+                undoAction: () => obj.RemoveComponent(platformer)));
+        }
+
+        public void RemovePlatformer()
+        {
+            var platformer = SelectedObject?.Components.OfType<PlatformerController>().FirstOrDefault();
+            if (platformer != null)
+                RemoveComponent(platformer);
+        }
+
         public void AddAnimator()
         {
             var obj = SelectedObject;
