@@ -5,31 +5,6 @@
         Title="DreamBit Studio (.NET 8 standalone)" Height="720" Width="1180"
         Background="{DynamicResource WindowBg}" TextElement.Foreground="{DynamicResource TextFg}" FontSize="12"
         KeyDown="OnWindowKeyDown">
-    <Window.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{DynamicResource TextFg}" />
-        </Style>
-        <Style x:Key="PanelHeader" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{DynamicResource MutedFg}" />
-            <Setter Property="Margin" Value="10,8,0,6" />
-            <Setter Property="FontSize" Value="11" />
-        </Style>
-        <Style x:Key="ToolButton" TargetType="Button">
-            <Setter Property="Margin" Value="4,0" />
-            <Setter Property="Padding" Value="10,4" />
-            <Setter Property="Background" Value="{DynamicResource AccentBg}" />
-            <Setter Property="Foreground" Value="{DynamicResource TextFg}" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="{DynamicResource FieldBg}" />
-            <Setter Property="Foreground" Value="{DynamicResource TextFg}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderBg}" />
-            <Setter Property="Margin" Value="0,2" />
-            <Setter Property="Padding" Value="3,2" />
-        </Style>
-    </Window.Resources>
-
     <DockPanel>
         <!-- Toolbar -->
         <Border DockPanel.Dock="Top" Background="{DynamicResource PanelBg}" Padding="6">
