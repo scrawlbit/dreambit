@@ -139,6 +139,57 @@
                             <TextBox Grid.Column="0" Text="{Binding ScaleX, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
                             <TextBox Grid.Column="2" Text="{Binding ScaleY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
                         </Grid>
+
+                        <TextBlock Text="COMPONENTES" Foreground="#8A93A6" Margin="0,14,0,4" />
+
+                        <!-- Sprite Renderer -->
+                        <Border Background="#2A2E38" Padding="6" Margin="0,2" CornerRadius="3"
+                                Visibility="{Binding HasSprite, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveSprite"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Sprite Renderer" Foreground="#EAEEF6" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Tamanho (L × A)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding SpriteWidth, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                                    <TextBox Grid.Column="2" Text="{Binding SpriteHeight, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                                </Grid>
+                                <TextBlock Text="Cor (R G B)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" /><ColumnDefinition Width="4" /><ColumnDefinition Width="*" /><ColumnDefinition Width="4" /><ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding SpriteR, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="2" Text="{Binding SpriteG, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="4" Text="{Binding SpriteB, UpdateSourceTrigger=LostFocus}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Sprite Renderer" Click="OnAddSprite" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasSprite, Converter={StaticResource BoolToVisInverse}}" />
+
+                        <!-- Rotator -->
+                        <Border Background="#2A2E38" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasRotator, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveRotator"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Rotator" Foreground="#EAEEF6" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Velocidade (rad/s)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding RotatorSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.###}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Rotator" Click="OnAddRotator" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasRotator, Converter={StaticResource BoolToVisInverse}}" />
                     </StackPanel>
 
                     <!-- Ledge selecionada -->

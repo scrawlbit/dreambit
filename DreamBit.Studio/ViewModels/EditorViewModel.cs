@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Editing;
 using DreamBit.Engine.Elements;
@@ -47,6 +48,7 @@ namespace DreamBit.Studio.ViewModels
             {
                 UndoCommand.RaiseCanExecuteChanged();
                 RedoCommand.RaiseCanExecuteChanged();
+                Inspector.Refresh();
             };
 
             SeedSampleScene();
@@ -303,13 +305,50 @@ namespace DreamBit.Studio.ViewModels
         public void AddRotator()
         {
             var obj = SelectedObject;
-            if (obj == null)
+            if (obj == null || obj.Components.OfType<RotatorBehavior>().Any())
                 return;
 
             var rotator = new RotatorBehavior();
             History.Do(new EditorAction("Adicionar Rotator",
                 doAction: () => obj.AddComponent(rotator),
                 undoAction: () => obj.RemoveComponent(rotator)));
+        }
+
+        public void AddSprite()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<SpriteRenderer>().Any())
+                return;
+
+            var sprite = new SpriteRenderer();
+            History.Do(new EditorAction("Adicionar Sprite",
+                doAction: () => obj.AddComponent(sprite),
+                undoAction: () => obj.RemoveComponent(sprite)));
+        }
+
+        public void RemoveComponent(SceneComponent component)
+        {
+            var obj = SelectedObject;
+            if (obj == null || component == null)
+                return;
+
+            History.Do(new EditorAction("Remover componente",
+                doAction: () => obj.RemoveComponent(component),
+                undoAction: () => obj.AddComponent(component)));
+        }
+
+        public void RemoveSprite()
+        {
+            var sprite = SelectedObject?.Components.OfType<SpriteRenderer>().FirstOrDefault();
+            if (sprite != null)
+                RemoveComponent(sprite);
+        }
+
+        public void RemoveRotator()
+        {
+            var rotator = SelectedObject?.Components.OfType<RotatorBehavior>().FirstOrDefault();
+            if (rotator != null)
+                RemoveComponent(rotator);
         }
 
         /// <summary>Registra um arraste concluído no histórico (a posição já foi aplicada).</summary>

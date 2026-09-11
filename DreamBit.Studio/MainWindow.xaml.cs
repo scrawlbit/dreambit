@@ -110,6 +110,11 @@ namespace DreamBit.Studio
             PlayButton.Content = _editor.IsPlaying ? "⏸ Stop" : "▶ Play";
         }
 
+        private void OnAddSprite(object sender, RoutedEventArgs e) => _editor.AddSprite();
+        private void OnRemoveSprite(object sender, RoutedEventArgs e) => _editor.RemoveSprite();
+        private void OnAddRotator(object sender, RoutedEventArgs e) => _editor.AddRotator();
+        private void OnRemoveRotator(object sender, RoutedEventArgs e) => _editor.RemoveRotator();
+
         private void OnRunGame(object sender, RoutedEventArgs e)
         {
             var scenePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dreambit_play.dbscene");

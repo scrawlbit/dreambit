@@ -1,3 +1,4 @@
+using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Notification;
@@ -72,6 +73,53 @@ namespace DreamBit.Studio.ViewModels
             set { if (_target != null) _target.Transform.Scale = new Vector2(_target.Transform.Scale.X, value); }
         }
 
+        // ---- Componente SpriteRenderer ----
+
+        private SpriteRenderer? Sprite => _target?.Components.OfType<SpriteRenderer>().FirstOrDefault();
+        public bool HasSprite => Sprite != null;
+
+        public float SpriteWidth
+        {
+            get => Sprite?.Size.X ?? 0f;
+            set { var s = Sprite; if (s != null) s.Size = new Vector2(value, s.Size.Y); }
+        }
+        public float SpriteHeight
+        {
+            get => Sprite?.Size.Y ?? 0f;
+            set { var s = Sprite; if (s != null) s.Size = new Vector2(s.Size.X, value); }
+        }
+        public int SpriteR
+        {
+            get => Sprite?.Color.R ?? 0;
+            set { var s = Sprite; if (s != null) s.Color = new Color((byte)Clamp(value), s.Color.G, s.Color.B); }
+        }
+        public int SpriteG
+        {
+            get => Sprite?.Color.G ?? 0;
+            set { var s = Sprite; if (s != null) s.Color = new Color(s.Color.R, (byte)Clamp(value), s.Color.B); }
+        }
+        public int SpriteB
+        {
+            get => Sprite?.Color.B ?? 0;
+            set { var s = Sprite; if (s != null) s.Color = new Color(s.Color.R, s.Color.G, (byte)Clamp(value)); }
+        }
+
+        // ---- Componente RotatorBehavior ----
+
+        private RotatorBehavior? Rotator => _target?.Components.OfType<RotatorBehavior>().FirstOrDefault();
+        public bool HasRotator => Rotator != null;
+
+        public float RotatorSpeed
+        {
+            get => Rotator?.Speed ?? 0f;
+            set { var r = Rotator; if (r != null) r.Speed = value; }
+        }
+
+        /// <summary>Reavalia todos os campos (ex.: após adicionar/remover componente).</summary>
+        public void Refresh() => RaiseAll();
+
+        private static int Clamp(int value) => value < 0 ? 0 : value > 255 ? 255 : value;
+
         private void RaiseAll()
         {
             OnPropertyChanged(nameof(HasTarget));
@@ -81,6 +129,14 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(RotationDegrees));
             OnPropertyChanged(nameof(ScaleX));
             OnPropertyChanged(nameof(ScaleY));
+            OnPropertyChanged(nameof(HasSprite));
+            OnPropertyChanged(nameof(SpriteWidth));
+            OnPropertyChanged(nameof(SpriteHeight));
+            OnPropertyChanged(nameof(SpriteR));
+            OnPropertyChanged(nameof(SpriteG));
+            OnPropertyChanged(nameof(SpriteB));
+            OnPropertyChanged(nameof(HasRotator));
+            OnPropertyChanged(nameof(RotatorSpeed));
         }
     }
 }
