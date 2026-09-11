@@ -60,7 +60,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
-| 🔷 **Editor em Avalonia** | *Único item grande em aberto (decisão consciente de não forçar agora).* Motor e Player **já são cross-platform**; o que falta para editar no Mac/Linux é reescrever a UI (WPF→Avalonia) e resolver a hospedagem do canvas MonoGame em Avalonia (OpenGlControlBase) — um esforço grande e separado, com plano na seção abaixo. |
+| ✅ **Editor em Avalonia** | *Entregue* — `DreamBit.Studio.Avalonia` (net8, cross-platform) reaproveita os ViewModels de `DreamBit.Studio.Core` e desenha a cena com o DrawingContext do Avalonia (dispensa canvas MonoGame). Hierarquia, inspetor, seleção/arraste/pan/zoom e play. Compila e roda. |
 | ✅ **Export/build do jogo** | *Entregue* — botão Exportar publica o Player + a cena + assets numa pasta portátil. | 🟡 |
 | **Templates de projeto** | "Novo projeto" com estrutura pronta (cenas/assets/pipeline). | 🟢 |
 
@@ -85,7 +85,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 ---
 
-## Editor em Avalonia — plano (único item grande em aberto)
+## Editor em Avalonia — entregue (base cross-platform)
 
 O motor (`DreamBit.Engine`) e o `DreamBit.Player` já são cross-platform (net8 + DesktopGL).
 Falta apenas a **UI do editor** rodar fora do Windows. Caminho sugerido:
@@ -107,9 +107,11 @@ prontos para isso, o gargalo é a hospedagem do canvas e a reescrita do XAML.
 ## Estado final do roadmap
 
 - **Marcos 1, 2, 3 e 4:** concluídos.
-- **Marco 5:** Export ✅, Templates ✅; **Editor Avalonia** documentado como o único item grande em aberto.
+- **Marco 5:** Export ✅ · Templates ✅ · **Editor Avalonia** ✅ (base cross-platform).
 - **Dívidas:** CI ✅, cobertura ✅ (ampliada), CVE do AutoMapper ✅ (suprimida com justificativa),
   estilos ✅; AvalonDock: decisão de manter GridSplitter.
 
-Ou seja: **todo o roadmap está entregue, exceto o editor Avalonia** (esforço de semanas, com plano
-acima), e cada item restante tem uma resolução explícita (entregue, superseder ou decisão).
+Ou seja: **todo o roadmap está entregue.** O editor Avalonia foi implementado como base funcional
+cross-platform (reaproveitando os ViewModels via `DreamBit.Studio.Core`); a paridade total de
+componentes com o editor WPF pode ser ampliada incrementalmente. Cada item tem resolução explícita
+(entregue, superseder ou decisão consciente sobre AvalonDock).
