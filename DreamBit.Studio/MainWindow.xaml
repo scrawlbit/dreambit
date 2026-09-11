@@ -49,7 +49,15 @@
                 <Separator Width="1" Margin="8,2" Background="#3A404C" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />
                 <Button Style="{StaticResource ToolButton}" Content="🎮 Rodar jogo" Click="OnRunGame" ToolTip="Abre a cena atual no DreamBit.Player" />
-                <CheckBox Content="Snap ao grid" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="12,0,0,0"
+                <Separator Width="1" Margin="8,2" Background="#3A404C" />
+                <RadioButton GroupName="tool" Content="Selecionar" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0"
+                             IsChecked="{Binding IsSelectTool, Mode=OneWay}" Command="{Binding SelectToolCommand}" />
+                <RadioButton GroupName="tool" Content="Ledge" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0"
+                             IsChecked="{Binding IsLedgeTool, Mode=OneWay}" Command="{Binding LedgeToolCommand}" />
+                <CheckBox Content="One-way" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0"
+                          IsChecked="{Binding NewLedgeOneWay}" ToolTip="One-way para novas ledges" />
+                <Separator Width="1" Margin="8,2" Background="#3A404C" />
+                <CheckBox Content="Snap ao grid" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0,0,0"
                           IsChecked="{Binding SnapToGrid}" />
                 <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom: {0:0.00}x'}" VerticalAlignment="Center" Margin="16,0,0,0" Foreground="#8A93A6" />
             </StackPanel>
@@ -95,6 +103,7 @@
                                          MouseMove="Surface_MouseMove"
                                          MouseUp="Surface_MouseUp"
                                          MouseWheel="Surface_MouseWheel"
+                                         MouseDoubleClick="Surface_DoubleClick"
                                          ClipToBounds="True" />
             </Border>
 
@@ -103,31 +112,49 @@
             <!-- Inspetor -->
             <DockPanel Grid.Column="4" Background="#252932">
                 <TextBlock DockPanel.Dock="Top" Text="INSPETOR" Style="{StaticResource PanelHeader}" />
-                <StackPanel Margin="10,4" DataContext="{Binding Inspector}"
-                            Visibility="{Binding HasTarget, Converter={StaticResource BoolToVis}}">
-                    <TextBlock Text="Nome" Foreground="#8A93A6" />
-                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Margin="10,4">
+                    <!-- Objeto selecionado -->
+                    <StackPanel DataContext="{Binding Inspector}"
+                                Visibility="{Binding HasTarget, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="Nome" Foreground="#8A93A6" />
+                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="Posição" Foreground="#8A93A6" Margin="0,10,0,0" />
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding PositionX, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
-                        <TextBox Grid.Column="2" Text="{Binding PositionY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
-                    </Grid>
+                        <TextBlock Text="Posição" Foreground="#8A93A6" Margin="0,10,0,0" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding PositionX, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                            <TextBox Grid.Column="2" Text="{Binding PositionY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                        </Grid>
 
-                    <TextBlock Text="Rotação (graus)" Foreground="#8A93A6" Margin="0,10,0,0" />
-                    <TextBox Text="{Binding RotationDegrees, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                        <TextBlock Text="Rotação (graus)" Foreground="#8A93A6" Margin="0,10,0,0" />
+                        <TextBox Text="{Binding RotationDegrees, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
 
-                    <TextBlock Text="Escala" Foreground="#8A93A6" Margin="0,10,0,0" />
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding ScaleX, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
-                        <TextBox Grid.Column="2" Text="{Binding ScaleY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
-                    </Grid>
+                        <TextBlock Text="Escala" Foreground="#8A93A6" Margin="0,10,0,0" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding ScaleX, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                            <TextBox Grid.Column="2" Text="{Binding ScaleY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Ledge selecionada -->
+                    <StackPanel Visibility="{Binding HasSelectedLedge, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="LEDGE (borda caminhável)" Foreground="#8A93A6" />
+                        <TextBox Text="{Binding SelectedLedge.Name, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox Content="One-way (atravessa por baixo)" Margin="0,8,0,0"
+                                  Foreground="#D6DBE6" IsChecked="{Binding SelectedLedge.OneWay}" />
+                        <TextBlock Text="{Binding SelectedLedge.Points.Count, StringFormat='Pontos: {0}'}"
+                                   Foreground="#8A93A6" Margin="0,8,0,0" />
+                    </StackPanel>
+
+                    <!-- Dica da ferramenta Ledge -->
+                    <TextBlock Visibility="{Binding IsLedgeTool, Converter={StaticResource BoolToVis}}"
+                               Foreground="#8A93A6" TextWrapping="Wrap" Margin="0,12,0,0"
+                               Text="Ferramenta Ledge: clique para adicionar pontos; botão direito, Enter ou duplo clique finaliza; Esc cancela." />
                 </StackPanel>
             </DockPanel>
         </Grid>

@@ -20,7 +20,11 @@ namespace DreamBit.Engine.Rendering
 
         public Color Background { get; set; } = new(24, 26, 32);
         public bool ShowGrid { get; set; } = true;
+        public bool ShowLedges { get; set; } = true;
         public int GridSize { get; set; } = 32;
+
+        /// <summary>Ledge destacada (selecionada no editor), desenhada em branco.</summary>
+        public Ledge? HighlightedLedge { get; set; }
 
         public void Initialize(GraphicsDevice device)
         {
@@ -41,9 +45,60 @@ namespace DreamBit.Engine.Rendering
                 DrawGrid(camera, width, height);
 
             scene.Draw(this);
+
+            if (ShowLedges)
+                DrawLedges(scene, camera);
+
             DrawSelection(scene);
 
             _spriteBatch.End();
+        }
+
+        private void DrawLedges(Scene scene, Camera2D camera)
+        {
+            float thickness = 3f / camera.Zoom;
+            float vertex = 5f / camera.Zoom;
+
+            foreach (var ledge in scene.Ledges)
+            {
+                bool highlighted = ReferenceEquals(ledge, HighlightedLedge);
+                var color = highlighted ? Color.White
+                    : ledge.OneWay ? new Color(120, 220, 160) : new Color(90, 200, 255);
+                float t = highlighted ? thickness * 1.6f : thickness;
+
+                foreach (var (a, b) in ledge.Segments())
+                {
+                    DrawSegment(a, b, color, t);
+
+                    if (ledge.OneWay)
+                        DrawOneWayTicks(a, b, color, camera);
+                }
+
+                foreach (var point in ledge.Points)
+                    _spriteBatch.Draw(_pixel,
+                        new Rectangle((int)(point.X - vertex / 2), (int)(point.Y - vertex / 2), (int)vertex, (int)vertex),
+                        Color.White);
+            }
+        }
+
+        /// <summary>Marcas perpendiculares no lado "de cima" indicando plataforma de mão única.</summary>
+        private void DrawOneWayTicks(Vector2 a, Vector2 b, Color color, Camera2D camera)
+        {
+            var dir = b - a;
+            float length = dir.Length();
+            if (length < 1f)
+                return;
+
+            dir /= length;
+            var normal = new Vector2(dir.Y, -dir.X); // aponta para "cima" (lado caminhável)
+            float step = 24f;
+            float tick = 8f / camera.Zoom;
+
+            for (float d = step / 2; d < length; d += step)
+            {
+                var p = a + dir * d;
+                DrawSegment(p, p + normal * tick, color * 0.6f, 1.5f / camera.Zoom);
+            }
         }
 
         public void DrawQuad(Matrix world, Vector2 size, Color color, Texture2D? texture = null)

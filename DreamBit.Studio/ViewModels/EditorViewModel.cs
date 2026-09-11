@@ -22,6 +22,11 @@ namespace DreamBit.Studio.ViewModels
         private bool _isPlaying;
         private Scene _scene;
 
+        private EditorTool _currentTool = EditorTool.Select;
+        private Ledge? _selectedLedge;
+        private Ledge? _pendingLedge;
+        private bool _newLedgeOneWay = true;
+
         public EditorViewModel()
         {
             _scene = new Scene { Name = "Cena de Exemplo" };
@@ -31,10 +36,12 @@ namespace DreamBit.Studio.ViewModels
             Project = new ProjectViewModel();
 
             AddObjectCommand = new RelayCommand(() => AddObject());
-            DeleteObjectCommand = new RelayCommand(DeleteSelected, () => SelectedObject != null);
+            DeleteObjectCommand = new RelayCommand(DeleteSelected, () => SelectedObject != null || SelectedLedge != null);
             AddRotatorCommand = new RelayCommand(AddRotator, () => SelectedObject != null);
             UndoCommand = new RelayCommand(History.Undo, () => History.CanUndo);
             RedoCommand = new RelayCommand(History.Redo, () => History.CanRedo);
+            SelectToolCommand = new RelayCommand(() => CurrentTool = EditorTool.Select);
+            LedgeToolCommand = new RelayCommand(() => CurrentTool = EditorTool.Ledge);
 
             History.Changed += () =>
             {
@@ -61,6 +68,8 @@ namespace DreamBit.Studio.ViewModels
         public RelayCommand AddRotatorCommand { get; }
         public RelayCommand UndoCommand { get; }
         public RelayCommand RedoCommand { get; }
+        public RelayCommand SelectToolCommand { get; }
+        public RelayCommand LedgeToolCommand { get; }
 
         /// <summary>Caminho do arquivo da cena atual, se salva/aberta em disco.</summary>
         public string? CurrentPath { get; private set; }
@@ -81,12 +90,62 @@ namespace DreamBit.Studio.ViewModels
                 if (_selectedObject != null)
                     _selectedObject.IsSelected = true;
 
+                if (_selectedObject != null && _selectedLedge != null)
+                {
+                    _selectedLedge = null;
+                    OnPropertyChanged(nameof(SelectedLedge));
+                }
+
                 Inspector.Target = _selectedObject;
                 OnPropertyChanged();
                 DeleteObjectCommand.RaiseCanExecuteChanged();
                 AddRotatorCommand.RaiseCanExecuteChanged();
             }
         }
+
+        public EditorTool CurrentTool
+        {
+            get => _currentTool;
+            set
+            {
+                if (Set(ref _currentTool, value))
+                {
+                    if (value != EditorTool.Ledge)
+                        CancelLedge();
+                    OnPropertyChanged(nameof(IsSelectTool));
+                    OnPropertyChanged(nameof(IsLedgeTool));
+                }
+            }
+        }
+        public bool IsSelectTool => _currentTool == EditorTool.Select;
+        public bool IsLedgeTool => _currentTool == EditorTool.Ledge;
+
+        /// <summary>One-way aplicado às novas ledges desenhadas.</summary>
+        public bool NewLedgeOneWay
+        {
+            get => _newLedgeOneWay;
+            set => Set(ref _newLedgeOneWay, value);
+        }
+
+        public Ledge? SelectedLedge
+        {
+            get => _selectedLedge;
+            set
+            {
+                if (_selectedLedge == value)
+                    return;
+
+                _selectedLedge = value;
+
+                if (_selectedLedge != null && SelectedObject != null)
+                    SelectedObject = null;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasSelectedLedge));
+                DeleteObjectCommand.RaiseCanExecuteChanged();
+            }
+        }
+        public bool HasSelectedLedge => _selectedLedge != null;
 
         public bool IsPlaying
         {
@@ -155,12 +214,89 @@ namespace DreamBit.Studio.ViewModels
         public void DeleteSelected()
         {
             var obj = SelectedObject;
-            if (obj == null)
+            if (obj != null)
+            {
+                History.Do(new EditorAction("Excluir objeto",
+                    doAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); },
+                    undoAction: () => { Scene.Add(obj); SelectedObject = obj; }));
+                return;
+            }
+
+            var ledge = SelectedLedge;
+            if (ledge != null)
+            {
+                History.Do(new EditorAction("Excluir ledge",
+                    doAction: () => { if (SelectedLedge == ledge) SelectedLedge = null; Scene.RemoveLedge(ledge); },
+                    undoAction: () => { Scene.AddLedge(ledge); SelectedLedge = ledge; }));
+            }
+        }
+
+        // ---- desenho de ledges ----
+
+        public void AddLedgePoint(Vector2 world)
+        {
+            if (_pendingLedge == null)
+            {
+                _pendingLedge = new Ledge { OneWay = NewLedgeOneWay, Name = "Ledge " + (Scene.Ledges.Count + 1) };
+                Scene.AddLedge(_pendingLedge);
+            }
+
+            _pendingLedge.AddPoint(world);
+        }
+
+        public void FinishLedge()
+        {
+            var ledge = _pendingLedge;
+            _pendingLedge = null;
+            if (ledge == null)
                 return;
 
-            History.Do(new EditorAction("Excluir objeto",
-                doAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); },
-                undoAction: () => { Scene.Add(obj); SelectedObject = obj; }));
+            if (ledge.Points.Count < 2)
+            {
+                Scene.RemoveLedge(ledge); // ledge degenerada
+                return;
+            }
+
+            // já está na cena; registra para poder desfazer/refazer
+            History.Push(new EditorAction("Adicionar ledge",
+                doAction: () => Scene.AddLedge(ledge),
+                undoAction: () => { if (SelectedLedge == ledge) SelectedLedge = null; Scene.RemoveLedge(ledge); }));
+
+            SelectedLedge = ledge;
+        }
+
+        public void CancelLedge()
+        {
+            if (_pendingLedge == null)
+                return;
+
+            Scene.RemoveLedge(_pendingLedge);
+            _pendingLedge = null;
+        }
+
+        /// <summary>Seleciona a ledge mais próxima do ponto (em mundo), dentro do limite.</summary>
+        public bool TrySelectLedgeAt(Vector2 world, float maxDistance)
+        {
+            Ledge? nearest = null;
+            float best = maxDistance;
+
+            foreach (var ledge in Scene.Ledges)
+            {
+                float d = ledge.DistanceTo(world);
+                if (d <= best)
+                {
+                    best = d;
+                    nearest = ledge;
+                }
+            }
+
+            if (nearest != null)
+            {
+                SelectedLedge = nearest;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>Anexa um comportamento de runtime (gira no play) ao objeto selecionado.</summary>

@@ -12,8 +12,13 @@ namespace DreamBit.Engine.Elements
     {
         private string _name = "Nova Cena";
         private readonly ObservableCollection<GameObject> _objects = new();
+        private readonly ObservableCollection<Ledge> _ledges = new();
 
-        public Scene() => Objects = new ReadOnlyObservableCollection<GameObject>(_objects);
+        public Scene()
+        {
+            Objects = new ReadOnlyObservableCollection<GameObject>(_objects);
+            Ledges = new ReadOnlyObservableCollection<Ledge>(_ledges);
+        }
 
         public string Name
         {
@@ -23,6 +28,17 @@ namespace DreamBit.Engine.Elements
 
         /// <summary>Objetos raiz da cena (cada um pode ter filhos).</summary>
         public ReadOnlyObservableCollection<GameObject> Objects { get; }
+
+        /// <summary>Ledges (bordas caminháveis) do mapa.</summary>
+        public ReadOnlyObservableCollection<Ledge> Ledges { get; }
+
+        public Ledge AddLedge(Ledge ledge)
+        {
+            _ledges.Add(ledge);
+            return ledge;
+        }
+
+        public bool RemoveLedge(Ledge ledge) => _ledges.Remove(ledge);
 
         public GameObject Add(GameObject gameObject)
         {

@@ -9,6 +9,20 @@ namespace DreamBit.Engine.Serialization
     {
         public string Name { get; set; } = "Cena";
         public List<GameObjectData> Objects { get; set; } = new();
+        public List<LedgeData> Ledges { get; set; } = new();
+    }
+
+    public sealed class LedgeData
+    {
+        public string Name { get; set; } = "Ledge";
+        public bool OneWay { get; set; } = true;
+        public List<PointData> Points { get; set; } = new();
+    }
+
+    public sealed class PointData
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
     public sealed class GameObjectData

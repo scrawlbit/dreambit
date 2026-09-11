@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DreamBit.Engine.Components;
@@ -41,6 +42,16 @@ namespace DreamBit.Engine.Serialization
             var data = new SceneData { Name = scene.Name };
             foreach (var obj in scene.Objects)
                 data.Objects.Add(ToData(obj));
+            foreach (var ledge in scene.Ledges)
+                data.Ledges.Add(ToData(ledge));
+            return data;
+        }
+
+        private static LedgeData ToData(Ledge ledge)
+        {
+            var data = new LedgeData { Name = ledge.Name, OneWay = ledge.OneWay };
+            foreach (var point in ledge.Points)
+                data.Points.Add(new PointData { X = point.X, Y = point.Y });
             return data;
         }
 
@@ -88,7 +99,16 @@ namespace DreamBit.Engine.Serialization
             var scene = new Scene { Name = data.Name };
             foreach (var objData in data.Objects)
                 scene.Add(FromData(objData));
+            foreach (var ledgeData in data.Ledges)
+                scene.AddLedge(FromData(ledgeData));
             return scene;
+        }
+
+        private static Ledge FromData(LedgeData data)
+        {
+            var ledge = new Ledge { Name = data.Name, OneWay = data.OneWay };
+            ledge.SetPoints(data.Points.Select(p => new Vector2(p.X, p.Y)));
+            return ledge;
         }
 
         private static GameObject FromData(GameObjectData data)

@@ -27,6 +27,7 @@ namespace DreamBit.Studio
                     _editor.Scene.Update(new Microsoft.Xna.Framework.GameTime(
                         System.TimeSpan.Zero, System.TimeSpan.FromSeconds(e.DeltaSeconds)));
 
+                _renderer.HighlightedLedge = _editor.SelectedLedge;
                 _renderer.Render(_editor.Scene, _editor.Camera, e.Width, e.Height);
             };
         }
@@ -40,15 +41,35 @@ namespace DreamBit.Studio
         private int W => (int)Surface.ActualWidth;
         private int H => (int)Surface.ActualHeight;
 
+        private XnaVector2 World(MouseEventArgs e) => _editor.Camera.ScreenToWorld(Pos(e), W, H);
+
         private void Surface_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Surface.Focus();
             Surface.CaptureMouse();
 
+            if (_editor.IsLedgeTool)
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                    _editor.AddLedgePoint(World(e));
+                else if (e.ChangedButton == MouseButton.Right)
+                    _editor.FinishLedge();
+                else if (e.ChangedButton == MouseButton.Middle)
+                    _input.MiddleDown(Pos(e));
+                return;
+            }
+
+            // Ferramenta de seleção
             if (e.ChangedButton == MouseButton.Middle || e.ChangedButton == MouseButton.Right)
+            {
                 _input.MiddleDown(Pos(e));
+            }
             else if (e.ChangedButton == MouseButton.Left)
+            {
                 _input.PrimaryDown(Pos(e), W, H);
+                if (_editor.SelectedObject == null)
+                    _editor.TrySelectLedgeAt(World(e), 8f / _editor.Camera.Zoom);
+            }
         }
 
         private void Surface_MouseMove(object sender, MouseEventArgs e) => _input.Move(Pos(e), W, H);
@@ -65,12 +86,22 @@ namespace DreamBit.Studio
         {
             bool ctrl = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
-            if (e.Key == Key.Delete && _editor.DeleteObjectCommand.CanExecute(null))
+            if (_editor.IsLedgeTool && e.Key == Key.Escape)
+                _editor.CancelLedge();
+            else if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return))
+                _editor.FinishLedge();
+            else if (e.Key == Key.Delete && _editor.DeleteObjectCommand.CanExecute(null))
                 _editor.DeleteObjectCommand.Execute(null);
             else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null))
                 _editor.UndoCommand.Execute(null);
             else if (ctrl && (e.Key == Key.Y) && _editor.RedoCommand.CanExecute(null))
                 _editor.RedoCommand.Execute(null);
+        }
+
+        private void Surface_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (_editor.IsLedgeTool)
+                _editor.FinishLedge();
         }
 
         private void OnPlayToggle(object sender, RoutedEventArgs e)
