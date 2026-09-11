@@ -22,7 +22,13 @@ namespace DreamBit.Engine.Serialization
         public float ScaleX { get; set; } = 1f;
         public float ScaleY { get; set; } = 1f;
         public List<SpriteData> Sprites { get; set; } = new();
+        public List<RotatorData> Rotators { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class RotatorData
+    {
+        public float Speed { get; set; } = 1.2f;
     }
 
     public sealed class SpriteData

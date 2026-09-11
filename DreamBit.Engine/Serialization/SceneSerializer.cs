@@ -60,6 +60,7 @@ namespace DreamBit.Engine.Serialization
             };
 
             foreach (var component in obj.Components)
+            {
                 if (component is SpriteRenderer sprite)
                     data.Sprites.Add(new SpriteData
                     {
@@ -70,6 +71,9 @@ namespace DreamBit.Engine.Serialization
                         B = sprite.Color.B,
                         A = sprite.Color.A
                     });
+                else if (component is RotatorBehavior rotator)
+                    data.Rotators.Add(new RotatorData { Speed = rotator.Speed });
+            }
 
             foreach (var child in obj.Children)
                 data.Children.Add(ToData(child));
@@ -100,6 +104,9 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(sprite.Width, sprite.Height),
                     Color = new Color(sprite.R, sprite.G, sprite.B, sprite.A)
                 });
+
+            foreach (var rotator in data.Rotators)
+                obj.AddComponent(new RotatorBehavior { Speed = rotator.Speed });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

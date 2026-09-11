@@ -38,6 +38,7 @@
                 <Button Style="{StaticResource ToolButton}" Content="💾 Salvar" Click="OnSaveScene" />
                 <Separator Width="1" Margin="8,2" Background="#3A404C" />
                 <Button Style="{StaticResource ToolButton}" Content="＋ Novo objeto" Command="{Binding AddObjectCommand}" />
+                <Button Style="{StaticResource ToolButton}" Content="↻ Rotator" Command="{Binding AddRotatorCommand}" ToolTip="Anexa um comportamento que gira o objeto no play" />
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
                 <Separator Width="1" Margin="8,2" Background="#3A404C" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />

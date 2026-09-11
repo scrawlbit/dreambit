@@ -28,6 +28,7 @@ namespace DreamBit.Studio.ViewModels
 
             AddObjectCommand = new RelayCommand(() => AddObject());
             DeleteObjectCommand = new RelayCommand(DeleteSelected, () => SelectedObject != null);
+            AddRotatorCommand = new RelayCommand(AddRotator, () => SelectedObject != null);
 
             SeedSampleScene();
         }
@@ -66,6 +67,7 @@ namespace DreamBit.Studio.ViewModels
 
         public RelayCommand AddObjectCommand { get; }
         public RelayCommand DeleteObjectCommand { get; }
+        public RelayCommand AddRotatorCommand { get; }
 
         public GameObject? SelectedObject
         {
@@ -86,6 +88,7 @@ namespace DreamBit.Studio.ViewModels
                 Inspector.Target = _selectedObject;
                 OnPropertyChanged();
                 DeleteObjectCommand.RaiseCanExecuteChanged();
+                AddRotatorCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -118,6 +121,12 @@ namespace DreamBit.Studio.ViewModels
             Scene.Remove(toRemove);
         }
 
+        /// <summary>Anexa um comportamento de runtime (gira no play) ao objeto selecionado.</summary>
+        public void AddRotator()
+        {
+            SelectedObject?.AddComponent(new RotatorBehavior());
+        }
+
         private void SeedSampleScene()
         {
             var a = AddObject();
@@ -126,6 +135,7 @@ namespace DreamBit.Studio.ViewModels
             var b = AddObject();
             b.Transform.Position = new Vector2(120, 60);
             b.Transform.Rotation = 0.3f;
+            b.AddComponent(new RotatorBehavior { Speed = 1.5f });
 
             SelectedObject = a;
         }
