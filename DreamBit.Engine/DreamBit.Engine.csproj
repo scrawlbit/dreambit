@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Motor do DreamBit em .NET 8. Porta o *design* do modelo de DreamBit.Game
+    (Scene / GameObject / Transform / GameComponent, bindável) e o conceito de
+    runtime dos projetos Old.* (loop de update, câmera, desenho por SpriteBatch),
+    agora recompilado para net8 + MonoGame 3.8. Ver ROADMAP-STANDALONE-DOTNET8.md §3.
+
+    Usa WindowsDX (mesmo pacote do DreamBit.Studio) para compartilhar o GraphicsDevice
+    com o D3DImage. Para multiplataforma (Fase 8) troca-se por MonoGame.Framework.DesktopGL.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>DreamBit.Engine</RootNamespace>
+    <AssemblyName>DreamBit.Engine</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+  </ItemGroup>
+
+</Project>
