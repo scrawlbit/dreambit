@@ -351,6 +351,44 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(rotator);
         }
 
+        /// <summary>Duplica o objeto selecionado (com seus componentes) — reversível.</summary>
+        public void DuplicateSelected()
+        {
+            var src = SelectedObject;
+            if (src == null)
+                return;
+
+            var clone = new GameObject(src.Name + " (cópia)");
+            clone.Transform.Position = src.Transform.Position + new Vector2(16, 16);
+            clone.Transform.Rotation = src.Transform.Rotation;
+            clone.Transform.Scale = src.Transform.Scale;
+
+            foreach (var component in src.Components)
+            {
+                if (component is SpriteRenderer sprite)
+                    clone.AddComponent(new SpriteRenderer { Size = sprite.Size, Color = sprite.Color });
+                else if (component is RotatorBehavior rotator)
+                    clone.AddComponent(new RotatorBehavior { Speed = rotator.Speed });
+            }
+
+            History.Do(new EditorAction("Duplicar objeto",
+                doAction: () => { Scene.Add(clone); SelectedObject = clone; },
+                undoAction: () => { if (SelectedObject == clone) SelectedObject = null; Scene.Remove(clone); }));
+        }
+
+        /// <summary>Move o objeto selecionado por um delta (setas do teclado) — reversível.</summary>
+        public void Nudge(Vector2 delta)
+        {
+            var obj = SelectedObject;
+            if (obj == null)
+                return;
+
+            var from = obj.Transform.Position;
+            var to = from + delta;
+            obj.Transform.Position = to;
+            PushMove(obj, from, to);
+        }
+
         /// <summary>Registra um arraste concluído no histórico (a posição já foi aplicada).</summary>
         public void PushMove(GameObject obj, Vector2 from, Vector2 to)
         {

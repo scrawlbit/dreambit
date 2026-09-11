@@ -94,8 +94,31 @@ namespace DreamBit.Studio
                 _editor.DeleteObjectCommand.Execute(null);
             else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null))
                 _editor.UndoCommand.Execute(null);
-            else if (ctrl && (e.Key == Key.Y) && _editor.RedoCommand.CanExecute(null))
+            else if (ctrl && e.Key == Key.Y && _editor.RedoCommand.CanExecute(null))
                 _editor.RedoCommand.Execute(null);
+            else if (ctrl && e.Key == Key.D)
+                _editor.DuplicateSelected();
+            else if (!(e.OriginalSource is System.Windows.Controls.TextBox) && TryNudge(e.Key))
+                e.Handled = true;
+        }
+
+        private bool TryNudge(Key key)
+        {
+            float step = _editor.SnapToGrid ? _editor.GridStep : 1f;
+            var delta = key switch
+            {
+                Key.Left => new XnaVector2(-step, 0),
+                Key.Right => new XnaVector2(step, 0),
+                Key.Up => new XnaVector2(0, -step),
+                Key.Down => new XnaVector2(0, step),
+                _ => XnaVector2.Zero
+            };
+
+            if (delta == XnaVector2.Zero)
+                return false;
+
+            _editor.Nudge(delta);
+            return true;
         }
 
         private void Surface_DoubleClick(object sender, MouseButtonEventArgs e)
