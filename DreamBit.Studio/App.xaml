@@ -6,5 +6,14 @@
     <Application.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <conv:InverseBoolToVisibilityConverter x:Key="BoolToVisInverse" />
+
+        <!-- Cores do tema (valores iniciais = escuro; trocados em runtime pelo ThemeManager) -->
+        <SolidColorBrush x:Key="WindowBg" Color="#1E2128" />
+        <SolidColorBrush x:Key="PanelBg" Color="#252932" />
+        <SolidColorBrush x:Key="FieldBg" Color="#2A2E38" />
+        <SolidColorBrush x:Key="TextFg" Color="#D6DBE6" />
+        <SolidColorBrush x:Key="MutedFg" Color="#8A93A6" />
+        <SolidColorBrush x:Key="BorderBg" Color="#11141A" />
+        <SolidColorBrush x:Key="AccentBg" Color="#2F3440" />
     </Application.Resources>
 </Application>

@@ -19,6 +19,8 @@ namespace DreamBit.Engine.Rendering
         public Texture2D Pixel => _pixel;
 
         public Color Background { get; set; } = new(24, 26, 32);
+        public Color GridColor { get; set; } = new(44, 48, 58);
+        public Color GridAxisColor { get; set; } = new(90, 96, 110);
         public bool ShowGrid { get; set; } = true;
         public bool ShowLedges { get; set; } = true;
         public int GridSize { get; set; } = 32;
@@ -127,8 +129,8 @@ namespace DreamBit.Engine.Rendering
             int minY = (int)Math.Floor(topLeft.Y / step) * step;
             int maxY = (int)Math.Ceiling(bottomRight.Y / step) * step;
 
-            var line = new Color(44, 48, 58);
-            var axis = new Color(90, 96, 110);
+            var line = GridColor;
+            var axis = GridAxisColor;
 
             for (int x = minX; x <= maxX; x += step)
                 DrawWorldLine(new Vector2(x, minY), new Vector2(x, maxY), x == 0 ? axis : line, x == 0 ? 2f : 1f, camera);

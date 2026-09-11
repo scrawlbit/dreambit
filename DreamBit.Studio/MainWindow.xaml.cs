@@ -20,7 +20,11 @@ namespace DreamBit.Studio
             _input = new SceneInputController(_editor);
             DataContext = _editor;
 
-            Surface.LoadContent += (_, device) => _renderer.Initialize(device);
+            Surface.LoadContent += (_, device) =>
+            {
+                _renderer.Initialize(device);
+                ThemeManager.Apply(ThemeManager.IsDark, _renderer); // sincroniza cores do canvas
+            };
             Surface.Draw += (_, e) =>
             {
                 if (_editor.IsPlaying)
@@ -126,6 +130,8 @@ namespace DreamBit.Studio
             if (_editor.IsLedgeTool)
                 _editor.FinishLedge();
         }
+
+        private void OnToggleTheme(object sender, RoutedEventArgs e) => ThemeManager.Toggle(_renderer);
 
         private void OnPlayToggle(object sender, RoutedEventArgs e)
         {

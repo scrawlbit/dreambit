@@ -3,28 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hosting="clr-namespace:DreamBit.Studio.Hosting"
         Title="DreamBit Studio (.NET 8 standalone)" Height="720" Width="1180"
-        Background="#1E2128" TextElement.Foreground="#D6DBE6" FontSize="12"
+        Background="{DynamicResource WindowBg}" TextElement.Foreground="{DynamicResource TextFg}" FontSize="12"
         KeyDown="OnWindowKeyDown">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#D6DBE6" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFg}" />
         </Style>
         <Style x:Key="PanelHeader" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#8A93A6" />
+            <Setter Property="Foreground" Value="{DynamicResource MutedFg}" />
             <Setter Property="Margin" Value="10,8,0,6" />
             <Setter Property="FontSize" Value="11" />
         </Style>
         <Style x:Key="ToolButton" TargetType="Button">
             <Setter Property="Margin" Value="4,0" />
             <Setter Property="Padding" Value="10,4" />
-            <Setter Property="Background" Value="#2F3440" />
-            <Setter Property="Foreground" Value="#EAEEF6" />
+            <Setter Property="Background" Value="{DynamicResource AccentBg}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFg}" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#2A2E38" />
-            <Setter Property="Foreground" Value="#EAEEF6" />
-            <Setter Property="BorderBrush" Value="#3A404C" />
+            <Setter Property="Background" Value="{DynamicResource FieldBg}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFg}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBg}" />
             <Setter Property="Margin" Value="0,2" />
             <Setter Property="Padding" Value="3,2" />
         </Style>
@@ -32,34 +32,36 @@
 
     <DockPanel>
         <!-- Toolbar -->
-        <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
+        <Border DockPanel.Dock="Top" Background="{DynamicResource PanelBg}" Padding="6">
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource ToolButton}" Content="📁 Projeto" Click="OnOpenProject" ToolTip="Abre/cria um projeto (pasta com cenas)" />
-                <Separator Width="1" Margin="8,2" Background="#3A404C" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button Style="{StaticResource ToolButton}" Content="🗋 Nova" Click="OnNewScene" />
                 <Button Style="{StaticResource ToolButton}" Content="📂 Abrir" Click="OnOpenScene" />
                 <Button Style="{StaticResource ToolButton}" Content="💾 Salvar" Click="OnSaveScene" />
-                <Separator Width="1" Margin="8,2" Background="#3A404C" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button Style="{StaticResource ToolButton}" Content="↶ Desfazer" Command="{Binding UndoCommand}" ToolTip="Ctrl+Z" />
                 <Button Style="{StaticResource ToolButton}" Content="↷ Refazer" Command="{Binding RedoCommand}" ToolTip="Ctrl+Y" />
-                <Separator Width="1" Margin="8,2" Background="#3A404C" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button Style="{StaticResource ToolButton}" Content="＋ Novo objeto" Command="{Binding AddObjectCommand}" />
                 <Button Style="{StaticResource ToolButton}" Content="↻ Rotator" Command="{Binding AddRotatorCommand}" ToolTip="Anexa um comportamento que gira o objeto no play" />
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
-                <Separator Width="1" Margin="8,2" Background="#3A404C" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />
                 <Button Style="{StaticResource ToolButton}" Content="🎮 Rodar jogo" Click="OnRunGame" ToolTip="Abre a cena atual no DreamBit.Player" />
-                <Separator Width="1" Margin="8,2" Background="#3A404C" />
-                <RadioButton GroupName="tool" Content="Selecionar" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0"
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
+                <RadioButton GroupName="tool" Content="Selecionar" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
                              IsChecked="{Binding IsSelectTool, Mode=OneWay}" Command="{Binding SelectToolCommand}" />
-                <RadioButton GroupName="tool" Content="Ledge" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0"
+                <RadioButton GroupName="tool" Content="Ledge" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
                              IsChecked="{Binding IsLedgeTool, Mode=OneWay}" Command="{Binding LedgeToolCommand}" />
-                <CheckBox Content="One-way" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0"
+                <CheckBox Content="One-way" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
                           IsChecked="{Binding NewLedgeOneWay}" ToolTip="One-way para novas ledges" />
-                <Separator Width="1" Margin="8,2" Background="#3A404C" />
-                <CheckBox Content="Snap ao grid" Foreground="#D6DBE6" VerticalAlignment="Center" Margin="4,0,0,0"
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
+                <CheckBox Content="Snap ao grid" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0,0,0"
                           IsChecked="{Binding SnapToGrid}" />
-                <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom: {0:0.00}x'}" VerticalAlignment="Center" Margin="16,0,0,0" Foreground="#8A93A6" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
+                <Button Style="{StaticResource ToolButton}" Content="🌓 Tema" Click="OnToggleTheme" ToolTip="Alterna claro/escuro" />
+                <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom: {0:0.00}x'}" VerticalAlignment="Center" Margin="16,0,0,0" Foreground="{DynamicResource MutedFg}" />
             </StackPanel>
         </Border>
 
@@ -73,7 +75,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Projeto (cenas) + Hierarquia -->
-            <Grid Grid.Column="0" Background="#252932">
+            <Grid Grid.Column="0" Background="{DynamicResource PanelBg}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="150" />
@@ -94,10 +96,10 @@
                          DisplayMemberPath="Name" />
             </Grid>
 
-            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#11141A" />
+            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="{DynamicResource BorderBg}" />
 
             <!-- Editor de Cena -->
-            <Border Grid.Column="2" BorderBrush="#11141A" BorderThickness="1">
+            <Border Grid.Column="2" BorderBrush="{DynamicResource BorderBg}" BorderThickness="1">
                 <hosting:MonoGameSurface x:Name="Surface"
                                          MouseDown="Surface_MouseDown"
                                          MouseMove="Surface_MouseMove"
@@ -107,19 +109,19 @@
                                          ClipToBounds="True" />
             </Border>
 
-            <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="#11141A" />
+            <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="{DynamicResource BorderBg}" />
 
             <!-- Inspetor -->
-            <DockPanel Grid.Column="4" Background="#252932">
+            <DockPanel Grid.Column="4" Background="{DynamicResource PanelBg}">
                 <TextBlock DockPanel.Dock="Top" Text="INSPETOR" Style="{StaticResource PanelHeader}" />
                 <StackPanel Margin="10,4">
                     <!-- Objeto selecionado -->
                     <StackPanel DataContext="{Binding Inspector}"
                                 Visibility="{Binding HasTarget, Converter={StaticResource BoolToVis}}">
-                        <TextBlock Text="Nome" Foreground="#8A93A6" />
+                        <TextBlock Text="Nome" Foreground="{DynamicResource MutedFg}" />
                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <TextBlock Text="Posição" Foreground="#8A93A6" Margin="0,10,0,0" />
+                        <TextBlock Text="Posição" Foreground="{DynamicResource MutedFg}" Margin="0,10,0,0" />
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
@@ -128,10 +130,10 @@
                             <TextBox Grid.Column="2" Text="{Binding PositionY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
                         </Grid>
 
-                        <TextBlock Text="Rotação (graus)" Foreground="#8A93A6" Margin="0,10,0,0" />
+                        <TextBlock Text="Rotação (graus)" Foreground="{DynamicResource MutedFg}" Margin="0,10,0,0" />
                         <TextBox Text="{Binding RotationDegrees, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
 
-                        <TextBlock Text="Escala" Foreground="#8A93A6" Margin="0,10,0,0" />
+                        <TextBlock Text="Escala" Foreground="{DynamicResource MutedFg}" Margin="0,10,0,0" />
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
@@ -140,18 +142,18 @@
                             <TextBox Grid.Column="2" Text="{Binding ScaleY, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
                         </Grid>
 
-                        <TextBlock Text="COMPONENTES" Foreground="#8A93A6" Margin="0,14,0,4" />
+                        <TextBlock Text="COMPONENTES" Foreground="{DynamicResource MutedFg}" Margin="0,14,0,4" />
 
                         <!-- Sprite Renderer -->
-                        <Border Background="#2A2E38" Padding="6" Margin="0,2" CornerRadius="3"
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,2" CornerRadius="3"
                                 Visibility="{Binding HasSprite, Converter={StaticResource BoolToVis}}">
                             <StackPanel>
                                 <DockPanel>
                                     <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveSprite"
                                             Style="{StaticResource ToolButton}" />
-                                    <TextBlock Text="Sprite Renderer" Foreground="#EAEEF6" VerticalAlignment="Center" />
+                                    <TextBlock Text="Sprite Renderer" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
                                 </DockPanel>
-                                <TextBlock Text="Tamanho (L × A)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                                <TextBlock Text="Tamanho (L × A)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
@@ -159,7 +161,7 @@
                                     <TextBox Grid.Column="0" Text="{Binding SpriteWidth, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
                                     <TextBox Grid.Column="2" Text="{Binding SpriteHeight, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
                                 </Grid>
-                                <TextBlock Text="Cor (R G B)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                                <TextBlock Text="Cor (R G B)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" /><ColumnDefinition Width="4" /><ColumnDefinition Width="*" /><ColumnDefinition Width="4" /><ColumnDefinition Width="*" />
@@ -175,15 +177,15 @@
                                 Visibility="{Binding HasSprite, Converter={StaticResource BoolToVisInverse}}" />
 
                         <!-- Rotator -->
-                        <Border Background="#2A2E38" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasRotator, Converter={StaticResource BoolToVis}}">
                             <StackPanel>
                                 <DockPanel>
                                     <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveRotator"
                                             Style="{StaticResource ToolButton}" />
-                                    <TextBlock Text="Rotator" Foreground="#EAEEF6" VerticalAlignment="Center" />
+                                    <TextBlock Text="Rotator" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
                                 </DockPanel>
-                                <TextBlock Text="Velocidade (rad/s)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                                <TextBlock Text="Velocidade (rad/s)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
                                 <TextBox Text="{Binding RotatorSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.###}" />
                             </StackPanel>
                         </Border>
@@ -194,17 +196,17 @@
 
                     <!-- Ledge selecionada -->
                     <StackPanel Visibility="{Binding HasSelectedLedge, Converter={StaticResource BoolToVis}}">
-                        <TextBlock Text="LEDGE (borda caminhável)" Foreground="#8A93A6" />
+                        <TextBlock Text="LEDGE (borda caminhável)" Foreground="{DynamicResource MutedFg}" />
                         <TextBox Text="{Binding SelectedLedge.Name, UpdateSourceTrigger=PropertyChanged}" />
                         <CheckBox Content="One-way (atravessa por baixo)" Margin="0,8,0,0"
-                                  Foreground="#D6DBE6" IsChecked="{Binding SelectedLedge.OneWay}" />
+                                  Foreground="{DynamicResource TextFg}" IsChecked="{Binding SelectedLedge.OneWay}" />
                         <TextBlock Text="{Binding SelectedLedge.Points.Count, StringFormat='Pontos: {0}'}"
-                                   Foreground="#8A93A6" Margin="0,8,0,0" />
+                                   Foreground="{DynamicResource MutedFg}" Margin="0,8,0,0" />
                     </StackPanel>
 
                     <!-- Dica da ferramenta Ledge -->
                     <TextBlock Visibility="{Binding IsLedgeTool, Converter={StaticResource BoolToVis}}"
-                               Foreground="#8A93A6" TextWrapping="Wrap" Margin="0,12,0,0"
+                               Foreground="{DynamicResource MutedFg}" TextWrapping="Wrap" Margin="0,12,0,0"
                                Text="Ferramenta Ledge: clique para adicionar pontos; botão direito, Enter ou duplo clique finaliza; Esc cancela." />
                 </StackPanel>
             </DockPanel>
