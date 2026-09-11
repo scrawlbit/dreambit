@@ -41,8 +41,9 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
 | ✅ **Importar tilemap Tiled (.tmx)** | *Entregue* — `TmxImporter` (CSV/Base64+zlib, chunks, tilesets externos .tsx) + `TilemapRenderer`; **validado nos assets reais (RunNMagic)**. | 🔴 |
+| ✅ **Colisão + personagem jogável nas ledges** | *Entregue* — `LedgePhysics` + `PlatformerController` (gravidade, pousa nas ledges one-way, teclado anda/pula) e câmera que segue o personagem no `DreamBit.Player`. | 🟡 |
 | **Editor/pincel de tilemap** | Pintar/apagar tiles num grid dentro do editor (hoje o mapa vem importado do Tiled, mas não é editável célula a célula). | 🔴 |
-| **Colisão de personagem nas ledges** | Controlador que faz um objeto andar/parar sobre as ledges (usa o que já existe). | 🟡 |
+| **Mais componentes / áudio / partículas** | Colisor genérico, áudio (usa o FreeSFX), partículas. | 🔴 |
 | **Mais componentes** | Colisor, corpo físico, animador, áudio, partículas — cada um com Draw/Update e inspetor. | 🔴 |
 | **Referências entre objetos** | Propriedade do inspetor que aceita outro `GameObject` (arrastar da hierarquia). | 🟡 |
 | **Scripts C# recarregáveis** | Evoluir o `RotatorBehavior`/`ScriptBehavior` para scripts do usuário compilados via Roslyn, com props no inspetor (como o `ScriptProperty` do `DreamBit.Game`). | 🔴 |
