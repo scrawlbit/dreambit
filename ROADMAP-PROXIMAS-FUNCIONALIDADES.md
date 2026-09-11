@@ -27,14 +27,16 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 *Refinamentos opcionais que ficam para depois:* undo/redo das edições digitadas no inspetor
 (agrupadas por foco) e trocar os `GridSplitter` por **AvalonDock** (docking flutuante + layout salvável).
 
-## Marco 2 — Conteúdo e assets
+## Marco 2 — Conteúdo e assets (em andamento)
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
-| **SpriteRenderer com textura real** | Carregar PNG e desenhar a textura (o `DrawQuad` já aceita `Texture2D`); campo de imagem no inspetor. | 🟡 |
-| **Assets browser** | Painel listando sprites/fontes da pasta do projeto, com preview; arrastar para a cena. | 🟡 |
+| ✅ **SpriteRenderer com textura real** | *Entregue* — `TextureCache` + `TexturePath`, campo no inspetor, serializado. | 🟡 |
+| ✅ **Assets browser** | *Entregue* — painel de imagens do projeto; duplo clique aplica ao sprite/cria objeto; atualiza ao vivo. | 🟡 |
 | **Pipeline `dotnet mgcb`** | Integrar o Content Pipeline do MonoGame (build incremental) e **hot reload** de textura ao salvar. Aproveita `DreamBit.Pipeline`. | 🔴 |
 | **Sprite sheets / animação** | Import de atlas, recorte de frames e uma timeline simples de animação por frames. | 🔴 |
+
+> Falta o miolo pesado do Marco 2 (pipeline MGCB e animação por frames), ambos 🔴.
 
 ## Marco 3 — Jogabilidade
 
