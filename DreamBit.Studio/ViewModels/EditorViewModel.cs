@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace DreamBit.Studio.ViewModels
     public sealed class EditorViewModel : NotificationObject
     {
         private GameObject? _selectedObject;
+        private readonly List<GameObject> _selectedObjects = new();
         private int _counter;
         private bool _isPlaying;
         private Scene _scene;
@@ -139,33 +141,87 @@ namespace DreamBit.Studio.ViewModels
         /// <summary>Caminho do arquivo da cena atual, se salva/aberta em disco.</summary>
         public string? CurrentPath { get; private set; }
 
+        /// <summary>Objetos atualmente selecionados (multisseleção).</summary>
+        public IReadOnlyList<GameObject> SelectedObjects => _selectedObjects;
+
+        /// <summary>Disparado quando a seleção de objetos muda (para sincronizar a hierarquia).</summary>
+        public event System.Action? SelectionChanged;
+
+        /// <summary>Objeto principal da seleção (o do inspetor). Setar seleciona só ele.</summary>
         public GameObject? SelectedObject
         {
             get => _selectedObject;
-            set
+            set => SelectSingle(value);
+        }
+
+        /// <summary>Seleciona apenas o objeto informado (ou limpa a seleção).</summary>
+        public void SelectSingle(GameObject? obj)
+        {
+            ClearSelectionFlags();
+            _selectedObjects.Clear();
+            if (obj != null)
             {
-                if (_selectedObject == value)
-                    return;
-
-                if (_selectedObject != null)
-                    _selectedObject.IsSelected = false;
-
-                _selectedObject = value;
-
-                if (_selectedObject != null)
-                    _selectedObject.IsSelected = true;
-
-                if (_selectedObject != null && _selectedLedge != null)
-                {
-                    _selectedLedge = null;
-                    OnPropertyChanged(nameof(SelectedLedge));
-                }
-
-                Inspector.Target = _selectedObject;
-                OnPropertyChanged();
-                DeleteObjectCommand.RaiseCanExecuteChanged();
-                AddRotatorCommand.RaiseCanExecuteChanged();
+                _selectedObjects.Add(obj);
+                obj.IsSelected = true;
             }
+            UpdateSelection(obj);
+        }
+
+        /// <summary>Adiciona/remove um objeto da seleção (Ctrl+clique).</summary>
+        public void ToggleSelect(GameObject obj)
+        {
+            if (_selectedObjects.Remove(obj))
+            {
+                obj.IsSelected = false;
+                UpdateSelection(_selectedObjects.Count > 0 ? _selectedObjects[^1] : null);
+            }
+            else
+            {
+                _selectedObjects.Add(obj);
+                obj.IsSelected = true;
+                UpdateSelection(obj);
+            }
+        }
+
+        /// <summary>Substitui a seleção por uma lista (hierarquia / seleção por caixa).</summary>
+        public void SetSelection(IEnumerable<GameObject> objects)
+        {
+            ClearSelectionFlags();
+            _selectedObjects.Clear();
+            foreach (var obj in objects)
+            {
+                if (!_selectedObjects.Contains(obj))
+                {
+                    _selectedObjects.Add(obj);
+                    obj.IsSelected = true;
+                }
+            }
+            UpdateSelection(_selectedObjects.Count > 0 ? _selectedObjects[^1] : null);
+        }
+
+        private void ClearSelectionFlags()
+        {
+            foreach (var obj in _selectedObjects)
+                obj.IsSelected = false;
+        }
+
+        private void UpdateSelection(GameObject? primary)
+        {
+            _selectedObject = primary;
+
+            if (primary != null && _selectedLedge != null)
+            {
+                _selectedLedge = null;
+                OnPropertyChanged(nameof(SelectedLedge));
+                OnPropertyChanged(nameof(HasSelectedLedge));
+            }
+
+            Inspector.Target = _selectedObject;
+            OnPropertyChanged(nameof(SelectedObject));
+            OnPropertyChanged(nameof(SelectedObjects));
+            DeleteObjectCommand.RaiseCanExecuteChanged();
+            AddRotatorCommand.RaiseCanExecuteChanged();
+            SelectionChanged?.Invoke();
         }
 
         public EditorTool CurrentTool
@@ -282,12 +338,12 @@ namespace DreamBit.Studio.ViewModels
 
         public void DeleteSelected()
         {
-            var obj = SelectedObject;
-            if (obj != null)
+            if (_selectedObjects.Count > 0)
             {
-                History.Do(new EditorAction("Excluir objeto",
-                    doAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); },
-                    undoAction: () => { Scene.Add(obj); SelectedObject = obj; }));
+                var toRemove = _selectedObjects.ToArray();
+                History.Do(new EditorAction(toRemove.Length > 1 ? "Excluir objetos" : "Excluir objeto",
+                    doAction: () => { SelectSingle(null); foreach (var o in toRemove) Scene.Remove(o); },
+                    undoAction: () => { foreach (var o in toRemove) Scene.Add(o); SetSelection(toRemove); }));
                 return;
             }
 
@@ -298,6 +354,31 @@ namespace DreamBit.Studio.ViewModels
                     doAction: () => { if (SelectedLedge == ledge) SelectedLedge = null; Scene.RemoveLedge(ledge); },
                     undoAction: () => { Scene.AddLedge(ledge); SelectedLedge = ledge; }));
             }
+        }
+
+        // ---- Transformação em grupo (multisseleção) ----
+
+        public readonly record struct TransformState(Vector2 Position, float Rotation, Vector2 Scale);
+
+        public static TransformState Capture(GameObject obj)
+            => new(obj.Transform.Position, obj.Transform.Rotation, obj.Transform.Scale);
+
+        private static void ApplyStates(GameObject[] objects, TransformState[] states)
+        {
+            for (int i = 0; i < objects.Length; i++)
+            {
+                objects[i].Transform.Position = states[i].Position;
+                objects[i].Transform.Rotation = states[i].Rotation;
+                objects[i].Transform.Scale = states[i].Scale;
+            }
+        }
+
+        /// <summary>Registra uma transformação de grupo concluída (posições/rotações/escalas já aplicadas).</summary>
+        public void PushGroupTransform(GameObject[] objects, TransformState[] before, TransformState[] after)
+        {
+            History.Push(new EditorAction(objects.Length > 1 ? "Transformar grupo" : "Transformar objeto",
+                doAction: () => ApplyStates(objects, after),
+                undoAction: () => ApplyStates(objects, before)));
         }
 
         // ---- desenho de ledges ----

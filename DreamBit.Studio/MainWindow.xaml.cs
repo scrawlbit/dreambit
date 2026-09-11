@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using DreamBit.Engine.Rendering;
@@ -20,6 +21,8 @@ namespace DreamBit.Studio
             _input = new SceneInputController(_editor);
             DataContext = _editor;
 
+            _editor.SelectionChanged += SyncHierarchySelection;
+
             Surface.LoadContent += (_, device) =>
             {
                 _renderer.Initialize(device);
@@ -32,6 +35,7 @@ namespace DreamBit.Studio
                         System.TimeSpan.Zero, System.TimeSpan.FromSeconds(e.DeltaSeconds)));
 
                 _renderer.HighlightedLedge = _editor.SelectedLedge;
+                _renderer.SelectionBox = _input.BoxSelectWorld;
                 _renderer.Render(_editor.Scene, _editor.Camera, e.Width, e.Height);
             };
         }
@@ -70,9 +74,8 @@ namespace DreamBit.Studio
             }
             else if (e.ChangedButton == MouseButton.Left)
             {
-                _input.PrimaryDown(Pos(e), W, H);
-                if (_editor.SelectedObject == null)
-                    _editor.TrySelectLedgeAt(World(e), 8f / _editor.Camera.Zoom);
+                bool ctrl = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+                _input.PrimaryDown(Pos(e), W, H, ctrl);
             }
         }
 
@@ -254,6 +257,26 @@ namespace DreamBit.Studio
         {
             if (AssetsList.SelectedItem is string assetPath)
                 _editor.UseAsset(assetPath);
+        }
+
+        private bool _syncingHierarchy;
+
+        private void OnHierarchySelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (_syncingHierarchy)
+                return;
+
+            var selected = HierarchyList.SelectedItems.Cast<DreamBit.Engine.Elements.GameObject>().ToList();
+            _editor.SetSelection(selected);
+        }
+
+        private void SyncHierarchySelection()
+        {
+            _syncingHierarchy = true;
+            HierarchyList.SelectedItems.Clear();
+            foreach (var obj in _editor.SelectedObjects)
+                HierarchyList.SelectedItems.Add(obj);
+            _syncingHierarchy = false;
         }
 
         private void OnOpenScene(object sender, RoutedEventArgs e)

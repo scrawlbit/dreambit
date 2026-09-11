@@ -28,6 +28,9 @@ namespace DreamBit.Engine.Rendering
         /// <summary>Ledge destacada (selecionada no editor), desenhada em branco.</summary>
         public Ledge? HighlightedLedge { get; set; }
 
+        /// <summary>Retângulo de seleção por caixa em andamento (mundo), ou null.</summary>
+        public (Vector2 Min, Vector2 Max)? SelectionBox { get; set; }
+
         public void Initialize(GraphicsDevice device)
         {
             _spriteBatch = new SpriteBatch(device);
@@ -53,7 +56,23 @@ namespace DreamBit.Engine.Rendering
 
             DrawSelection(scene, camera);
 
+            if (SelectionBox.HasValue)
+                DrawSelectionBox(SelectionBox.Value, camera);
+
             _spriteBatch.End();
+        }
+
+        private void DrawSelectionBox((Vector2 Min, Vector2 Max) box, Camera2D camera)
+        {
+            var corners = new[]
+            {
+                box.Min, new Vector2(box.Max.X, box.Min.Y), box.Max, new Vector2(box.Min.X, box.Max.Y)
+            };
+            var color = new Color(120, 180, 255);
+            float t = 1f / camera.Zoom;
+
+            for (int i = 0; i < 4; i++)
+                DrawSegment(corners[i], corners[(i + 1) % 4], color, t);
         }
 
         private void DrawLedges(Scene scene, Camera2D camera)
@@ -156,17 +175,48 @@ namespace DreamBit.Engine.Rendering
 
         private void DrawSelection(Scene scene, Camera2D camera)
         {
+            var selected = new System.Collections.Generic.List<GameObject>();
             foreach (var obj in EnumerateVisible(scene))
-            {
-                if (!obj.IsSelected)
-                    continue;
+                if (obj.IsSelected)
+                    selected.Add(obj);
 
-                var world = obj.Transform.WorldMatrix;
-                var size = GetVisualSize(obj);
-                DrawOutline(world, size, Color.White);
-                DrawRotationGizmo(obj, camera);
-                DrawScaleHandles(obj, size, camera);
+            foreach (var obj in selected)
+                DrawOutline(obj.Transform.WorldMatrix, GetVisualSize(obj), Color.White);
+
+            if (selected.Count == 1)
+            {
+                DrawRotationGizmo(selected[0], camera);
+                DrawScaleHandles(selected[0], GetVisualSize(selected[0]), camera);
             }
+            else if (selected.Count > 1)
+            {
+                DrawGroupGizmo(selected, camera);
+            }
+        }
+
+        private void DrawGroupGizmo(System.Collections.Generic.List<GameObject> selected, Camera2D camera)
+        {
+            var bounds = GizmoGeometry.GroupBounds(selected);
+            var corners = GizmoGeometry.GroupCorners(bounds);
+            float thickness = 2f / camera.Zoom;
+            var boxColor = new Color(90, 170, 255);
+
+            for (int i = 0; i < 4; i++)
+                DrawSegment(corners[i], corners[(i + 1) % 4], boxColor, thickness);
+
+            // handle de rotação (acima do topo)
+            var topCenter = new Vector2((bounds.Min.X + bounds.Max.X) / 2f, bounds.Min.Y);
+            var handle = GizmoGeometry.GroupRotationHandle(bounds, camera.Zoom);
+            var rotColor = new Color(255, 200, 80);
+            DrawSegment(topCenter, handle, rotColor, thickness);
+
+            float hs = 10f / camera.Zoom;
+            _spriteBatch.Draw(_pixel, new Rectangle((int)(handle.X - hs / 2), (int)(handle.Y - hs / 2), (int)hs, (int)hs), rotColor);
+
+            // handles de escala nos cantos
+            var scaleColor = new Color(120, 220, 255);
+            foreach (var corner in corners)
+                _spriteBatch.Draw(_pixel, new Rectangle((int)(corner.X - hs / 2), (int)(corner.Y - hs / 2), (int)hs, (int)hs), scaleColor);
         }
 
         private void DrawScaleHandles(GameObject obj, Vector2 size, Camera2D camera)

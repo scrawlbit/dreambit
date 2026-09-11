@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DreamBit.Engine.Elements;
@@ -8,68 +9,97 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Studio.Editing
 {
     /// <summary>
-    /// Traduz o input do mouse no canvas em operações de edição: seleção por clique
-    /// (picking tela→mundo), arraste do objeto selecionado, pan e zoom da câmera.
+    /// Input do canvas na ferramenta de seleção: seleção única/múltipla (Ctrl+clique,
+    /// caixa), mover/rotacionar/redimensionar em grupo pelos gizmos, pan e zoom.
     /// </summary>
     public sealed class SceneInputController
     {
         private readonly EditorViewModel _editor;
 
-        private bool _dragging;
-        private Vector2 _dragOffset;
-        private GameObject? _dragObject;
-        private Vector2 _dragStartPosition;
-        private GameObject? _rotateObject;
-        private float _rotateStart;
-        private GameObject? _scaleObject;
-        private Vector2 _scaleStartScale;
-        private float _scaleStartDist;
+        private bool _movingGroup;
+        private bool _rotating;
+        private bool _scaling;
         private bool _panning;
+        private bool _boxSelecting;
+
+        private GameObject[] _groupObjects = Array.Empty<GameObject>();
+        private EditorViewModel.TransformState[] _groupBefore = Array.Empty<EditorViewModel.TransformState>();
+        private Vector2 _groupCenter;
+        private Vector2 _dragAnchor;
+        private float _rotateStartAngle;
+        private float _scaleStartDist;
+
         private Vector2 _lastScreen;
+        private Vector2 _boxStart;
+        private Vector2 _boxCurrent;
 
         public SceneInputController(EditorViewModel editor) => _editor = editor;
 
-        public void PrimaryDown(Vector2 screen, int width, int height)
+        /// <summary>Caixa de seleção em andamento (mundo), ou null.</summary>
+        public (Vector2 Min, Vector2 Max)? BoxSelectWorld =>
+            _boxSelecting ? (Vector2.Min(_boxStart, _boxCurrent), Vector2.Max(_boxStart, _boxCurrent)) : null;
+
+        public void PrimaryDown(Vector2 screen, int width, int height, bool ctrl)
         {
             var world = _editor.Camera.ScreenToWorld(screen, width, height);
+            var selected = _editor.SelectedObjects;
+            float zoom = _editor.Camera.Zoom;
+            float grab = GizmoGeometry.GrabScreenRadius / zoom;
 
-            // Gizmo de rotação do objeto já selecionado tem prioridade sobre o pick.
-            var selected = _editor.SelectedObject;
-            if (selected != null)
+            // 1) Gizmos da seleção atual (rotação/escala) têm prioridade
+            if (selected.Count > 0)
             {
-                float grab = GizmoGeometry.GrabScreenRadius / _editor.Camera.Zoom;
+                var (center, handle, corners) = Gizmo(selected, zoom);
 
-                var handle = GizmoGeometry.RotationHandleWorld(selected, _editor.Camera.Zoom);
                 if (Vector2.Distance(world, handle) <= grab)
                 {
-                    _rotateObject = selected;
-                    _rotateStart = selected.Transform.Rotation;
+                    BeginGroupOp(center);
+                    _rotating = true;
+                    _rotateStartAngle = Angle(center, world);
                     return;
                 }
 
-                var size = SceneRenderer.GetVisualSize(selected);
-                foreach (var corner in GizmoGeometry.Corners(selected, size))
+                foreach (var corner in corners)
                 {
                     if (Vector2.Distance(world, corner) <= grab)
                     {
-                        _scaleObject = selected;
-                        _scaleStartScale = selected.Transform.Scale;
-                        _scaleStartDist = System.Math.Max(1f, Vector2.Distance(selected.Transform.WorldPosition, world));
+                        BeginGroupOp(center);
+                        _scaling = true;
+                        _scaleStartDist = Math.Max(1f, Vector2.Distance(center, world));
                         return;
                     }
                 }
             }
 
+            // 2) Pick de objeto
             var hit = Pick(world);
-            _editor.SelectedObject = hit;
-
             if (hit != null)
             {
-                _dragging = true;
-                _dragObject = hit;
-                _dragStartPosition = hit.Transform.Position;
-                _dragOffset = hit.Transform.Position - ToLocalParent(hit, world);
+                if (ctrl)
+                {
+                    _editor.ToggleSelect(hit);
+                    return;
+                }
+
+                if (!hit.IsSelected)
+                    _editor.SelectSingle(hit);
+
+                BeginGroupOp(Vector2.Zero);
+                _movingGroup = true;
+                _dragAnchor = world;
+                return;
             }
+
+            // 3) Espaço vazio: tenta selecionar uma ledge; senão, seleção por caixa
+            if (!ctrl)
+                _editor.SelectSingle(null);
+
+            if (_editor.TrySelectLedgeAt(world, 8f / zoom))
+                return;
+
+            _boxSelecting = true;
+            _boxStart = world;
+            _boxCurrent = world;
         }
 
         public void MiddleDown(Vector2 screen)
@@ -80,19 +110,55 @@ namespace DreamBit.Studio.Editing
 
         public void Move(Vector2 screen, int width, int height)
         {
-            if (_rotateObject != null)
+            var world = _editor.Camera.ScreenToWorld(screen, width, height);
+
+            if (_rotating)
             {
-                var world = _editor.Camera.ScreenToWorld(screen, width, height);
-                _rotateObject.Transform.Rotation = GizmoGeometry.RotationTowards(_rotateObject, world);
+                float delta = Angle(_groupCenter, world) - _rotateStartAngle;
+                for (int i = 0; i < _groupObjects.Length; i++)
+                {
+                    var before = _groupBefore[i];
+                    var offset = Rotate(before.Position - _groupCenter, delta);
+                    _groupObjects[i].Transform.Position = _groupCenter + offset;
+                    _groupObjects[i].Transform.Rotation = before.Rotation + delta;
+                }
                 return;
             }
 
-            if (_scaleObject != null)
+            if (_scaling)
             {
-                var world = _editor.Camera.ScreenToWorld(screen, width, height);
-                float dist = Vector2.Distance(_scaleObject.Transform.WorldPosition, world);
-                float factor = MathHelper.Clamp(dist / _scaleStartDist, 0.05f, 100f);
-                _scaleObject.Transform.Scale = _scaleStartScale * factor;
+                float factor = MathHelper.Clamp(Vector2.Distance(_groupCenter, world) / _scaleStartDist, 0.05f, 100f);
+                for (int i = 0; i < _groupObjects.Length; i++)
+                {
+                    var before = _groupBefore[i];
+                    _groupObjects[i].Transform.Position = _groupCenter + (before.Position - _groupCenter) * factor;
+                    _groupObjects[i].Transform.Scale = before.Scale * factor;
+                }
+                return;
+            }
+
+            if (_movingGroup)
+            {
+                var delta = world - _dragAnchor;
+                if (_groupObjects.Length == 1 && _editor.SnapToGrid && _editor.GridStep > 0)
+                {
+                    var target = _groupBefore[0].Position + delta;
+                    float step = _editor.GridStep;
+                    _groupObjects[0].Transform.Position = new Vector2(
+                        (float)Math.Round(target.X / step) * step,
+                        (float)Math.Round(target.Y / step) * step);
+                }
+                else
+                {
+                    for (int i = 0; i < _groupObjects.Length; i++)
+                        _groupObjects[i].Transform.Position = _groupBefore[i].Position + delta;
+                }
+                return;
+            }
+
+            if (_boxSelecting)
+            {
+                _boxCurrent = world;
                 return;
             }
 
@@ -100,48 +166,27 @@ namespace DreamBit.Studio.Editing
             {
                 _editor.Camera.Pan(screen - _lastScreen);
                 _lastScreen = screen;
-                return;
-            }
-
-            if (_dragging && _editor.SelectedObject != null)
-            {
-                var world = _editor.Camera.ScreenToWorld(screen, width, height);
-                var position = ToLocalParent(_editor.SelectedObject, world) + _dragOffset;
-
-                if (_editor.SnapToGrid && _editor.GridStep > 0)
-                {
-                    float step = _editor.GridStep;
-                    position = new Vector2(
-                        (float)System.Math.Round(position.X / step) * step,
-                        (float)System.Math.Round(position.Y / step) * step);
-                }
-
-                _editor.SelectedObject.Transform.Position = position;
             }
         }
 
         public void Up()
         {
-            if (_rotateObject != null)
+            if (_movingGroup || _rotating || _scaling)
             {
-                _editor.PushRotation(_rotateObject, _rotateStart, _rotateObject.Transform.Rotation);
-                _rotateObject = null;
+                var after = _groupObjects.Select(EditorViewModel.Capture).ToArray();
+                _editor.PushGroupTransform(_groupObjects, _groupBefore, after);
+            }
+            else if (_boxSelecting)
+            {
+                var box = BoxSelectWorld!.Value;
+                var inside = Flatten(_editor.Scene.Objects)
+                    .Where(o => o.IsVisible && Inside(box, o.Transform.WorldPosition))
+                    .ToList();
+                if (inside.Count > 0)
+                    _editor.SetSelection(inside);
             }
 
-            if (_scaleObject != null)
-            {
-                _editor.PushScale(_scaleObject, _scaleStartScale, _scaleObject.Transform.Scale);
-                _scaleObject = null;
-            }
-
-            if (_dragObject != null)
-            {
-                _editor.PushMove(_dragObject, _dragStartPosition, _dragObject.Transform.Position);
-                _dragObject = null;
-            }
-
-            _dragging = false;
-            _panning = false;
+            _movingGroup = _rotating = _scaling = _panning = _boxSelecting = false;
         }
 
         public void Wheel(Vector2 screen, int delta, int width, int height)
@@ -150,11 +195,33 @@ namespace DreamBit.Studio.Editing
             _editor.Camera.ZoomAt(screen, factor, width, height);
         }
 
-        /// <summary>Objeto no topo (último desenhado) sob o ponto de mundo, ou null.</summary>
+        private void BeginGroupOp(Vector2 center)
+        {
+            _groupObjects = _editor.SelectedObjects.ToArray();
+            _groupBefore = _groupObjects.Select(EditorViewModel.Capture).ToArray();
+            _groupCenter = center;
+        }
+
+        /// <summary>Geometria do gizmo da seleção: centro, handle de rotação e cantos de escala.</summary>
+        private (Vector2 Center, Vector2 Handle, Vector2[] Corners) Gizmo(IReadOnlyList<GameObject> selected, float zoom)
+        {
+            if (selected.Count == 1)
+            {
+                var obj = selected[0];
+                return (obj.Transform.WorldPosition,
+                        GizmoGeometry.RotationHandleWorld(obj, zoom),
+                        GizmoGeometry.Corners(obj, SceneRenderer.GetVisualSize(obj)));
+            }
+
+            var bounds = GizmoGeometry.GroupBounds(selected);
+            return (GizmoGeometry.GroupCenter(bounds),
+                    GizmoGeometry.GroupRotationHandle(bounds, zoom),
+                    GizmoGeometry.GroupCorners(bounds));
+        }
+
         private GameObject? Pick(Vector2 world)
         {
             GameObject? found = null;
-
             foreach (var obj in Flatten(_editor.Scene.Objects))
             {
                 if (!obj.IsVisible)
@@ -162,19 +229,22 @@ namespace DreamBit.Studio.Editing
 
                 var local = Vector2.Transform(world, Matrix.Invert(obj.Transform.WorldMatrix));
                 var half = SceneRenderer.GetVisualSize(obj) / 2f;
-
                 if (local.X >= -half.X && local.X <= half.X && local.Y >= -half.Y && local.Y <= half.Y)
-                    found = obj; // continua para pegar o mais "por cima"
+                    found = obj;
             }
-
             return found;
         }
 
-        /// <summary>Converte um ponto de mundo para o espaço do pai do objeto (onde vive Position).</summary>
-        private static Vector2 ToLocalParent(GameObject obj, Vector2 world)
+        private static bool Inside((Vector2 Min, Vector2 Max) box, Vector2 p)
+            => p.X >= box.Min.X && p.X <= box.Max.X && p.Y >= box.Min.Y && p.Y <= box.Max.Y;
+
+        private static float Angle(Vector2 from, Vector2 to)
+            => (float)Math.Atan2(to.Y - from.Y, to.X - from.X);
+
+        private static Vector2 Rotate(Vector2 v, float a)
         {
-            var parent = obj.Parent;
-            return parent == null ? world : Vector2.Transform(world, Matrix.Invert(parent.Transform.WorldMatrix));
+            float c = (float)Math.Cos(a), s = (float)Math.Sin(a);
+            return new Vector2(v.X * c - v.Y * s, v.X * s + v.Y * c);
         }
 
         private static IEnumerable<GameObject> Flatten(IEnumerable<GameObject> objects)

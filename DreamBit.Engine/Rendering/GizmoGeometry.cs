@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DreamBit.Engine.Elements;
 using Microsoft.Xna.Framework;
 
@@ -32,6 +33,37 @@ namespace DreamBit.Engine.Rendering
             var up = UpDirection(WorldRotation(obj));
             return center + up * (RotationScreenRadius / zoom);
         }
+
+        // ---- Gizmo de grupo (multisseleção): caixa alinhada aos eixos ----
+
+        /// <summary>Caixa (min/max) que engloba as caixas visuais de vários objetos, em mundo.</summary>
+        public static (Vector2 Min, Vector2 Max) GroupBounds(IEnumerable<GameObject> objects)
+        {
+            var min = new Vector2(float.MaxValue);
+            var max = new Vector2(float.MinValue);
+            bool any = false;
+
+            foreach (var obj in objects)
+            {
+                any = true;
+                foreach (var corner in Corners(obj, SceneRenderer.GetVisualSize(obj)))
+                {
+                    min = Vector2.Min(min, corner);
+                    max = Vector2.Max(max, corner);
+                }
+            }
+
+            return any ? (min, max) : (Vector2.Zero, Vector2.Zero);
+        }
+
+        public static Vector2 GroupCenter((Vector2 Min, Vector2 Max) bounds)
+            => (bounds.Min + bounds.Max) / 2f;
+
+        public static Vector2 GroupRotationHandle((Vector2 Min, Vector2 Max) bounds, float zoom)
+            => new Vector2((bounds.Min.X + bounds.Max.X) / 2f, bounds.Min.Y) - new Vector2(0, RotationScreenRadius / zoom);
+
+        public static Vector2[] GroupCorners((Vector2 Min, Vector2 Max) b)
+            => new[] { b.Min, new Vector2(b.Max.X, b.Min.Y), b.Max, new Vector2(b.Min.X, b.Max.Y) };
 
         /// <summary>Os 4 cantos do objeto em coordenadas de mundo (para os handles de escala).</summary>
         public static Vector2[] Corners(GameObject obj, Vector2 size)
