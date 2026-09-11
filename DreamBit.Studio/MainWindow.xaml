@@ -35,6 +35,7 @@
         <Border DockPanel.Dock="Top" Background="{DynamicResource PanelBg}" Padding="6">
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource ToolButton}" Content="📁 Projeto" Click="OnOpenProject" ToolTip="Abre/cria um projeto (pasta com cenas)" />
+                <Button Style="{StaticResource ToolButton}" Content="🧱 Conteúdo" Click="OnBuildContent" ToolTip="Gera Content.mgcb e compila com dotnet mgcb" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button Style="{StaticResource ToolButton}" Content="🗋 Nova" Click="OnNewScene" />
                 <Button Style="{StaticResource ToolButton}" Content="📂 Abrir" Click="OnOpenScene" />

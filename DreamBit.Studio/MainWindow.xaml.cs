@@ -207,6 +207,21 @@ namespace DreamBit.Studio
                 _editor.OpenProjectFolder(dialog.FolderName);
         }
 
+        private void OnBuildContent(object sender, RoutedEventArgs e)
+        {
+            var project = _editor.Project.Project;
+            if (project == null)
+            {
+                MessageBox.Show(this, "Abra um projeto primeiro (botão Projeto).", "Conteúdo",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var (ok, message) = ContentBuilder.Build(project);
+            MessageBox.Show(this, message, "Build de conteúdo (MGCB)", MessageBoxButton.OK,
+                ok ? MessageBoxImage.Information : MessageBoxImage.Warning);
+        }
+
         private void OnSceneDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (ScenesList.SelectedItem is string sceneFileName)

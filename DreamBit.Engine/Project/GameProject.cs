@@ -57,6 +57,19 @@ namespace DreamBit.Engine.Project
                 .OrderBy(f => f);
         }
 
+        /// <summary>Caminhos das imagens relativos à pasta do projeto.</summary>
+        public IEnumerable<string> EnumerateAssetRelativePaths()
+            => EnumerateAssets().Select(a => Path.GetRelativePath(Folder, a));
+
+        /// <summary>Gera/atualiza o Content.mgcb do projeto e retorna seu caminho.</summary>
+        public string WriteContentManifest(string platform = "DesktopGL")
+        {
+            var text = ContentManifest.Generate(EnumerateAssetRelativePaths(), platform);
+            var path = Path.Combine(Folder, ContentManifest.FileName);
+            File.WriteAllText(path, text);
+            return path;
+        }
+
         public void Save()
         {
             var data = new ProjectData { Name = Name };
