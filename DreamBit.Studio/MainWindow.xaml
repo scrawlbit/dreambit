@@ -34,6 +34,8 @@
         <!-- Toolbar -->
         <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
             <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource ToolButton}" Content="📁 Projeto" Click="OnOpenProject" ToolTip="Abre/cria um projeto (pasta com cenas)" />
+                <Separator Width="1" Margin="8,2" Background="#3A404C" />
                 <Button Style="{StaticResource ToolButton}" Content="🗋 Nova" Click="OnNewScene" />
                 <Button Style="{StaticResource ToolButton}" Content="📂 Abrir" Click="OnOpenScene" />
                 <Button Style="{StaticResource ToolButton}" Content="💾 Salvar" Click="OnSaveScene" />
@@ -62,14 +64,27 @@
                 <ColumnDefinition Width="260" MinWidth="180" />
             </Grid.ColumnDefinitions>
 
-            <!-- Hierarquia -->
-            <DockPanel Grid.Column="0" Background="#252932">
-                <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA" Style="{StaticResource PanelHeader}" />
-                <ListBox x:Name="HierarchyList" Background="Transparent" BorderThickness="0" Margin="4"
+            <!-- Projeto (cenas) + Hierarquia -->
+            <Grid Grid.Column="0" Background="#252932">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="{Binding Project.Title, StringFormat='CENAS · {0}'}" Style="{StaticResource PanelHeader}" />
+                <ListBox Grid.Row="1" x:Name="ScenesList" Background="Transparent" BorderThickness="0" Margin="4"
+                         ItemsSource="{Binding Project.Scenes}"
+                         MouseDoubleClick="OnSceneDoubleClick"
+                         ToolTip="Duplo clique abre a cena" />
+
+                <TextBlock Grid.Row="2" Text="HIERARQUIA" Style="{StaticResource PanelHeader}" />
+                <ListBox Grid.Row="3" x:Name="HierarchyList" Background="Transparent" BorderThickness="0" Margin="4"
                          ItemsSource="{Binding Scene.Objects}"
                          SelectedItem="{Binding SelectedObject, Mode=TwoWay}"
                          DisplayMemberPath="Name" />
-            </DockPanel>
+            </Grid>
 
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#11141A" />
 

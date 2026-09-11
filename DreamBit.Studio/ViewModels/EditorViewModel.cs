@@ -1,7 +1,9 @@
+using System.IO;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Editing;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Notification;
+using DreamBit.Engine.Project;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
 using DreamBit.Studio.Mvvm;
@@ -26,6 +28,7 @@ namespace DreamBit.Studio.ViewModels
             Camera = new Camera2D();
             Inspector = new InspectorViewModel();
             History = new History();
+            Project = new ProjectViewModel();
 
             AddObjectCommand = new RelayCommand(() => AddObject());
             DeleteObjectCommand = new RelayCommand(DeleteSelected, () => SelectedObject != null);
@@ -51,6 +54,7 @@ namespace DreamBit.Studio.ViewModels
         public Camera2D Camera { get; }
         public InspectorViewModel Inspector { get; }
         public History History { get; }
+        public ProjectViewModel Project { get; }
 
         public RelayCommand AddObjectCommand { get; }
         public RelayCommand DeleteObjectCommand { get; }
@@ -113,6 +117,20 @@ namespace DreamBit.Studio.ViewModels
         {
             SceneSerializer.Save(Scene, path);
             CurrentPath = path;
+            Project.RefreshScenes();
+        }
+
+        public void OpenProjectFolder(string folder)
+        {
+            var name = new DirectoryInfo(folder).Name;
+            Project.Open(GameProject.CreateOrOpen(folder, name));
+        }
+
+        public void OpenScene(string sceneFileName)
+        {
+            var path = Project.ScenePath(sceneFileName);
+            if (path != null && File.Exists(path))
+                LoadFrom(path);
         }
 
         public void LoadFrom(string path)

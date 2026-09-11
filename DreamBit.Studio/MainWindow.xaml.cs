@@ -99,6 +99,19 @@ namespace DreamBit.Studio
 
         private void OnNewScene(object sender, RoutedEventArgs e) => _editor.NewScene();
 
+        private void OnOpenProject(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFolderDialog { Title = "Selecione a pasta do projeto" };
+            if (dialog.ShowDialog() == true)
+                _editor.OpenProjectFolder(dialog.FolderName);
+        }
+
+        private void OnSceneDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ScenesList.SelectedItem is string sceneFileName)
+                _editor.OpenScene(sceneFileName);
+        }
+
         private void OnOpenScene(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog { Filter = SceneFilter };
