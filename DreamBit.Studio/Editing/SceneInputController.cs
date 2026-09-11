@@ -19,6 +19,8 @@ namespace DreamBit.Studio.Editing
         private Vector2 _dragOffset;
         private GameObject? _dragObject;
         private Vector2 _dragStartPosition;
+        private GameObject? _rotateObject;
+        private float _rotateStart;
         private bool _panning;
         private Vector2 _lastScreen;
 
@@ -27,8 +29,21 @@ namespace DreamBit.Studio.Editing
         public void PrimaryDown(Vector2 screen, int width, int height)
         {
             var world = _editor.Camera.ScreenToWorld(screen, width, height);
-            var hit = Pick(world);
 
+            // Gizmo de rotação do objeto já selecionado tem prioridade sobre o pick.
+            var selected = _editor.SelectedObject;
+            if (selected != null)
+            {
+                var handle = GizmoGeometry.RotationHandleWorld(selected, _editor.Camera.Zoom);
+                if (Vector2.Distance(world, handle) <= GizmoGeometry.GrabScreenRadius / _editor.Camera.Zoom)
+                {
+                    _rotateObject = selected;
+                    _rotateStart = selected.Transform.Rotation;
+                    return;
+                }
+            }
+
+            var hit = Pick(world);
             _editor.SelectedObject = hit;
 
             if (hit != null)
@@ -48,6 +63,13 @@ namespace DreamBit.Studio.Editing
 
         public void Move(Vector2 screen, int width, int height)
         {
+            if (_rotateObject != null)
+            {
+                var world = _editor.Camera.ScreenToWorld(screen, width, height);
+                _rotateObject.Transform.Rotation = GizmoGeometry.RotationTowards(_rotateObject, world);
+                return;
+            }
+
             if (_panning)
             {
                 _editor.Camera.Pan(screen - _lastScreen);
@@ -74,6 +96,12 @@ namespace DreamBit.Studio.Editing
 
         public void Up()
         {
+            if (_rotateObject != null)
+            {
+                _editor.PushRotation(_rotateObject, _rotateStart, _rotateObject.Transform.Rotation);
+                _rotateObject = null;
+            }
+
             if (_dragObject != null)
             {
                 _editor.PushMove(_dragObject, _dragStartPosition, _dragObject.Transform.Position);

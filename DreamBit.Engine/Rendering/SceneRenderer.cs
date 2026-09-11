@@ -49,7 +49,7 @@ namespace DreamBit.Engine.Rendering
             if (ShowLedges)
                 DrawLedges(scene, camera);
 
-            DrawSelection(scene);
+            DrawSelection(scene, camera);
 
             _spriteBatch.End();
         }
@@ -136,7 +136,7 @@ namespace DreamBit.Engine.Rendering
                 DrawWorldLine(new Vector2(minX, y), new Vector2(maxX, y), y == 0 ? axis : line, y == 0 ? 2f : 1f, camera);
         }
 
-        private void DrawSelection(Scene scene)
+        private void DrawSelection(Scene scene, Camera2D camera)
         {
             foreach (var obj in EnumerateVisible(scene))
             {
@@ -146,7 +146,22 @@ namespace DreamBit.Engine.Rendering
                 var world = obj.Transform.WorldMatrix;
                 var size = GetVisualSize(obj);
                 DrawOutline(world, size, Color.White);
+                DrawRotationGizmo(obj, camera);
             }
+        }
+
+        private void DrawRotationGizmo(GameObject obj, Camera2D camera)
+        {
+            var center = obj.Transform.WorldPosition;
+            var handle = GizmoGeometry.RotationHandleWorld(obj, camera.Zoom);
+            var color = new Color(255, 200, 80);
+
+            DrawSegment(center, handle, color, 2f / camera.Zoom);
+
+            float hs = 10f / camera.Zoom;
+            _spriteBatch.Draw(_pixel,
+                new Rectangle((int)(handle.X - hs / 2), (int)(handle.Y - hs / 2), (int)hs, (int)hs),
+                color);
         }
 
         /// <summary>Tamanho visual do objeto: do primeiro SpriteRenderer, ou um padrão.</summary>

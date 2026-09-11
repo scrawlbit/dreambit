@@ -400,6 +400,17 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => obj.Transform.Position = from));
         }
 
+        /// <summary>Registra uma rotação concluída (via gizmo) no histórico.</summary>
+        public void PushRotation(GameObject obj, float from, float to)
+        {
+            if (System.Math.Abs(from - to) < 0.0001f)
+                return;
+
+            History.Push(new EditorAction("Rotacionar objeto",
+                doAction: () => obj.Transform.Rotation = to,
+                undoAction: () => obj.Transform.Rotation = from));
+        }
+
         private GameObject BuildObject()
         {
             var obj = new GameObject($"GameObject {++_counter}");
