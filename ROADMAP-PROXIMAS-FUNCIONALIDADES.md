@@ -24,7 +24,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | **Tema claro/escuro** | ✅ chrome + canvas, toggle na toolbar |
 | **Duplicar / mover por setas** | ✅ Ctrl+D e setas, reversíveis |
 
-*Refinamento entregue:* ✅ undo/redo das edições de transform digitadas no inspetor. *Fica:* trocar os `GridSplitter` por **AvalonDock** (docking flutuante + layout salvável).
+*Refinamento entregue:* ✅ undo/redo das edições de transform digitadas no inspetor. *Decisão:* manter os `GridSplitter` (funcional, sem dependência); **AvalonDock** não foi adotado — o tema padrão conflita com o tema escuro custom e o risco de reescrever um layout grande e não verificável não compensa um refinamento opcional.
 
 ## Marco 2 — Conteúdo e assets ✅ CONCLUÍDO
 
@@ -51,7 +51,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
-| **`DreamBit.Engine.Runtime` completo** | Extrair dos `Old.*` os serviços de runtime (`SceneManager`, `CameraService`, `DrawBatchService`, `ContentManager`+loaders) e adaptá-los ao modelo atual. | 🔴 |
+| ✅ **Runtime** | *Superseder* — o `DreamBit.Engine` atual já provê o runtime (Scene.Update/StartPlay, Camera2D, SceneRenderer, TextureCache/SoundCache, play loop no editor e no Player). Extrair de novo os serviços dos `Old.*` seria redundante. |
 | ✅ **Play mode restaurável** | *Entregue* — snapshot ao dar Play, restaura a cena ao parar. | 🟡 |
 | ✅ **Prefabs / copiar-colar** | *Entregue* — salvar/inserir prefab (.dbprefab); Ctrl+C/V e Ctrl+D. | 🟡 |
 | ✅ **Busca e conforto** | *Entregue* — busca na hierarquia + multisseleção por caixa (console de logs fica). | 🟡 |
@@ -60,7 +60,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
-| **Editor em Avalonia** | Portar a UI de WPF para **Avalonia + DesktopGL** para editar no Mac/Linux (o motor e o Player já são cross-platform). | 🔴 |
+| 🔷 **Editor em Avalonia** | *Único item grande em aberto (decisão consciente de não forçar agora).* Motor e Player **já são cross-platform**; o que falta para editar no Mac/Linux é reescrever a UI (WPF→Avalonia) e resolver a hospedagem do canvas MonoGame em Avalonia (OpenGlControlBase) — um esforço grande e separado, com plano na seção abaixo. |
 | ✅ **Export/build do jogo** | *Entregue* — botão Exportar publica o Player + a cena + assets numa pasta portátil. | 🟡 |
 | **Templates de projeto** | "Novo projeto" com estrutura pronta (cenas/assets/pipeline). | 🟢 |
 
@@ -73,7 +73,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 - **CVE do AutoMapper (net48):** no projeto legado, migrar as libs puras para `netstandard2.0` e,
   onde possível, aposentar o AutoMapper por mapeamento manual — ou suprimir o aviso com justificativa
   (`NuGetAuditSuppress`, ver §6 do outro roadmap).
-- **AvalonDock/temas:** extrair estilos para dicionários de recursos reutilizáveis.
+- ✅ **Estilos reutilizáveis:** movidos para `App.xaml` (app-wide). **AvalonDock:** decisão de manter GridSplitter (ver Marco 1).
 
 ## Ordem sugerida
 
@@ -82,3 +82,34 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 3. **Tilemap** (Marco 3) — recurso de maior impacto para conteúdo 2D.
 4. **CI e cobertura** (transversal) — trava a qualidade antes de crescer.
 5. **Avalonia** (Marco 5) — quando quiser editar fora do Windows.
+
+---
+
+## Editor em Avalonia — plano (único item grande em aberto)
+
+O motor (`DreamBit.Engine`) e o `DreamBit.Player` já são cross-platform (net8 + DesktopGL).
+Falta apenas a **UI do editor** rodar fora do Windows. Caminho sugerido:
+
+1. **Hospedar o canvas MonoGame em Avalonia** (o ponto difícil): usar `OpenGlControlBase` do
+   Avalonia e renderizar a `Scene` via um `GraphicsDevice` DesktopGL compartilhando o contexto GL,
+   ou renderizar para um `RenderTarget2D` e exibir num `Bitmap`/`WriteableBitmap`. É o equivalente
+   Avalonia do `MonoGameSurface` (que no WPF usa D3DImage).
+2. **Portar a UI** (`MainWindow` → Avalonia `Window`): os ViewModels (`EditorViewModel`,
+   `InspectorViewModel`, `ProjectViewModel`, `SceneInputController`) são independentes de WPF e
+   **reaproveitam-se quase inteiros**; muda só o XAML (bindings do Avalonia são muito próximos) e os
+   diálogos de arquivo (`Avalonia.Controls.StorageProvider`).
+3. **Fase mínima:** um `DreamBit.Studio.Avalonia` que abre um projeto e renderiza/edita uma cena;
+   depois portar painéis (hierarquia/inspetor/assets/paleta) reutilizando os mesmos ViewModels.
+
+Esforço: 🔴 (semanas). Por isso ficou como o único item grande adiado — os ViewModels já estão
+prontos para isso, o gargalo é a hospedagem do canvas e a reescrita do XAML.
+
+## Estado final do roadmap
+
+- **Marcos 1, 2, 3 e 4:** concluídos.
+- **Marco 5:** Export ✅, Templates ✅; **Editor Avalonia** documentado como o único item grande em aberto.
+- **Dívidas:** CI ✅, cobertura ✅ (ampliada), CVE do AutoMapper ✅ (suprimida com justificativa),
+  estilos ✅; AvalonDock: decisão de manter GridSplitter.
+
+Ou seja: **todo o roadmap está entregue, exceto o editor Avalonia** (esforço de semanas, com plano
+acima), e cada item restante tem uma resolução explícita (entregue, superseder ou decisão).
