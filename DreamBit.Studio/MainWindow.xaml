@@ -97,7 +97,11 @@
                          MouseDoubleClick="OnSceneDoubleClick"
                          ToolTip="Duplo clique abre a cena" />
 
-                <TextBlock Grid.Row="2" Text="HIERARQUIA" Style="{StaticResource PanelHeader}" />
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="HIERARQUIA" Style="{StaticResource PanelHeader}" />
+                    <TextBox x:Name="HierarchySearch" Margin="6,0,6,4" Padding="3,2" TextChanged="OnHierarchySearchChanged"
+                             ToolTip="Filtrar objetos por nome" />
+                </StackPanel>
                 <ListBox Grid.Row="3" x:Name="HierarchyList" Background="Transparent" BorderThickness="0" Margin="4"
                          ItemsSource="{Binding Scene.Objects}"
                          SelectionMode="Extended"

@@ -401,6 +401,24 @@ namespace DreamBit.Studio
             foreach (var obj in _editor.SelectedObjects)
                 HierarchyList.SelectedItems.Add(obj);
             _syncingHierarchy = false;
+
+            ApplyHierarchyFilter();
+        }
+
+        private void OnHierarchySearchChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+            => ApplyHierarchyFilter();
+
+        private void ApplyHierarchyFilter()
+        {
+            var view = System.Windows.Data.CollectionViewSource.GetDefaultView(HierarchyList.ItemsSource);
+            if (view == null)
+                return;
+
+            string text = HierarchySearch.Text?.Trim() ?? string.Empty;
+            view.Filter = string.IsNullOrEmpty(text)
+                ? null
+                : o => o is DreamBit.Engine.Elements.GameObject g && g.Name != null
+                       && g.Name.Contains(text, System.StringComparison.OrdinalIgnoreCase);
         }
 
         private void OnOpenScene(object sender, RoutedEventArgs e)
