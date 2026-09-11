@@ -5,7 +5,13 @@ Aqui ficam as **próximas funcionalidades**, organizadas em marcos por valor e e
 Base atual: `DreamBit.Studio` (editor WPF net8), `DreamBit.Engine` (motor multi-target),
 `DreamBit.Player` (runtime DesktopGL cross-platform), 27 testes verdes.
 
-Legenda de esforço: 🟢 baixo · 🟡 médio · 🔴 alto.
+Legenda de esforço: 🟢 baixo · 🟡 médio · 🔴 alto. Itens ✅ já entregues.
+
+**Já entregue nesta rodada:** ✅ conceito de **ledges** no mapa (bordas caminháveis one-way, estilo
+Dust — motor + edição + serialização + testes) · ✅ **inspetor de componentes** (editar/adicionar/
+remover Sprite e Rotator).
+**Decisão registrada:** o **AutoMapper não será usado** no editor .NET 8 (a versão atual exige
+licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSerializer`).
 
 ---
 
@@ -14,7 +20,7 @@ Legenda de esforço: 🟢 baixo · 🟡 médio · 🔴 alto.
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
 | **Gizmos de transformação** | Handles visuais para mover/rotacionar/escalar no canvas (setas de eixo, anel de rotação, cantos de escala), com hit-test próprio. Estende `SceneRenderer` + `SceneInputController`. | 🟡 |
-| **Inspetor de componentes** | Listar componentes do objeto e adicionar/remover; editar `SpriteRenderer` (cor/tamanho) e `RotatorBehavior` (velocidade). Hoje o inspetor cobre só o Transform. | 🟡 |
+| ✅ **Inspetor de componentes** | *Entregue* — editar `SpriteRenderer` (cor/tamanho) e `RotatorBehavior` (velocidade), adicionar/remover, com undo/redo. | 🟡 |
 | **Undo/redo do inspetor** | Fazer as edições de propriedade passarem pelo `History` (agrupando digitação por foco). Já existe a base (`EditorAction`). | 🟢 |
 | **Múltiplas cenas em abas** | `TabControl` de cenas abertas; trocar sem perder estado. Apoia-se no `ProjectViewModel`. | 🟡 |
 | **Docking flutuante (AvalonDock)** | Trocar os `GridSplitter` por AvalonDock: painéis arrastáveis/flutuantes e **layout salvável**. | 🟡 |
