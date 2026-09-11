@@ -191,6 +191,7 @@
                 <StackPanel Margin="10,4">
                     <!-- Objeto selecionado -->
                     <StackPanel DataContext="{Binding Inspector}"
+                                GotFocus="OnInspectorGotFocus" LostFocus="OnInspectorLostFocus"
                                 Visibility="{Binding HasTarget, Converter={StaticResource BoolToVis}}">
                         <TextBlock Text="Nome" Foreground="{DynamicResource MutedFg}" />
                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />

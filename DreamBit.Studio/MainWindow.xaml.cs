@@ -215,6 +215,27 @@ namespace DreamBit.Studio
 
         private void OnClearTexture(object sender, RoutedEventArgs e) => _editor.Inspector.SpriteTexturePath = string.Empty;
 
+        private EditorViewModel.TransformState? _inspectorBefore;
+
+        private void OnInspectorGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_editor.SelectedObject != null)
+                _inspectorBefore = EditorViewModel.Capture(_editor.SelectedObject);
+        }
+
+        private void OnInspectorLostFocus(object sender, RoutedEventArgs e)
+        {
+            var obj = _editor.SelectedObject;
+            if (_inspectorBefore == null || obj == null)
+                return;
+
+            var after = EditorViewModel.Capture(obj);
+            if (!after.Equals(_inspectorBefore.Value))
+                _editor.PushGroupTransform(new[] { obj }, new[] { _inspectorBefore.Value }, new[] { after });
+
+            _inspectorBefore = null;
+        }
+
         private void OnAddSprite(object sender, RoutedEventArgs e) => _editor.AddSprite();
         private void OnRemoveSprite(object sender, RoutedEventArgs e) => _editor.RemoveSprite();
         private void OnAddRotator(object sender, RoutedEventArgs e) => _editor.AddRotator();
