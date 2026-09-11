@@ -2,6 +2,10 @@
 
 namespace DreamBit.Project.Mocks
 {
+    /// <summary>
+    /// ProjectFile concreto para testes. Type/Extension/Location são internos na
+    /// classe base; acessíveis aqui via InternalsVisibleTo("DreamBit.Project.Tests").
+    /// </summary>
     public class ProjectFileMock : ProjectFile
     {
         public ProjectFileMock(IProject project, Guid id, string type, string extension, string location)
@@ -13,23 +17,17 @@ namespace DreamBit.Project.Mocks
             Location = location;
         }
         public ProjectFileMock(IProject project, string type, string extension, string location)
+            : this(project, Guid.NewGuid(), type, extension, location)
         {
-            Project = project;
-            Type = type;
-            Extension = extension;
-            Location = location;
         }
-
-        public override string Type { get; }
-        public override string Extension { get; }
 
         public static ProjectFileMock Script(IProject project, Guid id, string location)
         {
-            return new ProjectFileMock(project, id, "Script", "cs", location);
+            return new ProjectFileMock(project, id, "Script", ".cs", location);
         }
         public static ProjectFileMock Script(IProject project, string location)
         {
-            return new ProjectFileMock(project, "Script", "cs", location);
+            return new ProjectFileMock(project, "Script", ".cs", location);
         }
     }
 }

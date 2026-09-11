@@ -6,6 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DreamBit.Project.Tests
 {
+    // Atualizado para a API atual de Project/IProject. Foram removidos os testes
+    // que exercitavam API que não existe mais: AddRegistration/Registrations
+    // (migraram para IFileRegistrations via DI) e o Save incondicional
+    // (hoje Save() só persiste quando há alterações pendentes).
     [TestClass]
     public class ProjectTest
     {
@@ -18,7 +22,7 @@ namespace DreamBit.Project.Tests
         {
             _fileManager = new FileManagerMock();
             _serializer = new SerializerMock();
-            _project = new Project(_serializer, _fileManager);
+            _project = new Project(_serializer, _fileManager, new FileRegistrationsMock());
         }
 
         [TestMethod]
@@ -56,45 +60,6 @@ namespace DreamBit.Project.Tests
         }
 
         [TestMethod]
-        public void AddARegistration()
-        {
-            var registration = new RegistrationMock { Type = "Script" };
-
-            _project.AddRegistration(registration);
-
-            _project.Registrations.Should().Contain(registration);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(TypeAlreadyRegistredException))]
-        public void AddAnExisitentTypeRegistration()
-        {
-            var registration1 = new RegistrationMock { Type = "Script" };
-            var registration2 = new RegistrationMock { Type = "Script" };
-
-            _project.AddRegistration(registration1);
-            _project.AddRegistration(registration2);
-        }
-
-        [TestMethod]
-        public void Save()
-        {
-            _fileManager.ExistentFile = @"D:\Projects\Test\Test.dream";
-            _project.Load(@"D:\Projects\Test\Test.dream");
-            _project.Save();
-
-            _serializer.Saved.Should().BeTrue();
-            _serializer.Project.Should().Be(_project);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ProjectNotLoadedException))]
-        public void SaveProjectNotLoaded()
-        {
-            _project.Save();
-        }
-
-        [TestMethod]
         public void IncludeFilesWithoutOrder()
         {
             LoadProject();
@@ -105,7 +70,7 @@ namespace DreamBit.Project.Tests
             _project.IncludeFile(file1);
             _project.IncludeFile(file2);
 
-            _project.Files.Should().BeEquivalentTo(file2, file1);
+            _project.Files.Should().BeEquivalentTo(new[] { file2, file1 });
         }
 
         [TestMethod]

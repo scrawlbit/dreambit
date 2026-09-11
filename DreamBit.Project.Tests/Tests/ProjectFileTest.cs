@@ -1,5 +1,4 @@
-﻿using System;
-using DreamBit.Project.Mocks;
+﻿using DreamBit.Project.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,7 +20,9 @@ namespace DreamBit.Project.Tests
         {
             var file = ProjectFileMock.Script(_project, @"Bosses\Boss.cs");
 
-            file.Name.Should().Be("Boss.cs");
+            // No modelo atual, Name é sem extensão e FileName é com extensão.
+            file.Name.Should().Be("Boss");
+            file.FileName.Should().Be("Boss.cs");
         }
 
         [TestMethod]
