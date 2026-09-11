@@ -87,13 +87,26 @@ namespace DreamBit.Engine.Project
             return new GameProject(name, folder);
         }
 
-        /// <summary>Cria (ou reutiliza) um projeto numa pasta, gravando o .dbproj.</summary>
+        /// <summary>Cria (ou reutiliza) um projeto numa pasta, gravando o .dbproj + estrutura inicial.</summary>
         public static GameProject CreateOrOpen(string folder, string name)
         {
             var project = new GameProject(name, folder);
             if (!File.Exists(project.ProjectFilePath))
+            {
                 project.Save();
+                project.Scaffold();
+            }
             return project;
+        }
+
+        /// <summary>Cria a estrutura inicial de um projeto novo: pasta de assets + cena inicial.</summary>
+        private void Scaffold()
+        {
+            Directory.CreateDirectory(Path.Combine(Folder, "assets"));
+
+            var scenePath = Path.Combine(Folder, "Fase1" + SceneExtension);
+            if (!File.Exists(scenePath))
+                Serialization.SceneSerializer.Save(new Elements.Scene { Name = "Fase1" }, scenePath);
         }
 
         private sealed class ProjectData
