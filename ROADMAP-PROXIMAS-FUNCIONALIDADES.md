@@ -24,8 +24,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | **Tema claro/escuro** | ✅ chrome + canvas, toggle na toolbar |
 | **Duplicar / mover por setas** | ✅ Ctrl+D e setas, reversíveis |
 
-*Refinamentos opcionais que ficam para depois:* undo/redo das edições digitadas no inspetor
-(agrupadas por foco) e trocar os `GridSplitter` por **AvalonDock** (docking flutuante + layout salvável).
+*Refinamento entregue:* ✅ undo/redo das edições de transform digitadas no inspetor. *Fica:* trocar os `GridSplitter` por **AvalonDock** (docking flutuante + layout salvável).
 
 ## Marco 2 — Conteúdo e assets ✅ CONCLUÍDO
 
@@ -44,8 +43,8 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | ✅ **Colisão + personagem jogável nas ledges** | *Entregue* — `LedgePhysics` + `PlatformerController` (gravidade, pousa nas ledges one-way, teclado anda/pula) e câmera que segue o personagem no `DreamBit.Player`. | 🟡 |
 | ✅ **Editor/pincel de tilemap** | *Entregue* — ferramenta Pincel + paleta dos tilesets; pinta/apaga tiles no canvas (undo por traço), sobre .tmx importado ou tilemap novo a partir de um PNG; serializado inline. | 🔴 |
 | ✅ **Áudio e partículas** | *Entregue* — `AudioSource` (WAV, toca no play) e `ParticleEmitter`; falta um colisor genérico (além das ledges). | 🔴 |
-| **Mais componentes** | Colisor, corpo físico, animador, áudio, partículas — cada um com Draw/Update e inspetor. | 🔴 |
-| **Referências entre objetos** | Propriedade do inspetor que aceita outro `GameObject` (arrastar da hierarquia). | 🟡 |
+| ✅ **Mais componentes** | *Entregue* — Audio, Partículas, Follow, **TriggerZone (colisor por sobreposição/coletável)**; corpo físico avançado fica. | 🔴 |
+| ✅ **Referências entre objetos** | *Entregue* — `FollowTarget` com ComboBox de objetos da cena no inspetor. | 🟡 |
 | **Scripts C# recarregáveis** | Evoluir o `RotatorBehavior`/`ScriptBehavior` para scripts do usuário compilados via Roslyn, com props no inspetor (como o `ScriptProperty` do `DreamBit.Game`). | 🔴 |
 
 ## Marco 4 — Runtime e produtividade
@@ -54,7 +53,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 |---|---|---|
 | **`DreamBit.Engine.Runtime` completo** | Extrair dos `Old.*` os serviços de runtime (`SceneManager`, `CameraService`, `DrawBatchService`, `ContentManager`+loaders) e adaptá-los ao modelo atual. | 🔴 |
 | ✅ **Play mode restaurável** | *Entregue* — snapshot ao dar Play, restaura a cena ao parar. | 🟡 |
-| **Prefabs / duplicar / copiar-colar** | Templates reutilizáveis de objetos; `Ctrl+D`, copiar/colar entre cenas. | 🟡 |
+| ✅ **Prefabs / copiar-colar** | *Entregue* — salvar/inserir prefab (.dbprefab); Ctrl+C/V e Ctrl+D. | 🟡 |
 | ✅ **Busca e conforto** | *Entregue* — busca na hierarquia + multisseleção por caixa (console de logs fica). | 🟡 |
 
 ## Marco 5 — Multiplataforma e distribuição
