@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="DreamBit.Engine.Tests/DreamBit.Engine.Tests.csproj" />
   <Project Path="DreamBit.Engine/DreamBit.Engine.csproj" />
+  <Project Path="DreamBit.Player/DreamBit.Player.csproj" />
   <Project Path="DreamBit.Studio/DreamBit.Studio.csproj" />
 </Solution>

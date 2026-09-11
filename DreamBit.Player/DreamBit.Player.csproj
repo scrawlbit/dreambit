@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Runtime "jogável" do DreamBit: executavel MonoGame que carrega um arquivo
+    .dbscene e roda a cena (Update + Draw). Separa a execucao da edicao
+    (Fases 3 e 6 do roadmap). Usa o mesmo pacote MonoGame do DreamBit.Engine.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>DreamBit.Player</RootNamespace>
+    <AssemblyName>DreamBit.Player</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Engine\DreamBit.Engine.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -79,6 +79,22 @@ namespace DreamBit.Studio
             PlayButton.Content = _editor.IsPlaying ? "⏸ Stop" : "▶ Play";
         }
 
+        private void OnRunGame(object sender, RoutedEventArgs e)
+        {
+            var scenePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dreambit_play.dbscene");
+            DreamBit.Engine.Serialization.SceneSerializer.Save(_editor.Scene, scenePath);
+
+            try
+            {
+                DreamBit.Studio.PlayerLauncher.Launch(scenePath);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(this, "Não foi possível iniciar o DreamBit.Player.\n\n" + ex.Message,
+                    "Rodar jogo", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
         private const string SceneFilter = "Cena DreamBit (*.dbscene)|*.dbscene|Todos os arquivos (*.*)|*.*";
 
         private void OnNewScene(object sender, RoutedEventArgs e) => _editor.NewScene();
