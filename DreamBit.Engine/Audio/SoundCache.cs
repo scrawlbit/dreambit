@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Audio;
@@ -13,6 +14,9 @@ namespace DreamBit.Engine.Audio
         {
             if (string.IsNullOrEmpty(path))
                 return null;
+
+            if (!Path.IsPathRooted(path))
+                path = Path.Combine(AppContext.BaseDirectory, path);
 
             if (_cache.TryGetValue(path, out var cached))
                 return cached;

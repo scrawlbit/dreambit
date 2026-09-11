@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,6 +17,10 @@ namespace DreamBit.Engine.Rendering
         {
             if (string.IsNullOrEmpty(path))
                 return null;
+
+            // Caminho relativo: resolve ao lado do executável (jogo exportado).
+            if (!Path.IsPathRooted(path))
+                path = Path.Combine(AppContext.BaseDirectory, path);
 
             if (_cache.TryGetValue(path, out var cached))
                 return cached;
