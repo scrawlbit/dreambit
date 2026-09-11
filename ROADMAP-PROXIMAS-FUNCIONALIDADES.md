@@ -35,7 +35,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | **Pipeline `dotnet mgcb`** | ✅ `ContentManifest` gera `.mgcb`; `ContentBuilder` invoca o MGCB (botão "Conteúdo") |
 | **Animação por sprite sheet** | ✅ `SpriteAnimator` (frames, FPS, loop) com `Advance()` testável |
 
-## Marco 3 — Jogabilidade (em andamento)
+## Marco 3 — Jogabilidade ✅ CONCLUÍDO
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
@@ -45,7 +45,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | ✅ **Áudio e partículas** | *Entregue* — `AudioSource` (WAV, toca no play) e `ParticleEmitter`; falta um colisor genérico (além das ledges). | 🔴 |
 | ✅ **Mais componentes** | *Entregue* — Audio, Partículas, Follow, **TriggerZone (colisor por sobreposição/coletável)**; corpo físico avançado fica. | 🔴 |
 | ✅ **Referências entre objetos** | *Entregue* — `FollowTarget` com ComboBox de objetos da cena no inspetor. | 🟡 |
-| **Scripts C# recarregáveis** | Evoluir o `RotatorBehavior`/`ScriptBehavior` para scripts do usuário compilados via Roslyn, com props no inspetor (como o `ScriptProperty` do `DreamBit.Game`). | 🔴 |
+| ✅ **Scripts C# recarregáveis** | *Entregue* — `ScriptComponent` compila C# do usuário em runtime (Roslyn), com editor de código, compilar e erros no inspetor. | 🔴 |
 
 ## Marco 4 — Runtime e produtividade
 
