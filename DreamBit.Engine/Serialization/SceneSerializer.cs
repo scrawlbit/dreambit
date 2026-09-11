@@ -97,6 +97,8 @@ namespace DreamBit.Engine.Serialization
                         Width = animator.Size.X,
                         Height = animator.Size.Y
                     });
+                else if (component is TilemapRenderer tilemap)
+                    data.Tilemaps.Add(new TilemapData { TmxPath = tilemap.TmxPath });
             }
 
             foreach (var child in obj.Children)
@@ -153,6 +155,9 @@ namespace DreamBit.Engine.Serialization
                     Loop = animator.Loop,
                     Size = new Vector2(animator.Width, animator.Height)
                 });
+
+            foreach (var tilemap in data.Tilemaps)
+                obj.AddComponent(new TilemapRenderer { TmxPath = tilemap.TmxPath });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

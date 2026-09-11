@@ -169,6 +169,21 @@ namespace DreamBit.Studio
         private void OnRemoveRotator(object sender, RoutedEventArgs e) => _editor.RemoveRotator();
         private void OnAddAnimator(object sender, RoutedEventArgs e) => _editor.AddAnimator();
         private void OnRemoveAnimator(object sender, RoutedEventArgs e) => _editor.RemoveAnimator();
+        private void OnRemoveTilemap(object sender, RoutedEventArgs e) => _editor.RemoveTilemap();
+
+        private void OnImportTmx(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Mapa Tiled (*.tmx)|*.tmx" };
+            if (dialog.ShowDialog() == true)
+                _editor.ImportTilemap(dialog.FileName);
+        }
+
+        private void OnChangeTmx(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Mapa Tiled (*.tmx)|*.tmx" };
+            if (dialog.ShowDialog() == true)
+                _editor.Inspector.TilemapPath = dialog.FileName;
+        }
 
         private void OnPickAnimTexture(object sender, RoutedEventArgs e)
         {

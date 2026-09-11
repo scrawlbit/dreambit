@@ -38,7 +38,13 @@ namespace DreamBit.Engine.Serialization
         public List<SpriteData> Sprites { get; set; } = new();
         public List<RotatorData> Rotators { get; set; } = new();
         public List<AnimatorData> Animators { get; set; } = new();
+        public List<TilemapData> Tilemaps { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class TilemapData
+    {
+        public string? TmxPath { get; set; }
     }
 
     public sealed class AnimatorData

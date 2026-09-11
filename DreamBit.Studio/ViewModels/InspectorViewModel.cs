@@ -155,6 +155,17 @@ namespace DreamBit.Studio.ViewModels
             set { var a = Animator; if (a != null) a.Loop = value; }
         }
 
+        // ---- Componente TilemapRenderer ----
+
+        private TilemapRenderer? Tilemap => _target?.Components.OfType<TilemapRenderer>().FirstOrDefault();
+        public bool HasTilemap => Tilemap != null;
+
+        public string TilemapPath
+        {
+            get => Tilemap?.TmxPath ?? string.Empty;
+            set { var t = Tilemap; if (t != null) { t.TmxPath = string.IsNullOrWhiteSpace(value) ? null : value; Refresh(); } }
+        }
+
         // ---- Componente RotatorBehavior ----
 
         private RotatorBehavior? Rotator => _target?.Components.OfType<RotatorBehavior>().FirstOrDefault();
@@ -188,6 +199,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasTilemap));
+            OnPropertyChanged(nameof(TilemapPath));
             OnPropertyChanged(nameof(HasAnimator));
             OnPropertyChanged(nameof(AnimTexturePath));
             OnPropertyChanged(nameof(AnimFrameWidth));

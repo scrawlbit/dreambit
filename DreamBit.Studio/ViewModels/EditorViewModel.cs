@@ -418,6 +418,24 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(rotator);
         }
 
+        /// <summary>Importa um mapa Tiled (.tmx) como um novo objeto com TilemapRenderer.</summary>
+        public void ImportTilemap(string tmxPath)
+        {
+            var obj = new GameObject(Path.GetFileNameWithoutExtension(tmxPath));
+            obj.AddComponent(new TilemapRenderer { TmxPath = tmxPath });
+
+            History.Do(new EditorAction("Importar tilemap",
+                doAction: () => { Scene.Add(obj); SelectedObject = obj; },
+                undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+        }
+
+        public void RemoveTilemap()
+        {
+            var tilemap = SelectedObject?.Components.OfType<TilemapRenderer>().FirstOrDefault();
+            if (tilemap != null)
+                RemoveComponent(tilemap);
+        }
+
         public void AddAnimator()
         {
             var obj = SelectedObject;
