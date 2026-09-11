@@ -175,6 +175,21 @@ namespace DreamBit.Studio.ViewModels
             get => Platformer?.HorizontalSpeed ?? 0f;
             set { var p = Platformer; if (p != null) p.HorizontalSpeed = value; }
         }
+        public bool PlatUseKeyboard
+        {
+            get => Platformer?.UseKeyboard ?? false;
+            set { var p = Platformer; if (p != null) { p.UseKeyboard = value; Refresh(); } }
+        }
+        public float PlatMoveSpeed
+        {
+            get => Platformer?.MoveSpeed ?? 0f;
+            set { var p = Platformer; if (p != null) p.MoveSpeed = value; }
+        }
+        public float PlatJumpSpeed
+        {
+            get => Platformer?.JumpSpeed ?? 0f;
+            set { var p = Platformer; if (p != null) p.JumpSpeed = value; }
+        }
 
         // ---- Componente TilemapRenderer ----
 
@@ -226,6 +241,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(PlatGravity));
             OnPropertyChanged(nameof(PlatHalfHeight));
             OnPropertyChanged(nameof(PlatHorizontalSpeed));
+            OnPropertyChanged(nameof(PlatUseKeyboard));
+            OnPropertyChanged(nameof(PlatMoveSpeed));
+            OnPropertyChanged(nameof(PlatJumpSpeed));
             OnPropertyChanged(nameof(HasAnimator));
             OnPropertyChanged(nameof(AnimTexturePath));
             OnPropertyChanged(nameof(AnimFrameWidth));

@@ -48,6 +48,9 @@ namespace DreamBit.Engine.Serialization
         public float Gravity { get; set; } = 1400f;
         public float HalfHeight { get; set; } = 24f;
         public float HorizontalSpeed { get; set; }
+        public bool UseKeyboard { get; set; } = true;
+        public float MoveSpeed { get; set; } = 220f;
+        public float JumpSpeed { get; set; } = 620f;
     }
 
     public sealed class TilemapData

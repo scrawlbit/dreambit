@@ -104,7 +104,10 @@ namespace DreamBit.Engine.Serialization
                     {
                         Gravity = platformer.Gravity,
                         HalfHeight = platformer.HalfHeight,
-                        HorizontalSpeed = platformer.HorizontalSpeed
+                        HorizontalSpeed = platformer.HorizontalSpeed,
+                        UseKeyboard = platformer.UseKeyboard,
+                        MoveSpeed = platformer.MoveSpeed,
+                        JumpSpeed = platformer.JumpSpeed
                     });
             }
 
@@ -171,7 +174,10 @@ namespace DreamBit.Engine.Serialization
                 {
                     Gravity = platformer.Gravity,
                     HalfHeight = platformer.HalfHeight,
-                    HorizontalSpeed = platformer.HorizontalSpeed
+                    HorizontalSpeed = platformer.HorizontalSpeed,
+                    UseKeyboard = platformer.UseKeyboard,
+                    MoveSpeed = platformer.MoveSpeed,
+                    JumpSpeed = platformer.JumpSpeed
                 });
 
             foreach (var childData in data.Children)

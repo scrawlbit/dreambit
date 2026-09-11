@@ -301,8 +301,22 @@
                                 <TextBox Text="{Binding PlatGravity, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
                                 <TextBlock Text="Meia-altura (pés)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
                                 <TextBox Text="{Binding PlatHalfHeight, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
-                                <TextBlock Text="Velocidade horizontal" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
-                                <TextBox Text="{Binding PlatHorizontalSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                <CheckBox Content="Controlar por teclado (setas/A-D, Espaço pula)" Margin="0,8,0,0"
+                                          Foreground="{DynamicResource TextFg}" IsChecked="{Binding PlatUseKeyboard}" />
+                                <StackPanel Visibility="{Binding PlatUseKeyboard, Converter={StaticResource BoolToVis}}">
+                                    <TextBlock Text="Velocidade / Pulo" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Grid.Column="0" Text="{Binding PlatMoveSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                        <TextBox Grid.Column="2" Text="{Binding PlatJumpSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel Visibility="{Binding PlatUseKeyboard, Converter={StaticResource BoolToVisInverse}}">
+                                    <TextBlock Text="Velocidade horizontal" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                    <TextBox Text="{Binding PlatHorizontalSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                         <Button Content="+ Platformer" Click="OnAddPlatformer" Style="{StaticResource ToolButton}"
