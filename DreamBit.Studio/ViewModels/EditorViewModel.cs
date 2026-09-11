@@ -767,10 +767,42 @@ namespace DreamBit.Studio.ViewModels
                             UseKeyboard = p.UseKeyboard, MoveSpeed = p.MoveSpeed, JumpSpeed = p.JumpSpeed
                         });
                         break;
+                    case AudioSource au:
+                        clone.AddComponent(new AudioSource
+                        {
+                            SoundPath = au.SoundPath, Volume = au.Volume, PlayOnStart = au.PlayOnStart, Loop = au.Loop
+                        });
+                        break;
+                    case ParticleEmitter pe:
+                        clone.AddComponent(new ParticleEmitter
+                        {
+                            EmitRate = pe.EmitRate, Lifetime = pe.Lifetime, Speed = pe.Speed, Spread = pe.Spread,
+                            Size = pe.Size, GravityY = pe.GravityY, Color = pe.Color
+                        });
+                        break;
                 }
             }
 
             return clone;
+        }
+
+        private System.Collections.Generic.List<GameObject> _clipboard = new();
+
+        public void CopySelected()
+        {
+            if (_selectedObjects.Count > 0)
+                _clipboard = _selectedObjects.Select(Clone).ToList();
+        }
+
+        public void Paste()
+        {
+            if (_clipboard.Count == 0)
+                return;
+
+            var pasted = _clipboard.Select(Clone).ToArray(); // clona de novo: cada colar é independente
+            History.Do(new EditorAction(pasted.Length > 1 ? "Colar objetos" : "Colar objeto",
+                doAction: () => { foreach (var o in pasted) Scene.Add(o); SetSelection(pasted); },
+                undoAction: () => { SelectSingle(null); foreach (var o in pasted) Scene.Remove(o); }));
         }
 
         /// <summary>Move todos os objetos selecionados por um delta (setas) — reversível.</summary>
