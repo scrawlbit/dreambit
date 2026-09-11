@@ -43,7 +43,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | ✅ **Importar tilemap Tiled (.tmx)** | *Entregue* — `TmxImporter` (CSV/Base64+zlib, chunks, tilesets externos .tsx) + `TilemapRenderer`; **validado nos assets reais (RunNMagic)**. | 🔴 |
 | ✅ **Colisão + personagem jogável nas ledges** | *Entregue* — `LedgePhysics` + `PlatformerController` (gravidade, pousa nas ledges one-way, teclado anda/pula) e câmera que segue o personagem no `DreamBit.Player`. | 🟡 |
 | ✅ **Editor/pincel de tilemap** | *Entregue* — ferramenta Pincel + paleta dos tilesets; pinta/apaga tiles no canvas (undo por traço), sobre .tmx importado ou tilemap novo a partir de um PNG; serializado inline. | 🔴 |
-| **Mais componentes / áudio / partículas** | Colisor genérico, áudio (usa o FreeSFX), partículas. | 🔴 |
+| ✅ **Áudio e partículas** | *Entregue* — `AudioSource` (WAV, toca no play) e `ParticleEmitter`; falta um colisor genérico (além das ledges). | 🔴 |
 | **Mais componentes** | Colisor, corpo físico, animador, áudio, partículas — cada um com Draw/Update e inspetor. | 🔴 |
 | **Referências entre objetos** | Propriedade do inspetor que aceita outro `GameObject` (arrastar da hierarquia). | 🟡 |
 | **Scripts C# recarregáveis** | Evoluir o `RotatorBehavior`/`ScriptBehavior` para scripts do usuário compilados via Roslyn, com props no inspetor (como o `ScriptProperty` do `DreamBit.Game`). | 🔴 |
@@ -53,9 +53,9 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
 | **`DreamBit.Engine.Runtime` completo** | Extrair dos `Old.*` os serviços de runtime (`SceneManager`, `CameraService`, `DrawBatchService`, `ContentManager`+loaders) e adaptá-los ao modelo atual. | 🔴 |
-| **Play mode restaurável** | Rodar a cena no editor e voltar ao estado anterior (snapshot/rollback), sem sair para o Player. | 🟡 |
+| ✅ **Play mode restaurável** | *Entregue* — snapshot ao dar Play, restaura a cena ao parar. | 🟡 |
 | **Prefabs / duplicar / copiar-colar** | Templates reutilizáveis de objetos; `Ctrl+D`, copiar/colar entre cenas. | 🟡 |
-| **Busca e conforto** | Busca na hierarquia; console de logs/erros; multiseleção com caixa. | 🟡 |
+| ✅ **Busca e conforto** | *Entregue* — busca na hierarquia + multisseleção por caixa (console de logs fica). | 🟡 |
 
 ## Marco 5 — Multiplataforma e distribuição
 
@@ -69,7 +69,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 ## Dívidas técnicas / qualidade
 
-- **CI (GitHub Actions):** compilar `DreamBit.Studio.slnx` e rodar os testes a cada push.
+- ✅ **CI (GitHub Actions):** compila `DreamBit.Studio.slnx` e roda os testes a cada push.
 - **Cobertura:** portar os casos de `Old.DreamBit.Game.Tests` para ampliar os testes do motor.
 - **CVE do AutoMapper (net48):** no projeto legado, migrar as libs puras para `netstandard2.0` e,
   onde possível, aposentar o AutoMapper por mapeamento manual — ou suprimir o aviso com justificativa
