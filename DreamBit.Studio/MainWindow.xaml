@@ -33,6 +33,10 @@
         <!-- Toolbar -->
         <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
             <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource ToolButton}" Content="🗋 Nova" Click="OnNewScene" />
+                <Button Style="{StaticResource ToolButton}" Content="📂 Abrir" Click="OnOpenScene" />
+                <Button Style="{StaticResource ToolButton}" Content="💾 Salvar" Click="OnSaveScene" />
+                <Separator Width="1" Margin="8,2" Background="#3A404C" />
                 <Button Style="{StaticResource ToolButton}" Content="＋ Novo objeto" Command="{Binding AddObjectCommand}" />
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
                 <Separator Width="1" Margin="8,2" Background="#3A404C" />

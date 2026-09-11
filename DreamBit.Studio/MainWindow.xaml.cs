@@ -66,5 +66,27 @@ namespace DreamBit.Studio
             _editor.IsPlaying = !_editor.IsPlaying;
             PlayButton.Content = _editor.IsPlaying ? "⏸ Stop" : "▶ Play";
         }
+
+        private const string SceneFilter = "Cena DreamBit (*.dbscene)|*.dbscene|Todos os arquivos (*.*)|*.*";
+
+        private void OnNewScene(object sender, RoutedEventArgs e) => _editor.NewScene();
+
+        private void OnOpenScene(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog { Filter = SceneFilter };
+            if (dialog.ShowDialog() == true)
+                _editor.LoadFrom(dialog.FileName);
+        }
+
+        private void OnSaveScene(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = SceneFilter,
+                FileName = _editor.CurrentPath ?? "cena.dbscene"
+            };
+            if (dialog.ShowDialog() == true)
+                _editor.SaveTo(dialog.FileName);
+        }
     }
 }

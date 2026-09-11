@@ -3,6 +3,7 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Notification;
 using DreamBit.Engine.Rendering;
+using DreamBit.Engine.Serialization;
 using DreamBit.Studio.Mvvm;
 using Microsoft.Xna.Framework;
 
@@ -17,9 +18,11 @@ namespace DreamBit.Studio.ViewModels
         private int _counter;
         private bool _isPlaying;
 
+        private Scene _scene;
+
         public EditorViewModel()
         {
-            Scene = new Scene { Name = "Cena de Exemplo" };
+            _scene = new Scene { Name = "Cena de Exemplo" };
             Camera = new Camera2D();
             Inspector = new InspectorViewModel();
 
@@ -29,9 +32,37 @@ namespace DreamBit.Studio.ViewModels
             SeedSampleScene();
         }
 
-        public Scene Scene { get; }
+        public Scene Scene
+        {
+            get => _scene;
+            private set => Set(ref _scene, value);
+        }
         public Camera2D Camera { get; }
         public InspectorViewModel Inspector { get; }
+
+        /// <summary>Caminho do arquivo da cena atual, se salva/aberta em disco.</summary>
+        public string? CurrentPath { get; private set; }
+
+        public void NewScene()
+        {
+            SelectedObject = null;
+            Scene = new Scene { Name = "Nova Cena" };
+            CurrentPath = null;
+            _counter = 0;
+        }
+
+        public void SaveTo(string path)
+        {
+            SceneSerializer.Save(Scene, path);
+            CurrentPath = path;
+        }
+
+        public void LoadFrom(string path)
+        {
+            SelectedObject = null;
+            Scene = SceneSerializer.Load(path);
+            CurrentPath = path;
+        }
 
         public RelayCommand AddObjectCommand { get; }
         public RelayCommand DeleteObjectCommand { get; }
