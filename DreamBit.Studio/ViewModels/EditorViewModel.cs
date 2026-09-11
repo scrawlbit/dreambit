@@ -567,13 +567,20 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(animator);
         }
 
-        /// <summary>Duplica o objeto selecionado (com seus componentes) — reversível.</summary>
+        /// <summary>Duplica os objetos selecionados (com seus componentes) — reversível.</summary>
         public void DuplicateSelected()
         {
-            var src = SelectedObject;
-            if (src == null)
+            if (_selectedObjects.Count == 0)
                 return;
 
+            var clones = _selectedObjects.Select(Clone).ToArray();
+            History.Do(new EditorAction(clones.Length > 1 ? "Duplicar objetos" : "Duplicar objeto",
+                doAction: () => { foreach (var c in clones) Scene.Add(c); SetSelection(clones); },
+                undoAction: () => { SelectSingle(null); foreach (var c in clones) Scene.Remove(c); }));
+        }
+
+        private static GameObject Clone(GameObject src)
+        {
             var clone = new GameObject(src.Name + " (cópia)");
             clone.Transform.Position = src.Transform.Position + new Vector2(16, 16);
             clone.Transform.Rotation = src.Transform.Rotation;
@@ -581,28 +588,60 @@ namespace DreamBit.Studio.ViewModels
 
             foreach (var component in src.Components)
             {
-                if (component is SpriteRenderer sprite)
-                    clone.AddComponent(new SpriteRenderer { Size = sprite.Size, Color = sprite.Color });
-                else if (component is RotatorBehavior rotator)
-                    clone.AddComponent(new RotatorBehavior { Speed = rotator.Speed });
+                switch (component)
+                {
+                    case SpriteRenderer s:
+                        clone.AddComponent(new SpriteRenderer { Size = s.Size, Color = s.Color, TexturePath = s.TexturePath });
+                        break;
+                    case RotatorBehavior r:
+                        clone.AddComponent(new RotatorBehavior { Speed = r.Speed });
+                        break;
+                    case SpriteAnimator a:
+                        clone.AddComponent(new SpriteAnimator
+                        {
+                            TexturePath = a.TexturePath, FrameWidth = a.FrameWidth, FrameHeight = a.FrameHeight,
+                            FrameCount = a.FrameCount, Fps = a.Fps, Loop = a.Loop, Size = a.Size
+                        });
+                        break;
+                    case TilemapRenderer t:
+                        clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath });
+                        break;
+                    case PlatformerController p:
+                        clone.AddComponent(new PlatformerController
+                        {
+                            Gravity = p.Gravity, HalfHeight = p.HalfHeight, HorizontalSpeed = p.HorizontalSpeed,
+                            UseKeyboard = p.UseKeyboard, MoveSpeed = p.MoveSpeed, JumpSpeed = p.JumpSpeed
+                        });
+                        break;
+                }
             }
 
-            History.Do(new EditorAction("Duplicar objeto",
-                doAction: () => { Scene.Add(clone); SelectedObject = clone; },
-                undoAction: () => { if (SelectedObject == clone) SelectedObject = null; Scene.Remove(clone); }));
+            return clone;
         }
 
-        /// <summary>Move o objeto selecionado por um delta (setas do teclado) — reversível.</summary>
+        /// <summary>Move todos os objetos selecionados por um delta (setas) — reversível.</summary>
         public void Nudge(Vector2 delta)
         {
-            var obj = SelectedObject;
-            if (obj == null)
+            if (_selectedObjects.Count == 0)
                 return;
 
-            var from = obj.Transform.Position;
-            var to = from + delta;
-            obj.Transform.Position = to;
-            PushMove(obj, from, to);
+            var objects = _selectedObjects.ToArray();
+            var before = objects.Select(Capture).ToArray();
+            foreach (var obj in objects)
+                obj.Transform.Position += delta;
+            PushGroupTransform(objects, before, objects.Select(Capture).ToArray());
+        }
+
+        /// <summary>Centro (mundo) da seleção atual, para focar a câmera.</summary>
+        public Vector2 SelectionCenter()
+        {
+            if (_selectedObjects.Count == 0)
+                return Camera.Position;
+
+            var sum = Vector2.Zero;
+            foreach (var obj in _selectedObjects)
+                sum += obj.Transform.WorldPosition;
+            return sum / _selectedObjects.Count;
         }
 
         /// <summary>Registra um arraste concluído no histórico (a posição já foi aplicada).</summary>

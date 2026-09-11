@@ -112,6 +112,8 @@ namespace DreamBit.Studio
                 _editor.DuplicateSelected();
             else if (ctrl && (e.Key == Key.D0 || e.Key == Key.NumPad0))
                 _editor.Camera.Zoom = 1f; // zoom 100%
+            else if (e.Key == Key.F && !(e.OriginalSource is System.Windows.Controls.TextBox))
+                _editor.Camera.Position = _editor.SelectionCenter(); // focar seleção
             else if (!(e.OriginalSource is System.Windows.Controls.TextBox) && TryNudge(e.Key))
                 e.Handled = true;
         }
