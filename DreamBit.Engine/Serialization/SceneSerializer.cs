@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
+using DreamBit.Engine.Tilemap;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Serialization
@@ -55,6 +56,76 @@ namespace DreamBit.Engine.Serialization
             return data;
         }
 
+        private static TilemapData ToData(TilemapRenderer tilemap)
+        {
+            var data = new TilemapData { TmxPath = tilemap.TmxPath, Edited = tilemap.Edited };
+            var map = tilemap.Map;
+
+            // Serializa o mapa inline quando pintado (ou quando não veio de .tmx).
+            bool inline = map != null && (tilemap.Edited || string.IsNullOrEmpty(tilemap.TmxPath));
+            if (inline && map != null)
+            {
+                data.TileWidth = map.TileWidth;
+                data.TileHeight = map.TileHeight;
+
+                foreach (var ts in map.Tilesets)
+                    data.Tilesets.Add(new TilesetData
+                    {
+                        FirstGid = ts.FirstGid,
+                        ImagePath = ts.ResolvedImagePath,
+                        Columns = ts.Columns,
+                        TileWidth = ts.TileWidth,
+                        TileHeight = ts.TileHeight
+                    });
+
+                foreach (var layer in map.Layers)
+                {
+                    var flat = new List<int>();
+                    foreach (var (x, y, gid) in layer.Tiles)
+                    {
+                        flat.Add(x);
+                        flat.Add(y);
+                        flat.Add(gid);
+                    }
+                    data.Layers.Add(new TileLayerData { Name = layer.Name, Tiles = flat.ToArray() });
+                }
+            }
+
+            return data;
+        }
+
+        private static TilemapRenderer FromData(TilemapData data)
+        {
+            var tilemap = new TilemapRenderer { TmxPath = data.TmxPath, Edited = data.Edited };
+
+            if (data.Tilesets.Count > 0 || data.Layers.Count > 0)
+            {
+                var map = new Tilemap.Tilemap { TileWidth = data.TileWidth, TileHeight = data.TileHeight };
+
+                foreach (var ts in data.Tilesets)
+                    map.Tilesets.Add(new Tileset
+                    {
+                        FirstGid = ts.FirstGid,
+                        ResolvedImagePath = ts.ImagePath,
+                        Columns = ts.Columns,
+                        TileWidth = ts.TileWidth,
+                        TileHeight = ts.TileHeight
+                    });
+
+                foreach (var ld in data.Layers)
+                {
+                    var layer = new TileLayer { Name = ld.Name };
+                    for (int i = 0; i + 2 < ld.Tiles.Length; i += 3)
+                        layer.SetTile(ld.Tiles[i], ld.Tiles[i + 1], ld.Tiles[i + 2]);
+                    map.Layers.Add(layer);
+                }
+
+                tilemap.Map = map;
+            }
+
+            return tilemap;
+        }
+
         private static GameObjectData ToData(GameObject obj)
         {
             var t = obj.Transform;
@@ -98,7 +169,7 @@ namespace DreamBit.Engine.Serialization
                         Height = animator.Size.Y
                     });
                 else if (component is TilemapRenderer tilemap)
-                    data.Tilemaps.Add(new TilemapData { TmxPath = tilemap.TmxPath });
+                    data.Tilemaps.Add(ToData(tilemap));
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -167,7 +238,7 @@ namespace DreamBit.Engine.Serialization
                 });
 
             foreach (var tilemap in data.Tilemaps)
-                obj.AddComponent(new TilemapRenderer { TmxPath = tilemap.TmxPath });
+                obj.AddComponent(FromData(tilemap));
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController

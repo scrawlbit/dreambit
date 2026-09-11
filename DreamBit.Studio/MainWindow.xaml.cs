@@ -22,6 +22,8 @@ namespace DreamBit.Studio
             DataContext = _editor;
 
             _editor.SelectionChanged += SyncHierarchySelection;
+            _editor.SelectionChanged += RebuildPalette;
+            _editor.ToolChanged += RebuildPalette;
 
             Surface.LoadContent += (_, device) =>
             {
@@ -51,10 +53,29 @@ namespace DreamBit.Studio
 
         private XnaVector2 World(MouseEventArgs e) => _editor.Camera.ScreenToWorld(Pos(e), W, H);
 
+        private bool _painting;
+        private bool _erasing;
+
         private void Surface_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Surface.Focus();
             Surface.CaptureMouse();
+
+            if (_editor.IsTilemapTool)
+            {
+                if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
+                {
+                    _erasing = e.ChangedButton == MouseButton.Right;
+                    _painting = true;
+                    _editor.BeginPaintStroke();
+                    _editor.PaintAt(World(e), _erasing);
+                }
+                else if (e.ChangedButton == MouseButton.Middle)
+                {
+                    _input.MiddleDown(Pos(e));
+                }
+                return;
+            }
 
             if (_editor.IsLedgeTool)
             {
@@ -79,10 +100,25 @@ namespace DreamBit.Studio
             }
         }
 
-        private void Surface_MouseMove(object sender, MouseEventArgs e) => _input.Move(Pos(e), W, H);
+        private void Surface_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_painting)
+            {
+                _editor.PaintAt(World(e), _erasing);
+                return;
+            }
+            _input.Move(Pos(e), W, H);
+        }
 
         private void Surface_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (_painting)
+            {
+                _editor.EndPaintStroke();
+                _painting = false;
+                Surface.ReleaseMouseCapture();
+                return;
+            }
             _input.Up();
             Surface.ReleaseMouseCapture();
         }
@@ -272,6 +308,63 @@ namespace DreamBit.Studio
 
             var selected = HierarchyList.SelectedItems.Cast<DreamBit.Engine.Elements.GameObject>().ToList();
             _editor.SetSelection(selected);
+        }
+
+        private void RebuildPalette()
+        {
+            PaletteHost.Children.Clear();
+            if (!_editor.IsTilemapTool)
+                return;
+
+            var map = _editor.ActiveTilemap?.Map;
+            if (map == null)
+                return;
+
+            foreach (var tileset in map.Tilesets)
+            {
+                if (string.IsNullOrEmpty(tileset.ResolvedImagePath) || !System.IO.File.Exists(tileset.ResolvedImagePath))
+                    continue;
+
+                try
+                {
+                    var bitmap = new System.Windows.Media.Imaging.BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = new System.Uri(tileset.ResolvedImagePath);
+                    bitmap.EndInit();
+
+                    var image = new System.Windows.Controls.Image
+                    {
+                        Source = bitmap,
+                        Stretch = System.Windows.Media.Stretch.None,
+                        Tag = tileset,
+                        Cursor = System.Windows.Input.Cursors.Cross
+                    };
+                    image.MouseLeftButtonDown += OnPaletteClick;
+
+                    PaletteHost.Children.Add(new System.Windows.Controls.Border
+                    {
+                        Child = image,
+                        Margin = new Thickness(3),
+                        BorderThickness = new Thickness(1),
+                        BorderBrush = System.Windows.Media.Brushes.Gray
+                    });
+                }
+                catch { /* imagem inválida: ignora */ }
+            }
+        }
+
+        private void OnPaletteClick(object sender, MouseButtonEventArgs e)
+        {
+            var image = (System.Windows.Controls.Image)sender;
+            var tileset = (DreamBit.Engine.Tilemap.Tileset)image.Tag;
+            if (tileset.Columns <= 0)
+                return;
+
+            var p = e.GetPosition(image);
+            int col = (int)(p.X / tileset.TileWidth);
+            int row = (int)(p.Y / tileset.TileHeight);
+            _editor.BrushGid = tileset.FirstGid + row * tileset.Columns + col;
         }
 
         private void SyncHierarchySelection()

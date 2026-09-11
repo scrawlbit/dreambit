@@ -56,6 +56,9 @@
                              IsChecked="{Binding IsSelectTool, Mode=OneWay}" Command="{Binding SelectToolCommand}" />
                 <RadioButton GroupName="tool" Content="Ledge" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
                              IsChecked="{Binding IsLedgeTool, Mode=OneWay}" Command="{Binding LedgeToolCommand}" />
+                <RadioButton GroupName="tool" Content="Pincel" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
+                             IsChecked="{Binding IsTilemapTool, Mode=OneWay}" Command="{Binding TilemapToolCommand}"
+                             ToolTip="Pintar tiles no tilemap selecionado" />
                 <CheckBox Content="One-way" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
                           IsChecked="{Binding NewLedgeOneWay}" ToolTip="One-way para novas ledges" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
@@ -149,6 +152,18 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <Border x:Name="PalettePanel" DockPanel.Dock="Bottom" Height="128"
+                        Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource BorderBg}" BorderThickness="0,1,0,0"
+                        Visibility="{Binding IsTilemapTool, Converter={StaticResource BoolToVis}}">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="PALETA — clique um tile (esquerdo pinta, direito apaga no canvas)"
+                                   Style="{StaticResource PanelHeader}" />
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <StackPanel x:Name="PaletteHost" Orientation="Horizontal" Margin="4" />
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
+
                 <Border BorderBrush="{DynamicResource BorderBg}" BorderThickness="1">
                     <hosting:MonoGameSurface x:Name="Surface"
                                              MouseDown="Surface_MouseDown"

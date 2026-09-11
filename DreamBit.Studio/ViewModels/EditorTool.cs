@@ -7,6 +7,9 @@ namespace DreamBit.Studio.ViewModels
         Select,
 
         /// <summary>Desenhar ledges (bordas caminháveis) clicando pontos.</summary>
-        Ledge
+        Ledge,
+
+        /// <summary>Pintar tiles no tilemap selecionado.</summary>
+        Tilemap
     }
 }

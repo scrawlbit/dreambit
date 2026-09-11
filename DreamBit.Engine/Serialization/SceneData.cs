@@ -56,6 +56,27 @@ namespace DreamBit.Engine.Serialization
     public sealed class TilemapData
     {
         public string? TmxPath { get; set; }
+        public bool Edited { get; set; }
+        public int TileWidth { get; set; } = 16;
+        public int TileHeight { get; set; } = 16;
+        public List<TilesetData> Tilesets { get; set; } = new();
+        public List<TileLayerData> Layers { get; set; } = new();
+    }
+
+    public sealed class TilesetData
+    {
+        public int FirstGid { get; set; }
+        public string? ImagePath { get; set; }
+        public int Columns { get; set; }
+        public int TileWidth { get; set; }
+        public int TileHeight { get; set; }
+    }
+
+    public sealed class TileLayerData
+    {
+        public string Name { get; set; } = "";
+        /// <summary>Tiles em triplas planas: x0,y0,gid0, x1,y1,gid1, ...</summary>
+        public int[] Tiles { get; set; } = System.Array.Empty<int>();
     }
 
     public sealed class AnimatorData

@@ -9,6 +9,7 @@ using DreamBit.Engine.Notification;
 using DreamBit.Engine.Project;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
+using DreamBit.Engine.Tilemap;
 using DreamBit.Studio.Mvvm;
 using Microsoft.Xna.Framework;
 
@@ -47,6 +48,7 @@ namespace DreamBit.Studio.ViewModels
             RedoCommand = new RelayCommand(History.Redo, () => History.CanRedo);
             SelectToolCommand = new RelayCommand(() => CurrentTool = EditorTool.Select);
             LedgeToolCommand = new RelayCommand(() => CurrentTool = EditorTool.Ledge);
+            TilemapToolCommand = new RelayCommand(() => CurrentTool = EditorTool.Tilemap);
 
             History.Changed += () =>
             {
@@ -137,6 +139,7 @@ namespace DreamBit.Studio.ViewModels
         public RelayCommand RedoCommand { get; }
         public RelayCommand SelectToolCommand { get; }
         public RelayCommand LedgeToolCommand { get; }
+        public RelayCommand TilemapToolCommand { get; }
 
         /// <summary>Caminho do arquivo da cena atual, se salva/aberta em disco.</summary>
         public string? CurrentPath { get; private set; }
@@ -146,6 +149,9 @@ namespace DreamBit.Studio.ViewModels
 
         /// <summary>Disparado quando a seleção de objetos muda (para sincronizar a hierarquia).</summary>
         public event System.Action? SelectionChanged;
+
+        /// <summary>Disparado quando a ferramenta ativa muda (para atualizar a paleta).</summary>
+        public event System.Action? ToolChanged;
 
         /// <summary>Objeto principal da seleção (o do inspetor). Setar seleciona só ele.</summary>
         public GameObject? SelectedObject
@@ -235,11 +241,14 @@ namespace DreamBit.Studio.ViewModels
                         CancelLedge();
                     OnPropertyChanged(nameof(IsSelectTool));
                     OnPropertyChanged(nameof(IsLedgeTool));
+                    OnPropertyChanged(nameof(IsTilemapTool));
+                    ToolChanged?.Invoke();
                 }
             }
         }
         public bool IsSelectTool => _currentTool == EditorTool.Select;
         public bool IsLedgeTool => _currentTool == EditorTool.Ledge;
+        public bool IsTilemapTool => _currentTool == EditorTool.Tilemap;
 
         /// <summary>One-way aplicado às novas ledges desenhadas.</summary>
         public bool NewLedgeOneWay
@@ -459,6 +468,69 @@ namespace DreamBit.Studio.ViewModels
             }
 
             return false;
+        }
+
+        // ---- pincel de tilemap ----
+
+        private int _brushGid = 1;
+        private System.Collections.Generic.List<(int, int, int)>? _strokeBefore;
+        private TileLayer? _strokeLayer;
+
+        /// <summary>GID do tile atual do pincel (escolhido na paleta).</summary>
+        public int BrushGid
+        {
+            get => _brushGid;
+            set => Set(ref _brushGid, value);
+        }
+
+        /// <summary>Tilemap do objeto selecionado (alvo da pintura), se houver.</summary>
+        public TilemapRenderer? ActiveTilemap =>
+            SelectedObject?.Components.OfType<TilemapRenderer>().FirstOrDefault();
+
+        public void BeginPaintStroke()
+        {
+            var map = ActiveTilemap?.Map;
+            if (map == null)
+                return;
+
+            _strokeLayer = map.PaintLayer();
+            _strokeBefore = _strokeLayer.Tiles.ToList();
+        }
+
+        public void PaintAt(Vector2 world, bool erase)
+        {
+            var tilemap = ActiveTilemap;
+            if (tilemap == null)
+                return;
+
+            var (cellX, cellY) = tilemap.WorldToCell(world);
+            tilemap.Paint(cellX, cellY, erase ? 0 : _brushGid);
+        }
+
+        public void EndPaintStroke()
+        {
+            if (_strokeLayer == null || _strokeBefore == null)
+                return;
+
+            var layer = _strokeLayer;
+            var before = _strokeBefore;
+            _strokeLayer = null;
+            _strokeBefore = null;
+
+            var after = layer.Tiles.ToList();
+            if (after.Count == before.Count && !after.Except(before).Any())
+                return; // nada mudou
+
+            History.Push(new EditorAction("Pintar tiles",
+                doAction: () => LoadLayer(layer, after),
+                undoAction: () => LoadLayer(layer, before)));
+        }
+
+        private static void LoadLayer(TileLayer layer, System.Collections.Generic.List<(int X, int Y, int Gid)> tiles)
+        {
+            layer.Clear();
+            foreach (var (x, y, gid) in tiles)
+                layer.SetTile(x, y, gid);
         }
 
         /// <summary>Anexa um comportamento de runtime (gira no play) ao objeto selecionado.</summary>

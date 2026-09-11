@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DreamBit.Engine.Tilemap
 {
@@ -19,21 +20,41 @@ namespace DreamBit.Engine.Tilemap
         public string? ResolvedImagePath { get; set; }
     }
 
-    /// <summary>Uma camada de tiles: apenas as células não vazias (X, Y em tiles, GID).</summary>
+    /// <summary>Uma camada de tiles editável (dicionário esparso célula → GID).</summary>
     public sealed class TileLayer
     {
+        private readonly Dictionary<(int X, int Y), int> _tiles = new();
+
         public string Name { get; set; } = "";
-        public List<(int X, int Y, int Gid)> Tiles { get; } = new();
+
+        public int Count => _tiles.Count;
+
+        /// <summary>Define (ou apaga, se gid=0) o tile numa célula.</summary>
+        public void SetTile(int x, int y, int gid)
+        {
+            if (gid == 0)
+                _tiles.Remove((x, y));
+            else
+                _tiles[(x, y)] = gid;
+        }
+
+        public int GetTile(int x, int y) => _tiles.TryGetValue((x, y), out var gid) ? gid : 0;
+
+        public void Clear() => _tiles.Clear();
+
+        /// <summary>Células não vazias (X, Y em tiles, GID).</summary>
+        public IEnumerable<(int X, int Y, int Gid)> Tiles =>
+            _tiles.Select(kv => (kv.Key.X, kv.Key.Y, kv.Value));
     }
 
     /// <summary>
-    /// Mapa de tiles importado do formato Tiled (.tmx). Guarda os tilesets e as
-    /// camadas; a resolução das imagens usa <see cref="BaseFolder"/>.
+    /// Mapa de tiles (importado do Tiled ou editado no editor). Guarda os tilesets e
+    /// as camadas; a resolução das imagens usa <see cref="BaseFolder"/>.
     /// </summary>
     public sealed class Tilemap
     {
-        public int TileWidth { get; set; }
-        public int TileHeight { get; set; }
+        public int TileWidth { get; set; } = 16;
+        public int TileHeight { get; set; } = 16;
         public string BaseFolder { get; set; } = "";
         public List<Tileset> Tilesets { get; } = new();
         public List<TileLayer> Layers { get; } = new();
@@ -49,6 +70,14 @@ namespace DreamBit.Engine.Tilemap
                 if (tileset.FirstGid <= gid && (found == null || tileset.FirstGid > found.FirstGid))
                     found = tileset;
             return found;
+        }
+
+        /// <summary>Garante ao menos uma camada e retorna a última (alvo de pintura).</summary>
+        public TileLayer PaintLayer()
+        {
+            if (Layers.Count == 0)
+                Layers.Add(new TileLayer { Name = "Pintura" });
+            return Layers[Layers.Count - 1];
         }
     }
 }

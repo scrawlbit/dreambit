@@ -116,7 +116,7 @@ namespace DreamBit.Engine.Tilemap
             foreach (int gid in gids)
             {
                 if (gid != 0)
-                    layer.Tiles.Add((originX + index % width, originY + index / width, gid));
+                    layer.SetTile(originX + index % width, originY + index / width, gid);
                 index++;
             }
         }
