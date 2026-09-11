@@ -478,6 +478,17 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => obj.Transform.Rotation = from));
         }
 
+        /// <summary>Registra uma escala concluída (via gizmo) no histórico.</summary>
+        public void PushScale(GameObject obj, Vector2 from, Vector2 to)
+        {
+            if (from == to)
+                return;
+
+            History.Push(new EditorAction("Escalar objeto",
+                doAction: () => obj.Transform.Scale = to,
+                undoAction: () => obj.Transform.Scale = from));
+        }
+
         private GameObject BuildObject()
         {
             var obj = new GameObject($"GameObject {++_counter}");

@@ -21,6 +21,9 @@ namespace DreamBit.Studio.Editing
         private Vector2 _dragStartPosition;
         private GameObject? _rotateObject;
         private float _rotateStart;
+        private GameObject? _scaleObject;
+        private Vector2 _scaleStartScale;
+        private float _scaleStartDist;
         private bool _panning;
         private Vector2 _lastScreen;
 
@@ -34,12 +37,26 @@ namespace DreamBit.Studio.Editing
             var selected = _editor.SelectedObject;
             if (selected != null)
             {
+                float grab = GizmoGeometry.GrabScreenRadius / _editor.Camera.Zoom;
+
                 var handle = GizmoGeometry.RotationHandleWorld(selected, _editor.Camera.Zoom);
-                if (Vector2.Distance(world, handle) <= GizmoGeometry.GrabScreenRadius / _editor.Camera.Zoom)
+                if (Vector2.Distance(world, handle) <= grab)
                 {
                     _rotateObject = selected;
                     _rotateStart = selected.Transform.Rotation;
                     return;
+                }
+
+                var size = SceneRenderer.GetVisualSize(selected);
+                foreach (var corner in GizmoGeometry.Corners(selected, size))
+                {
+                    if (Vector2.Distance(world, corner) <= grab)
+                    {
+                        _scaleObject = selected;
+                        _scaleStartScale = selected.Transform.Scale;
+                        _scaleStartDist = System.Math.Max(1f, Vector2.Distance(selected.Transform.WorldPosition, world));
+                        return;
+                    }
                 }
             }
 
@@ -67,6 +84,15 @@ namespace DreamBit.Studio.Editing
             {
                 var world = _editor.Camera.ScreenToWorld(screen, width, height);
                 _rotateObject.Transform.Rotation = GizmoGeometry.RotationTowards(_rotateObject, world);
+                return;
+            }
+
+            if (_scaleObject != null)
+            {
+                var world = _editor.Camera.ScreenToWorld(screen, width, height);
+                float dist = Vector2.Distance(_scaleObject.Transform.WorldPosition, world);
+                float factor = MathHelper.Clamp(dist / _scaleStartDist, 0.05f, 100f);
+                _scaleObject.Transform.Scale = _scaleStartScale * factor;
                 return;
             }
 
@@ -100,6 +126,12 @@ namespace DreamBit.Studio.Editing
             {
                 _editor.PushRotation(_rotateObject, _rotateStart, _rotateObject.Transform.Rotation);
                 _rotateObject = null;
+            }
+
+            if (_scaleObject != null)
+            {
+                _editor.PushScale(_scaleObject, _scaleStartScale, _scaleObject.Transform.Scale);
+                _scaleObject = null;
             }
 
             if (_dragObject != null)

@@ -149,7 +149,19 @@ namespace DreamBit.Engine.Rendering
                 var size = GetVisualSize(obj);
                 DrawOutline(world, size, Color.White);
                 DrawRotationGizmo(obj, camera);
+                DrawScaleHandles(obj, size, camera);
             }
+        }
+
+        private void DrawScaleHandles(GameObject obj, Vector2 size, Camera2D camera)
+        {
+            float hs = 9f / camera.Zoom;
+            var color = new Color(120, 220, 255);
+
+            foreach (var corner in GizmoGeometry.Corners(obj, size))
+                _spriteBatch.Draw(_pixel,
+                    new Rectangle((int)(corner.X - hs / 2), (int)(corner.Y - hs / 2), (int)hs, (int)hs),
+                    color);
         }
 
         private void DrawRotationGizmo(GameObject obj, Camera2D camera)

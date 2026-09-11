@@ -33,6 +33,20 @@ namespace DreamBit.Engine.Rendering
             return center + up * (RotationScreenRadius / zoom);
         }
 
+        /// <summary>Os 4 cantos do objeto em coordenadas de mundo (para os handles de escala).</summary>
+        public static Vector2[] Corners(GameObject obj, Vector2 size)
+        {
+            var w = obj.Transform.WorldMatrix;
+            var h = size / 2f;
+            return new[]
+            {
+                Vector2.Transform(new Vector2(-h.X, -h.Y), w),
+                Vector2.Transform(new Vector2(h.X, -h.Y), w),
+                Vector2.Transform(new Vector2(h.X, h.Y), w),
+                Vector2.Transform(new Vector2(-h.X, h.Y), w)
+            };
+        }
+
         /// <summary>
         /// Rotação LOCAL que faz o "para cima" do objeto apontar para <paramref name="worldTarget"/>.
         /// </summary>
