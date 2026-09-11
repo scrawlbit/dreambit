@@ -418,6 +418,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(rotator);
         }
 
+        public void AddAnimator()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<SpriteAnimator>().Any())
+                return;
+
+            var animator = new SpriteAnimator();
+            History.Do(new EditorAction("Adicionar Animator",
+                doAction: () => obj.AddComponent(animator),
+                undoAction: () => obj.RemoveComponent(animator)));
+        }
+
+        public void RemoveAnimator()
+        {
+            var animator = SelectedObject?.Components.OfType<SpriteAnimator>().FirstOrDefault();
+            if (animator != null)
+                RemoveComponent(animator);
+        }
+
         /// <summary>Duplica o objeto selecionado (com seus componentes) — reversível.</summary>
         public void DuplicateSelected()
         {

@@ -85,6 +85,18 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is RotatorBehavior rotator)
                     data.Rotators.Add(new RotatorData { Speed = rotator.Speed });
+                else if (component is SpriteAnimator animator)
+                    data.Animators.Add(new AnimatorData
+                    {
+                        TexturePath = animator.TexturePath,
+                        FrameWidth = animator.FrameWidth,
+                        FrameHeight = animator.FrameHeight,
+                        FrameCount = animator.FrameCount,
+                        Fps = animator.Fps,
+                        Loop = animator.Loop,
+                        Width = animator.Size.X,
+                        Height = animator.Size.Y
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -129,6 +141,18 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var rotator in data.Rotators)
                 obj.AddComponent(new RotatorBehavior { Speed = rotator.Speed });
+
+            foreach (var animator in data.Animators)
+                obj.AddComponent(new SpriteAnimator
+                {
+                    TexturePath = animator.TexturePath,
+                    FrameWidth = animator.FrameWidth,
+                    FrameHeight = animator.FrameHeight,
+                    FrameCount = animator.FrameCount,
+                    Fps = animator.Fps,
+                    Loop = animator.Loop,
+                    Size = new Vector2(animator.Width, animator.Height)
+                });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

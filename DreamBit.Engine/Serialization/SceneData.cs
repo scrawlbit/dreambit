@@ -37,7 +37,20 @@ namespace DreamBit.Engine.Serialization
         public float ScaleY { get; set; } = 1f;
         public List<SpriteData> Sprites { get; set; } = new();
         public List<RotatorData> Rotators { get; set; } = new();
+        public List<AnimatorData> Animators { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class AnimatorData
+    {
+        public string? TexturePath { get; set; }
+        public int FrameWidth { get; set; } = 32;
+        public int FrameHeight { get; set; } = 32;
+        public int FrameCount { get; set; } = 1;
+        public float Fps { get; set; } = 8f;
+        public bool Loop { get; set; } = true;
+        public float Width { get; set; } = 64;
+        public float Height { get; set; } = 64;
     }
 
     public sealed class RotatorData

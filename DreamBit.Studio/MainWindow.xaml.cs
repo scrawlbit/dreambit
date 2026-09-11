@@ -167,6 +167,18 @@ namespace DreamBit.Studio
         private void OnRemoveSprite(object sender, RoutedEventArgs e) => _editor.RemoveSprite();
         private void OnAddRotator(object sender, RoutedEventArgs e) => _editor.AddRotator();
         private void OnRemoveRotator(object sender, RoutedEventArgs e) => _editor.RemoveRotator();
+        private void OnAddAnimator(object sender, RoutedEventArgs e) => _editor.AddAnimator();
+        private void OnRemoveAnimator(object sender, RoutedEventArgs e) => _editor.RemoveAnimator();
+
+        private void OnPickAnimTexture(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Imagens (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp|Todos os arquivos (*.*)|*.*"
+            };
+            if (dialog.ShowDialog() == true)
+                _editor.Inspector.AnimTexturePath = dialog.FileName;
+        }
 
         private void OnRunGame(object sender, RoutedEventArgs e)
         {

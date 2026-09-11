@@ -118,6 +118,22 @@ namespace DreamBit.Engine.Rendering
             _spriteBatch.Draw(tex, position, null, color, rotation, origin, drawScale, SpriteEffects.None, 0f);
         }
 
+        public void DrawFrame(Matrix world, Vector2 size, Color color, Texture2D texture, Rectangle source)
+        {
+            if (source.Width <= 0 || source.Height <= 0)
+                return;
+
+            var position = new Vector2(world.M41, world.M42);
+            float scaleX = new Vector2(world.M11, world.M12).Length();
+            float scaleY = new Vector2(world.M21, world.M22).Length();
+            float rotation = (float)Math.Atan2(world.M12, world.M11);
+
+            var origin = new Vector2(source.Width / 2f, source.Height / 2f);
+            var drawScale = new Vector2(size.X / source.Width * scaleX, size.Y / source.Height * scaleY);
+
+            _spriteBatch.Draw(texture, position, source, color, rotation, origin, drawScale, SpriteEffects.None, 0f);
+        }
+
         private void DrawGrid(Camera2D camera, int width, int height)
         {
             var topLeft = camera.ScreenToWorld(Vector2.Zero, width, height);

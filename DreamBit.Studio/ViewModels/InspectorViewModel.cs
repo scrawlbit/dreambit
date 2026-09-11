@@ -119,6 +119,42 @@ namespace DreamBit.Studio.ViewModels
         }
         public bool SpriteHasTexture => !string.IsNullOrEmpty(Sprite?.TexturePath);
 
+        // ---- Componente SpriteAnimator ----
+
+        private SpriteAnimator? Animator => _target?.Components.OfType<SpriteAnimator>().FirstOrDefault();
+        public bool HasAnimator => Animator != null;
+
+        public string AnimTexturePath
+        {
+            get => Animator?.TexturePath ?? string.Empty;
+            set { var a = Animator; if (a != null) { a.TexturePath = string.IsNullOrWhiteSpace(value) ? null : value; Refresh(); } }
+        }
+        public int AnimFrameWidth
+        {
+            get => Animator?.FrameWidth ?? 0;
+            set { var a = Animator; if (a != null) a.FrameWidth = value; }
+        }
+        public int AnimFrameHeight
+        {
+            get => Animator?.FrameHeight ?? 0;
+            set { var a = Animator; if (a != null) a.FrameHeight = value; }
+        }
+        public int AnimFrameCount
+        {
+            get => Animator?.FrameCount ?? 0;
+            set { var a = Animator; if (a != null) a.FrameCount = value; }
+        }
+        public float AnimFps
+        {
+            get => Animator?.Fps ?? 0f;
+            set { var a = Animator; if (a != null) a.Fps = value; }
+        }
+        public bool AnimLoop
+        {
+            get => Animator?.Loop ?? false;
+            set { var a = Animator; if (a != null) a.Loop = value; }
+        }
+
         // ---- Componente RotatorBehavior ----
 
         private RotatorBehavior? Rotator => _target?.Components.OfType<RotatorBehavior>().FirstOrDefault();
@@ -152,6 +188,13 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasAnimator));
+            OnPropertyChanged(nameof(AnimTexturePath));
+            OnPropertyChanged(nameof(AnimFrameWidth));
+            OnPropertyChanged(nameof(AnimFrameHeight));
+            OnPropertyChanged(nameof(AnimFrameCount));
+            OnPropertyChanged(nameof(AnimFps));
+            OnPropertyChanged(nameof(AnimLoop));
             OnPropertyChanged(nameof(HasRotator));
             OnPropertyChanged(nameof(RotatorSpeed));
         }

@@ -231,6 +231,43 @@
                                 HorizontalAlignment="Left" Margin="0,2"
                                 Visibility="{Binding HasSprite, Converter={StaticResource BoolToVisInverse}}" />
 
+                        <!-- Sprite Animator -->
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasAnimator, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveAnimator"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Sprite Animator" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Sprite sheet (PNG)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding AnimTexturePath}" IsReadOnly="True" />
+                                <Button Content="Escolher…" Click="OnPickAnimTexture" Style="{StaticResource ToolButton}"
+                                        HorizontalAlignment="Left" Margin="0,2" />
+                                <TextBlock Text="Frame (L × A)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding AnimFrameWidth, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="2" Text="{Binding AnimFrameHeight, UpdateSourceTrigger=LostFocus}" />
+                                </Grid>
+                                <TextBlock Text="Nº de frames / FPS" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" /><ColumnDefinition Width="6" /><ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding AnimFrameCount, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="2" Text="{Binding AnimFps, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                                </Grid>
+                                <CheckBox Content="Repetir (loop)" Margin="0,6,0,0" Foreground="{DynamicResource TextFg}"
+                                          IsChecked="{Binding AnimLoop}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Sprite Animator" Click="OnAddAnimator" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasAnimator, Converter={StaticResource BoolToVisInverse}}" />
+
                         <!-- Rotator -->
                         <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasRotator, Converter={StaticResource BoolToVis}}">
