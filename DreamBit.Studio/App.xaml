@@ -6,6 +6,7 @@
     <Application.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <conv:InverseBoolToVisibilityConverter x:Key="BoolToVisInverse" />
+        <conv:PathToFileNameConverter x:Key="PathToFileName" />
 
         <!-- Cores do tema (valores iniciais = escuro; trocados em runtime pelo ThemeManager) -->
         <SolidColorBrush x:Key="WindowBg" Color="#1E2128" />

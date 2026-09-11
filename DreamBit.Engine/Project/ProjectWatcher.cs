@@ -16,10 +16,10 @@ namespace DreamBit.Engine.Project
 
         public ProjectWatcher(string folder)
         {
-            _watcher = new FileSystemWatcher(folder, "*" + GameProject.SceneExtension)
+            _watcher = new FileSystemWatcher(folder)
             {
                 NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite,
-                IncludeSubdirectories = false,
+                IncludeSubdirectories = true,
                 EnableRaisingEvents = true
             };
 

@@ -74,13 +74,15 @@
                 <ColumnDefinition Width="260" MinWidth="180" />
             </Grid.ColumnDefinitions>
 
-            <!-- Projeto (cenas) + Hierarquia -->
+            <!-- Cenas + Hierarquia + Assets -->
             <Grid Grid.Column="0" Background="{DynamicResource PanelBg}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="150" />
+                    <RowDefinition Height="130" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="150" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Text="{Binding Project.Title, StringFormat='CENAS · {0}'}" Style="{StaticResource PanelHeader}" />
@@ -94,6 +96,19 @@
                          ItemsSource="{Binding Scene.Objects}"
                          SelectedItem="{Binding SelectedObject, Mode=TwoWay}"
                          DisplayMemberPath="Name" />
+
+                <TextBlock Grid.Row="4" Text="ASSETS (imagens)" Style="{StaticResource PanelHeader}" />
+                <ListBox Grid.Row="5" x:Name="AssetsList" Background="Transparent" BorderThickness="0" Margin="4"
+                         ItemsSource="{Binding Project.Assets}"
+                         MouseDoubleClick="OnAssetDoubleClick"
+                         ToolTip="Duplo clique aplica a imagem ao sprite selecionado (ou cria um objeto)">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource PathToFileName}}"
+                                       Foreground="{DynamicResource TextFg}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
 
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="{DynamicResource BorderBg}" />

@@ -43,6 +43,20 @@ namespace DreamBit.Engine.Project
 
         public string ScenePath(string sceneFileName) => Path.Combine(Folder, sceneFileName);
 
+        private static readonly string[] ImageExtensions = { ".png", ".jpg", ".jpeg", ".bmp" };
+
+        /// <summary>Caminhos completos das imagens (assets) na pasta do projeto (recursivo).</summary>
+        public IEnumerable<string> EnumerateAssets()
+        {
+            if (!Directory.Exists(Folder))
+                return Enumerable.Empty<string>();
+
+            return Directory
+                .EnumerateFiles(Folder, "*.*", SearchOption.AllDirectories)
+                .Where(f => ImageExtensions.Contains(Path.GetExtension(f).ToLowerInvariant()))
+                .OrderBy(f => f);
+        }
+
         public void Save()
         {
             var data = new ProjectData { Name = Name };

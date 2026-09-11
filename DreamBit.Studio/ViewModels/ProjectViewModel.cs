@@ -17,6 +17,9 @@ namespace DreamBit.Studio.ViewModels
 
         public ObservableCollection<string> Scenes { get; } = new();
 
+        /// <summary>Caminhos completos das imagens (assets) do projeto.</summary>
+        public ObservableCollection<string> Assets { get; } = new();
+
         public GameProject? Project => _project;
         public bool HasProject => _project != null;
         public string Title => _project?.Name ?? "(nenhum projeto)";
@@ -30,6 +33,7 @@ namespace DreamBit.Studio.ViewModels
             _watcher.ScenesChanged += OnScenesChanged;
 
             RefreshScenes();
+            RefreshAssets();
             OnPropertyChanged(nameof(HasProject));
             OnPropertyChanged(nameof(Title));
         }
@@ -40,9 +44,15 @@ namespace DreamBit.Studio.ViewModels
         {
             var dispatcher = Application.Current?.Dispatcher;
             if (dispatcher != null && !dispatcher.CheckAccess())
-                dispatcher.Invoke(RefreshScenes);
+                dispatcher.Invoke(RefreshAll);
             else
-                RefreshScenes();
+                RefreshAll();
+        }
+
+        private void RefreshAll()
+        {
+            RefreshScenes();
+            RefreshAssets();
         }
 
         public void RefreshScenes()
@@ -53,6 +63,16 @@ namespace DreamBit.Studio.ViewModels
 
             foreach (var scene in _project.EnumerateScenes())
                 Scenes.Add(scene);
+        }
+
+        public void RefreshAssets()
+        {
+            Assets.Clear();
+            if (_project == null)
+                return;
+
+            foreach (var asset in _project.EnumerateAssets())
+                Assets.Add(asset);
         }
 
         public void Dispose() => _watcher?.Dispose();

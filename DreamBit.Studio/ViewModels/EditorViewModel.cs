@@ -489,6 +489,27 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => obj.Transform.Scale = from));
         }
 
+        /// <summary>Aplica uma imagem do projeto: como textura do sprite selecionado,
+        /// ou cria um novo objeto com esse sprite. Reversível.</summary>
+        public void UseAsset(string assetFullPath)
+        {
+            var sprite = SelectedObject?.Components.OfType<SpriteRenderer>().FirstOrDefault();
+            if (sprite != null)
+            {
+                var old = sprite.TexturePath;
+                History.Do(new EditorAction("Definir textura",
+                    doAction: () => sprite.TexturePath = assetFullPath,
+                    undoAction: () => sprite.TexturePath = old));
+                return;
+            }
+
+            var obj = BuildObject();
+            obj.Components.OfType<SpriteRenderer>().First().TexturePath = assetFullPath;
+            History.Do(new EditorAction("Objeto a partir do asset",
+                doAction: () => { Scene.Add(obj); SelectedObject = obj; },
+                undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+        }
+
         private GameObject BuildObject()
         {
             var obj = new GameObject($"GameObject {++_counter}");

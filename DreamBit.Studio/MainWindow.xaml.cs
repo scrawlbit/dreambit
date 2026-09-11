@@ -201,6 +201,12 @@ namespace DreamBit.Studio
                 _editor.OpenScene(sceneFileName);
         }
 
+        private void OnAssetDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (AssetsList.SelectedItem is string assetPath)
+                _editor.UseAsset(assetPath);
+        }
+
         private void OnOpenScene(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog { Filter = SceneFilter };
