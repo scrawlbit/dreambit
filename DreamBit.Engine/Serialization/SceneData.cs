@@ -42,7 +42,14 @@ namespace DreamBit.Engine.Serialization
         public List<PlatformerData> Platformers { get; set; } = new();
         public List<AudioData> Audios { get; set; } = new();
         public List<ParticleData> Particles { get; set; } = new();
+        public List<FollowData> Follows { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class FollowData
+    {
+        public System.Guid TargetId { get; set; }
+        public float Speed { get; set; } = 4f;
     }
 
     public sealed class ParticleData

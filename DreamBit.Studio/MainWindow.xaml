@@ -409,6 +409,28 @@
                                 HorizontalAlignment="Left" Margin="0,2"
                                 Visibility="{Binding HasParticles, Converter={StaticResource BoolToVisInverse}}" />
 
+                        <!-- Follow Target -->
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasFollow, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveFollow"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Follow Target" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Alvo" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <ComboBox Margin="0,2"
+                                          ItemsSource="{Binding DataContext.Scene.Objects, RelativeSource={RelativeSource AncestorType=Window}}"
+                                          SelectedItem="{Binding FollowTargetObject, Mode=TwoWay}"
+                                          DisplayMemberPath="Name" />
+                                <TextBlock Text="Rapidez" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding FollowSpeed, UpdateSourceTrigger=LostFocus, StringFormat=0.##}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Follow Target" Click="OnAddFollow" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasFollow, Converter={StaticResource BoolToVisInverse}}" />
+
                         <!-- Tilemap -->
                         <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasTilemap, Converter={StaticResource BoolToVis}}">

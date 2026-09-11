@@ -645,6 +645,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(tilemap);
         }
 
+        public void AddFollow()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<FollowTarget>().Any())
+                return;
+
+            var follow = new FollowTarget();
+            History.Do(new EditorAction("Adicionar Follow",
+                doAction: () => obj.AddComponent(follow),
+                undoAction: () => obj.RemoveComponent(follow)));
+        }
+
+        public void RemoveFollow()
+        {
+            var follow = SelectedObject?.Components.OfType<FollowTarget>().FirstOrDefault();
+            if (follow != null)
+                RemoveComponent(follow);
+        }
+
         public void AddParticles()
         {
             var obj = SelectedObject;
@@ -779,6 +798,9 @@ namespace DreamBit.Studio.ViewModels
                             EmitRate = pe.EmitRate, Lifetime = pe.Lifetime, Speed = pe.Speed, Spread = pe.Spread,
                             Size = pe.Size, GravityY = pe.GravityY, Color = pe.Color
                         });
+                        break;
+                    case FollowTarget ft:
+                        clone.AddComponent(new FollowTarget { TargetId = ft.TargetId, Speed = ft.Speed });
                         break;
                 }
             }

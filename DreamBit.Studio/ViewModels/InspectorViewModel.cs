@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
@@ -191,6 +193,42 @@ namespace DreamBit.Studio.ViewModels
             set { var p = Platformer; if (p != null) p.JumpSpeed = value; }
         }
 
+        // ---- Componente FollowTarget (referência a outro objeto) ----
+
+        private FollowTarget? Follow => _target?.Components.OfType<FollowTarget>().FirstOrDefault();
+        public bool HasFollow => Follow != null;
+
+        public GameObject? FollowTargetObject
+        {
+            get
+            {
+                var follow = Follow;
+                if (follow == null || _target?.Scene == null || follow.TargetId == Guid.Empty)
+                    return null;
+                return FindById(_target.Scene.Objects, follow.TargetId);
+            }
+            set { var f = Follow; if (f != null) { f.TargetId = value?.Id ?? Guid.Empty; Refresh(); } }
+        }
+
+        public float FollowSpeed
+        {
+            get => Follow?.Speed ?? 0f;
+            set { var f = Follow; if (f != null) f.Speed = value; }
+        }
+
+        private static GameObject? FindById(IEnumerable<GameObject> objects, Guid id)
+        {
+            foreach (var obj in objects)
+            {
+                if (obj.Id == id)
+                    return obj;
+                var nested = FindById(obj.Children, id);
+                if (nested != null)
+                    return nested;
+            }
+            return null;
+        }
+
         // ---- Componente ParticleEmitter ----
 
         private ParticleEmitter? Particles => _target?.Components.OfType<ParticleEmitter>().FirstOrDefault();
@@ -275,6 +313,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasFollow));
+            OnPropertyChanged(nameof(FollowTargetObject));
+            OnPropertyChanged(nameof(FollowSpeed));
             OnPropertyChanged(nameof(HasParticles));
             OnPropertyChanged(nameof(ParticleRate));
             OnPropertyChanged(nameof(ParticleLifetime));

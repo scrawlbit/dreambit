@@ -197,6 +197,8 @@ namespace DreamBit.Engine.Serialization
                         G = particles.Color.G,
                         B = particles.Color.B
                     });
+                else if (component is FollowTarget follow)
+                    data.Follows.Add(new FollowData { TargetId = follow.TargetId, Speed = follow.Speed });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -287,6 +289,9 @@ namespace DreamBit.Engine.Serialization
                     GravityY = particles.GravityY,
                     Color = new Color(particles.R, particles.G, particles.B)
                 });
+
+            foreach (var follow in data.Follows)
+                obj.AddComponent(new FollowTarget { TargetId = follow.TargetId, Speed = follow.Speed });
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController

@@ -226,6 +226,8 @@ namespace DreamBit.Studio
         private void OnRemoveAudio(object sender, RoutedEventArgs e) => _editor.RemoveAudio();
         private void OnAddParticles(object sender, RoutedEventArgs e) => _editor.AddParticles();
         private void OnRemoveParticles(object sender, RoutedEventArgs e) => _editor.RemoveParticles();
+        private void OnAddFollow(object sender, RoutedEventArgs e) => _editor.AddFollow();
+        private void OnRemoveFollow(object sender, RoutedEventArgs e) => _editor.RemoveFollow();
 
         private void OnPickSound(object sender, RoutedEventArgs e)
         {
