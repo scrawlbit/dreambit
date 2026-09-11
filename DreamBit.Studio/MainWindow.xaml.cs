@@ -63,8 +63,14 @@ namespace DreamBit.Studio
 
         private void OnWindowKeyDown(object sender, KeyEventArgs e)
         {
+            bool ctrl = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+
             if (e.Key == Key.Delete && _editor.DeleteObjectCommand.CanExecute(null))
                 _editor.DeleteObjectCommand.Execute(null);
+            else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null))
+                _editor.UndoCommand.Execute(null);
+            else if (ctrl && (e.Key == Key.Y) && _editor.RedoCommand.CanExecute(null))
+                _editor.RedoCommand.Execute(null);
         }
 
         private void OnPlayToggle(object sender, RoutedEventArgs e)

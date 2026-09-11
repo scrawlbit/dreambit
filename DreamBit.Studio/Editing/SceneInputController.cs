@@ -17,6 +17,8 @@ namespace DreamBit.Studio.Editing
 
         private bool _dragging;
         private Vector2 _dragOffset;
+        private GameObject? _dragObject;
+        private Vector2 _dragStartPosition;
         private bool _panning;
         private Vector2 _lastScreen;
 
@@ -32,6 +34,8 @@ namespace DreamBit.Studio.Editing
             if (hit != null)
             {
                 _dragging = true;
+                _dragObject = hit;
+                _dragStartPosition = hit.Transform.Position;
                 _dragOffset = hit.Transform.Position - ToLocalParent(hit, world);
             }
         }
@@ -70,6 +74,12 @@ namespace DreamBit.Studio.Editing
 
         public void Up()
         {
+            if (_dragObject != null)
+            {
+                _editor.PushMove(_dragObject, _dragStartPosition, _dragObject.Transform.Position);
+                _dragObject = null;
+            }
+
             _dragging = false;
             _panning = false;
         }

@@ -1,5 +1,5 @@
-using System.Linq;
 using DreamBit.Engine.Components;
+using DreamBit.Engine.Editing;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Notification;
 using DreamBit.Engine.Rendering;
@@ -10,14 +10,14 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Studio.ViewModels
 {
     /// <summary>
-    /// Estado do editor: a cena, a câmera, o objeto selecionado e os comandos da toolbar.
+    /// Estado do editor: a cena, a câmera, o objeto selecionado, o histórico (undo/redo)
+    /// e os comandos da toolbar.
     /// </summary>
     public sealed class EditorViewModel : NotificationObject
     {
         private GameObject? _selectedObject;
         private int _counter;
         private bool _isPlaying;
-
         private Scene _scene;
 
         public EditorViewModel()
@@ -25,12 +25,22 @@ namespace DreamBit.Studio.ViewModels
             _scene = new Scene { Name = "Cena de Exemplo" };
             Camera = new Camera2D();
             Inspector = new InspectorViewModel();
+            History = new History();
 
             AddObjectCommand = new RelayCommand(() => AddObject());
             DeleteObjectCommand = new RelayCommand(DeleteSelected, () => SelectedObject != null);
             AddRotatorCommand = new RelayCommand(AddRotator, () => SelectedObject != null);
+            UndoCommand = new RelayCommand(History.Undo, () => History.CanUndo);
+            RedoCommand = new RelayCommand(History.Redo, () => History.CanRedo);
+
+            History.Changed += () =>
+            {
+                UndoCommand.RaiseCanExecuteChanged();
+                RedoCommand.RaiseCanExecuteChanged();
+            };
 
             SeedSampleScene();
+            History.Clear(); // a cena inicial não entra no histórico
         }
 
         public Scene Scene
@@ -40,34 +50,16 @@ namespace DreamBit.Studio.ViewModels
         }
         public Camera2D Camera { get; }
         public InspectorViewModel Inspector { get; }
-
-        /// <summary>Caminho do arquivo da cena atual, se salva/aberta em disco.</summary>
-        public string? CurrentPath { get; private set; }
-
-        public void NewScene()
-        {
-            SelectedObject = null;
-            Scene = new Scene { Name = "Nova Cena" };
-            CurrentPath = null;
-            _counter = 0;
-        }
-
-        public void SaveTo(string path)
-        {
-            SceneSerializer.Save(Scene, path);
-            CurrentPath = path;
-        }
-
-        public void LoadFrom(string path)
-        {
-            SelectedObject = null;
-            Scene = SceneSerializer.Load(path);
-            CurrentPath = path;
-        }
+        public History History { get; }
 
         public RelayCommand AddObjectCommand { get; }
         public RelayCommand DeleteObjectCommand { get; }
         public RelayCommand AddRotatorCommand { get; }
+        public RelayCommand UndoCommand { get; }
+        public RelayCommand RedoCommand { get; }
+
+        /// <summary>Caminho do arquivo da cena atual, se salva/aberta em disco.</summary>
+        public string? CurrentPath { get; private set; }
 
         public GameObject? SelectedObject
         {
@@ -108,7 +100,76 @@ namespace DreamBit.Studio.ViewModels
         /// <summary>Passo do grid usado pelo snap (espelha o SceneRenderer.GridSize).</summary>
         public int GridStep { get; set; } = 32;
 
+        public void NewScene()
+        {
+            SelectedObject = null;
+            Scene = new Scene { Name = "Nova Cena" };
+            CurrentPath = null;
+            _counter = 0;
+            History.Clear();
+        }
+
+        public void SaveTo(string path)
+        {
+            SceneSerializer.Save(Scene, path);
+            CurrentPath = path;
+        }
+
+        public void LoadFrom(string path)
+        {
+            SelectedObject = null;
+            Scene = SceneSerializer.Load(path);
+            CurrentPath = path;
+            History.Clear();
+        }
+
         public GameObject AddObject()
+        {
+            var obj = BuildObject();
+
+            History.Do(new EditorAction("Adicionar objeto",
+                doAction: () => { Scene.Add(obj); SelectedObject = obj; },
+                undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+
+            return obj;
+        }
+
+        public void DeleteSelected()
+        {
+            var obj = SelectedObject;
+            if (obj == null)
+                return;
+
+            History.Do(new EditorAction("Excluir objeto",
+                doAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); },
+                undoAction: () => { Scene.Add(obj); SelectedObject = obj; }));
+        }
+
+        /// <summary>Anexa um comportamento de runtime (gira no play) ao objeto selecionado.</summary>
+        public void AddRotator()
+        {
+            var obj = SelectedObject;
+            if (obj == null)
+                return;
+
+            var rotator = new RotatorBehavior();
+            History.Do(new EditorAction("Adicionar Rotator",
+                doAction: () => obj.AddComponent(rotator),
+                undoAction: () => obj.RemoveComponent(rotator)));
+        }
+
+        /// <summary>Registra um arraste concluído no histórico (a posição já foi aplicada).</summary>
+        public void PushMove(GameObject obj, Vector2 from, Vector2 to)
+        {
+            if (from == to)
+                return;
+
+            History.Push(new EditorAction("Mover objeto",
+                doAction: () => obj.Transform.Position = to,
+                undoAction: () => obj.Transform.Position = from));
+        }
+
+        private GameObject BuildObject()
         {
             var obj = new GameObject($"GameObject {++_counter}");
             obj.AddComponent(new SpriteRenderer
@@ -116,25 +177,7 @@ namespace DreamBit.Studio.ViewModels
                 Size = new Vector2(96, 64),
                 Color = new Color(70 + _counter * 25 % 150, 130, 200)
             });
-            Scene.Add(obj);
-            SelectedObject = obj;
             return obj;
-        }
-
-        public void DeleteSelected()
-        {
-            if (SelectedObject == null)
-                return;
-
-            var toRemove = SelectedObject;
-            SelectedObject = null;
-            Scene.Remove(toRemove);
-        }
-
-        /// <summary>Anexa um comportamento de runtime (gira no play) ao objeto selecionado.</summary>
-        public void AddRotator()
-        {
-            SelectedObject?.AddComponent(new RotatorBehavior());
         }
 
         private void SeedSampleScene()
