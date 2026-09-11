@@ -42,7 +42,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 |---|---|---|
 | ✅ **Importar tilemap Tiled (.tmx)** | *Entregue* — `TmxImporter` (CSV/Base64+zlib, chunks, tilesets externos .tsx) + `TilemapRenderer`; **validado nos assets reais (RunNMagic)**. | 🔴 |
 | ✅ **Colisão + personagem jogável nas ledges** | *Entregue* — `LedgePhysics` + `PlatformerController` (gravidade, pousa nas ledges one-way, teclado anda/pula) e câmera que segue o personagem no `DreamBit.Player`. | 🟡 |
-| **Editor/pincel de tilemap** | Pintar/apagar tiles num grid dentro do editor (hoje o mapa vem importado do Tiled, mas não é editável célula a célula). | 🔴 |
+| ✅ **Editor/pincel de tilemap** | *Entregue* — ferramenta Pincel + paleta dos tilesets; pinta/apaga tiles no canvas (undo por traço), sobre .tmx importado ou tilemap novo a partir de um PNG; serializado inline. | 🔴 |
 | **Mais componentes / áudio / partículas** | Colisor genérico, áudio (usa o FreeSFX), partículas. | 🔴 |
 | **Mais componentes** | Colisor, corpo físico, animador, áudio, partículas — cada um com Draw/Update e inspetor. | 🔴 |
 | **Referências entre objetos** | Propriedade do inspetor que aceita outro `GameObject` (arrastar da hierarquia). | 🟡 |
