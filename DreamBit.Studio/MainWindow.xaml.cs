@@ -220,6 +220,8 @@ namespace DreamBit.Studio
         private void OnRemoveTilemap(object sender, RoutedEventArgs e) => _editor.RemoveTilemap();
         private void OnAddAudio(object sender, RoutedEventArgs e) => _editor.AddAudio();
         private void OnRemoveAudio(object sender, RoutedEventArgs e) => _editor.RemoveAudio();
+        private void OnAddParticles(object sender, RoutedEventArgs e) => _editor.AddParticles();
+        private void OnRemoveParticles(object sender, RoutedEventArgs e) => _editor.RemoveParticles();
 
         private void OnPickSound(object sender, RoutedEventArgs e)
         {

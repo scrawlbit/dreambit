@@ -191,6 +191,20 @@ namespace DreamBit.Studio.ViewModels
             set { var p = Platformer; if (p != null) p.JumpSpeed = value; }
         }
 
+        // ---- Componente ParticleEmitter ----
+
+        private ParticleEmitter? Particles => _target?.Components.OfType<ParticleEmitter>().FirstOrDefault();
+        public bool HasParticles => Particles != null;
+
+        public float ParticleRate { get => Particles?.EmitRate ?? 0f; set { var p = Particles; if (p != null) p.EmitRate = value; } }
+        public float ParticleLifetime { get => Particles?.Lifetime ?? 0f; set { var p = Particles; if (p != null) p.Lifetime = value; } }
+        public float ParticleSpeed { get => Particles?.Speed ?? 0f; set { var p = Particles; if (p != null) p.Speed = value; } }
+        public float ParticleSize { get => Particles?.Size ?? 0f; set { var p = Particles; if (p != null) p.Size = value; } }
+        public float ParticleGravity { get => Particles?.GravityY ?? 0f; set { var p = Particles; if (p != null) p.GravityY = value; } }
+        public int ParticleR { get => Particles?.Color.R ?? 0; set { var p = Particles; if (p != null) p.Color = new Color((byte)Clamp(value), p.Color.G, p.Color.B); } }
+        public int ParticleG { get => Particles?.Color.G ?? 0; set { var p = Particles; if (p != null) p.Color = new Color(p.Color.R, (byte)Clamp(value), p.Color.B); } }
+        public int ParticleB { get => Particles?.Color.B ?? 0; set { var p = Particles; if (p != null) p.Color = new Color(p.Color.R, p.Color.G, (byte)Clamp(value)); } }
+
         // ---- Componente AudioSource ----
 
         private AudioSource? Audio => _target?.Components.OfType<AudioSource>().FirstOrDefault();
@@ -261,6 +275,15 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasParticles));
+            OnPropertyChanged(nameof(ParticleRate));
+            OnPropertyChanged(nameof(ParticleLifetime));
+            OnPropertyChanged(nameof(ParticleSpeed));
+            OnPropertyChanged(nameof(ParticleSize));
+            OnPropertyChanged(nameof(ParticleGravity));
+            OnPropertyChanged(nameof(ParticleR));
+            OnPropertyChanged(nameof(ParticleG));
+            OnPropertyChanged(nameof(ParticleB));
             OnPropertyChanged(nameof(HasAudio));
             OnPropertyChanged(nameof(AudioPath));
             OnPropertyChanged(nameof(AudioVolume));

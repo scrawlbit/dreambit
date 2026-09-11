@@ -645,6 +645,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(tilemap);
         }
 
+        public void AddParticles()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<ParticleEmitter>().Any())
+                return;
+
+            var particles = new ParticleEmitter();
+            History.Do(new EditorAction("Adicionar Particulas",
+                doAction: () => obj.AddComponent(particles),
+                undoAction: () => obj.RemoveComponent(particles)));
+        }
+
+        public void RemoveParticles()
+        {
+            var particles = SelectedObject?.Components.OfType<ParticleEmitter>().FirstOrDefault();
+            if (particles != null)
+                RemoveComponent(particles);
+        }
+
         public void AddAudio()
         {
             var obj = SelectedObject;

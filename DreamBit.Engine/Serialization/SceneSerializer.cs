@@ -184,6 +184,19 @@ namespace DreamBit.Engine.Serialization
                         PlayOnStart = audio.PlayOnStart,
                         Loop = audio.Loop
                     });
+                else if (component is ParticleEmitter particles)
+                    data.Particles.Add(new ParticleData
+                    {
+                        EmitRate = particles.EmitRate,
+                        Lifetime = particles.Lifetime,
+                        Speed = particles.Speed,
+                        Spread = particles.Spread,
+                        Size = particles.Size,
+                        GravityY = particles.GravityY,
+                        R = particles.Color.R,
+                        G = particles.Color.G,
+                        B = particles.Color.B
+                    });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -261,6 +274,18 @@ namespace DreamBit.Engine.Serialization
                     Volume = audio.Volume,
                     PlayOnStart = audio.PlayOnStart,
                     Loop = audio.Loop
+                });
+
+            foreach (var particles in data.Particles)
+                obj.AddComponent(new ParticleEmitter
+                {
+                    EmitRate = particles.EmitRate,
+                    Lifetime = particles.Lifetime,
+                    Speed = particles.Speed,
+                    Spread = particles.Spread,
+                    Size = particles.Size,
+                    GravityY = particles.GravityY,
+                    Color = new Color(particles.R, particles.G, particles.B)
                 });
 
             foreach (var platformer in data.Platformers)

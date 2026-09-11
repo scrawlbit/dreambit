@@ -41,7 +41,21 @@ namespace DreamBit.Engine.Serialization
         public List<TilemapData> Tilemaps { get; set; } = new();
         public List<PlatformerData> Platformers { get; set; } = new();
         public List<AudioData> Audios { get; set; } = new();
+        public List<ParticleData> Particles { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class ParticleData
+    {
+        public float EmitRate { get; set; } = 30f;
+        public float Lifetime { get; set; } = 1.4f;
+        public float Speed { get; set; } = 140f;
+        public float Spread { get; set; } = 0.6f;
+        public float Size { get; set; } = 8f;
+        public float GravityY { get; set; } = 220f;
+        public byte R { get; set; } = 255;
+        public byte G { get; set; } = 180;
+        public byte B { get; set; } = 90;
     }
 
     public sealed class AudioData
