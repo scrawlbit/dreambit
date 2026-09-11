@@ -44,7 +44,28 @@ namespace DreamBit.Player
         protected override void Update(GameTime gameTime)
         {
             _scene.Update(gameTime);
+
+            // Câmera segue o personagem (primeiro objeto com PlatformerController).
+            var target = FindPlayer(_scene.Objects);
+            if (target != null)
+                _camera.Position = target.Transform.WorldPosition;
+
             base.Update(gameTime);
+        }
+
+        private static GameObject? FindPlayer(System.Collections.Generic.IEnumerable<GameObject> objects)
+        {
+            foreach (var obj in objects)
+            {
+                foreach (var component in obj.Components)
+                    if (component is PlatformerController)
+                        return obj;
+
+                var nested = FindPlayer(obj.Children);
+                if (nested != null)
+                    return nested;
+            }
+            return null;
         }
 
         protected override void Draw(GameTime gameTime)
