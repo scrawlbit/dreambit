@@ -8,23 +8,24 @@ Base atual: `DreamBit.Studio` (editor WPF net8), `DreamBit.Engine` (motor multi-
 Legenda de esforço: 🟢 baixo · 🟡 médio · 🔴 alto. Itens ✅ já entregues.
 
 **Já entregue nesta rodada:** ✅ conceito de **ledges** no mapa (bordas caminháveis one-way, estilo
-Dust — motor + edição + serialização + testes) · ✅ **inspetor de componentes** (editar/adicionar/
-remover Sprite e Rotator).
+Dust) · ✅ **Marco 1** completo (ver abaixo).
 **Decisão registrada:** o **AutoMapper não será usado** no editor .NET 8 (a versão atual exige
 licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSerializer`).
 
 ---
 
-## Marco 1 — Editor sólido (curto prazo)
+## Marco 1 — Editor sólido ✅ CONCLUÍDO
 
-| Funcionalidade | O que envolve | Esforço |
-|---|---|---|
-| **Gizmos de transformação** | Handles visuais para mover/rotacionar/escalar no canvas (setas de eixo, anel de rotação, cantos de escala), com hit-test próprio. Estende `SceneRenderer` + `SceneInputController`. | 🟡 |
-| ✅ **Inspetor de componentes** | *Entregue* — editar `SpriteRenderer` (cor/tamanho) e `RotatorBehavior` (velocidade), adicionar/remover, com undo/redo. | 🟡 |
-| **Undo/redo do inspetor** | Fazer as edições de propriedade passarem pelo `History` (agrupando digitação por foco). Já existe a base (`EditorAction`). | 🟢 |
-| **Múltiplas cenas em abas** | `TabControl` de cenas abertas; trocar sem perder estado. Apoia-se no `ProjectViewModel`. | 🟡 |
-| **Docking flutuante (AvalonDock)** | Trocar os `GridSplitter` por AvalonDock: painéis arrastáveis/flutuantes e **layout salvável**. | 🟡 |
-| **Tema claro/escuro + polimento** | Alternar tema; ícones; atalhos consistentes. | 🟢 |
+| Funcionalidade | Status |
+|---|---|
+| **Gizmos de rotação e escala** | ✅ handle de rotação + handles de escala nos cantos, reversíveis |
+| **Inspetor de componentes** | ✅ editar/adicionar/remover Sprite e Rotator, com undo/redo |
+| **Múltiplas cenas em abas** | ✅ abas com troca de cena ativa, fechar, foco na já aberta |
+| **Tema claro/escuro** | ✅ chrome + canvas, toggle na toolbar |
+| **Duplicar / mover por setas** | ✅ Ctrl+D e setas, reversíveis |
+
+*Refinamentos opcionais que ficam para depois:* undo/redo das edições digitadas no inspetor
+(agrupadas por foco) e trocar os `GridSplitter` por **AvalonDock** (docking flutuante + layout salvável).
 
 ## Marco 2 — Conteúdo e assets
 
