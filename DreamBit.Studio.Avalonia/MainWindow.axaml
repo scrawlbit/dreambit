@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DreamBit.Studio.Avalonia"
+        x:Class="DreamBit.Studio.Avalonia.MainWindow"
+        Title="DreamBit Studio (Avalonia — cross-platform)" Width="1120" Height="700"
+        Background="#1E2128">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <Button Content="＋ Objeto" Command="{Binding AddObjectCommand}" />
+                <Button Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
+                <Button Content="↶" Command="{Binding UndoCommand}" />
+                <Button Content="↷" Command="{Binding RedoCommand}" />
+                <Button x:Name="PlayButton" Content="▶ Play" Click="OnPlayToggle" />
+                <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom {0:0.00}x'}"
+                           VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#8A93A6" />
+            </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="220,4,*,4,260">
+            <!-- Hierarquia -->
+            <DockPanel Grid.Column="0" Background="#252932">
+                <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA" Foreground="#8A93A6" Margin="10,8" />
+                <ListBox Background="Transparent" Margin="4"
+                         ItemsSource="{Binding Scene.Objects}"
+                         SelectedItem="{Binding SelectedObject}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" Foreground="#D6DBE6" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+
+            <GridSplitter Grid.Column="1" Background="#11141A" />
+
+            <!-- Cena -->
+            <local:SceneView Grid.Column="2" x:Name="Scene" />
+
+            <GridSplitter Grid.Column="3" Background="#11141A" />
+
+            <!-- Inspetor -->
+            <DockPanel Grid.Column="4" Background="#252932">
+                <TextBlock DockPanel.Dock="Top" Text="INSPETOR" Foreground="#8A93A6" Margin="10,8" />
+                <StackPanel Margin="10,4" DataContext="{Binding Inspector}" Spacing="4"
+                            IsVisible="{Binding HasTarget}">
+                    <TextBlock Text="Nome" Foreground="#8A93A6" />
+                    <TextBox Text="{Binding Name}" />
+                    <TextBlock Text="Posição X / Y" Foreground="#8A93A6" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding PositionX}" />
+                    <TextBox Text="{Binding PositionY}" />
+                    <TextBlock Text="Rotação (graus)" Foreground="#8A93A6" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding RotationDegrees}" />
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Editor DreamBit em Avalonia (cross-platform: Windows/macOS/Linux). Reaproveita os
+    ViewModels de DreamBit.Studio.Core e desenha a cena com o DrawingContext do Avalonia
+    (sem hospedar um canvas MonoGame). O jogo em si roda pelo DreamBit.Player (DesktopGL).
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Studio.Core\DreamBit.Studio.Core.csproj" />
+    <ProjectReference Include="..\DreamBit.Engine\DreamBit.Engine.csproj" />
+  </ItemGroup>
+
+</Project>
