@@ -330,6 +330,23 @@ namespace DreamBit.Studio
                 _editor.InsertPrefab(dialog.FileName);
         }
 
+        private async void OnExportGame(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFolderDialog { Title = "Pasta de destino do jogo" };
+            if (dialog.ShowDialog() != true)
+                return;
+
+            string outputDir = dialog.FolderName;
+            string sceneJson = DreamBit.Engine.Serialization.SceneSerializer.SaveToString(_editor.Scene);
+
+            Cursor = System.Windows.Input.Cursors.Wait;
+            var (ok, message) = await System.Threading.Tasks.Task.Run(() => GameExporter.Publish(outputDir, sceneJson));
+            Cursor = null;
+
+            MessageBox.Show(this, message, "Exportar jogo", MessageBoxButton.OK,
+                ok ? MessageBoxImage.Information : MessageBoxImage.Warning);
+        }
+
         private void OnRunGame(object sender, RoutedEventArgs e)
         {
             var scenePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dreambit_play.dbscene");

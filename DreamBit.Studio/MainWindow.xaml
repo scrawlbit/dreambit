@@ -55,6 +55,7 @@
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />
                 <Button Style="{StaticResource ToolButton}" Content="🎮 Rodar jogo" Click="OnRunGame" ToolTip="Abre a cena atual no DreamBit.Player" />
+                <Button Style="{StaticResource ToolButton}" Content="📦 Exportar" Click="OnExportGame" ToolTip="Publica o jogo (Player + cena) numa pasta" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <RadioButton GroupName="tool" Content="Selecionar" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" Margin="4,0"
                              IsChecked="{Binding IsSelectTool, Mode=OneWay}" Command="{Binding SelectToolCommand}" />
