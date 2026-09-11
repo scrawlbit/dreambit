@@ -50,6 +50,9 @@
                 <Button Style="{StaticResource ToolButton}" Content="🧩 Novo tilemap" Click="OnNewTilemap" ToolTip="Cria um tilemap em branco a partir de um tileset PNG (tiles 16px)" />
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
+                <Button Style="{StaticResource ToolButton}" Content="⭳ Prefab" Click="OnSavePrefab" ToolTip="Salvar o objeto selecionado como prefab" />
+                <Button Style="{StaticResource ToolButton}" Content="⭱ Inserir" Click="OnInsertPrefab" ToolTip="Inserir um prefab na cena" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />
                 <Button Style="{StaticResource ToolButton}" Content="🎮 Rodar jogo" Click="OnRunGame" ToolTip="Abre a cena atual no DreamBit.Player" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />

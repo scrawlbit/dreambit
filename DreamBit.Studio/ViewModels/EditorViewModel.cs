@@ -808,6 +808,20 @@ namespace DreamBit.Studio.ViewModels
             return clone;
         }
 
+        public void SaveSelectedAsPrefab(string path)
+        {
+            if (SelectedObject != null)
+                SceneSerializer.SaveObject(SelectedObject, path);
+        }
+
+        public void InsertPrefab(string path)
+        {
+            var obj = SceneSerializer.LoadPrefab(path);
+            History.Do(new EditorAction("Inserir prefab",
+                doAction: () => { Scene.Add(obj); SelectedObject = obj; },
+                undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+        }
+
         private System.Collections.Generic.List<GameObject> _clipboard = new();
 
         public void CopySelected()

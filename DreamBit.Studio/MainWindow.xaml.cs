@@ -280,6 +280,33 @@ namespace DreamBit.Studio
                 _editor.Inspector.AnimTexturePath = dialog.FileName;
         }
 
+        private const string PrefabFilter = "Prefab DreamBit (*.dbprefab)|*.dbprefab|Todos os arquivos (*.*)|*.*";
+
+        private void OnSavePrefab(object sender, RoutedEventArgs e)
+        {
+            if (_editor.SelectedObject == null)
+            {
+                MessageBox.Show(this, "Selecione um objeto primeiro.", "Prefab",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = PrefabFilter,
+                FileName = _editor.SelectedObject.Name + ".dbprefab"
+            };
+            if (dialog.ShowDialog() == true)
+                _editor.SaveSelectedAsPrefab(dialog.FileName);
+        }
+
+        private void OnInsertPrefab(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog { Filter = PrefabFilter };
+            if (dialog.ShowDialog() == true)
+                _editor.InsertPrefab(dialog.FileName);
+        }
+
         private void OnRunGame(object sender, RoutedEventArgs e)
         {
             var scenePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dreambit_play.dbscene");

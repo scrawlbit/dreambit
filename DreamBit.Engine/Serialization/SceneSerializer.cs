@@ -42,6 +42,27 @@ namespace DreamBit.Engine.Serialization
         public static Scene LoadFromString(string json)
             => FromData(JsonSerializer.Deserialize<SceneData>(json, Options) ?? new SceneData());
 
+        // ---- Prefabs (um objeto isolado) ----
+
+        public static void SaveObject(GameObject obj, string path)
+            => File.WriteAllText(path, JsonSerializer.Serialize(ToData(obj), Options));
+
+        /// <summary>Carrega um prefab (objeto) atribuindo novos Ids, pronto para inserir.</summary>
+        public static GameObject LoadPrefab(string path)
+        {
+            var data = JsonSerializer.Deserialize<GameObjectData>(File.ReadAllText(path), Options) ?? new GameObjectData();
+            var obj = FromData(data);
+            ReassignIds(obj);
+            return obj;
+        }
+
+        private static void ReassignIds(GameObject obj)
+        {
+            obj.Id = System.Guid.NewGuid();
+            foreach (var child in obj.Children)
+                ReassignIds(child);
+        }
+
         // ---- modelo -> dados ----
 
         private static SceneData ToData(Scene scene)
