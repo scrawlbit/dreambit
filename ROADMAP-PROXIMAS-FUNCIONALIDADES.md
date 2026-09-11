@@ -61,7 +61,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
 | **Editor em Avalonia** | Portar a UI de WPF para **Avalonia + DesktopGL** para editar no Mac/Linux (o motor e o Player já são cross-platform). | 🔴 |
-| **Export/build do jogo** | Empacotar o jogo por plataforma (win/mac/linux) a partir do projeto. | 🟡 |
+| ✅ **Export/build do jogo** | *Entregue* — botão Exportar publica o Player + a cena + assets numa pasta portátil. | 🟡 |
 | **Templates de projeto** | "Novo projeto" com estrutura pronta (cenas/assets/pipeline). | 🟢 |
 
 ---
