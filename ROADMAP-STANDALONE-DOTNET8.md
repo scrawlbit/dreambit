@@ -7,27 +7,31 @@ standalone em .NET 8 reaproveitando o máximo de código, (4) como isso vira a "
 
 ---
 
-## 1. O que já foi corrigido (feito e verificado com build)
+## 1. O que já foi corrigido e implementado (feito e verificado com build/testes)
+
+**Correções no projeto original (net48):**
 
 | Item | Antes | Agora | Observação |
 |---|---|---|---|
 | **Newtonsoft.Json** | 12.0.3 | **13.0.3** | Corrige a CVE de DoS GHSA-5crp-9r3c-p9vr. |
 | **MonoGame.Framework.WindowsDX** | 3.7.1.189 | **3.8.0.1641** | Última versão compatível com .NET Framework. Compila sem quebrar API. |
 | **AutoMapper** | 9.0.0 | **10.1.1** | Teto do net48 (ver §6). |
-| **PoC standalone .NET 8** | — | `DreamBit.Studio/` | Canvas MonoGame 3.8.2 ao vivo em WPF .NET 8, fora do VS. |
+| **`DreamBit.Project.Tests`** | não compilava | **8 testes verdes** | Mocks e testes reescritos contra a API atual (`InternalsVisibleTo`). |
 
 As bibliotecas de núcleo (`Scrawlbit.MonoGame`, `DreamBit.General/Pipeline/Project/Game`,
 `Util`, `Json`) compilam limpas com o MonoGame 3.8.
 
-**Pendência conhecida:** `DreamBit.Project.Tests` não compila — os mocks (`ProjectMock`,
-`ProjectFileMock`, `SerializerMock`, `RegistrationMock`) e os testes foram escritos contra uma
-API antiga de `IProject`/`ProjectFile` (registrations migraram para DI, `Project` virou `internal`,
-assinaturas mudaram). São erros de teste, não de produção. Recomendação: reescrever os mocks e
-testes contra a API atual (detalhe em §5).
+**Editor standalone .NET 8 implementado** (novos projetos, `DreamBit.Studio.slnx`):
+
+| Projeto | Papel | Status |
+|---|---|---|
+| `DreamBit.Studio` (net8.0-windows, WPF) | Shell do editor: 3 painéis (Hierarquia/Cena/Inspetor), toolbar, canvas MonoGame ao vivo, seleção/arraste, pan/zoom, snap, play, salvar/abrir | ✅ |
+| `DreamBit.Engine` (net8.0-windows) | Motor: Scene/GameObject/Transform/SceneComponent, Camera2D, SceneRenderer, SpriteRenderer, RotatorBehavior, serialização `.dbscene` | ✅ |
+| `DreamBit.Engine.Tests` | 12 testes (transform hierárquico, câmera, hierarquia, roundtrip de serialização) | ✅ verdes |
 
 **Ambiente:** a `DreamBit.Extension` (VSIX) não compila nesta máquina porque falta a workload
 *"Visual Studio extension development"* (erro `Microsoft.VsSDK.targets não encontrado`). Não é bug
-de código; é workload ausente.
+de código; é workload ausente. O editor standalone **não depende** dessa workload.
 
 ---
 
@@ -115,28 +119,36 @@ DreamBit.Studio.slnx
 Docking: usar **AvalonDock** (Dirkster.AvalonDock) ou **Dock** (Wpf) para recriar as tool windows
 (Hierarquia, Inspector, Editor de Cena, Assets) fora do VS.
 
-### 3.3 Plano faseado (híbrido)
+### 3.3 Plano faseado (híbrido) — status
 
-- **Fase 0 — PoC (FEITO):** canvas MonoGame ao vivo numa janela WPF .NET 8, com seleção/arraste de
-  um objeto. Prova que o render funciona sem o VS. → `DreamBit.Studio/`.
-- **Fase 1 — Shell:** janela principal + docking (AvalonDock) com painéis de Hierarquia, Inspector
-  e Editor de Cena. Menu/atalhos básicos (novo/abrir/salvar projeto).
-- **Fase 2 — Modelo (do atual):** trazer `DreamBit.Game` (modelo/edição) para net8/MonoGame 3.8 e
-  ligar ao `MonoGameSurface` — renderizar uma `Scene` real do modelo atual (câmera + objetos +
-  componentes) e editar via hierarquia/inspector.
-- **Fase 3 — Runtime (do Old):** extrair de `Old.DreamBit.Game` os serviços que faltam
-  (`SceneManager`, `CameraService`, `DrawBatchService`, `DeltaTime`, `ContentManager`+loaders, loop)
-  para `DreamBit.Engine.Runtime`, **adaptando-os ao modelo do atual** e ao MonoGame 3.8.
-- **Fase 4 — Domínio/projeto:** `DreamBit.Project` (netstandard2.0) — abrir/salvar projeto,
-  observar arquivos com `FileSystemWatcher` (substitui os hooks do Solution Explorer).
-- **Fase 5 — Editor:** portar `Controls/` e `ViewModels/` (seleção, gizmos de mover/rotacionar/
-  escalar, undo/redo, zoom); inspector data-driven dos componentes (incl. `ScriptProperty`).
-- **Fase 6 — Conteúdo + Play:** pipeline via `dotnet mgcb`; import de fontes/sprites; **play mode**
-  usando `DreamBit.Engine.Runtime`; "rodar o jogo" abrindo `DreamBit.Player`.
-- **Fase 7 — Testes:** reconstruir a suíte usando `Old.DreamBit.Game.Tests` como base + corrigir
-  `DreamBit.Project.Tests` (§5). CI compilando a solução standalone.
-- **Fase 8 — Multiplataforma (opcional):** trocar WPF/D3DImage por **Avalonia + MonoGame DesktopGL**
-  para Rider no Mac/Linux.
+Legenda: ✅ concluído · 🟡 parcial · ◻ pendente
+
+- **✅ Fase 0 — PoC:** canvas MonoGame ao vivo numa janela WPF .NET 8. → `DreamBit.Studio/`.
+- **✅ Fase 1 — Shell:** janela com 3 painéis (Hierarquia | Cena | Inspetor) via `GridSplitter`,
+  toolbar (nova/abrir/salvar, novo objeto, rotator, excluir, play, snap, zoom). *AvalonDock fica
+  como upgrade para docking flutuante/arrastável.*
+- **✅ Fase 2 — Modelo:** `DreamBit.Engine` porta o design do modelo de `DreamBit.Game` para net8
+  e renderiza uma `Scene` real no `MonoGameSurface` (grid + objetos + seleção), editável pela
+  hierarquia e pelo inspetor (X/Y, rotação, escala).
+- **🟡 Fase 3 — Runtime:** o laço de update roda no play mode e o `RotatorBehavior` demonstra o
+  runtime dirigido pelo editor. *Falta extrair de `Old.DreamBit.Game` os serviços completos
+  (`SceneManager`, `CameraService`, `DrawBatchService`, `ContentManager`+loaders) para um
+  `DreamBit.Engine.Runtime` dedicado.*
+- **🟡 Fase 4 — Domínio/projeto:** salvar/abrir cena em JSON (`.dbscene`) via `SceneSerializer`.
+  *Falta o conceito de "projeto" (múltiplas cenas/assets) e o `FileSystemWatcher`.*
+- **🟡 Fase 5 — Editor:** seleção, arraste, pan, zoom, snap ao grid e Delete implementados.
+  *Faltam os gizmos visuais de rotação/escala e o undo/redo (`StateManager`).*
+- **🟡 Fase 6 — Conteúdo + Play:** play mode funcionando (`Scene.Update` por frame).
+  *Falta o pipeline via `dotnet mgcb` (fontes/sprites) e um `DreamBit.Player` separado.*
+- **✅ Fase 7 — Testes:** `DreamBit.Engine.Tests` (12 verdes) + `DreamBit.Project.Tests` corrigido
+  (8 verdes). *Falta CI (GitHub Actions) e portar os casos de `Old.DreamBit.Game.Tests`.*
+- **◻ Fase 8 — Multiplataforma (opcional):** trocar WPF/D3DImage por **Avalonia + MonoGame
+  DesktopGL** para Rider no Mac/Linux.
+
+**Resumo:** o editor standalone .NET 8 está **funcional de ponta a ponta** (criar/selecionar/mover
+objetos, editar no inspetor, salvar/abrir cena, play mode), com testes verdes. As partes 🟡/◻ são
+aprofundamentos (runtime completo, gizmos, undo/redo, pipeline de conteúdo, projeto multi-cena e
+multiplataforma) construídos sobre esta base.
 
 ---
 
@@ -187,8 +199,8 @@ zoom, componentes ImageRenderer/TextRenderer/Script) e no que falta para um edit
 - Temas (claro/escuro) e layout de docking salvável.
 
 **Qualidade**
-- Reescrever e reativar a suíte de testes (`DreamBit.Project.Tests`) contra a API atual;
-  adicionar testes ao motor de cena.
+- ✅ `DreamBit.Project.Tests` reativado (8 verdes) e `DreamBit.Engine.Tests` criado (12 verdes).
+- Portar os casos de `Old.DreamBit.Game.Tests` para ampliar a cobertura do motor.
 - CI (GitHub Actions) compilando a solução standalone e rodando os testes.
 
 ---
