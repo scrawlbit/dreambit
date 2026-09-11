@@ -27,22 +27,22 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 *Refinamentos opcionais que ficam para depois:* undo/redo das edições digitadas no inspetor
 (agrupadas por foco) e trocar os `GridSplitter` por **AvalonDock** (docking flutuante + layout salvável).
 
-## Marco 2 — Conteúdo e assets (em andamento)
+## Marco 2 — Conteúdo e assets ✅ CONCLUÍDO
+
+| Funcionalidade | Status |
+|---|---|
+| **SpriteRenderer com textura real** | ✅ `TextureCache` + `TexturePath`, inspetor, serializado |
+| **Assets browser** | ✅ painel de imagens; duplo clique aplica/cria objeto; ao vivo |
+| **Pipeline `dotnet mgcb`** | ✅ `ContentManifest` gera `.mgcb`; `ContentBuilder` invoca o MGCB (botão "Conteúdo") |
+| **Animação por sprite sheet** | ✅ `SpriteAnimator` (frames, FPS, loop) com `Advance()` testável |
+
+## Marco 3 — Jogabilidade (em andamento)
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
-| ✅ **SpriteRenderer com textura real** | *Entregue* — `TextureCache` + `TexturePath`, campo no inspetor, serializado. | 🟡 |
-| ✅ **Assets browser** | *Entregue* — painel de imagens do projeto; duplo clique aplica ao sprite/cria objeto; atualiza ao vivo. | 🟡 |
-| **Pipeline `dotnet mgcb`** | Integrar o Content Pipeline do MonoGame (build incremental) e **hot reload** de textura ao salvar. Aproveita `DreamBit.Pipeline`. | 🔴 |
-| **Sprite sheets / animação** | Import de atlas, recorte de frames e uma timeline simples de animação por frames. | 🔴 |
-
-> Falta o miolo pesado do Marco 2 (pipeline MGCB e animação por frames), ambos 🔴.
-
-## Marco 3 — Jogabilidade
-
-| Funcionalidade | O que envolve | Esforço |
-|---|---|---|
-| **Editor de tilemap** | Pintar tiles num grid — grande alavanca para jogos 2D. Novo componente `Tilemap` + ferramenta de pincel. | 🔴 |
+| ✅ **Importar tilemap Tiled (.tmx)** | *Entregue* — `TmxImporter` (CSV/Base64+zlib, chunks, tilesets externos .tsx) + `TilemapRenderer`; **validado nos assets reais (RunNMagic)**. | 🔴 |
+| **Editor/pincel de tilemap** | Pintar/apagar tiles num grid dentro do editor (hoje o mapa vem importado do Tiled, mas não é editável célula a célula). | 🔴 |
+| **Colisão de personagem nas ledges** | Controlador que faz um objeto andar/parar sobre as ledges (usa o que já existe). | 🟡 |
 | **Mais componentes** | Colisor, corpo físico, animador, áudio, partículas — cada um com Draw/Update e inspetor. | 🔴 |
 | **Referências entre objetos** | Propriedade do inspetor que aceita outro `GameObject` (arrastar da hierarquia). | 🟡 |
 | **Scripts C# recarregáveis** | Evoluir o `RotatorBehavior`/`ScriptBehavior` para scripts do usuário compilados via Roslyn, com props no inspetor (como o `ScriptProperty` do `DreamBit.Game`). | 🔴 |
