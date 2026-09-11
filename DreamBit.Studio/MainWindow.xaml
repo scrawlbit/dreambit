@@ -1,0 +1,34 @@
+<Window x:Class="DreamBit.Studio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hosting="clr-namespace:DreamBit.Studio.Hosting"
+        Title="DreamBit Studio (PoC .NET 8 standalone)" Height="640" Width="980"
+        Background="#1E2128">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Hierarquia da cena (placeholder do editor) -->
+        <StackPanel Grid.Column="0" Background="#252932">
+            <TextBlock Text="HIERARQUIA" Foreground="#8A93A6" Margin="12,12,0,6" FontSize="11" />
+            <Border Background="#2F3440" Margin="6,2" CornerRadius="3">
+                <TextBlock Text="◆ Camera" Foreground="#D6DBE6" Margin="10,6" />
+            </Border>
+            <Border x:Name="ObjectItem" Background="#36507A" Margin="6,2" CornerRadius="3">
+                <TextBlock Text="◼ GameObject (arraste no canvas)" Foreground="#FFFFFF" Margin="10,6" TextWrapping="Wrap" />
+            </Border>
+            <TextBlock x:Name="StatusText" Foreground="#8A93A6" Margin="12,14,8,0" FontSize="11" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <!-- Canvas MonoGame ao vivo -->
+        <Border Grid.Column="1" BorderBrush="#11141A" BorderThickness="1">
+            <hosting:MonoGameSurface x:Name="Surface"
+                                     MouseDown="Surface_MouseDown"
+                                     MouseMove="Surface_MouseMove"
+                                     MouseUp="Surface_MouseUp"
+                                     ClipToBounds="True" />
+        </Border>
+    </Grid>
+</Window>

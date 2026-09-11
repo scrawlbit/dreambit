@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Prova de conceito: editor DreamBit rodando como aplicativo standalone .NET 8,
+    totalmente desacoplado do Visual Studio. Hospeda um canvas MonoGame ao vivo
+    dentro de uma janela WPF via D3DImage (mesma técnica do ScrawlBit.MonoGame.Interop),
+    agora sobre MonoGame 3.8.2 e .NET 8 - o que também viabiliza a versão Rider.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DreamBit.Studio</AssemblyName>
+    <RootNamespace>DreamBit.Studio</RootNamespace>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Editor standalone NÃO tem a trava do net48: usa MonoGame e AutoMapper atuais. -->
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+    <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
+  </ItemGroup>
+
+</Project>
