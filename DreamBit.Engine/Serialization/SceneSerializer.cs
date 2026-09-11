@@ -36,6 +36,12 @@ namespace DreamBit.Engine.Serialization
             return FromData(data);
         }
 
+        /// <summary>Serializa a cena para uma string JSON (para snapshots em memória).</summary>
+        public static string SaveToString(Scene scene) => JsonSerializer.Serialize(ToData(scene), Options);
+
+        public static Scene LoadFromString(string json)
+            => FromData(JsonSerializer.Deserialize<SceneData>(json, Options) ?? new SceneData());
+
         // ---- modelo -> dados ----
 
         private static SceneData ToData(Scene scene)

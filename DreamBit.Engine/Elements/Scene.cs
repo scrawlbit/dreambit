@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Linq;
 using DreamBit.Engine.Notification;
 using DreamBit.Engine.Rendering;
 using Microsoft.Xna.Framework;
@@ -39,6 +40,26 @@ namespace DreamBit.Engine.Elements
         }
 
         public bool RemoveLedge(Ledge ledge) => _ledges.Remove(ledge);
+
+        /// <summary>Esvazia a cena (objetos e ledges).</summary>
+        public void Clear()
+        {
+            foreach (var obj in _objects.ToArray())
+                obj.SetScene(null);
+            _objects.Clear();
+            _ledges.Clear();
+        }
+
+        /// <summary>Substitui o conteúdo desta cena pelo de outra (usado no snapshot de play).</summary>
+        public void CopyFrom(Scene other)
+        {
+            Clear();
+            Name = other.Name;
+            foreach (var obj in other.Objects.ToArray())
+                Add(obj);
+            foreach (var ledge in other.Ledges.ToArray())
+                AddLedge(ledge);
+        }
 
         public GameObject Add(GameObject gameObject)
         {

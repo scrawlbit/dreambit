@@ -277,13 +277,29 @@ namespace DreamBit.Studio.ViewModels
         }
         public bool HasSelectedLedge => _selectedLedge != null;
 
+        private string? _playSnapshot;
+
         public bool IsPlaying
         {
             get => _isPlaying;
             set
             {
-                if (Set(ref _isPlaying, value) && value)
+                if (!Set(ref _isPlaying, value))
+                    return;
+
+                if (value)
+                {
+                    _playSnapshot = SceneSerializer.SaveToString(Scene); // salva estado
                     Scene.StartPlay();
+                }
+                else if (_playSnapshot != null)
+                {
+                    SelectedObject = null;
+                    SelectedLedge = null;
+                    Scene.CopyFrom(SceneSerializer.LoadFromString(_playSnapshot)); // restaura
+                    _playSnapshot = null;
+                    History.Clear();
+                }
             }
         }
 
