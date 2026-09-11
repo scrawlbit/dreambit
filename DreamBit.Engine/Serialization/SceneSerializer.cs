@@ -220,6 +220,15 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is FollowTarget follow)
                     data.Follows.Add(new FollowData { TargetId = follow.TargetId, Speed = follow.Speed });
+                else if (component is TriggerZone trigger)
+                    data.Triggers.Add(new TriggerData
+                    {
+                        Width = trigger.Size.X,
+                        Height = trigger.Size.Y,
+                        R = trigger.Color.R,
+                        G = trigger.Color.G,
+                        B = trigger.Color.B
+                    });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -313,6 +322,13 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var follow in data.Follows)
                 obj.AddComponent(new FollowTarget { TargetId = follow.TargetId, Speed = follow.Speed });
+
+            foreach (var trigger in data.Triggers)
+                obj.AddComponent(new TriggerZone
+                {
+                    Size = new Vector2(trigger.Width, trigger.Height),
+                    Color = new Color(trigger.R, trigger.G, trigger.B)
+                });
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController

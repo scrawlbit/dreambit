@@ -43,7 +43,17 @@ namespace DreamBit.Engine.Serialization
         public List<AudioData> Audios { get; set; } = new();
         public List<ParticleData> Particles { get; set; } = new();
         public List<FollowData> Follows { get; set; } = new();
+        public List<TriggerData> Triggers { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class TriggerData
+    {
+        public float Width { get; set; } = 32;
+        public float Height { get; set; } = 32;
+        public byte R { get; set; } = 120;
+        public byte G { get; set; } = 230;
+        public byte B { get; set; } = 150;
     }
 
     public sealed class FollowData

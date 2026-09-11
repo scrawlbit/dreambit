@@ -193,6 +193,22 @@ namespace DreamBit.Studio.ViewModels
             set { var p = Platformer; if (p != null) p.JumpSpeed = value; }
         }
 
+        // ---- Componente TriggerZone (coletável) ----
+
+        private TriggerZone? Trigger => _target?.Components.OfType<TriggerZone>().FirstOrDefault();
+        public bool HasTrigger => Trigger != null;
+
+        public float TriggerWidth
+        {
+            get => Trigger?.Size.X ?? 0f;
+            set { var t = Trigger; if (t != null) t.Size = new Vector2(value, t.Size.Y); }
+        }
+        public float TriggerHeight
+        {
+            get => Trigger?.Size.Y ?? 0f;
+            set { var t = Trigger; if (t != null) t.Size = new Vector2(t.Size.X, value); }
+        }
+
         // ---- Componente FollowTarget (referência a outro objeto) ----
 
         private FollowTarget? Follow => _target?.Components.OfType<FollowTarget>().FirstOrDefault();
@@ -313,6 +329,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasTrigger));
+            OnPropertyChanged(nameof(TriggerWidth));
+            OnPropertyChanged(nameof(TriggerHeight));
             OnPropertyChanged(nameof(HasFollow));
             OnPropertyChanged(nameof(FollowTargetObject));
             OnPropertyChanged(nameof(FollowSpeed));

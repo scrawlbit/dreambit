@@ -645,6 +645,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(tilemap);
         }
 
+        public void AddTrigger()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<TriggerZone>().Any())
+                return;
+
+            var trigger = new TriggerZone();
+            History.Do(new EditorAction("Adicionar Trigger",
+                doAction: () => obj.AddComponent(trigger),
+                undoAction: () => obj.RemoveComponent(trigger)));
+        }
+
+        public void RemoveTrigger()
+        {
+            var trigger = SelectedObject?.Components.OfType<TriggerZone>().FirstOrDefault();
+            if (trigger != null)
+                RemoveComponent(trigger);
+        }
+
         public void AddFollow()
         {
             var obj = SelectedObject;
@@ -801,6 +820,9 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case FollowTarget ft:
                         clone.AddComponent(new FollowTarget { TargetId = ft.TargetId, Speed = ft.Speed });
+                        break;
+                    case TriggerZone tz:
+                        clone.AddComponent(new TriggerZone { Size = tz.Size, Color = tz.Color });
                         break;
                 }
             }
