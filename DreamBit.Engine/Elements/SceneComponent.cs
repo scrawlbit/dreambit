@@ -16,6 +16,9 @@ namespace DreamBit.Engine.Elements
         /// <summary>Nome exibido no inspector.</summary>
         public abstract string DisplayName { get; }
 
+        /// <summary>Chamado quando o play mode inicia (resetar estado, tocar som inicial, etc.).</summary>
+        protected internal virtual void OnPlayStarted() { }
+
         protected internal virtual void Update(GameTime gameTime) { }
 
         protected internal virtual void Draw(ISceneDrawing drawing) { }

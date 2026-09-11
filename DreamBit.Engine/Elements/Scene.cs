@@ -56,6 +56,13 @@ namespace DreamBit.Engine.Elements
             return removed;
         }
 
+        /// <summary>Avisa todos os componentes que o play mode começou.</summary>
+        public void StartPlay()
+        {
+            foreach (var gameObject in _objects)
+                gameObject.StartPlay();
+        }
+
         public void Update(GameTime gameTime)
         {
             foreach (var gameObject in _objects)

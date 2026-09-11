@@ -339,6 +339,31 @@
                                 HorizontalAlignment="Left" Margin="0,2"
                                 Visibility="{Binding HasPlatformer, Converter={StaticResource BoolToVisInverse}}" />
 
+                        <!-- Audio Source -->
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasAudio, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveAudio"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Audio Source" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Som (WAV)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding AudioPath}" IsReadOnly="True" />
+                                <Button Content="Escolher…" Click="OnPickSound" Style="{StaticResource ToolButton}"
+                                        HorizontalAlignment="Left" Margin="0,2" />
+                                <TextBlock Text="Volume (0–1)" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding AudioVolume, UpdateSourceTrigger=LostFocus, StringFormat=0.00}" />
+                                <CheckBox Content="Tocar ao iniciar" Margin="0,6,0,0" Foreground="{DynamicResource TextFg}"
+                                          IsChecked="{Binding AudioPlayOnStart}" />
+                                <CheckBox Content="Repetir (loop)" Margin="0,4,0,0" Foreground="{DynamicResource TextFg}"
+                                          IsChecked="{Binding AudioLoop}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Audio Source" Click="OnAddAudio" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasAudio, Converter={StaticResource BoolToVisInverse}}" />
+
                         <!-- Tilemap -->
                         <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasTilemap, Converter={StaticResource BoolToVis}}">

@@ -40,7 +40,16 @@ namespace DreamBit.Engine.Serialization
         public List<AnimatorData> Animators { get; set; } = new();
         public List<TilemapData> Tilemaps { get; set; } = new();
         public List<PlatformerData> Platformers { get; set; } = new();
+        public List<AudioData> Audios { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class AudioData
+    {
+        public string? SoundPath { get; set; }
+        public float Volume { get; set; } = 1f;
+        public bool PlayOnStart { get; set; } = true;
+        public bool Loop { get; set; }
     }
 
     public sealed class PlatformerData

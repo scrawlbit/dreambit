@@ -1,0 +1,60 @@
+using DreamBit.Engine.Audio;
+using DreamBit.Engine.Elements;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+
+namespace DreamBit.Engine.Components
+{
+    /// <summary>
+    /// Toca um efeito sonoro (WAV) no play mode. Por padrão toca ao iniciar; pode
+    /// repetir em loop. Confiável ao rodar o jogo (DreamBit.Player). (Marco 3.)
+    /// </summary>
+    public sealed class AudioSource : SceneComponent
+    {
+        private string? _soundPath;
+        private float _volume = 1f;
+        private bool _playOnStart = true;
+        private bool _loop;
+
+        private SoundEffectInstance? _instance;
+
+        public override string DisplayName => "Audio Source";
+
+        public string? SoundPath { get => _soundPath; set => Set(ref _soundPath, value); }
+        public float Volume { get => _volume; set => Set(ref _volume, MathHelper.Clamp(value, 0f, 1f)); }
+        public bool PlayOnStart { get => _playOnStart; set => Set(ref _playOnStart, value); }
+        public bool Loop { get => _loop; set => Set(ref _loop, value); }
+
+        protected internal override void OnPlayStarted()
+        {
+            if (_playOnStart)
+                Play();
+        }
+
+        public void Play()
+        {
+            var sound = SoundCache.Get(_soundPath);
+            if (sound == null)
+                return;
+
+            try
+            {
+                _instance?.Stop();
+                _instance = sound.CreateInstance();
+                _instance.Volume = MathHelper.Clamp(_volume, 0f, 1f);
+                _instance.IsLooped = _loop;
+                _instance.Play();
+            }
+            catch
+            {
+                // motor de áudio indisponível (ex.: no editor sem Game ativo)
+            }
+        }
+
+        public void Stop()
+        {
+            try { _instance?.Stop(); }
+            catch { /* ignora */ }
+        }
+    }
+}

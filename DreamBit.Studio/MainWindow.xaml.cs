@@ -218,6 +218,15 @@ namespace DreamBit.Studio
         private void OnAddAnimator(object sender, RoutedEventArgs e) => _editor.AddAnimator();
         private void OnRemoveAnimator(object sender, RoutedEventArgs e) => _editor.RemoveAnimator();
         private void OnRemoveTilemap(object sender, RoutedEventArgs e) => _editor.RemoveTilemap();
+        private void OnAddAudio(object sender, RoutedEventArgs e) => _editor.AddAudio();
+        private void OnRemoveAudio(object sender, RoutedEventArgs e) => _editor.RemoveAudio();
+
+        private void OnPickSound(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Som WAV (*.wav)|*.wav" };
+            if (dialog.ShowDialog() == true)
+                _editor.Inspector.AudioPath = dialog.FileName;
+        }
         private void OnAddPlatformer(object sender, RoutedEventArgs e) => _editor.AddPlatformer();
         private void OnRemovePlatformer(object sender, RoutedEventArgs e) => _editor.RemovePlatformer();
 

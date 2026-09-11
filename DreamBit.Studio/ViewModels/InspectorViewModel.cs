@@ -191,6 +191,32 @@ namespace DreamBit.Studio.ViewModels
             set { var p = Platformer; if (p != null) p.JumpSpeed = value; }
         }
 
+        // ---- Componente AudioSource ----
+
+        private AudioSource? Audio => _target?.Components.OfType<AudioSource>().FirstOrDefault();
+        public bool HasAudio => Audio != null;
+
+        public string AudioPath
+        {
+            get => Audio?.SoundPath ?? string.Empty;
+            set { var a = Audio; if (a != null) { a.SoundPath = string.IsNullOrWhiteSpace(value) ? null : value; Refresh(); } }
+        }
+        public float AudioVolume
+        {
+            get => Audio?.Volume ?? 1f;
+            set { var a = Audio; if (a != null) a.Volume = value; }
+        }
+        public bool AudioPlayOnStart
+        {
+            get => Audio?.PlayOnStart ?? false;
+            set { var a = Audio; if (a != null) a.PlayOnStart = value; }
+        }
+        public bool AudioLoop
+        {
+            get => Audio?.Loop ?? false;
+            set { var a = Audio; if (a != null) a.Loop = value; }
+        }
+
         // ---- Componente TilemapRenderer ----
 
         private TilemapRenderer? Tilemap => _target?.Components.OfType<TilemapRenderer>().FirstOrDefault();
@@ -235,6 +261,11 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(HasAudio));
+            OnPropertyChanged(nameof(AudioPath));
+            OnPropertyChanged(nameof(AudioVolume));
+            OnPropertyChanged(nameof(AudioPlayOnStart));
+            OnPropertyChanged(nameof(AudioLoop));
             OnPropertyChanged(nameof(HasTilemap));
             OnPropertyChanged(nameof(TilemapPath));
             OnPropertyChanged(nameof(HasPlatformer));

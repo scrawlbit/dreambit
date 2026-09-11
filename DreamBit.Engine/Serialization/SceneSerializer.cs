@@ -170,6 +170,14 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is TilemapRenderer tilemap)
                     data.Tilemaps.Add(ToData(tilemap));
+                else if (component is AudioSource audio)
+                    data.Audios.Add(new AudioData
+                    {
+                        SoundPath = audio.SoundPath,
+                        Volume = audio.Volume,
+                        PlayOnStart = audio.PlayOnStart,
+                        Loop = audio.Loop
+                    });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -239,6 +247,15 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var tilemap in data.Tilemaps)
                 obj.AddComponent(FromData(tilemap));
+
+            foreach (var audio in data.Audios)
+                obj.AddComponent(new AudioSource
+                {
+                    SoundPath = audio.SoundPath,
+                    Volume = audio.Volume,
+                    PlayOnStart = audio.PlayOnStart,
+                    Loop = audio.Loop
+                });
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController

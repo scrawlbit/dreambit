@@ -39,6 +39,8 @@ namespace DreamBit.Player
             _scene = _scenePath != null && File.Exists(_scenePath)
                 ? SceneSerializer.Load(_scenePath)
                 : BuildFallbackScene();
+
+            _scene.StartPlay(); // dispara sons iniciais, reseta estados
         }
 
         protected override void Update(GameTime gameTime)

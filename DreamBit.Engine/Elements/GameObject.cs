@@ -106,6 +106,15 @@ namespace DreamBit.Engine.Elements
             _components.Remove(component);
         }
 
+        internal void StartPlay()
+        {
+            foreach (var component in _components)
+                component.OnPlayStarted();
+
+            foreach (var child in _children)
+                child.StartPlay();
+        }
+
         internal void Update(GameTime gameTime)
         {
             foreach (var component in _components)

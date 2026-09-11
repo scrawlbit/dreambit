@@ -280,7 +280,11 @@ namespace DreamBit.Studio.ViewModels
         public bool IsPlaying
         {
             get => _isPlaying;
-            set => Set(ref _isPlaying, value);
+            set
+            {
+                if (Set(ref _isPlaying, value) && value)
+                    Scene.StartPlay();
+            }
         }
 
         private bool _snapToGrid;
@@ -623,6 +627,25 @@ namespace DreamBit.Studio.ViewModels
             var tilemap = SelectedObject?.Components.OfType<TilemapRenderer>().FirstOrDefault();
             if (tilemap != null)
                 RemoveComponent(tilemap);
+        }
+
+        public void AddAudio()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<AudioSource>().Any())
+                return;
+
+            var audio = new AudioSource();
+            History.Do(new EditorAction("Adicionar Audio",
+                doAction: () => obj.AddComponent(audio),
+                undoAction: () => obj.RemoveComponent(audio)));
+        }
+
+        public void RemoveAudio()
+        {
+            var audio = SelectedObject?.Components.OfType<AudioSource>().FirstOrDefault();
+            if (audio != null)
+                RemoveComponent(audio);
         }
 
         public void AddPlatformer()
