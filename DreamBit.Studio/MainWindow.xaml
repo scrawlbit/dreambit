@@ -47,6 +47,7 @@
                 <Button Style="{StaticResource ToolButton}" Content="＋ Novo objeto" Command="{Binding AddObjectCommand}" />
                 <Button Style="{StaticResource ToolButton}" Content="↻ Rotator" Command="{Binding AddRotatorCommand}" ToolTip="Anexa um comportamento que gira o objeto no play" />
                 <Button Style="{StaticResource ToolButton}" Content="🗺 TMX" Click="OnImportTmx" ToolTip="Importa um mapa Tiled (.tmx) como objeto" />
+                <Button Style="{StaticResource ToolButton}" Content="🧩 Novo tilemap" Click="OnNewTilemap" ToolTip="Cria um tilemap em branco a partir de um tileset PNG (tiles 16px)" />
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button x:Name="PlayButton" Style="{StaticResource ToolButton}" Content="▶ Play" Click="OnPlayToggle" />

@@ -228,6 +228,24 @@ namespace DreamBit.Studio
                 _editor.ImportTilemap(dialog.FileName);
         }
 
+        private void OnNewTilemap(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Tileset (*.png)|*.png" };
+            if (dialog.ShowDialog() != true)
+                return;
+
+            const int tile = 16;
+            var (w, h) = ImageInfo.GetPngSize(dialog.FileName);
+            if (w <= 0 || h <= 0)
+            {
+                MessageBox.Show(this, "Não foi possível ler o tamanho do PNG.", "Novo tilemap",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _editor.CreateTilemap(dialog.FileName, tile, tile, w / tile, h / tile);
+        }
+
         private void OnChangeTmx(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Mapa Tiled (*.tmx)|*.tmx" };

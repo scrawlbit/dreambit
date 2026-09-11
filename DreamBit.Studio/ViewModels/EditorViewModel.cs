@@ -470,6 +470,30 @@ namespace DreamBit.Studio.ViewModels
             return false;
         }
 
+        /// <summary>Cria um tilemap em branco a partir de um tileset (imagem), pronto para pintar.</summary>
+        public void CreateTilemap(string imagePath, int tileWidth, int tileHeight, int columns, int rows)
+        {
+            var map = new DreamBit.Engine.Tilemap.Tilemap { TileWidth = tileWidth, TileHeight = tileHeight };
+            map.Tilesets.Add(new Tileset
+            {
+                FirstGid = 1,
+                ResolvedImagePath = imagePath,
+                Columns = System.Math.Max(1, columns),
+                TileWidth = tileWidth,
+                TileHeight = tileHeight,
+                TileCount = System.Math.Max(1, columns) * System.Math.Max(1, rows)
+            });
+
+            var obj = new GameObject(Path.GetFileNameWithoutExtension(imagePath) + " (tilemap)");
+            obj.AddComponent(new TilemapRenderer { Map = map, Edited = true });
+
+            History.Do(new EditorAction("Novo tilemap",
+                doAction: () => { Scene.Add(obj); SelectedObject = obj; },
+                undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+
+            CurrentTool = EditorTool.Tilemap;
+        }
+
         // ---- pincel de tilemap ----
 
         private int _brushGid = 1;
