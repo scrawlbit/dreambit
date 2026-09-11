@@ -1,6 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Threading;
 using DreamBit.Engine.Notification;
 using DreamBit.Engine.Project;
 
@@ -40,11 +40,13 @@ namespace DreamBit.Studio.ViewModels
 
         public string? ScenePath(string sceneFileName) => _project?.ScenePath(sceneFileName);
 
+        // Capturado na thread de UI; independe de WPF/Avalonia.
+        private readonly SynchronizationContext? _sync = SynchronizationContext.Current;
+
         private void OnScenesChanged()
         {
-            var dispatcher = Application.Current?.Dispatcher;
-            if (dispatcher != null && !dispatcher.CheckAccess())
-                dispatcher.Invoke(RefreshAll);
+            if (_sync != null)
+                _sync.Post(_ => RefreshAll(), null);
             else
                 RefreshAll();
         }

@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DreamBit.Engine\DreamBit.Engine.csproj" />
+    <ProjectReference Include="..\DreamBit.Studio.Core\DreamBit.Studio.Core.csproj" />
   </ItemGroup>
 
 </Project>
