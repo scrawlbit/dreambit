@@ -10,7 +10,12 @@
     com o D3DImage. Para multiplataforma (Fase 8) troca-se por MonoGame.Framework.DesktopGL.
   -->
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <!--
+      Multi-target: net8.0-windows (WindowsDX, usado pelo editor via D3DImage) e
+      net8.0 (DesktopGL, cross-platform, usado pelo Player). O código do motor só
+      usa APIs comuns do MonoGame, então compila igual nos dois. (Fase 8 do roadmap.)
+    -->
+    <TargetFrameworks>net8.0-windows;net8.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
@@ -18,8 +23,12 @@
     <AssemblyName>DreamBit.Engine</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
   </ItemGroup>
 
 </Project>
