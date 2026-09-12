@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using DreamBit.Engine.Components;
+using DreamBit.Engine.Diagnostics;
 using DreamBit.Engine.Editing;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Notification;
@@ -40,6 +41,7 @@ namespace DreamBit.Studio.ViewModels
             Inspector = new InspectorViewModel();
             History = new History();
             Project = new ProjectViewModel();
+            Log = new LogViewModel();
 
             AddObjectCommand = new RelayCommand(() => AddObject());
             DeleteObjectCommand = new RelayCommand(DeleteSelected, () => SelectedObject != null || SelectedLedge != null);
@@ -131,6 +133,7 @@ namespace DreamBit.Studio.ViewModels
         public InspectorViewModel Inspector { get; }
         public History History { get; }
         public ProjectViewModel Project { get; }
+        public LogViewModel Log { get; }
 
         public RelayCommand AddObjectCommand { get; }
         public RelayCommand DeleteObjectCommand { get; }
@@ -291,6 +294,7 @@ namespace DreamBit.Studio.ViewModels
                 {
                     _playSnapshot = SceneSerializer.SaveToString(Scene); // salva estado
                     Scene.StartPlay();
+                    EngineLog.Info($"Play iniciado — cena '{Scene.Name}'.");
                 }
                 else if (_playSnapshot != null)
                 {
@@ -299,6 +303,7 @@ namespace DreamBit.Studio.ViewModels
                     Scene.CopyFrom(SceneSerializer.LoadFromString(_playSnapshot)); // restaura
                     _playSnapshot = null;
                     History.Clear();
+                    EngineLog.Info("Play encerrado — cena restaurada.");
                 }
             }
         }

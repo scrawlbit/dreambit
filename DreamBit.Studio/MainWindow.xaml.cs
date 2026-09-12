@@ -25,6 +25,10 @@ namespace DreamBit.Studio
             _editor.SelectionChanged += RebuildPalette;
             _editor.ToolChanged += RebuildPalette;
 
+            // Console: rola para o fim quando chega log novo.
+            _editor.Log.Entries.CollectionChanged += (_, _) =>
+                Dispatcher.BeginInvoke(new System.Action(() => ConsoleScroll.ScrollToEnd()));
+
             Surface.LoadContent += (_, device) =>
             {
                 _renderer.Initialize(device);

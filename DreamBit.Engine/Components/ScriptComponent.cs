@@ -1,3 +1,5 @@
+using System;
+using DreamBit.Engine.Diagnostics;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Scripting;
 using Microsoft.Xna.Framework;
@@ -24,6 +26,7 @@ namespace DreamBit.Engine.Components
         private IGameScript? _instance;
         private string? _error;
         private bool _compiled;
+        private bool _runtimeFaulted;
 
         public override string DisplayName => "Script";
 
@@ -36,6 +39,7 @@ namespace DreamBit.Engine.Components
                 {
                     _compiled = false;
                     _instance = null;
+                    _runtimeFaulted = false;
                 }
             }
         }
@@ -56,6 +60,10 @@ namespace DreamBit.Engine.Components
             _instance = script;
             Error = error;
             _compiled = true;
+            _runtimeFaulted = false;
+
+            if (!string.IsNullOrEmpty(error))
+                EngineLog.Error($"Script '{Owner?.Name}': erro de compilação — {error}");
         }
 
         protected internal override void Update(GameTime gameTime)
@@ -63,7 +71,19 @@ namespace DreamBit.Engine.Components
             if (!_compiled)
                 Compile();
 
-            _instance?.Update(Owner, (float)gameTime.ElapsedGameTime.TotalSeconds);
+            if (_instance == null || _runtimeFaulted)
+                return;
+
+            try
+            {
+                _instance.Update(Owner, (float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
+            catch (Exception ex)
+            {
+                // Loga uma vez e desliga o script para não inundar o console a cada frame.
+                _runtimeFaulted = true;
+                EngineLog.Error($"Script '{Owner?.Name}': exceção em runtime — {ex.Message}");
+            }
         }
     }
 }

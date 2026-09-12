@@ -21,6 +21,7 @@ namespace DreamBit.Engine.Scripting
             "using System;\n" +
             "using DreamBit.Engine.Elements;\n" +
             "using DreamBit.Engine.Scripting;\n" +
+            "using DreamBit.Engine.Diagnostics;\n" +
             "using Microsoft.Xna.Framework;\n";
 
         public static (IGameScript? Script, string? Error) Compile(string source)

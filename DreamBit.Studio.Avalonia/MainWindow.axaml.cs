@@ -28,6 +28,15 @@ namespace DreamBit.Studio.Avalonia
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
             _timer.Tick += OnTick;
             _timer.Start();
+
+            // Rola o console para o fim quando chega log novo (após o layout medir a linha).
+            _editor.Log.Entries.CollectionChanged += (_, _) =>
+                Dispatcher.UIThread.Post(() =>
+                {
+                    var scroll = this.FindControl<ScrollViewer>("ConsoleScroll");
+                    if (scroll != null)
+                        scroll.Offset = scroll.Offset.WithY(scroll.Extent.Height);
+                }, DispatcherPriority.Background);
         }
 
         private void InvalidateScene() => this.FindControl<SceneView>("Scene")?.InvalidateVisual();

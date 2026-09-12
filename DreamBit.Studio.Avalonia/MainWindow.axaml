@@ -49,6 +49,33 @@
             </StackPanel>
         </Border>
 
+        <!-- Console (dock inferior) -->
+        <Border DockPanel.Dock="Bottom" Background="#171A20" Height="150">
+            <DockPanel DataContext="{Binding Log}">
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Background="#20242D">
+                    <TextBlock Text="CONSOLE" Foreground="#8A93A6" Margin="10,6" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,6,0">
+                        <Border Background="#5A1E1E" CornerRadius="8" Padding="8,1" Margin="0,0,6,0"
+                                VerticalAlignment="Center" IsVisible="{Binding HasErrors}">
+                            <TextBlock Text="{Binding ErrorCount, StringFormat='{}{0} erro(s)'}" Foreground="#F1B0B0" FontSize="11" />
+                        </Border>
+                        <Button Content="Limpar" Command="{Binding ClearCommand}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+                <ScrollViewer x:Name="ConsoleScroll">
+                    <ItemsControl ItemsSource="{Binding Entries}" Margin="8,4">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontFamily="Consolas,monospace" FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Foreground="{Binding Level, Converter={x:Static local:LogLevelBrushConverter.Instance}}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
         <Grid ColumnDefinitions="230,4,*,4,290">
             <!-- Coluna esquerda: hierarquia + assets -->
             <Grid Grid.Column="0" RowDefinitions="*,4,220" Background="#252932">
