@@ -29,6 +29,7 @@ namespace DreamBit.Engine.Serialization
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = "GameObject";
+        public string Tag { get; set; } = "";
         public bool IsVisible { get; set; } = true;
         public float PositionX { get; set; }
         public float PositionY { get; set; }
@@ -60,6 +61,8 @@ namespace DreamBit.Engine.Serialization
         public byte R { get; set; } = 120;
         public byte G { get; set; } = 230;
         public byte B { get; set; } = 150;
+        public string TargetTag { get; set; } = "Player";
+        public bool DestroyOnEnter { get; set; } = true;
     }
 
     public sealed class FollowData

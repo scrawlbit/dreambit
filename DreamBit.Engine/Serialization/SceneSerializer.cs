@@ -160,6 +160,7 @@ namespace DreamBit.Engine.Serialization
             {
                 Id = obj.Id,
                 Name = obj.Name,
+                Tag = obj.Tag,
                 IsVisible = obj.IsVisible,
                 PositionX = t.Position.X,
                 PositionY = t.Position.Y,
@@ -227,7 +228,9 @@ namespace DreamBit.Engine.Serialization
                         Height = trigger.Size.Y,
                         R = trigger.Color.R,
                         G = trigger.Color.G,
-                        B = trigger.Color.B
+                        B = trigger.Color.B,
+                        TargetTag = trigger.TargetTag,
+                        DestroyOnEnter = trigger.DestroyOnEnter
                     });
                 else if (component is ScriptComponent script)
                     data.Scripts.Add(new ScriptData { Source = script.Source });
@@ -270,7 +273,7 @@ namespace DreamBit.Engine.Serialization
 
         private static GameObject FromData(GameObjectData data)
         {
-            var obj = new GameObject(data.Name) { Id = data.Id, IsVisible = data.IsVisible };
+            var obj = new GameObject(data.Name) { Id = data.Id, Tag = data.Tag, IsVisible = data.IsVisible };
             obj.Transform.Position = new Vector2(data.PositionX, data.PositionY);
             obj.Transform.Rotation = data.Rotation;
             obj.Transform.Scale = new Vector2(data.ScaleX, data.ScaleY);
@@ -329,7 +332,9 @@ namespace DreamBit.Engine.Serialization
                 obj.AddComponent(new TriggerZone
                 {
                     Size = new Vector2(trigger.Width, trigger.Height),
-                    Color = new Color(trigger.R, trigger.G, trigger.B)
+                    Color = new Color(trigger.R, trigger.G, trigger.B),
+                    TargetTag = trigger.TargetTag,
+                    DestroyOnEnter = trigger.DestroyOnEnter
                 });
 
             foreach (var script in data.Scripts)

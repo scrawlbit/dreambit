@@ -45,6 +45,12 @@ namespace DreamBit.Studio.ViewModels
             set { if (_target != null) { _target.Name = value; OnPropertyChanged(); } }
         }
 
+        public string Tag
+        {
+            get => _target?.Tag ?? string.Empty;
+            set { if (_target != null) { _target.Tag = value; OnPropertyChanged(); } }
+        }
+
         public float PositionX
         {
             get => _target?.Transform.Position.X ?? 0f;
@@ -226,6 +232,16 @@ namespace DreamBit.Studio.ViewModels
             get => Trigger?.Size.Y ?? 0f;
             set { var t = Trigger; if (t != null) t.Size = new Vector2(t.Size.X, value); }
         }
+        public string TriggerTargetTag
+        {
+            get => Trigger?.TargetTag ?? string.Empty;
+            set { var t = Trigger; if (t != null) t.TargetTag = value; }
+        }
+        public bool TriggerDestroyOnEnter
+        {
+            get => Trigger?.DestroyOnEnter ?? false;
+            set { var t = Trigger; if (t != null) t.DestroyOnEnter = value; }
+        }
 
         // ---- Componente FollowTarget (referência a outro objeto) ----
 
@@ -334,6 +350,7 @@ namespace DreamBit.Studio.ViewModels
         {
             OnPropertyChanged(nameof(HasTarget));
             OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(Tag));
             OnPropertyChanged(nameof(PositionX));
             OnPropertyChanged(nameof(PositionY));
             OnPropertyChanged(nameof(RotationDegrees));
@@ -353,6 +370,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasTrigger));
             OnPropertyChanged(nameof(TriggerWidth));
             OnPropertyChanged(nameof(TriggerHeight));
+            OnPropertyChanged(nameof(TriggerTargetTag));
+            OnPropertyChanged(nameof(TriggerDestroyOnEnter));
             OnPropertyChanged(nameof(HasFollow));
             OnPropertyChanged(nameof(FollowTargetObject));
             OnPropertyChanged(nameof(FollowSpeed));

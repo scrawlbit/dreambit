@@ -126,6 +126,8 @@
                         <!-- Transform -->
                         <TextBlock Classes="field" Text="Nome" />
                         <TextBox Text="{Binding Name, Mode=TwoWay}" />
+                        <TextBlock Classes="field" Text="Tag (ex.: Player, Enemy, Hazard)" />
+                        <TextBox Text="{Binding Tag, Mode=TwoWay}" />
                         <Grid ColumnDefinitions="*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Posição X" />
@@ -346,6 +348,9 @@
                                         <TextBox Text="{Binding TriggerHeight, Mode=TwoWay}" />
                                     </StackPanel>
                                 </Grid>
+                                <TextBlock Classes="field" Text="Tag que dispara" />
+                                <TextBox Text="{Binding TriggerTargetTag, Mode=TwoWay}" />
+                                <CheckBox Content="Some ao tocar (coletável)" IsChecked="{Binding TriggerDestroyOnEnter, Mode=TwoWay}" Margin="0,6,0,0" />
                             </StackPanel>
                         </Border>
 

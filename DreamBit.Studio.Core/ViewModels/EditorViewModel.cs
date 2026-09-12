@@ -797,7 +797,7 @@ namespace DreamBit.Studio.ViewModels
 
         private static GameObject Clone(GameObject src)
         {
-            var clone = new GameObject(src.Name + " (cópia)");
+            var clone = new GameObject(src.Name + " (cópia)") { Tag = src.Tag };
             clone.Transform.Position = src.Transform.Position + new Vector2(16, 16);
             clone.Transform.Rotation = src.Transform.Rotation;
             clone.Transform.Scale = src.Transform.Scale;
@@ -846,7 +846,11 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new FollowTarget { TargetId = ft.TargetId, Speed = ft.Speed });
                         break;
                     case TriggerZone tz:
-                        clone.AddComponent(new TriggerZone { Size = tz.Size, Color = tz.Color });
+                        clone.AddComponent(new TriggerZone
+                        {
+                            Size = tz.Size, Color = tz.Color,
+                            TargetTag = tz.TargetTag, DestroyOnEnter = tz.DestroyOnEnter
+                        });
                         break;
                     case ScriptComponent sc:
                         clone.AddComponent(new ScriptComponent { Source = sc.Source });

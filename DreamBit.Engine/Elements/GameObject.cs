@@ -13,6 +13,7 @@ namespace DreamBit.Engine.Elements
     public sealed class GameObject : NotificationObject
     {
         private string _name = "GameObject";
+        private string _tag = string.Empty;
         private bool _isVisible = true;
         private bool _isSelected;
         private bool _isExpanded = true;
@@ -51,6 +52,22 @@ namespace DreamBit.Engine.Elements
             get => _name;
             set => Set(ref _name, value);
         }
+
+        /// <summary>
+        /// Rótulo livre para classificar o objeto (ex.: "Player", "Enemy", "Hazard").
+        /// Usado por triggers/eventos para filtrar quem dispara, sem depender do tipo de
+        /// componente. Vazio = sem tag.
+        /// </summary>
+        public string Tag
+        {
+            get => _tag;
+            set => Set(ref _tag, value ?? string.Empty);
+        }
+
+        /// <summary>True se o objeto tem a tag informada (comparação exata, sem diferenciar caixa).</summary>
+        public bool HasTag(string tag) => !string.IsNullOrEmpty(tag)
+            && string.Equals(_tag, tag, StringComparison.OrdinalIgnoreCase);
+
         public bool IsVisible
         {
             get => _isVisible;
