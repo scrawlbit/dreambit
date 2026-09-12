@@ -2,35 +2,85 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:DreamBit.Studio.Avalonia"
         x:Class="DreamBit.Studio.Avalonia.MainWindow"
-        Title="DreamBit Studio (Avalonia — cross-platform)" Width="1120" Height="700"
+        Title="DreamBit Studio (Avalonia — cross-platform)" Width="1240" Height="760"
         Background="#1E2128">
+
+    <Window.Styles>
+        <!-- Rótulo de campo -->
+        <Style Selector="TextBlock.field">
+            <Setter Property="Foreground" Value="#8A93A6" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Margin" Value="0,6,0,1" />
+        </Style>
+        <!-- Cabeçalho de seção de componente -->
+        <Style Selector="TextBlock.section">
+            <Setter Property="Foreground" Value="#D6DBE6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Border.component">
+            <Setter Property="Background" Value="#2B303B" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+        <Style Selector="Button.remove">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#C77" />
+            <Setter Property="Padding" Value="4,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </Window.Styles>
+
     <DockPanel>
+        <!-- Toolbar -->
         <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
             <StackPanel Orientation="Horizontal" Spacing="4">
+                <Button Content="📂 Projeto" Click="OnOpenProject" ToolTip.Tip="Abrir pasta de projeto" />
+                <Button Content="💾 Cena" Click="OnSaveScene" ToolTip.Tip="Salvar cena" />
+                <Border Width="1" Background="#11141A" Margin="4,2" />
                 <Button Content="＋ Objeto" Command="{Binding AddObjectCommand}" />
                 <Button Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
-                <Button Content="↶" Command="{Binding UndoCommand}" />
-                <Button Content="↷" Command="{Binding RedoCommand}" />
+                <Button Content="↶" Command="{Binding UndoCommand}" ToolTip.Tip="Desfazer" />
+                <Button Content="↷" Command="{Binding RedoCommand}" ToolTip.Tip="Refazer" />
                 <Button x:Name="PlayButton" Content="▶ Play" Click="OnPlayToggle" />
                 <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom {0:0.00}x'}"
                            VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#8A93A6" />
             </StackPanel>
         </Border>
 
-        <Grid ColumnDefinitions="220,4,*,4,260">
-            <!-- Hierarquia -->
-            <DockPanel Grid.Column="0" Background="#252932">
-                <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA" Foreground="#8A93A6" Margin="10,8" />
-                <ListBox Background="Transparent" Margin="4"
-                         ItemsSource="{Binding Scene.Objects}"
-                         SelectedItem="{Binding SelectedObject}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" Foreground="#D6DBE6" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DockPanel>
+        <Grid ColumnDefinitions="230,4,*,4,290">
+            <!-- Coluna esquerda: hierarquia + assets -->
+            <Grid Grid.Column="0" RowDefinitions="*,4,220" Background="#252932">
+                <DockPanel Grid.Row="0">
+                    <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA" Foreground="#8A93A6" Margin="10,8" />
+                    <ListBox Background="Transparent" Margin="4"
+                             ItemsSource="{Binding Scene.Objects}"
+                             SelectedItem="{Binding SelectedObject}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Foreground="#D6DBE6" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+
+                <GridSplitter Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
+
+                <DockPanel Grid.Row="2">
+                    <TextBlock DockPanel.Dock="Top" Text="ASSETS (duplo clique aplica)" Foreground="#8A93A6" Margin="10,8" />
+                    <ListBox x:Name="AssetsList" Background="Transparent" Margin="4"
+                             ItemsSource="{Binding Project.Assets}"
+                             DoubleTapped="OnAssetActivated">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding, Converter={x:Static local:FileNameConverter.Instance}}"
+                                           Foreground="#B9C0CE" ToolTip.Tip="{Binding}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Grid>
 
             <GridSplitter Grid.Column="1" Background="#11141A" />
 
@@ -42,16 +92,289 @@
             <!-- Inspetor -->
             <DockPanel Grid.Column="4" Background="#252932">
                 <TextBlock DockPanel.Dock="Top" Text="INSPETOR" Foreground="#8A93A6" Margin="10,8" />
-                <StackPanel Margin="10,4" DataContext="{Binding Inspector}" Spacing="4"
-                            IsVisible="{Binding HasTarget}">
-                    <TextBlock Text="Nome" Foreground="#8A93A6" />
-                    <TextBox Text="{Binding Name}" />
-                    <TextBlock Text="Posição X / Y" Foreground="#8A93A6" Margin="0,6,0,0" />
-                    <TextBox Text="{Binding PositionX}" />
-                    <TextBox Text="{Binding PositionY}" />
-                    <TextBlock Text="Rotação (graus)" Foreground="#8A93A6" Margin="0,6,0,0" />
-                    <TextBox Text="{Binding RotationDegrees}" />
-                </StackPanel>
+                <ScrollViewer>
+                    <StackPanel Margin="10,4" DataContext="{Binding Inspector}" Spacing="2"
+                                IsVisible="{Binding HasTarget}">
+
+                        <!-- Transform -->
+                        <TextBlock Classes="field" Text="Nome" />
+                        <TextBox Text="{Binding Name, Mode=TwoWay}" />
+                        <Grid ColumnDefinitions="*,6,*">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Classes="field" Text="Posição X" />
+                                <TextBox Text="{Binding PositionX, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Classes="field" Text="Posição Y" />
+                                <TextBox Text="{Binding PositionY, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,6,*,6,*">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Classes="field" Text="Rotação°" />
+                                <TextBox Text="{Binding RotationDegrees, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Classes="field" Text="Escala X" />
+                                <TextBox Text="{Binding ScaleX, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Classes="field" Text="Escala Y" />
+                                <TextBox Text="{Binding ScaleY, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Adicionar componente -->
+                        <TextBlock Classes="field" Text="Adicionar componente" Margin="0,10,0,2" />
+                        <WrapPanel>
+                            <Button Content="Sprite" Click="OnAddSprite" Margin="0,0,4,4" />
+                            <Button Content="Animator" Click="OnAddAnimator" Margin="0,0,4,4" />
+                            <Button Content="Platformer" Click="OnAddPlatformer" Margin="0,0,4,4" />
+                            <Button Content="Áudio" Click="OnAddAudio" Margin="0,0,4,4" />
+                            <Button Content="Partículas" Click="OnAddParticles" Margin="0,0,4,4" />
+                            <Button Content="Trigger" Click="OnAddTrigger" Margin="0,0,4,4" />
+                            <Button Content="Follow" Click="OnAddFollow" Margin="0,0,4,4" />
+                            <Button Content="Rotator" Click="OnAddRotator" Margin="0,0,4,4" />
+                            <Button Content="Script" Click="OnAddScript" Margin="0,0,4,4" />
+                        </WrapPanel>
+
+                        <!-- Sprite -->
+                        <Border Classes="component" IsVisible="{Binding HasSprite}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Sprite" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSprite" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding SpriteWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura" />
+                                        <TextBox Text="{Binding SpriteHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,4,*,4,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="R" />
+                                        <TextBox Text="{Binding SpriteR, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="G" />
+                                        <TextBox Text="{Binding SpriteG, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Classes="field" Text="B" />
+                                        <TextBox Text="{Binding SpriteB, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Textura (caminho)" />
+                                <TextBox Text="{Binding SpriteTexturePath, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Animator -->
+                        <Border Classes="component" IsVisible="{Binding HasAnimator}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Animator" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAnimator" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Textura (sheet)" />
+                                <TextBox Text="{Binding AnimTexturePath, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Frame W" />
+                                        <TextBox Text="{Binding AnimFrameWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Frame H" />
+                                        <TextBox Text="{Binding AnimFrameHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Nº frames" />
+                                        <TextBox Text="{Binding AnimFrameCount, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="FPS" />
+                                        <TextBox Text="{Binding AnimFps, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="Loop" IsChecked="{Binding AnimLoop, Mode=TwoWay}" Margin="0,6,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Platformer -->
+                        <Border Classes="component" IsVisible="{Binding HasPlatformer}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Platformer" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemovePlatformer" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Gravidade" />
+                                        <TextBox Text="{Binding PlatGravity, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Meia-altura" />
+                                        <TextBox Text="{Binding PlatHalfHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="Controle por teclado" IsChecked="{Binding PlatUseKeyboard, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Vel. andar" />
+                                        <TextBox Text="{Binding PlatMoveSpeed, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Vel. pulo" />
+                                        <TextBox Text="{Binding PlatJumpSpeed, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Vel. horizontal (auto)" />
+                                <TextBox Text="{Binding PlatHorizontalSpeed, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Áudio -->
+                        <Border Classes="component" IsVisible="{Binding HasAudio}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Áudio" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAudio" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Som (.wav)" />
+                                <TextBox Text="{Binding AudioPath, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Volume" />
+                                <TextBox Text="{Binding AudioVolume, Mode=TwoWay}" />
+                                <CheckBox Content="Tocar ao iniciar" IsChecked="{Binding AudioPlayOnStart, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <CheckBox Content="Loop" IsChecked="{Binding AudioLoop, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Partículas -->
+                        <Border Classes="component" IsVisible="{Binding HasParticles}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Partículas" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveParticles" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Taxa/s" />
+                                        <TextBox Text="{Binding ParticleRate, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Duração" />
+                                        <TextBox Text="{Binding ParticleLifetime, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Velocidade" />
+                                        <TextBox Text="{Binding ParticleSpeed, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Tamanho" />
+                                        <TextBox Text="{Binding ParticleSize, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Gravidade Y" />
+                                <TextBox Text="{Binding ParticleGravity, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,4,*,4,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="R" />
+                                        <TextBox Text="{Binding ParticleR, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="G" />
+                                        <TextBox Text="{Binding ParticleG, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Classes="field" Text="B" />
+                                        <TextBox Text="{Binding ParticleB, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Trigger -->
+                        <Border Classes="component" IsVisible="{Binding HasTrigger}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Trigger (coletável)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTrigger" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding TriggerWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura" />
+                                        <TextBox Text="{Binding TriggerHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Follow -->
+                        <Border Classes="component" IsVisible="{Binding HasFollow}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Follow" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveFollow" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Velocidade" />
+                                <TextBox Text="{Binding FollowSpeed, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="(alvo: definir pelo editor WPF ou script)" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Rotator -->
+                        <Border Classes="component" IsVisible="{Binding HasRotator}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Rotator" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveRotator" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Velocidade (rad/s)" />
+                                <TextBox Text="{Binding RotatorSpeed, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Script -->
+                        <Border Classes="component" IsVisible="{Binding HasScript}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Script (C#)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveScript" />
+                                </Grid>
+                                <TextBox Text="{Binding ScriptSource, Mode=TwoWay}" AcceptsReturn="True"
+                                         FontFamily="Consolas,monospace" Height="140" TextWrapping="NoWrap" />
+                                <Button Content="Compilar" Click="OnCompileScript" Margin="0,4,0,0" />
+                                <TextBlock Text="{Binding ScriptError}" Foreground="#E06C6C" TextWrapping="Wrap"
+                                           IsVisible="{Binding ScriptError, Converter={x:Static local:NonEmptyConverter.Instance}}"
+                                           Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Tilemap (somente leitura por ora) -->
+                        <Border Classes="component" IsVisible="{Binding HasTilemap}">
+                            <StackPanel>
+                                <TextBlock Classes="section" Text="Tilemap" />
+                                <TextBlock Classes="field" Text="Origem (.tmx)" />
+                                <TextBox Text="{Binding TilemapPath}" IsReadOnly="True" />
+                                <TextBlock Classes="field" Text="Pintura de tiles: use o editor WPF." />
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
             </DockPanel>
         </Grid>
     </DockPanel>

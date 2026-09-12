@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using DreamBit.Studio.ViewModels;
 using XnaGameTime = Microsoft.Xna.Framework.GameTime;
@@ -27,6 +30,8 @@ namespace DreamBit.Studio.Avalonia
             _timer.Start();
         }
 
+        private void InvalidateScene() => this.FindControl<SceneView>("Scene")?.InvalidateVisual();
+
         private void OnTick(object? sender, EventArgs e)
         {
             var now = DateTime.UtcNow;
@@ -36,7 +41,7 @@ namespace DreamBit.Studio.Avalonia
             if (_editor.IsPlaying)
                 _editor.Scene.Update(new XnaGameTime(TimeSpan.Zero, dt));
 
-            this.FindControl<SceneView>("Scene")?.InvalidateVisual();
+            InvalidateScene();
         }
 
         private void OnPlayToggle(object? sender, RoutedEventArgs e)
@@ -45,6 +50,83 @@ namespace DreamBit.Studio.Avalonia
             var button = this.FindControl<Button>("PlayButton");
             if (button != null)
                 button.Content = _editor.IsPlaying ? "⏸ Stop" : "▶ Play";
+        }
+
+        // ---- projeto / assets / cena ----
+
+        private async void OnOpenProject(object? sender, RoutedEventArgs e)
+        {
+            var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
+                Title = "Abrir pasta do projeto",
+                AllowMultiple = false
+            });
+
+            var path = folders.FirstOrDefault()?.TryGetLocalPath();
+            if (!string.IsNullOrEmpty(path))
+                _editor.OpenProjectFolder(path);
+        }
+
+        private async void OnSaveScene(object? sender, RoutedEventArgs e)
+        {
+            var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Salvar cena",
+                DefaultExtension = "dbscene",
+                SuggestedFileName = _editor.Scene.Name,
+                FileTypeChoices = new[]
+                {
+                    new FilePickerFileType("Cena DreamBit") { Patterns = new[] { "*.dbscene" } }
+                }
+            });
+
+            var path = file?.TryGetLocalPath();
+            if (!string.IsNullOrEmpty(path))
+                _editor.SaveTo(path);
+        }
+
+        private void OnAssetActivated(object? sender, RoutedEventArgs e)
+        {
+            if (this.FindControl<ListBox>("AssetsList")?.SelectedItem is string asset)
+            {
+                _editor.UseAsset(asset);
+                _editor.Inspector.Refresh();
+                InvalidateScene();
+            }
+        }
+
+        // ---- adicionar componentes ----
+
+        private void OnAddSprite(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddSprite);
+        private void OnAddAnimator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddAnimator);
+        private void OnAddPlatformer(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddPlatformer);
+        private void OnAddAudio(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddAudio);
+        private void OnAddParticles(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddParticles);
+        private void OnAddTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddTrigger);
+        private void OnAddFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddFollow);
+        private void OnAddRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddRotator);
+        private void OnAddScript(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddScript);
+
+        // ---- remover componentes ----
+
+        private void OnRemoveSprite(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveSprite);
+        private void OnRemoveAnimator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAnimator);
+        private void OnRemovePlatformer(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemovePlatformer);
+        private void OnRemoveAudio(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAudio);
+        private void OnRemoveParticles(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParticles);
+        private void OnRemoveTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTrigger);
+        private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
+        private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
+        private void OnRemoveScript(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveScript);
+
+        private void OnCompileScript(object? sender, RoutedEventArgs e) => _editor.Inspector.CompileScript();
+
+        /// <summary>Executa a operação de componente e atualiza inspetor + cena.</summary>
+        private void AddComponent(Action operation)
+        {
+            operation();
+            _editor.Inspector.Refresh();
+            InvalidateScene();
         }
     }
 }
