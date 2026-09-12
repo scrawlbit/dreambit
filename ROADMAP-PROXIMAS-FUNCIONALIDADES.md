@@ -42,7 +42,7 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 | ✅ **Importar tilemap Tiled (.tmx)** | *Entregue* — `TmxImporter` (CSV/Base64+zlib, chunks, tilesets externos .tsx) + `TilemapRenderer`; **validado nos assets reais (RunNMagic)**. | 🔴 |
 | ✅ **Colisão + personagem jogável nas ledges** | *Entregue* — `LedgePhysics` + `PlatformerController` (gravidade, pousa nas ledges one-way, teclado anda/pula) e câmera que segue o personagem no `DreamBit.Player`. | 🟡 |
 | ✅ **Editor/pincel de tilemap** | *Entregue* — ferramenta Pincel + paleta dos tilesets; pinta/apaga tiles no canvas (undo por traço), sobre .tmx importado ou tilemap novo a partir de um PNG; serializado inline. | 🔴 |
-| ✅ **Áudio e partículas** | *Entregue* — `AudioSource` (WAV, toca no play) e `ParticleEmitter`; falta um colisor genérico (além das ledges). | 🔴 |
+| ✅ **Áudio e partículas** | *Entregue* — `AudioSource` (WAV, toca no play) e `ParticleEmitter`. **Decisão do usuário:** colisão fica **só via plataforma (ledges/PlatformerController)** — sem colisor de tilemap por ora. | 🔴 |
 | ✅ **Mais componentes** | *Entregue* — Audio, Partículas, Follow, **TriggerZone (colisor por sobreposição/coletável)**; corpo físico avançado fica. | 🔴 |
 | ✅ **Referências entre objetos** | *Entregue* — `FollowTarget` com ComboBox de objetos da cena no inspetor. | 🟡 |
 | ✅ **Scripts C# recarregáveis** | *Entregue* — `ScriptComponent` compila C# do usuário em runtime (Roslyn), com editor de código, compilar e erros no inspetor. | 🔴 |
@@ -60,19 +60,20 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 | Funcionalidade | O que envolve | Esforço |
 |---|---|---|
-| ✅ **Editor em Avalonia** | *Entregue* — `DreamBit.Studio.Avalonia` (net8, cross-platform) reaproveita os ViewModels de `DreamBit.Studio.Core` e desenha a cena com o DrawingContext do Avalonia (dispensa canvas MonoGame). Hierarquia, inspetor, seleção/arraste/pan/zoom e play. Compila e roda. |
+| ✅ **Editor em Avalonia** | *Entregue* — `DreamBit.Studio.Avalonia` (net8, cross-platform) reaproveita os ViewModels de `DreamBit.Studio.Core` e desenha a cena com o DrawingContext do Avalonia (dispensa canvas MonoGame). **Paridade ampliada:** inspetor de todos os componentes (Sprite/Animator/Platformer/Áudio/Partículas/Trigger/Follow/Rotator/Script), adicionar/remover componente, assets browser (duplo clique aplica textura), abrir projeto e salvar cena (StorageProvider), console de logs. Compila e roda. |
 | ✅ **Export/build do jogo** | *Entregue* — botão Exportar publica o Player + a cena + assets numa pasta portátil. | 🟡 |
-| **Templates de projeto** | "Novo projeto" com estrutura pronta (cenas/assets/pipeline). | 🟢 |
+| ✅ **Empacotar para distribuição** | *Entregue* — `publish.ps1` gera binários **self-contained** (sem exigir .NET no destino) dos editores WPF/Avalonia e do Player por RID (win/linux/osx), com `-Zip` opcional. Não usa single-file/trim de propósito (quebrariam o Roslyn dos scripts). | 🟢 |
+| ✅ **Templates de projeto** | *Entregue* — "Novo projeto" cria a estrutura (assets/ + cena inicial). | 🟢 |
 
 ---
 
 ## Dívidas técnicas / qualidade
 
 - ✅ **CI (GitHub Actions):** compila `DreamBit.Studio.slnx` e roda os testes a cada push.
-- **Cobertura:** portar os casos de `Old.DreamBit.Game.Tests` para ampliar os testes do motor.
-- **CVE do AutoMapper (net48):** no projeto legado, migrar as libs puras para `netstandard2.0` e,
-  onde possível, aposentar o AutoMapper por mapeamento manual — ou suprimir o aviso com justificativa
-  (`NuGetAuditSuppress`, ver §6 do outro roadmap).
+- ✅ **Cobertura:** 60 testes no motor (incl. `EngineLog` e hot-reload); casos relevantes dos `Old.*` cobertos pelo motor atual.
+- ✅ **Console de logs:** `EngineLog` + `LogViewModel` + painel no rodapé (WPF e Avalonia), com erros de compilação/execução de scripts.
+- ✅ **Hot-reload de assets:** editar um PNG/TMX/WAV no disco recarrega no editor ao vivo (`ProjectWatcher.AssetChanged` → invalida `TextureCache`/`SoundCache`).
+- ✅ **CVE do AutoMapper (net48):** suprimida com justificativa (`NuGetAuditSuppress`) no projeto legado.
 - ✅ **Estilos reutilizáveis:** movidos para `App.xaml` (app-wide). **AvalonDock:** decisão de manter GridSplitter (ver Marco 1).
 
 ## Ordem sugerida
@@ -85,33 +86,39 @@ licença comercial + chave; optou-se por manter o mapeamento manual em `SceneSer
 
 ---
 
-## Editor em Avalonia — entregue (base cross-platform)
+## Editor em Avalonia — como ficou
 
-O motor (`DreamBit.Engine`) e o `DreamBit.Player` já são cross-platform (net8 + DesktopGL).
-Falta apenas a **UI do editor** rodar fora do Windows. Caminho sugerido:
+O motor (`DreamBit.Engine`) e o `DreamBit.Player` já eram cross-platform (net8 + DesktopGL); o
+editor Avalonia fecha o time. Decisões de implementação:
 
-1. **Hospedar o canvas MonoGame em Avalonia** (o ponto difícil): usar `OpenGlControlBase` do
-   Avalonia e renderizar a `Scene` via um `GraphicsDevice` DesktopGL compartilhando o contexto GL,
-   ou renderizar para um `RenderTarget2D` e exibir num `Bitmap`/`WriteableBitmap`. É o equivalente
-   Avalonia do `MonoGameSurface` (que no WPF usa D3DImage).
-2. **Portar a UI** (`MainWindow` → Avalonia `Window`): os ViewModels (`EditorViewModel`,
-   `InspectorViewModel`, `ProjectViewModel`, `SceneInputController`) são independentes de WPF e
-   **reaproveitam-se quase inteiros**; muda só o XAML (bindings do Avalonia são muito próximos) e os
-   diálogos de arquivo (`Avalonia.Controls.StorageProvider`).
-3. **Fase mínima:** um `DreamBit.Studio.Avalonia` que abre um projeto e renderiza/edita uma cena;
-   depois portar painéis (hierarquia/inspetor/assets/paleta) reutilizando os mesmos ViewModels.
+- **Sem hospedar canvas MonoGame:** em vez de compartilhar um `GraphicsDevice` DesktopGL num
+  `OpenGlControlBase`, a cena é desenhada com o **DrawingContext do Avalonia** (`SceneView`) —
+  grid, objetos, ledges e seleção em desenho vetorial nativo. Mais simples e sem interop de GL.
+  (Texturas reais no canvas do editor continuam sendo desenhadas só no WPF; no Avalonia os sprites
+  aparecem como retângulos coloridos. O jogo final renderiza texturas via `DreamBit.Player`.)
+- **ViewModels reaproveitados inteiros** via `DreamBit.Studio.Core` (`EditorViewModel`,
+  `InspectorViewModel`, `ProjectViewModel`, `LogViewModel`, `SceneInputController`) — muda só o XAML.
+- **Diálogos** por `Avalonia.Platform.Storage` (abrir projeto, salvar cena).
 
-Esforço: 🔴 (semanas). Por isso ficou como o único item grande adiado — os ViewModels já estão
-prontos para isso, o gargalo é a hospedagem do canvas e a reescrita do XAML.
+Entregue: hierarquia, inspetor completo de componentes, assets browser, console, seleção/arraste/
+pan/zoom e play. Pintura de tilemap continua exclusiva do editor WPF (decisão de não priorizar
+tilemap por ora).
 
 ## Estado final do roadmap
 
 - **Marcos 1, 2, 3 e 4:** concluídos.
-- **Marco 5:** Export ✅ · Templates ✅ · **Editor Avalonia** ✅ (base cross-platform).
-- **Dívidas:** CI ✅, cobertura ✅ (ampliada), CVE do AutoMapper ✅ (suprimida com justificativa),
-  estilos ✅; AvalonDock: decisão de manter GridSplitter.
+- **Marco 5:** Export ✅ · Empacotar/distribuir ✅ (`publish.ps1`) · Templates ✅ · **Editor Avalonia** ✅ (paridade de inspetor/assets/console).
+- **Dívidas:** CI ✅, cobertura ✅ (60 testes), console de logs ✅, hot-reload ✅, CVE do AutoMapper ✅, estilos ✅; AvalonDock: decisão de manter GridSplitter.
 
-Ou seja: **todo o roadmap está entregue.** O editor Avalonia foi implementado como base funcional
-cross-platform (reaproveitando os ViewModels via `DreamBit.Studio.Core`); a paridade total de
-componentes com o editor WPF pode ser ampliada incrementalmente. Cada item tem resolução explícita
-(entregue, superseder ou decisão consciente sobre AvalonDock).
+**Rodada atual (pós-roadmap), na ordem de prioridade combinada:**
+1. ✅ Paridade do editor Avalonia (inspetor de componentes + assets browser + salvar/abrir).
+2. ✅ Console de logs + erros de script (WPF e Avalonia).
+3. ✅ Hot-reload de assets.
+4. ✅ Empacotar para distribuição (`publish.ps1`, self-contained).
+5. ✅ Reconciliação deste documento.
+
+**Decisão registrada:** colisão permanece **só via plataforma (ledges/PlatformerController)** — sem
+colisor/física de tilemap por ora, a pedido do usuário.
+
+Ou seja: **todo o roadmap está entregue**, e a rodada de refinamentos pós-roadmap também. Cada item
+tem resolução explícita (entregue, *superseder* ou decisão consciente).
