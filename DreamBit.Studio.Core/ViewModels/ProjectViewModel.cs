@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading;
+using DreamBit.Engine.Audio;
+using DreamBit.Engine.Diagnostics;
 using DreamBit.Engine.Notification;
 using DreamBit.Engine.Project;
+using DreamBit.Engine.Rendering;
 
 namespace DreamBit.Studio.ViewModels
 {
@@ -31,6 +36,7 @@ namespace DreamBit.Studio.ViewModels
             _project = project;
             _watcher = new ProjectWatcher(project.Folder);
             _watcher.ScenesChanged += OnScenesChanged;
+            _watcher.AssetChanged += OnAssetChanged;
 
             RefreshScenes();
             RefreshAssets();
@@ -49,6 +55,27 @@ namespace DreamBit.Studio.ViewModels
                 _sync.Post(_ => RefreshAll(), null);
             else
                 RefreshAll();
+        }
+
+        // Hot-reload: um asset foi escrito no disco. Descarta o cache para o editor
+        // reler na hora. Debounce por caminho — o FileSystemWatcher dispara "Changed"
+        // em duplicata a cada gravação.
+        private readonly Dictionary<string, DateTime> _lastAsset = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly TimeSpan DebounceWindow = TimeSpan.FromMilliseconds(300);
+
+        private void OnAssetChanged(string path)
+        {
+            lock (_lastAsset)
+            {
+                var now = DateTime.UtcNow;
+                if (_lastAsset.TryGetValue(path, out var last) && now - last < DebounceWindow)
+                    return;
+                _lastAsset[path] = now;
+            }
+
+            TextureCache.Invalidate(path);
+            SoundCache.Invalidate(path);
+            EngineLog.Info($"Asset recarregado: {Path.GetFileName(path)}");
         }
 
         private void RefreshAll()
@@ -77,6 +104,14 @@ namespace DreamBit.Studio.ViewModels
                 Assets.Add(asset);
         }
 
-        public void Dispose() => _watcher?.Dispose();
+        public void Dispose()
+        {
+            if (_watcher != null)
+            {
+                _watcher.ScenesChanged -= OnScenesChanged;
+                _watcher.AssetChanged -= OnAssetChanged;
+                _watcher.Dispose();
+            }
+        }
     }
 }
