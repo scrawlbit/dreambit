@@ -1166,6 +1166,26 @@ namespace DreamBit.Studio.ViewModels
         public int FlashG { get => Flash?.FlashColor.G ?? 255; set { var c = Flash; if (c != null) c.FlashColor = new Microsoft.Xna.Framework.Color(c.FlashColor.R, (byte)value, c.FlashColor.B); } }
         public int FlashB { get => Flash?.FlashColor.B ?? 255; set { var c = Flash; if (c != null) c.FlashColor = new Microsoft.Xna.Framework.Color(c.FlashColor.R, c.FlashColor.G, (byte)value); } }
 
+        // ---- Joint 2D ----
+        private Joint2D? JointC => _target?.Components.OfType<Joint2D>().FirstOrDefault();
+        public bool HasJoint => JointC != null;
+        public System.Collections.Generic.IReadOnlyList<Joint2DKind> JointKinds { get; } = Scrawlbit.EnumHelper.Values<Joint2DKind>();
+        public Joint2DKind JointKindValue { get => JointC?.Kind ?? Joint2DKind.Distance; set { var c = JointC; if (c != null) c.Kind = value; } }
+        public string JointConnectedTag { get => JointC?.ConnectedTag ?? ""; set { var c = JointC; if (c != null) c.ConnectedTag = value; } }
+        public float JointAnchorX { get => JointC?.Anchor.X ?? 0f; set { var c = JointC; if (c != null) c.Anchor = new Microsoft.Xna.Framework.Vector2(value, c.Anchor.Y); } }
+        public float JointAnchorY { get => JointC?.Anchor.Y ?? 0f; set { var c = JointC; if (c != null) c.Anchor = new Microsoft.Xna.Framework.Vector2(c.Anchor.X, value); } }
+        public float JointFrequency { get => JointC?.Frequency ?? 0f; set { var c = JointC; if (c != null) c.Frequency = value; } }
+        public float JointDamping { get => JointC?.DampingRatio ?? 0.5f; set { var c = JointC; if (c != null) c.DampingRatio = value; } }
+        public bool JointCollideConnected { get => JointC?.CollideConnected ?? false; set { var c = JointC; if (c != null) c.CollideConnected = value; } }
+
+        // ---- Shadow Caster ----
+        private ShadowCaster? Shadow => _target?.Components.OfType<ShadowCaster>().FirstOrDefault();
+        public bool HasShadowCaster => Shadow != null;
+        public float ShadowWidth { get => Shadow?.Width ?? 64f; set { var c = Shadow; if (c != null) c.Width = value; } }
+        public float ShadowHeight { get => Shadow?.Height ?? 64f; set { var c = Shadow; if (c != null) c.Height = value; } }
+        public float ShadowOffsetX { get => Shadow?.Offset.X ?? 0f; set { var c = Shadow; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(value, c.Offset.Y); } }
+        public float ShadowOffsetY { get => Shadow?.Offset.Y ?? 0f; set { var c = Shadow; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(c.Offset.X, value); } }
+
         private void RaiseAll()
         {
             OnPropertyChanged(nameof(HasTarget));
@@ -1405,6 +1425,14 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasSpriteFlash));
             OnPropertyChanged(nameof(FlashDuration));
             OnPropertyChanged(nameof(FlashR)); OnPropertyChanged(nameof(FlashG)); OnPropertyChanged(nameof(FlashB));
+            OnPropertyChanged(nameof(HasJoint));
+            OnPropertyChanged(nameof(JointKindValue)); OnPropertyChanged(nameof(JointConnectedTag));
+            OnPropertyChanged(nameof(JointAnchorX)); OnPropertyChanged(nameof(JointAnchorY));
+            OnPropertyChanged(nameof(JointFrequency)); OnPropertyChanged(nameof(JointDamping));
+            OnPropertyChanged(nameof(JointCollideConnected));
+            OnPropertyChanged(nameof(HasShadowCaster));
+            OnPropertyChanged(nameof(ShadowWidth)); OnPropertyChanged(nameof(ShadowHeight));
+            OnPropertyChanged(nameof(ShadowOffsetX)); OnPropertyChanged(nameof(ShadowOffsetY));
         }
     }
 }

@@ -365,6 +365,8 @@
                             <ComboBoxItem>Hurtbox</ComboBoxItem>
                             <ComboBoxItem>Hitbox</ComboBoxItem>
                             <ComboBoxItem>Sprite Flash</ComboBoxItem>
+                            <ComboBoxItem>Joint 2D</ComboBoxItem>
+                            <ComboBoxItem>Shadow Caster</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -1018,6 +1020,47 @@
                                     <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="G" /><TextBox Text="{Binding FlashG, Mode=TwoWay}" /></StackPanel>
                                     <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="B" /><TextBox Text="{Binding FlashB, Mode=TwoWay}" /></StackPanel>
                                 </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Joint 2D -->
+                        <Border Classes="component" IsVisible="{Binding HasJoint}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Joint 2D" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveJoint" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Tipo" />
+                                <ComboBox ItemsSource="{Binding JointKinds}" HorizontalAlignment="Stretch" SelectedItem="{Binding JointKindValue, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Conectar à tag (vazio = ponto fixo)" /><TextBox Text="{Binding JointConnectedTag, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Âncora X" /><TextBox Text="{Binding JointAnchorX, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Âncora Y" /><TextBox Text="{Binding JointAnchorY, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Freq. mola (Hz, 0=rígido)" /><TextBox Text="{Binding JointFrequency, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Amortecimento" /><TextBox Text="{Binding JointDamping, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <CheckBox Content="Colidir com o conectado" IsChecked="{Binding JointCollideConnected, Mode=TwoWay}" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Shadow Caster -->
+                        <Border Classes="component" IsVisible="{Binding HasShadowCaster}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Shadow Caster" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveShadowCaster" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Largura" /><TextBox Text="{Binding ShadowWidth, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Altura" /><TextBox Text="{Binding ShadowHeight, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Offset X" /><TextBox Text="{Binding ShadowOffsetX, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Offset Y" /><TextBox Text="{Binding ShadowOffsetY, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Bloqueia as luzes 2D (projeta sombra)." />
                             </StackPanel>
                         </Border>
 

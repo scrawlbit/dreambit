@@ -444,6 +444,18 @@ namespace DreamBit.Engine.Serialization
                     {
                         R = sf.FlashColor.R, G = sf.FlashColor.G, B = sf.FlashColor.B, Duration = sf.Duration
                     });
+                else if (component is Joint2D joint)
+                    data.Joints.Add(new JointData
+                    {
+                        Kind = (int)joint.Kind, ConnectedTag = joint.ConnectedTag,
+                        AnchorX = joint.Anchor.X, AnchorY = joint.Anchor.Y,
+                        CollideConnected = joint.CollideConnected, Frequency = joint.Frequency, DampingRatio = joint.DampingRatio
+                    });
+                else if (component is ShadowCaster shadow)
+                    data.ShadowCasters.Add(new ShadowCasterData
+                    {
+                        Width = shadow.Width, Height = shadow.Height, OffsetX = shadow.Offset.X, OffsetY = shadow.Offset.Y
+                    });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -700,6 +712,20 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var sf in data.SpriteFlashes)
                 obj.AddComponent(new SpriteFlash { FlashColor = new Color(sf.R, sf.G, sf.B), Duration = sf.Duration });
+
+            foreach (var j in data.Joints)
+                obj.AddComponent(new Joint2D
+                {
+                    Kind = (Joint2DKind)j.Kind, ConnectedTag = j.ConnectedTag,
+                    Anchor = new Vector2(j.AnchorX, j.AnchorY),
+                    CollideConnected = j.CollideConnected, Frequency = j.Frequency, DampingRatio = j.DampingRatio
+                });
+
+            foreach (var s in data.ShadowCasters)
+                obj.AddComponent(new ShadowCaster
+                {
+                    Width = s.Width, Height = s.Height, Offset = new Vector2(s.OffsetX, s.OffsetY)
+                });
 
             foreach (var chaser in data.NavChasers)
                 obj.AddComponent(new NavChaser

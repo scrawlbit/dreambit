@@ -1096,6 +1096,10 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveHitbox() => RemoveSingle<Hitbox>();
         public void AddSpriteFlash() => AddSingle(() => new SpriteFlash(), "Adicionar Sprite Flash");
         public void RemoveSpriteFlash() => RemoveSingle<SpriteFlash>();
+        public void AddJoint() => AddSingle(() => new Joint2D(), "Adicionar Joint 2D");
+        public void RemoveJoint() => RemoveSingle<Joint2D>();
+        public void AddShadowCaster() => AddSingle(() => new ShadowCaster(), "Adicionar Shadow Caster");
+        public void RemoveShadowCaster() => RemoveSingle<ShadowCaster>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1379,6 +1383,12 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case SpriteFlash sf:
                         clone.AddComponent(new SpriteFlash { FlashColor = sf.FlashColor, Duration = sf.Duration });
+                        break;
+                    case Joint2D jt:
+                        clone.AddComponent(new Joint2D { Kind = jt.Kind, ConnectedTag = jt.ConnectedTag, Anchor = jt.Anchor, CollideConnected = jt.CollideConnected, Frequency = jt.Frequency, DampingRatio = jt.DampingRatio });
+                        break;
+                    case ShadowCaster shc:
+                        clone.AddComponent(new ShadowCaster { Width = shc.Width, Height = shc.Height, Offset = shc.Offset });
                         break;
                     case NavChaser nc:
                         clone.AddComponent(new NavChaser

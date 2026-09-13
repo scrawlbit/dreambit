@@ -34,6 +34,9 @@ namespace DreamBit.Engine.Components
 
         private Body? _body;
 
+        /// <summary>Corpo Aether subjacente (para joints), ou null antes do play.</summary>
+        internal Body? Body => _body;
+
         public override string DisplayName => "Rigidbody 2D";
 
         public RigidbodyKind Kind { get => _kind; set => Set(ref _kind, value); }

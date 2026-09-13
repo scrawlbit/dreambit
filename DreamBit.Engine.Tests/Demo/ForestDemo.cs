@@ -232,6 +232,17 @@ namespace DreamBit.Engine.Tests.Demo
             tentLight.Transform.Position = new Vector2(2300, 430);
             tentLight.AddComponent(new Light2D { Radius = 300f, Color = new Color(255, 210, 150), Intensity = 1.1f });
             scene.Add(tentLight);
+
+            // Oclusores: o tronco da árvore e as rochas projetam sombra das luzes.
+            var trunk = new GameObject("SombraArvore");
+            trunk.Transform.Position = new Vector2(650, 430);
+            trunk.AddComponent(new ShadowCaster { Width = 90f, Height = 180f });
+            scene.Add(trunk);
+
+            var rockShadow = new GameObject("SombraRocha");
+            rockShadow.Transform.Position = new Vector2(1850, 470);
+            rockShadow.AddComponent(new ShadowCaster { Width = 260f, Height = 180f });
+            scene.Add(rockShadow);
         }
 
         private static void BuildPhysicsCrates(Scene scene)

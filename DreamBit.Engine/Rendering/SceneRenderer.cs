@@ -19,6 +19,9 @@ namespace DreamBit.Engine.Rendering
         // Iluminação 2D (lightmap): disco radial + alvo de render + blend de multiplicação.
         private Texture2D _lightSprite = null!;
         private RenderTarget2D? _lightMap;
+        private RenderTarget2D? _lightScratch;      // buffer de uma luz (para aplicar sombras)
+        private BasicEffect _shadowEffect = null!;  // desenha os volumes de sombra (triângulos)
+        private readonly List<VertexPositionColor> _shadowVerts = new();
         private static readonly BlendState MultiplyBlend = new()
         {
             ColorSourceBlend = Blend.DestinationColor,
@@ -56,6 +59,7 @@ namespace DreamBit.Engine.Rendering
             _pixel = new Texture2D(device, 1, 1);
             _pixel.SetData(new[] { Color.White });
             _lightSprite = CreateRadialLight(device, 128);
+            _shadowEffect = new BasicEffect(device) { VertexColorEnabled = true, TextureEnabled = false, LightingEnabled = false };
         }
 
         /// <summary>Gera um disco de luz radial (branco no centro, some nas bordas) para o lightmap.</summary>
@@ -134,6 +138,7 @@ namespace DreamBit.Engine.Rendering
         private bool BuildLightMap(Scene scene, Matrix view, int width, int height)
         {
             var lights = new List<(Vector2 Pos, float Radius, Color Color, float Intensity)>();
+            var casters = new List<Vector2[]>();
             Color ambient = new(40, 44, 60);
             bool hasAmbient = false;
 
@@ -144,6 +149,12 @@ namespace DreamBit.Engine.Rendering
                         continue;
                     if (component is Components.Light2D light)
                         lights.Add((obj.Transform.WorldPosition, light.Radius, light.Color, light.Intensity));
+                    else if (component is Components.ShadowCaster caster)
+                    {
+                        var corners = new Vector2[4];
+                        caster.WorldCorners(corners);
+                        casters.Add(corners);
+                    }
                     else if (component is Components.AmbientLight amb && !hasAmbient)
                     {
                         ambient = amb.Color;
@@ -158,25 +169,128 @@ namespace DreamBit.Engine.Rendering
             if (_lightMap == null || _lightMap.Width != width || _lightMap.Height != height)
             {
                 _lightMap?.Dispose();
-                _lightMap = new RenderTarget2D(device, width, height);
+                // PreserveContents: acumulamos ambiente + várias luzes re-vinculando o alvo.
+                _lightMap = new RenderTarget2D(device, width, height, false,
+                    SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             }
+            var origin = new Vector2(_lightSprite.Width / 2f, _lightSprite.Height / 2f);
+
+            Color Tint(Color c, float i) => new(
+                (byte)Math.Min(255, c.R * i), (byte)Math.Min(255, c.G * i), (byte)Math.Min(255, c.B * i));
+
+            if (casters.Count == 0)
+            {
+                // Caminho rápido: sem sombras, acumula todas as luzes num passe aditivo.
+                device.SetRenderTarget(_lightMap);
+                device.Clear(ambient);
+                _spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: view, samplerState: SamplerState.LinearClamp);
+                foreach (var (pos, radius, color, intensity) in lights)
+                    _spriteBatch.Draw(_lightSprite, pos, null, Tint(color, intensity), 0f, origin, radius * 2f / _lightSprite.Width, SpriteEffects.None, 0f);
+                _spriteBatch.End();
+                device.SetRenderTarget(null);
+                return true;
+            }
+
+            // Caminho com sombras: cada luz vai a um scratch, onde os volumes de sombra são
+            // desenhados em preto, e o scratch é somado ao lightmap.
+            if (_lightScratch == null || _lightScratch.Width != width || _lightScratch.Height != height)
+            {
+                _lightScratch?.Dispose();
+                _lightScratch = new RenderTarget2D(device, width, height);
+            }
+            _shadowEffect.World = view;
+            _shadowEffect.View = Matrix.Identity;
+            _shadowEffect.Projection = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
 
             device.SetRenderTarget(_lightMap);
             device.Clear(ambient);
-            _spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: view, samplerState: SamplerState.LinearClamp);
-            var origin = new Vector2(_lightSprite.Width / 2f, _lightSprite.Height / 2f);
+            device.SetRenderTarget(null);
+
             foreach (var (pos, radius, color, intensity) in lights)
             {
-                float scale = radius * 2f / _lightSprite.Width;
-                var tint = new Color(
-                    (byte)Math.Min(255, color.R * intensity),
-                    (byte)Math.Min(255, color.G * intensity),
-                    (byte)Math.Min(255, color.B * intensity));
-                _spriteBatch.Draw(_lightSprite, pos, null, tint, 0f, origin, scale, SpriteEffects.None, 0f);
+                device.SetRenderTarget(_lightScratch);
+                device.Clear(Color.Black);
+
+                _spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: view, samplerState: SamplerState.LinearClamp);
+                _spriteBatch.Draw(_lightSprite, pos, null, Tint(color, intensity), 0f, origin, radius * 2f / _lightSprite.Width, SpriteEffects.None, 0f);
+                _spriteBatch.End();
+
+                BuildShadowGeometry(pos, radius, casters);
+                if (_shadowVerts.Count >= 3)
+                {
+                    device.BlendState = BlendState.Opaque;
+                    device.RasterizerState = RasterizerState.CullNone;
+                    device.DepthStencilState = DepthStencilState.None;
+                    foreach (var pass in _shadowEffect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+                        device.DrawUserPrimitives(PrimitiveType.TriangleList, _shadowVerts.ToArray(), 0, _shadowVerts.Count / 3);
+                    }
+                }
+
+                device.SetRenderTarget(_lightMap);
+                _spriteBatch.Begin(blendState: BlendState.Additive, samplerState: SamplerState.PointClamp);
+                _spriteBatch.Draw(_lightScratch, new Rectangle(0, 0, width, height), Color.White);
+                _spriteBatch.End();
             }
-            _spriteBatch.End();
+
             device.SetRenderTarget(null);
             return true;
+        }
+
+        /// <summary>Monta os triângulos (pretos) dos volumes de sombra dos oclusores para uma luz:
+        /// a silhueta (dois cantos extremos em ângulo) extrudada para longe da luz, mais o preenchimento
+        /// do próprio oclusor.</summary>
+        private void BuildShadowGeometry(Vector2 light, float radius, List<Vector2[]> casters)
+        {
+            _shadowVerts.Clear();
+            var black = Color.Black;
+            float far = radius * 4f;
+
+            foreach (var corners in casters)
+            {
+                // Cantos extremos em ângulo (silhueta), relativos à direção do 1º canto.
+                float baseAngle = Angle(corners[0] - light);
+                int iMin = 0, iMax = 0;
+                float relMin = 0f, relMax = 0f;
+                for (int i = 1; i < corners.Length; i++)
+                {
+                    float rel = WrapPi(Angle(corners[i] - light) - baseAngle);
+                    if (rel < relMin) { relMin = rel; iMin = i; }
+                    if (rel > relMax) { relMax = rel; iMax = i; }
+                }
+
+                var a = corners[iMin];
+                var b = corners[iMax];
+                var aFar = light + Normalize(a - light) * far;
+                var bFar = light + Normalize(b - light) * far;
+
+                AddQuad(a, aFar, bFar, b, black);          // volume de sombra
+                AddQuad(corners[0], corners[1], corners[2], corners[3], black); // oclusor opaco
+            }
+        }
+
+        private void AddQuad(Vector2 a, Vector2 b, Vector2 c, Vector2 d, Color color)
+        {
+            _shadowVerts.Add(new VertexPositionColor(new Vector3(a, 0), color));
+            _shadowVerts.Add(new VertexPositionColor(new Vector3(b, 0), color));
+            _shadowVerts.Add(new VertexPositionColor(new Vector3(c, 0), color));
+            _shadowVerts.Add(new VertexPositionColor(new Vector3(a, 0), color));
+            _shadowVerts.Add(new VertexPositionColor(new Vector3(c, 0), color));
+            _shadowVerts.Add(new VertexPositionColor(new Vector3(d, 0), color));
+        }
+
+        private static float Angle(Vector2 v) => (float)Math.Atan2(v.Y, v.X);
+        private static float WrapPi(float a)
+        {
+            while (a > Math.PI) a -= MathHelper.TwoPi;
+            while (a < -Math.PI) a += MathHelper.TwoPi;
+            return a;
+        }
+        private static Vector2 Normalize(Vector2 v)
+        {
+            float len = v.Length();
+            return len > 0.0001f ? v / len : Vector2.UnitX;
         }
 
         private void DrawDebugOverlay()
@@ -463,6 +577,8 @@ namespace DreamBit.Engine.Rendering
             _pixel?.Dispose();
             _lightSprite?.Dispose();
             _lightMap?.Dispose();
+            _lightScratch?.Dispose();
+            _shadowEffect?.Dispose();
         }
     }
 }

@@ -81,7 +81,28 @@ namespace DreamBit.Engine.Serialization
         public List<HurtboxData> Hurtboxes { get; set; } = new();
         public List<HitboxData> Hitboxes { get; set; } = new();
         public List<SpriteFlashData> SpriteFlashes { get; set; } = new();
+        public List<JointData> Joints { get; set; } = new();
+        public List<ShadowCasterData> ShadowCasters { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class JointData
+    {
+        public int Kind { get; set; }
+        public string ConnectedTag { get; set; } = "";
+        public float AnchorX { get; set; }
+        public float AnchorY { get; set; }
+        public bool CollideConnected { get; set; }
+        public float Frequency { get; set; }
+        public float DampingRatio { get; set; } = 0.5f;
+    }
+
+    public sealed class ShadowCasterData
+    {
+        public float Width { get; set; } = 64f;
+        public float Height { get; set; } = 64f;
+        public float OffsetX { get; set; }
+        public float OffsetY { get; set; }
     }
 
     public sealed class TopDownData
