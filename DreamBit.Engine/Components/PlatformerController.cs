@@ -2,7 +2,7 @@ using System;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Physics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Components
 {
@@ -65,13 +65,10 @@ namespace DreamBit.Engine.Components
 
             if (_useKeyboard)
             {
-                var keys = Keyboard.GetState();
-                vx = 0f;
-                if (keys.IsKeyDown(Keys.Left) || keys.IsKeyDown(Keys.A)) vx -= _moveSpeed;
-                if (keys.IsKeyDown(Keys.Right) || keys.IsKeyDown(Keys.D)) vx += _moveSpeed;
+                // Input por ações (teclado + gamepad), mapeável em DreamBit.Engine.Input.
+                vx = GameInput.Horizontal() * _moveSpeed;
 
-                bool jump = keys.IsKeyDown(Keys.Space) || keys.IsKeyDown(Keys.Up) || keys.IsKeyDown(Keys.W);
-                if (jump && _grounded)
+                if (GameInput.IsDown("Jump") && _grounded)
                 {
                     _velocityY = -_jumpSpeed;
                     _grounded = false;

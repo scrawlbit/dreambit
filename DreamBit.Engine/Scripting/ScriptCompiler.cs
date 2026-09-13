@@ -22,6 +22,7 @@ namespace DreamBit.Engine.Scripting
             "using DreamBit.Engine.Elements;\n" +
             "using DreamBit.Engine.Scripting;\n" +
             "using DreamBit.Engine.Diagnostics;\n" +
+            "using DreamBit.Engine.Input;\n" +
             "using Scrawlbit;\n" +
             "using Microsoft.Xna.Framework;\n";
 
