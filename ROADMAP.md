@@ -59,6 +59,11 @@ MonoGame atualizado.
   escolhe a variante do tile pela vizinhança).
 - **Ligar/desligar componente** (`SceneComponent.Enabled`): pausa Update/Draw sem remover
   (ex.: fase de voo desliga o `PlatformerController` e suspende a gravidade).
+- **Combate**: `Health` (dano, i-frames, morte, `DestroyOnDeath`), `Hurtbox` (recebe golpes)
+  e `Hitbox` (dá golpes por time, ativada por evento de frame/mensagem), `SpriteFlash`
+  (pisca ao levar dano). `Scene.Destroy` (remoção adiada segura).
+- **Movimento top-down** (`TopDownController`): 8 direções com colisão sólida, sem gravidade
+  (RPG/dungeon/tile); `Input.Vertical()`.
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).

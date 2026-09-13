@@ -47,6 +47,9 @@ independente, multiplataforma e testada.
   tilemap (sem shader). **Tiles animados** e **autotiling** (`Autotile`) no tilemap.
 - **Ligar/desligar componente** (`SceneComponent.Enabled`) em runtime — ex.: desligar a
   gravidade numa fase de voo sem remover o componente.
+- **Combate**: `Health`, `Hurtbox`/`Hitbox` (dano por time, ativado por evento de frame) e
+  `SpriteFlash`; **movimento top-down** (`TopDownController`, 8 direções com colisão) para
+  jogos de cima com tile.
 - **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
   (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
