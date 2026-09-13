@@ -389,6 +389,8 @@ namespace DreamBit.Engine.Serialization
                         SendOnElapsed = timer.SendOnElapsed,
                         StartOn = timer.StartOn
                     });
+                else if (component is UiLayout layout)
+                    data.Layouts.Add(new UiLayoutData { Direction = (int)layout.Direction, Spacing = layout.Spacing });
             }
 
             foreach (var child in obj.Children)
@@ -644,6 +646,9 @@ namespace DreamBit.Engine.Serialization
                     SendOnElapsed = timer.SendOnElapsed,
                     StartOn = timer.StartOn
                 });
+
+            foreach (var layout in data.Layouts)
+                obj.AddComponent(new UiLayout { Direction = (LayoutDirection)layout.Direction, Spacing = layout.Spacing });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

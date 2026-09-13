@@ -332,6 +332,7 @@
                             <ComboBoxItem>Animator Controller</ComboBoxItem>
                             <ComboBoxItem>UI Anchor</ComboBoxItem>
                             <ComboBoxItem>UI Button</ComboBoxItem>
+                            <ComboBoxItem>UI Layout</ComboBoxItem>
                             <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
@@ -718,6 +719,22 @@
                                     </StackPanel>
                                 </Grid>
                                 <TextBlock Classes="field" Text="Rola em ritmo diferente da câmera (fundo com profundidade). Combine com Camada baixa." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Layout -->
+                        <Border Classes="component" IsVisible="{Binding HasLayout}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Layout" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiLayout" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Direção" />
+                                <ComboBox ItemsSource="{Binding LayoutDirections}"
+                                          SelectedItem="{Binding LayoutDir, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                                <TextBlock Classes="field" Text="Espaçamento" />
+                                <TextBox Text="{Binding LayoutSpacing, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Empilha os filhos (ex.: botões de menu) em coluna/linha." />
                             </StackPanel>
                         </Border>
 

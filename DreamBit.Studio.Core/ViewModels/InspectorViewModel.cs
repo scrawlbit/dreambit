@@ -534,6 +534,24 @@ namespace DreamBit.Studio.ViewModels
             set { var a = Anchor; if (a != null) a.OffsetY = value; }
         }
 
+        // ---- Componente UiLayout (contêiner de UI) ----
+
+        private UiLayout? Layout => _target?.Components.OfType<UiLayout>().FirstOrDefault();
+        public bool HasLayout => Layout != null;
+
+        public LayoutDirection LayoutDir
+        {
+            get => Layout?.Direction ?? LayoutDirection.Vertical;
+            set { var l = Layout; if (l != null) l.Direction = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<LayoutDirection> LayoutDirections { get; }
+            = Scrawlbit.EnumHelper.Values<LayoutDirection>();
+        public float LayoutSpacing
+        {
+            get => Layout?.Spacing ?? 12f;
+            set { var l = Layout; if (l != null) l.Spacing = value; }
+        }
+
         // ---- Componente UiButton (botão de UI) ----
 
         private UiButton? Button => _target?.Components.OfType<UiButton>().FirstOrDefault();
@@ -919,6 +937,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasParallax));
             OnPropertyChanged(nameof(ParallaxFactorX));
             OnPropertyChanged(nameof(ParallaxFactorY));
+            OnPropertyChanged(nameof(HasLayout));
+            OnPropertyChanged(nameof(LayoutDir));
+            OnPropertyChanged(nameof(LayoutSpacing));
             OnPropertyChanged(nameof(HasAnchor));
             OnPropertyChanged(nameof(AnchorPointValue));
             OnPropertyChanged(nameof(AnchorOffsetX));

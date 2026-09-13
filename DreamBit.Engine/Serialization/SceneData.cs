@@ -62,6 +62,7 @@ namespace DreamBit.Engine.Serialization
         public List<UiButtonData> Buttons { get; set; } = new();
         public List<ParallaxData> Parallaxes { get; set; } = new();
         public List<TimerComponentData> Timers { get; set; } = new();
+        public List<UiLayoutData> Layouts { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -164,6 +165,12 @@ namespace DreamBit.Engine.Serialization
     {
         public float FactorX { get; set; } = 0.5f;
         public float FactorY { get; set; } = 1f;
+    }
+
+    public sealed class UiLayoutData
+    {
+        public int Direction { get; set; } // LayoutDirection
+        public float Spacing { get; set; } = 12f;
     }
 
     public sealed class TimerComponentData

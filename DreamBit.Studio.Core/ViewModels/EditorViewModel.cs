@@ -976,6 +976,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(timer);
         }
 
+        public void AddUiLayout()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<UiLayout>().Any())
+                return;
+
+            var layout = new UiLayout();
+            History.Do(new EditorAction("Adicionar UI Layout",
+                doAction: () => obj.AddComponent(layout),
+                undoAction: () => obj.RemoveComponent(layout)));
+        }
+
+        public void RemoveUiLayout()
+        {
+            var layout = SelectedObject?.Components.OfType<UiLayout>().FirstOrDefault();
+            if (layout != null)
+                RemoveComponent(layout);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -1101,6 +1120,9 @@ namespace DreamBit.Studio.ViewModels
                             Duration = tm.Duration, Repeat = tm.Repeat, AutoStart = tm.AutoStart,
                             SendOnElapsed = tm.SendOnElapsed, StartOn = tm.StartOn
                         });
+                        break;
+                    case UiLayout ul:
+                        clone.AddComponent(new UiLayout { Direction = ul.Direction, Spacing = ul.Spacing });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent
