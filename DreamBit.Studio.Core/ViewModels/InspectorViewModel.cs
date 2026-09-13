@@ -58,6 +58,13 @@ namespace DreamBit.Studio.ViewModels
             set { if (_target != null) { _target.SortOrder = value; OnPropertyChanged(); } }
         }
 
+        /// <summary>Fixo na tela (HUD): não anda com a câmera; a posição vira coordenada de tela.</summary>
+        public bool ScreenSpace
+        {
+            get => _target?.ScreenSpace ?? false;
+            set { if (_target != null) { _target.ScreenSpace = value; OnPropertyChanged(); } }
+        }
+
         public float PositionX
         {
             get => _target?.Transform.Position.X ?? 0f;
@@ -729,6 +736,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(Tag));
             OnPropertyChanged(nameof(SortOrder));
+            OnPropertyChanged(nameof(ScreenSpace));
             OnPropertyChanged(nameof(PositionX));
             OnPropertyChanged(nameof(PositionY));
             OnPropertyChanged(nameof(RotationDegrees));

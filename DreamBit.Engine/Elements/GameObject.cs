@@ -15,6 +15,7 @@ namespace DreamBit.Engine.Elements
         private string _name = "GameObject";
         private string _tag = string.Empty;
         private int _sortOrder;
+        private bool _screenSpace;
         private bool _isVisible = true;
         private bool _isSelected;
         private bool _isExpanded = true;
@@ -75,6 +76,21 @@ namespace DreamBit.Engine.Elements
             get => _sortOrder;
             set => Set(ref _sortOrder, value);
         }
+
+        /// <summary>
+        /// Se true, o objeto é desenhado fixo na tela (HUD), ignorando a câmera: sua posição
+        /// vira coordenada de tela (pixels a partir do canto superior-esquerdo). Se false
+        /// (padrão), anda com o mundo/câmera. Vale para qualquer componente (sprite, texto,
+        /// barra de vida). Herdado pelos filhos: um painel HUD leva seus ícones junto.
+        /// </summary>
+        public bool ScreenSpace
+        {
+            get => _screenSpace;
+            set { if (Set(ref _screenSpace, value)) OnPropertyChanged(nameof(EffectiveScreenSpace)); }
+        }
+
+        /// <summary>True se este objeto, ou algum ancestral, está em espaço de tela (HUD).</summary>
+        public bool EffectiveScreenSpace => _screenSpace || (_parent?.EffectiveScreenSpace ?? false);
 
         public bool IsVisible
         {

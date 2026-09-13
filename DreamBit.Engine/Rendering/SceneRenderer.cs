@@ -61,8 +61,10 @@ namespace DreamBit.Engine.Rendering
 
             _spriteBatch.End();
 
-            // Passe de tela (HUD): fora da transformação de câmera.
+            // Passe de tela (HUD): fora da transformação de câmera. Desenha os objetos
+            // marcados como ScreenSpace e o passe legado DrawScreen (TextRenderer.ScreenSpace).
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            scene.DrawScreenSpace(this);
             foreach (var obj in scene.VisibleInDrawOrder())
                 foreach (var component in obj.Components)
                     component.DrawScreen(this);

@@ -61,6 +61,9 @@ namespace DreamBit.Studio.Avalonia
 
                 foreach (var obj in _editor.Scene.VisibleInDrawOrder())
                 {
+                    if (obj.EffectiveScreenSpace)
+                        continue; // objetos HUD desenham no passe de tela, sem câmera
+
                     var vsize = SceneRenderer.GetVisualSize(obj);
                     var rect = new Rect(-vsize.X / 2, -vsize.Y / 2, vsize.X, vsize.Y);
 
@@ -84,12 +87,44 @@ namespace DreamBit.Studio.Avalonia
                 DrawWorldTexts(context);
             }
 
-            DrawScreenTexts(context); // HUD: fora da transformação de câmera
+            // Passe de tela (HUD): fora da transformação de câmera.
+            DrawScreenSpaceObjects(context);
+            DrawScreenTexts(context);
+        }
+
+        /// <summary>Objetos marcados como HUD (ScreenSpace): desenhados sem a câmera, com a
+        /// posição interpretada como coordenada de tela. Espelha o passe de tela da engine.</summary>
+        private void DrawScreenSpaceObjects(DrawingContext context)
+        {
+            foreach (var obj in _editor!.Scene.VisibleInDrawOrder())
+            {
+                if (!obj.EffectiveScreenSpace)
+                    continue;
+
+                var vsize = SceneRenderer.GetVisualSize(obj);
+                var rect = new Rect(-vsize.X / 2, -vsize.Y / 2, vsize.X, vsize.Y);
+
+                using (context.PushTransform(ToAvalonia(obj.Transform.WorldMatrix)))
+                {
+                    var tilemap = obj.Components.OfType<TilemapRenderer>().FirstOrDefault();
+                    bool hasText = obj.Components.OfType<TextRenderer>().Any();
+                    if (tilemap?.Map != null)
+                        DrawTilemap(context, tilemap.Map);
+                    else if (!TryDrawTexture(context, obj, rect) && !hasText)
+                        context.FillRectangle(new SolidColorBrush(ToColor(FillColor(obj))), rect);
+
+                    if (obj.IsSelected)
+                        context.DrawRectangle(null, _selectionPen, rect);
+                }
+            }
         }
 
         private void DrawWorldTexts(DrawingContext context)
         {
             foreach (var obj in _editor!.Scene.VisibleInDrawOrder())
+            {
+                if (obj.EffectiveScreenSpace)
+                    continue; // texto de objeto HUD sai no passe de tela
                 foreach (var c in obj.Components)
                     if (c is TextRenderer t && !t.ScreenSpace)
                     {
@@ -98,16 +133,27 @@ namespace DreamBit.Studio.Avalonia
                         int h = PixelFont.GlyphHeight * t.PixelSize;
                         DrawPixelText(context, t.Text, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
                     }
+            }
         }
 
         private void DrawScreenTexts(DrawingContext context)
         {
             foreach (var obj in _editor!.Scene.VisibleInDrawOrder())
                 foreach (var c in obj.Components)
-                    if (c is TextRenderer t && t.ScreenSpace)
+                    if (c is TextRenderer t && (t.ScreenSpace || obj.EffectiveScreenSpace))
                     {
-                        var p = obj.Transform.Position;
-                        DrawPixelText(context, t.Text, p.X, p.Y, t.PixelSize, ToColor(t.Color));
+                        var p = obj.Transform.WorldPosition;
+                        // objeto HUD centraliza no ponto (igual à engine); legado usa canto.
+                        if (obj.EffectiveScreenSpace && !t.ScreenSpace)
+                        {
+                            int w = PixelFont.MeasureWidth(t.Text) * t.PixelSize;
+                            int h = PixelFont.GlyphHeight * t.PixelSize;
+                            DrawPixelText(context, t.Text, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
+                        }
+                        else
+                        {
+                            DrawPixelText(context, t.Text, p.X, p.Y, t.PixelSize, ToColor(t.Color));
+                        }
                     }
         }
 

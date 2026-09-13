@@ -279,6 +279,8 @@
                                 <TextBox Text="{Binding SortOrder, Mode=TwoWay}" />
                             </StackPanel>
                         </Grid>
+                        <CheckBox Content="Fixo na tela (HUD) — não anda com a câmera"
+                                  IsChecked="{Binding ScreenSpace, Mode=TwoWay}" Margin="0,2,0,0" />
                         <Grid ColumnDefinitions="*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Posição X" />

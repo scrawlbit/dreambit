@@ -149,9 +149,20 @@ namespace DreamBit.Engine.Elements
 
         public void Draw(ISceneDrawing drawing)
         {
-            // Desenha por z-order global (SortOrder), estável: empates mantêm a ordem da cena.
+            // Passe de mundo: objetos presos ao mundo/câmera, por z-order global (SortOrder),
+            // estável — empates mantêm a ordem da cena. Objetos HUD ficam para o passe de tela.
             foreach (var obj in VisibleInDrawOrder())
-                obj.DrawSelf(drawing);
+                if (!obj.EffectiveScreenSpace)
+                    obj.DrawSelf(drawing);
+        }
+
+        /// <summary>Passe de tela (HUD): objetos marcados como <see cref="GameObject.ScreenSpace"/>,
+        /// desenhados fora da transformação de câmera. Chamado num segundo SpriteBatch.</summary>
+        public void DrawScreenSpace(ISceneDrawing drawing)
+        {
+            foreach (var obj in VisibleInDrawOrder())
+                if (obj.EffectiveScreenSpace)
+                    obj.DrawSelf(drawing);
         }
 
         /// <summary>Objetos visíveis (respeitando ancestrais), ordenados por SortOrder.</summary>
