@@ -25,6 +25,27 @@ namespace DreamBit.Engine.Input
 
         private static KeyboardState _kbNow, _kbPrev;
         private static GamePadState _padNow, _padPrev;
+        private static readonly System.Text.StringBuilder _typedPending = new();
+        private static string _typedFrame = string.Empty;
+
+        /// <summary>Texto digitado neste frame (para campos de texto). O host injeta com
+        /// <see cref="PushText"/> a partir do evento de texto da janela.</summary>
+        public static string TypedText => _typedFrame;
+
+        /// <summary>Host chama para cada caractere digitado (evento TextInput da janela).</summary>
+        public static void PushText(char c) => _typedPending.Append(c);
+
+        /// <summary>Torna o texto acumulado disponível em <see cref="TypedText"/> para este frame
+        /// e reinicia o acúmulo. Chamado pelo <see cref="Update"/>; exposto para hosts que não
+        /// chamam Update (editor) ou testes.</summary>
+        public static void PumpText()
+        {
+            _typedFrame = _typedPending.ToString();
+            _typedPending.Clear();
+        }
+
+        /// <summary>True se a tecla foi pressionada neste frame (borda).</summary>
+        public static bool KeyJustPressed(Keys key) => _kbNow.IsKeyDown(key) && !_kbPrev.IsKeyDown(key);
         private static MouseState _mouseNow, _mousePrev;
         private static bool _mouseOverride;
         private static Vector2 _mouseOverridePos;
@@ -37,6 +58,10 @@ namespace DreamBit.Engine.Input
             _kbNow = Keyboard.GetState();
             _padPrev = _padNow;
             _padNow = GamePad.GetState(PlayerIndex.One);
+
+            // Double-buffer do texto digitado: o que foi acumulado desde o último frame vira o
+            // texto deste frame (estável para os campos lerem), e o pendente reinicia.
+            PumpText();
             if (!_mouseOverride)
             {
                 _mousePrev = _mouseNow;

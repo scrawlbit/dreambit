@@ -66,6 +66,7 @@ namespace DreamBit.Engine.Serialization
         public List<UiSliderData> Sliders { get; set; } = new();
         public List<UiToggleData> Toggles { get; set; } = new();
         public List<UiProgressBarData> ProgressBars { get; set; } = new();
+        public List<UiTextFieldData> TextFields { get; set; } = new();
         public List<RigidbodyData> Rigidbodies { get; set; } = new();
         public List<PropertyAnimatorData> PropertyAnimators { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
@@ -239,6 +240,17 @@ namespace DreamBit.Engine.Serialization
         public float Height { get; set; } = 14f;
         public byte TR { get; set; } = 40; public byte TG { get; set; } = 46; public byte TB { get; set; } = 58;
         public byte FR { get; set; } = 90; public byte FG { get; set; } = 200; public byte FB { get; set; } = 140;
+    }
+
+    public sealed class UiTextFieldData
+    {
+        public string Text { get; set; } = "";
+        public string Placeholder { get; set; } = "…";
+        public float Width { get; set; } = 220f;
+        public float Height { get; set; } = 34f;
+        public int PixelSize { get; set; } = 3;
+        public int MaxLength { get; set; } = 32;
+        public string SendOnSubmit { get; set; } = "";
     }
 
     public sealed class TimerComponentData

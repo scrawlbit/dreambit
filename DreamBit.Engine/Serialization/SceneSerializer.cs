@@ -447,6 +447,14 @@ namespace DreamBit.Engine.Serialization
                         TR = bar.Track.R, TG = bar.Track.G, TB = bar.Track.B,
                         FR = bar.Fill.R, FG = bar.Fill.G, FB = bar.Fill.B
                     });
+                else if (component is UiTextField field)
+                    data.TextFields.Add(new UiTextFieldData
+                    {
+                        Text = field.Text, Placeholder = field.Placeholder,
+                        Width = field.Width, Height = field.Height,
+                        PixelSize = field.PixelSize, MaxLength = field.MaxLength,
+                        SendOnSubmit = field.SendOnSubmit
+                    });
                 else if (component is PropertyAnimator panim)
                     data.PropertyAnimators.Add(new PropertyAnimatorData
                     {
@@ -760,6 +768,15 @@ namespace DreamBit.Engine.Serialization
                 {
                     Value = b.Value, Width = b.Width, Height = b.Height,
                     Track = new Color(b.TR, b.TG, b.TB), Fill = new Color(b.FR, b.FG, b.FB)
+                });
+
+            foreach (var f in data.TextFields)
+                obj.AddComponent(new UiTextField
+                {
+                    Text = f.Text, Placeholder = f.Placeholder,
+                    Width = f.Width, Height = f.Height,
+                    PixelSize = f.PixelSize, MaxLength = f.MaxLength,
+                    SendOnSubmit = f.SendOnSubmit
                 });
 
             foreach (var pa in data.PropertyAnimators)

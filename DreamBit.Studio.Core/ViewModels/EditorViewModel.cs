@@ -1069,6 +1069,8 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveUiToggle() => RemoveSingle<UiToggle>();
         public void AddUiProgressBar() => AddSingle(() => new UiProgressBar(), "Adicionar UI Progress Bar");
         public void RemoveUiProgressBar() => RemoveSingle<UiProgressBar>();
+        public void AddUiTextField() => AddSingle(() => new UiTextField(), "Adicionar UI Text Field");
+        public void RemoveUiTextField() => RemoveSingle<UiTextField>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1271,6 +1273,13 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case UiProgressBar pb:
                         clone.AddComponent(new UiProgressBar { Value = pb.Value, Width = pb.Width, Height = pb.Height, Track = pb.Track, Fill = pb.Fill });
+                        break;
+                    case UiTextField tf:
+                        clone.AddComponent(new UiTextField
+                        {
+                            Text = tf.Text, Placeholder = tf.Placeholder, Width = tf.Width, Height = tf.Height,
+                            PixelSize = tf.PixelSize, MaxLength = tf.MaxLength, SendOnSubmit = tf.SendOnSubmit
+                        });
                         break;
                     case Rigidbody2D rb:
                         clone.AddComponent(new Rigidbody2D

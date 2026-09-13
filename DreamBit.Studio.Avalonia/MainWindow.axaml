@@ -348,6 +348,7 @@
                             <ComboBoxItem>UI Slider</ComboBoxItem>
                             <ComboBoxItem>UI Toggle</ComboBoxItem>
                             <ComboBoxItem>UI Progress Bar</ComboBoxItem>
+                            <ComboBoxItem>UI Text Field</ComboBoxItem>
                             <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Rigidbody 2D</ComboBoxItem>
@@ -946,6 +947,33 @@
                                     </StackPanel>
                                 </Grid>
                                 <TextBlock Classes="field" Text="Só leitura (barra de vida/energia). Scripts ajustam o valor." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Text Field -->
+                        <Border Classes="component" IsVisible="{Binding HasTextField}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Text Field" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiTextField" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Texto inicial" />
+                                <TextBox Text="{Binding TextFieldText, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Placeholder" />
+                                <TextBox Text="{Binding TextFieldPlaceholder, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding TextFieldWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Máx. caracteres" />
+                                        <TextBox Text="{Binding TextFieldMaxLength, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Enviar ao confirmar (Enter → mensagem)" />
+                                <TextBox Text="{Binding TextFieldSendOnSubmit, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Digitação funciona ao rodar no Player." />
                             </StackPanel>
                         </Border>
 

@@ -157,6 +157,19 @@ namespace DreamBit.Studio.Avalonia
                     continue;
                 }
 
+                var field = obj.Components.OfType<UiTextField>().FirstOrDefault();
+                if (field != null)
+                {
+                    var fr = field.ScreenRect();
+                    Fill(context, fr, field.IsFocused ? field.BoxFocused : field.Box);
+                    string shown = field.Text.Length > 0 ? field.Text : field.Placeholder;
+                    var col = field.Text.Length > 0 ? field.TextColor : new XnaColor(field.TextColor, 0.4f);
+                    int ty = fr.Y + (fr.Height - PixelFont.GlyphHeight * field.PixelSize) / 2;
+                    DrawPixelText(context, shown, fr.X + 6, ty, field.PixelSize, ToColor(col));
+                    if (obj.IsSelected) Outline(context, fr);
+                    continue;
+                }
+
                 using (context.PushTransform(ToAvalonia(obj.Transform.WorldMatrix)))
                 {
                     var tilemap = obj.Components.OfType<TilemapRenderer>().FirstOrDefault();

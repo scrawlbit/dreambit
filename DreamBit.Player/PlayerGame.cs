@@ -29,6 +29,7 @@ namespace DreamBit.Player
             };
             IsMouseVisible = true;
             Window.Title = "DreamBit Player";
+            Window.TextInput += (_, e) => DreamBit.Engine.Input.Input.PushText(e.Character); // campos de texto de UI
         }
 
         private string? _sceneFolder;

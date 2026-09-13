@@ -737,6 +737,16 @@ namespace DreamBit.Studio.ViewModels
         public float ProgressWidth { get => ProgressBar?.Width ?? 120f; set { var b = ProgressBar; if (b != null) b.Width = value; } }
         public float ProgressHeight { get => ProgressBar?.Height ?? 14f; set { var b = ProgressBar; if (b != null) b.Height = value; } }
 
+        // ---- Componente UiTextField ----
+
+        private UiTextField? TextField => _target?.Components.OfType<UiTextField>().FirstOrDefault();
+        public bool HasTextField => TextField != null;
+        public string TextFieldText { get => TextField?.Text ?? string.Empty; set { var f = TextField; if (f != null) f.Text = value; } }
+        public string TextFieldPlaceholder { get => TextField?.Placeholder ?? string.Empty; set { var f = TextField; if (f != null) f.Placeholder = value; } }
+        public float TextFieldWidth { get => TextField?.Width ?? 220f; set { var f = TextField; if (f != null) f.Width = value; } }
+        public int TextFieldMaxLength { get => TextField?.MaxLength ?? 32; set { var f = TextField; if (f != null) f.MaxLength = value; } }
+        public string TextFieldSendOnSubmit { get => TextField?.SendOnSubmit ?? string.Empty; set { var f = TextField; if (f != null) f.SendOnSubmit = value; } }
+
         // ---- Componente UiButton (botão de UI) ----
 
         private UiButton? Button => _target?.Components.OfType<UiButton>().FirstOrDefault();
@@ -1177,6 +1187,12 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(ProgressValue));
             OnPropertyChanged(nameof(ProgressWidth));
             OnPropertyChanged(nameof(ProgressHeight));
+            OnPropertyChanged(nameof(HasTextField));
+            OnPropertyChanged(nameof(TextFieldText));
+            OnPropertyChanged(nameof(TextFieldPlaceholder));
+            OnPropertyChanged(nameof(TextFieldWidth));
+            OnPropertyChanged(nameof(TextFieldMaxLength));
+            OnPropertyChanged(nameof(TextFieldSendOnSubmit));
             OnPropertyChanged(nameof(HasAnchor));
             OnPropertyChanged(nameof(AnchorPointValue));
             OnPropertyChanged(nameof(AnchorOffsetX));
