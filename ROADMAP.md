@@ -53,6 +53,12 @@ MonoGame atualizado.
   recalculando o caminho, com fallback em linha reta).
 - **Áudio espacial 2D** (`AudioListener` + `AudioSource.Spatial`): atenuação por distância e
   panorâmica (pan) em relação ao ouvinte, sobre os buses do mixer.
+- **Luzes 2D** (`Light2D` + `AmbientLight`): discos de luz radiais acumulados num lightmap
+  (render target) multiplicado sobre a cena — ilumina sprites **e** tilemap, sem shader custom.
+- **Tiles animados** (quadros por tile, ciclados pelo tempo) e **autotiling** 4-bit (`Autotile`:
+  escolhe a variante do tile pela vizinhança).
+- **Ligar/desligar componente** (`SceneComponent.Enabled`): pausa Update/Draw sem remover
+  (ex.: fase de voo desliga o `PlatformerController` e suspende a gravidade).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -83,14 +89,13 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — via render target/lightmap com
-  blend aditivo (não exige shaders customizados) ou pelo pipeline MGCB.
+- **Shaders 2D customizados** (pipeline MGCB) — as luzes 2D por lightmap já existem sem shader;
+  faltam sombras e normal maps.
 - **Música em camadas** (o mixer/buses e o áudio espacial já existem).
 
 ### Animação
 - **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência, o fatiador por
   grade e os clipes de sprite já cobrem sprite sheets PNG.
-- **Tiles animados / autotiling** no tilemap.
 
 ### Física
 - **Joints** (juntas entre corpos) — raycast e camadas de colisão já existem.

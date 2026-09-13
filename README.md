@@ -43,6 +43,10 @@ independente, multiplataforma e testada.
   `PlatformerController`.
 - **IA de perseguição** (`NavChaser`): segue a tag alvo por pathfinding A* (ou linha reta).
 - **Áudio espacial** (`AudioListener` + `AudioSource.Spatial`): atenuação e pan por distância.
+- **Luzes 2D** (`Light2D` + `AmbientLight`): lightmap por render target que ilumina sprites e
+  tilemap (sem shader). **Tiles animados** e **autotiling** (`Autotile`) no tilemap.
+- **Ligar/desligar componente** (`SceneComponent.Enabled`) em runtime — ex.: desligar a
+  gravidade numa fase de voo sem remover o componente.
 - **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
   (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
