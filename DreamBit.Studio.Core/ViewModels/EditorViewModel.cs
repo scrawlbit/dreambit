@@ -1063,6 +1063,31 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(layout);
         }
 
+        public void AddUiSlider() => AddSingle(() => new UiSlider(), "Adicionar UI Slider");
+        public void RemoveUiSlider() => RemoveSingle<UiSlider>();
+        public void AddUiToggle() => AddSingle(() => new UiToggle(), "Adicionar UI Toggle");
+        public void RemoveUiToggle() => RemoveSingle<UiToggle>();
+        public void AddUiProgressBar() => AddSingle(() => new UiProgressBar(), "Adicionar UI Progress Bar");
+        public void RemoveUiProgressBar() => RemoveSingle<UiProgressBar>();
+
+        private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<T>().Any())
+                return;
+            var comp = create();
+            History.Do(new EditorAction(label,
+                doAction: () => obj.AddComponent(comp),
+                undoAction: () => obj.RemoveComponent(comp)));
+        }
+
+        private void RemoveSingle<T>() where T : SceneComponent
+        {
+            var comp = SelectedObject?.Components.OfType<T>().FirstOrDefault();
+            if (comp != null)
+                RemoveComponent(comp);
+        }
+
         public void AddRigidbody()
         {
             var obj = SelectedObject;
@@ -1233,6 +1258,19 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case UiLayout ul:
                         clone.AddComponent(new UiLayout { Direction = ul.Direction, Spacing = ul.Spacing });
+                        break;
+                    case UiSlider sl:
+                        clone.AddComponent(new UiSlider
+                        {
+                            Value = sl.Value, Width = sl.Width, Height = sl.Height,
+                            Track = sl.Track, Fill = sl.Fill, Knob = sl.Knob, BusTarget = sl.BusTarget, SendOnChange = sl.SendOnChange
+                        });
+                        break;
+                    case UiToggle tg:
+                        clone.AddComponent(new UiToggle { IsOn = tg.IsOn, Size = tg.Size, Box = tg.Box, Check = tg.Check, SendOnChange = tg.SendOnChange });
+                        break;
+                    case UiProgressBar pb:
+                        clone.AddComponent(new UiProgressBar { Value = pb.Value, Width = pb.Width, Height = pb.Height, Track = pb.Track, Fill = pb.Fill });
                         break;
                     case Rigidbody2D rb:
                         clone.AddComponent(new Rigidbody2D

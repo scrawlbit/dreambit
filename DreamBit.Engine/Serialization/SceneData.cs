@@ -63,6 +63,9 @@ namespace DreamBit.Engine.Serialization
         public List<ParallaxData> Parallaxes { get; set; } = new();
         public List<TimerComponentData> Timers { get; set; } = new();
         public List<UiLayoutData> Layouts { get; set; } = new();
+        public List<UiSliderData> Sliders { get; set; } = new();
+        public List<UiToggleData> Toggles { get; set; } = new();
+        public List<UiProgressBarData> ProgressBars { get; set; } = new();
         public List<RigidbodyData> Rigidbodies { get; set; } = new();
         public List<PropertyAnimatorData> PropertyAnimators { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
@@ -206,6 +209,36 @@ namespace DreamBit.Engine.Serialization
     {
         public int Direction { get; set; } // LayoutDirection
         public float Spacing { get; set; } = 12f;
+    }
+
+    public sealed class UiSliderData
+    {
+        public float Value { get; set; } = 1f;
+        public float Width { get; set; } = 200f;
+        public float Height { get; set; } = 20f;
+        public byte TR { get; set; } = 40; public byte TG { get; set; } = 46; public byte TB { get; set; } = 58;
+        public byte FR { get; set; } = 90; public byte FG { get; set; } = 170; public byte FB { get; set; } = 255;
+        public byte KR { get; set; } = 220; public byte KG { get; set; } = 228; public byte KB { get; set; } = 240;
+        public string BusTarget { get; set; } = "";
+        public string SendOnChange { get; set; } = "";
+    }
+
+    public sealed class UiToggleData
+    {
+        public bool IsOn { get; set; }
+        public float Size { get; set; } = 28f;
+        public byte BR { get; set; } = 40; public byte BG { get; set; } = 46; public byte BB { get; set; } = 58;
+        public byte CR { get; set; } = 90; public byte CG { get; set; } = 200; public byte CB { get; set; } = 140;
+        public string SendOnChange { get; set; } = "";
+    }
+
+    public sealed class UiProgressBarData
+    {
+        public float Value { get; set; } = 1f;
+        public float Width { get; set; } = 120f;
+        public float Height { get; set; } = 14f;
+        public byte TR { get; set; } = 40; public byte TG { get; set; } = 46; public byte TB { get; set; } = 58;
+        public byte FR { get; set; } = 90; public byte FG { get; set; } = 200; public byte FB { get; set; } = 140;
     }
 
     public sealed class TimerComponentData

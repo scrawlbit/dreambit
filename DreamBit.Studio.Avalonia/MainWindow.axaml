@@ -345,6 +345,9 @@
                             <ComboBoxItem>UI Anchor</ComboBoxItem>
                             <ComboBoxItem>UI Button</ComboBoxItem>
                             <ComboBoxItem>UI Layout</ComboBoxItem>
+                            <ComboBoxItem>UI Slider</ComboBoxItem>
+                            <ComboBoxItem>UI Toggle</ComboBoxItem>
+                            <ComboBoxItem>UI Progress Bar</ComboBoxItem>
                             <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Rigidbody 2D</ComboBoxItem>
@@ -881,6 +884,68 @@
                                 <TextBlock Classes="field" Text="Espaçamento" />
                                 <TextBox Text="{Binding LayoutSpacing, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Empilha os filhos (ex.: botões de menu) em coluna/linha." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Slider -->
+                        <Border Classes="component" IsVisible="{Binding HasSlider}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Slider" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiSlider" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Valor (0–1)" />
+                                        <TextBox Text="{Binding SliderValue, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding SliderWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Controlar bus de áudio (opcional: Master/Music/SFX)" />
+                                <TextBox Text="{Binding SliderBus, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Enviar ao mudar (mensagem, opcional)" />
+                                <TextBox Text="{Binding SliderSendOnChange, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Toggle -->
+                        <Border Classes="component" IsVisible="{Binding HasToggle}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Toggle" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiToggle" />
+                                </Grid>
+                                <CheckBox Content="Ligado" IsChecked="{Binding ToggleIsOn, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Tamanho" />
+                                <TextBox Text="{Binding ToggleSize, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Enviar ao mudar (mensagem)" />
+                                <TextBox Text="{Binding ToggleSendOnChange, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Progress Bar -->
+                        <Border Classes="component" IsVisible="{Binding HasProgressBar}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Progress Bar" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiProgressBar" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Valor (0–1)" />
+                                <TextBox Text="{Binding ProgressValue, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding ProgressWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura" />
+                                        <TextBox Text="{Binding ProgressHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Só leitura (barra de vida/energia). Scripts ajustam o valor." />
                             </StackPanel>
                         </Border>
 

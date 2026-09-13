@@ -712,6 +712,31 @@ namespace DreamBit.Studio.ViewModels
             set { var l = Layout; if (l != null) l.Spacing = value; }
         }
 
+        // ---- Componente UiSlider ----
+
+        private UiSlider? Slider => _target?.Components.OfType<UiSlider>().FirstOrDefault();
+        public bool HasSlider => Slider != null;
+        public float SliderValue { get => Slider?.Value ?? 1f; set { var s = Slider; if (s != null) s.Value = value; } }
+        public float SliderWidth { get => Slider?.Width ?? 200f; set { var s = Slider; if (s != null) s.Width = value; } }
+        public string SliderBus { get => Slider?.BusTarget ?? string.Empty; set { var s = Slider; if (s != null) s.BusTarget = value; } }
+        public string SliderSendOnChange { get => Slider?.SendOnChange ?? string.Empty; set { var s = Slider; if (s != null) s.SendOnChange = value; } }
+
+        // ---- Componente UiToggle ----
+
+        private UiToggle? Toggle => _target?.Components.OfType<UiToggle>().FirstOrDefault();
+        public bool HasToggle => Toggle != null;
+        public bool ToggleIsOn { get => Toggle?.IsOn ?? false; set { var t = Toggle; if (t != null) t.IsOn = value; } }
+        public float ToggleSize { get => Toggle?.Size ?? 28f; set { var t = Toggle; if (t != null) t.Size = value; } }
+        public string ToggleSendOnChange { get => Toggle?.SendOnChange ?? string.Empty; set { var t = Toggle; if (t != null) t.SendOnChange = value; } }
+
+        // ---- Componente UiProgressBar ----
+
+        private UiProgressBar? ProgressBar => _target?.Components.OfType<UiProgressBar>().FirstOrDefault();
+        public bool HasProgressBar => ProgressBar != null;
+        public float ProgressValue { get => ProgressBar?.Value ?? 1f; set { var b = ProgressBar; if (b != null) b.Value = value; } }
+        public float ProgressWidth { get => ProgressBar?.Width ?? 120f; set { var b = ProgressBar; if (b != null) b.Width = value; } }
+        public float ProgressHeight { get => ProgressBar?.Height ?? 14f; set { var b = ProgressBar; if (b != null) b.Height = value; } }
+
         // ---- Componente UiButton (botão de UI) ----
 
         private UiButton? Button => _target?.Components.OfType<UiButton>().FirstOrDefault();
@@ -1139,6 +1164,19 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasLayout));
             OnPropertyChanged(nameof(LayoutDir));
             OnPropertyChanged(nameof(LayoutSpacing));
+            OnPropertyChanged(nameof(HasSlider));
+            OnPropertyChanged(nameof(SliderValue));
+            OnPropertyChanged(nameof(SliderWidth));
+            OnPropertyChanged(nameof(SliderBus));
+            OnPropertyChanged(nameof(SliderSendOnChange));
+            OnPropertyChanged(nameof(HasToggle));
+            OnPropertyChanged(nameof(ToggleIsOn));
+            OnPropertyChanged(nameof(ToggleSize));
+            OnPropertyChanged(nameof(ToggleSendOnChange));
+            OnPropertyChanged(nameof(HasProgressBar));
+            OnPropertyChanged(nameof(ProgressValue));
+            OnPropertyChanged(nameof(ProgressWidth));
+            OnPropertyChanged(nameof(ProgressHeight));
             OnPropertyChanged(nameof(HasAnchor));
             OnPropertyChanged(nameof(AnchorPointValue));
             OnPropertyChanged(nameof(AnchorOffsetX));

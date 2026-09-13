@@ -614,6 +614,9 @@ namespace DreamBit.Studio.Avalonia
                 "UI Anchor" => _editor.AddUiAnchor,
                 "UI Button" => _editor.AddUiButton,
                 "UI Layout" => _editor.AddUiLayout,
+                "UI Slider" => _editor.AddUiSlider,
+                "UI Toggle" => _editor.AddUiToggle,
+                "UI Progress Bar" => _editor.AddUiProgressBar,
                 "Parallax" => _editor.AddParallax,
                 "Timer" => _editor.AddTimer,
                 "Rigidbody 2D" => _editor.AddRigidbody,
@@ -659,6 +662,9 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveUiAnchor(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiAnchor);
         private void OnRemoveUiButton(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiButton);
         private void OnRemoveUiLayout(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiLayout);
+        private void OnRemoveUiSlider(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiSlider);
+        private void OnRemoveUiToggle(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiToggle);
+        private void OnRemoveUiProgressBar(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiProgressBar);
         private void OnRemoveParallax(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParallax);
         private void OnRemoveTimer(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTimer);
         private void OnRemoveRigidbody(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRigidbody);

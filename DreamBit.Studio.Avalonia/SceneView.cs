@@ -13,6 +13,7 @@ using DreamBit.Studio.ViewModels;
 using XnaColor = Microsoft.Xna.Framework.Color;
 using XnaMatrix = Microsoft.Xna.Framework.Matrix;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
+using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace DreamBit.Studio.Avalonia
 {
@@ -123,6 +124,39 @@ namespace DreamBit.Studio.Avalonia
                     continue;
                 }
 
+                var slider = obj.Components.OfType<UiSlider>().FirstOrDefault();
+                if (slider != null)
+                {
+                    Fill(context, slider.ScreenRect(), slider.Track);
+                    Fill(context, slider.FillRect(), slider.Fill);
+                    Fill(context, slider.KnobRect(), slider.Knob);
+                    if (obj.IsSelected) Outline(context, slider.ScreenRect());
+                    continue;
+                }
+
+                var toggle = obj.Components.OfType<UiToggle>().FirstOrDefault();
+                if (toggle != null)
+                {
+                    var tr = toggle.ScreenRect();
+                    Fill(context, tr, toggle.Box);
+                    if (toggle.IsOn)
+                    {
+                        int pad = (int)(tr.Width * 0.22);
+                        Fill(context, new XnaRect(tr.X + pad, tr.Y + pad, tr.Width - pad * 2, tr.Height - pad * 2), toggle.Check);
+                    }
+                    if (obj.IsSelected) Outline(context, tr);
+                    continue;
+                }
+
+                var progress = obj.Components.OfType<UiProgressBar>().FirstOrDefault();
+                if (progress != null)
+                {
+                    Fill(context, progress.ScreenRect(), progress.Track);
+                    Fill(context, progress.FillRect(), progress.Fill);
+                    if (obj.IsSelected) Outline(context, progress.ScreenRect());
+                    continue;
+                }
+
                 using (context.PushTransform(ToAvalonia(obj.Transform.WorldMatrix)))
                 {
                     var tilemap = obj.Components.OfType<TilemapRenderer>().FirstOrDefault();
@@ -137,6 +171,12 @@ namespace DreamBit.Studio.Avalonia
                 }
             }
         }
+
+        private static void Fill(DrawingContext context, XnaRect r, XnaColor color)
+            => context.FillRectangle(new SolidColorBrush(ToColor(color)), new Rect(r.X, r.Y, r.Width, r.Height));
+
+        private void Outline(DrawingContext context, XnaRect r)
+            => context.DrawRectangle(null, _selectionPen, new Rect(r.X, r.Y, r.Width, r.Height));
 
         private void DrawWorldTexts(DrawingContext context)
         {

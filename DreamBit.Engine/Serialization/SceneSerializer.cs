@@ -423,6 +423,30 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is UiLayout layout)
                     data.Layouts.Add(new UiLayoutData { Direction = (int)layout.Direction, Spacing = layout.Spacing });
+                else if (component is UiSlider slider)
+                    data.Sliders.Add(new UiSliderData
+                    {
+                        Value = slider.Value, Width = slider.Width, Height = slider.Height,
+                        TR = slider.Track.R, TG = slider.Track.G, TB = slider.Track.B,
+                        FR = slider.Fill.R, FG = slider.Fill.G, FB = slider.Fill.B,
+                        KR = slider.Knob.R, KG = slider.Knob.G, KB = slider.Knob.B,
+                        BusTarget = slider.BusTarget, SendOnChange = slider.SendOnChange
+                    });
+                else if (component is UiToggle toggle)
+                    data.Toggles.Add(new UiToggleData
+                    {
+                        IsOn = toggle.IsOn, Size = toggle.Size,
+                        BR = toggle.Box.R, BG = toggle.Box.G, BB = toggle.Box.B,
+                        CR = toggle.Check.R, CG = toggle.Check.G, CB = toggle.Check.B,
+                        SendOnChange = toggle.SendOnChange
+                    });
+                else if (component is UiProgressBar bar)
+                    data.ProgressBars.Add(new UiProgressBarData
+                    {
+                        Value = bar.Value, Width = bar.Width, Height = bar.Height,
+                        TR = bar.Track.R, TG = bar.Track.G, TB = bar.Track.B,
+                        FR = bar.Fill.R, FG = bar.Fill.G, FB = bar.Fill.B
+                    });
                 else if (component is PropertyAnimator panim)
                     data.PropertyAnimators.Add(new PropertyAnimatorData
                     {
@@ -714,6 +738,29 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var layout in data.Layouts)
                 obj.AddComponent(new UiLayout { Direction = (LayoutDirection)layout.Direction, Spacing = layout.Spacing });
+
+            foreach (var s in data.Sliders)
+                obj.AddComponent(new UiSlider
+                {
+                    Value = s.Value, Width = s.Width, Height = s.Height,
+                    Track = new Color(s.TR, s.TG, s.TB), Fill = new Color(s.FR, s.FG, s.FB), Knob = new Color(s.KR, s.KG, s.KB),
+                    BusTarget = s.BusTarget, SendOnChange = s.SendOnChange
+                });
+
+            foreach (var t in data.Toggles)
+                obj.AddComponent(new UiToggle
+                {
+                    IsOn = t.IsOn, Size = t.Size,
+                    Box = new Color(t.BR, t.BG, t.BB), Check = new Color(t.CR, t.CG, t.CB),
+                    SendOnChange = t.SendOnChange
+                });
+
+            foreach (var b in data.ProgressBars)
+                obj.AddComponent(new UiProgressBar
+                {
+                    Value = b.Value, Width = b.Width, Height = b.Height,
+                    Track = new Color(b.TR, b.TG, b.TB), Fill = new Color(b.FR, b.FG, b.FB)
+                });
 
             foreach (var pa in data.PropertyAnimators)
             {
