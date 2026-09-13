@@ -27,8 +27,14 @@ independente, multiplataforma e testada.
   enter/exit, envio de mensagem), `MessageListener`, `AudioSource`, `ParticleEmitter`,
   `FollowTarget`, `RotatorBehavior`, `ScriptComponent` (C# em runtime via Roslyn),
   `Bone` + `SkeletonAnimator` (**rig cutout**: keyframes de pose, **clipes nomeados**,
-  easing, eventos), `CameraComponent` (follow/deadzone/bounds/zoom), `TextRenderer`
-  (fonte pixel, mundo ou **HUD**), `SceneExit` (**transição de fase**).
+  easing, eventos), `AnimatorController` (estados idle/walk/jump), `TweenComponent`,
+  `CameraComponent` (follow/deadzone/bounds/zoom), `TextRenderer` (fonte pixel, mundo ou
+  **HUD**), `SceneExit` (**transição de fase**), `UiAnchor` + `UiButton` (**UI clicável**),
+  `ParallaxLayer` (**parallax**), `TimerComponent`.
+- **Sistema de UI**: âncoras às bordas da tela e botões clicáveis (mouse/toque) que
+  disparam mensagens; **camadas de render** e **colisão de tilemap** (tiles sólidos).
+- Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
+  (**timers/coroutines**), `ObjectPool` (**pooling**).
 - **Barramento de mensagens** (sinais de jogo) ligando tags, triggers, eventos de
   animação e scripts.
 - **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor); play restaurável;

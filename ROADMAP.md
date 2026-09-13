@@ -22,12 +22,21 @@ MonoGame atualizado.
   `Bone` + `SkeletonAnimator` (rig cutout, keyframes de pose, clipes nomeados, easing,
   eventos por tempo), `AnimatorController` (estados idle/walk/jump), `TweenComponent`
   (interpola propriedade com easing), `CameraComponent` (follow/deadzone/bounds/zoom),
-  `TextRenderer` (fonte pixel embutida, mundo ou HUD), `SceneExit` (transição de fase).
+  `TextRenderer` (fonte pixel embutida, mundo ou HUD), `SceneExit` (transição de fase),
+  `UiAnchor` (âncora de HUD), `UiButton` (botão clicável), `ParallaxLayer` (fundo com
+  profundidade), `TimerComponent` (timer com mensagem).
 - **Fixo na tela (HUD)**: qualquer objeto (com seus filhos e componentes — sprite, texto,
   barra de vida) pode ser marcado para não andar com a câmera, com a posição virando
   coordenada de tela.
+- **Sistema de UI**: âncoras em relação às bordas da tela e botões clicáveis (mouse/toque)
+  que disparam mensagens no barramento; funciona no jogo e no play do editor.
+- **Camadas de render** (grossas, antes do z-order) e **parallax de fundo** por eixo.
+- **Colisão direto do tilemap** (tiles sólidos por célula, opcionalmente por camada).
+- Sistemas de runtime: `SaveGame` (salvar/carregar progresso, JSON), `Scheduler`
+  (timers/coroutines por tempo para scripts), `ObjectPool` (reaproveitar objetos).
 - Barramento de mensagens (sinais de jogo); z-order global; input mapeável por ações
-  (teclado + gamepad); play restaurável; hot-reload de assets; transição entre fases.
+  (teclado + gamepad + mouse/toque); play restaurável; hot-reload de assets; transição
+  entre fases.
 - Editor: fatiador de sprite sheet por grade; adição de componentes por dropdown.
 
 ### Editor (Avalonia, cross-platform)
@@ -44,9 +53,8 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Camadas de render** além do z-order por objeto (Godot `CanvasLayer`, Unity Sorting Layers).
-- **Parallax nativo** (Godot `ParallaxBackground`).
 - **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D).
+- **Layout de UI** com contêineres/menus além de âncoras e botões (Godot `Control`, Unity UGUI).
 
 ### Animação
 - **Máquina de estados genérica** com parâmetros/transições/blend além do controlador
@@ -57,17 +65,9 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
 ### Física
 - **Física 2D com corpos rígidos, rotação, joints, raycast e camadas de colisão** —
   Godot/Unity usam Box2D/Chipmunk; no MonoGame há Aether.Physics2D.
-- **Colisão direto do tilemap** (Godot TileMap physics, Tiled collision).
-
-### UI
-- **Sistema de UI** com botões, âncoras, layout e menus além do texto/HUD atual
-  (Godot `Control`, Unity UGUI).
 
 ### Sistemas de jogo
-- **Salvar/carregar progresso** (save game).
 - **Recursos data-driven** para catálogos (Unity `ScriptableObject`, Godot `Resource`).
-- **Timers/coroutines** (Godot `Timer`/await).
-- **Object pooling**.
 - **Prefabs aninhados com overrides** (cenas-como-prefab de Unity/Godot).
 
 ### Scripting e build
