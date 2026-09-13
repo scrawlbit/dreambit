@@ -22,6 +22,7 @@ namespace DreamBit.Engine.Scripting
             "using DreamBit.Engine.Elements;\n" +
             "using DreamBit.Engine.Scripting;\n" +
             "using DreamBit.Engine.Diagnostics;\n" +
+            "using Scrawlbit;\n" +
             "using Microsoft.Xna.Framework;\n";
 
         public static (IGameScript? Script, string? Error) Compile(string source)
@@ -43,9 +44,24 @@ namespace DreamBit.Engine.Scripting
             {
                 var tree = CSharpSyntaxTree.ParseText(Header + source);
 
+                // Assemblies âncora garantem que os namespaces do header sempre resolvam,
+                // mesmo que a assembly ainda não tenha sido carregada no domínio.
+                var anchors = new[]
+                {
+                    typeof(object).Assembly,
+                    typeof(Enumerable).Assembly,
+                    typeof(Microsoft.Xna.Framework.Vector2).Assembly,
+                    typeof(Elements.GameObject).Assembly,          // DreamBit.Engine
+                    typeof(Diagnostics.EngineLog).Assembly,        // DreamBit.Engine (mesmo assembly)
+                    typeof(Scrawlbit.Mathf).Assembly,              // Scrawlbit (helpers compartilhados)
+                };
+
                 var references = AppDomain.CurrentDomain.GetAssemblies()
+                    .Concat(anchors)
                     .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
-                    .Select(a => (MetadataReference)MetadataReference.CreateFromFile(a.Location))
+                    .Select(a => a.Location)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Select(location => (MetadataReference)MetadataReference.CreateFromFile(location))
                     .ToList();
 
                 var compilation = CSharpCompilation.Create(

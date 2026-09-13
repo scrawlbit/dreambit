@@ -36,4 +36,9 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Helpers genéricos compartilhados (engine + jogo + scripts). -->
+    <ProjectReference Include="..\Scrawlbit\Scrawlbit.csproj" />
+  </ItemGroup>
+
 </Project>

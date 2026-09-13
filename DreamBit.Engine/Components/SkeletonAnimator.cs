@@ -66,7 +66,7 @@ namespace DreamBit.Engine.Components
         /// (substitui um keyframe existente no mesmo tempo). Retorna o keyframe.</summary>
         public PoseKeyframe CaptureKeyframe(float time)
         {
-            time = Math.Clamp(time, 0f, _duration);
+            time = Scrawlbit.Mathf.Clamp(time, 0f, _duration);
             var bones = new Dictionary<string, BonePose>();
             foreach (var (name, obj) in RigBones())
             {
@@ -122,7 +122,7 @@ namespace DreamBit.Engine.Components
         /// <summary>Define o tempo e aplica a pose interpolada (preview/scrub no editor).</summary>
         public void SetTime(float time)
         {
-            Time = Math.Clamp(time, 0f, _duration);
+            Time = Scrawlbit.Mathf.Clamp(time, 0f, _duration);
             Sample(Time);
         }
 
@@ -165,8 +165,7 @@ namespace DreamBit.Engine.Components
                 if (time < a.Time || time > b.Time)
                     continue;
 
-                float span = b.Time - a.Time;
-                float factor = span <= 0f ? 0f : (time - a.Time) / span;
+                float factor = Scrawlbit.Mathf.InverseLerp(a.Time, b.Time, time);
 
                 var result = new Dictionary<string, BonePose>();
                 foreach (var (name, poseA) in a.Bones)
