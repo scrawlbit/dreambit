@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DreamBit.Engine.Notification;
@@ -148,8 +149,28 @@ namespace DreamBit.Engine.Elements
 
         public void Draw(ISceneDrawing drawing)
         {
-            foreach (var gameObject in _objects)
-                gameObject.Draw(drawing);
+            // Desenha por z-order global (SortOrder), estável: empates mantêm a ordem da cena.
+            foreach (var obj in VisibleInDrawOrder())
+                obj.DrawSelf(drawing);
+        }
+
+        /// <summary>Objetos visíveis (respeitando ancestrais), ordenados por SortOrder.</summary>
+        public IEnumerable<GameObject> VisibleInDrawOrder()
+        {
+            var flat = new List<GameObject>();
+            Collect(_objects, flat);
+            return flat.OrderBy(o => o.SortOrder);
+
+            static void Collect(IEnumerable<GameObject> objects, List<GameObject> into)
+            {
+                foreach (var obj in objects)
+                {
+                    if (!obj.IsVisible)
+                        continue; // subárvore invisível não desenha
+                    into.Add(obj);
+                    Collect(obj.Children, into);
+                }
+            }
         }
     }
 }

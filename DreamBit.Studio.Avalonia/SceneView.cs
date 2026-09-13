@@ -59,11 +59,8 @@ namespace DreamBit.Studio.Avalonia
             {
                 DrawGrid(context, w, h);
 
-                foreach (var obj in Flatten(_editor.Scene.Objects))
+                foreach (var obj in _editor.Scene.VisibleInDrawOrder())
                 {
-                    if (!obj.IsVisible)
-                        continue;
-
                     var vsize = SceneRenderer.GetVisualSize(obj);
                     var rect = new Rect(-vsize.X / 2, -vsize.Y / 2, vsize.X, vsize.Y);
 

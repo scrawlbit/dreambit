@@ -14,6 +14,7 @@ namespace DreamBit.Engine.Elements
     {
         private string _name = "GameObject";
         private string _tag = string.Empty;
+        private int _sortOrder;
         private bool _isVisible = true;
         private bool _isSelected;
         private bool _isExpanded = true;
@@ -67,6 +68,13 @@ namespace DreamBit.Engine.Elements
         /// <summary>True se o objeto tem a tag informada (comparação exata, sem diferenciar caixa).</summary>
         public bool HasTag(string tag) => !string.IsNullOrEmpty(tag)
             && string.Equals(_tag, tag, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Ordem de desenho (z-order): menor desenha atrás, maior na frente. Padrão 0.</summary>
+        public int SortOrder
+        {
+            get => _sortOrder;
+            set => Set(ref _sortOrder, value);
+        }
 
         public bool IsVisible
         {
@@ -151,6 +159,14 @@ namespace DreamBit.Engine.Elements
 
             foreach (var child in _children)
                 child.Draw(drawing);
+        }
+
+        /// <summary>Desenha só os componentes deste objeto (sem recorrer aos filhos) — usado
+        /// pela ordenação global de z-order.</summary>
+        internal void DrawSelf(ISceneDrawing drawing)
+        {
+            foreach (var component in _components)
+                component.Draw(drawing);
         }
     }
 }

@@ -269,8 +269,16 @@
                         <!-- Transform -->
                         <TextBlock Classes="field" Text="Nome" />
                         <TextBox Text="{Binding Name, Mode=TwoWay}" />
-                        <TextBlock Classes="field" Text="Tag (ex.: Player, Enemy, Hazard)" />
-                        <TextBox Text="{Binding Tag, Mode=TwoWay}" />
+                        <Grid ColumnDefinitions="*,6,Auto">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Classes="field" Text="Tag (ex.: Player, Enemy, Hazard)" />
+                                <TextBox Text="{Binding Tag, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Width="70">
+                                <TextBlock Classes="field" Text="Z-order" />
+                                <TextBox Text="{Binding SortOrder, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Grid>
                         <Grid ColumnDefinitions="*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Posição X" />
@@ -296,24 +304,25 @@
                             </StackPanel>
                         </Grid>
 
-                        <!-- Adicionar componente -->
+                        <!-- Adicionar componente (dropdown) -->
                         <TextBlock Classes="field" Text="Adicionar componente" Margin="0,10,0,2" />
-                        <WrapPanel>
-                            <Button Content="Sprite" Click="OnAddSprite" Margin="0,0,4,4" />
-                            <Button Content="Animator" Click="OnAddAnimator" Margin="0,0,4,4" />
-                            <Button Content="Platformer" Click="OnAddPlatformer" Margin="0,0,4,4" />
-                            <Button Content="Colisor" Click="OnAddCollider" Margin="0,0,4,4" />
-                            <Button Content="Áudio" Click="OnAddAudio" Margin="0,0,4,4" />
-                            <Button Content="Partículas" Click="OnAddParticles" Margin="0,0,4,4" />
-                            <Button Content="Trigger" Click="OnAddTrigger" Margin="0,0,4,4" />
-                            <Button Content="Mensagem" Click="OnAddMessageListener" Margin="0,0,4,4" />
-                            <Button Content="Câmera" Click="OnAddCamera" Margin="0,0,4,4" />
-                            <Button Content="Follow" Click="OnAddFollow" Margin="0,0,4,4" />
-                            <Button Content="Rotator" Click="OnAddRotator" Margin="0,0,4,4" />
-                            <Button Content="Bone" Click="OnAddBone" Margin="0,0,4,4" />
-                            <Button Content="Skeleton" Click="OnAddSkeleton" Margin="0,0,4,4" />
-                            <Button Content="Script" Click="OnAddScript" Margin="0,0,4,4" />
-                        </WrapPanel>
+                        <ComboBox x:Name="AddComponentBox" HorizontalAlignment="Stretch"
+                                  PlaceholderText="Escolher componente…" SelectionChanged="OnAddComponentSelected">
+                            <ComboBoxItem>Sprite</ComboBoxItem>
+                            <ComboBoxItem>Animator</ComboBoxItem>
+                            <ComboBoxItem>Platformer</ComboBoxItem>
+                            <ComboBoxItem>Colisor</ComboBoxItem>
+                            <ComboBoxItem>Câmera</ComboBoxItem>
+                            <ComboBoxItem>Áudio</ComboBoxItem>
+                            <ComboBoxItem>Partículas</ComboBoxItem>
+                            <ComboBoxItem>Trigger</ComboBoxItem>
+                            <ComboBoxItem>Mensagem</ComboBoxItem>
+                            <ComboBoxItem>Follow</ComboBoxItem>
+                            <ComboBoxItem>Rotator</ComboBoxItem>
+                            <ComboBoxItem>Bone</ComboBoxItem>
+                            <ComboBoxItem>Skeleton</ComboBoxItem>
+                            <ComboBoxItem>Script</ComboBoxItem>
+                        </ComboBox>
 
                         <!-- Sprite -->
                         <Border Classes="component" IsVisible="{Binding HasSprite}">

@@ -893,7 +893,7 @@ namespace DreamBit.Studio.ViewModels
 
         private static GameObject Clone(GameObject src)
         {
-            var clone = new GameObject(src.Name + " (cópia)") { Tag = src.Tag };
+            var clone = new GameObject(src.Name + " (cópia)") { Tag = src.Tag, SortOrder = src.SortOrder };
             clone.Transform.Position = src.Transform.Position + new Vector2(16, 16);
             clone.Transform.Rotation = src.Transform.Rotation;
             clone.Transform.Scale = src.Transform.Scale;

@@ -30,6 +30,7 @@ namespace DreamBit.Engine.Serialization
         public Guid Id { get; set; }
         public string Name { get; set; } = "GameObject";
         public string Tag { get; set; } = "";
+        public int SortOrder { get; set; }
         public bool IsVisible { get; set; } = true;
         public float PositionX { get; set; }
         public float PositionY { get; set; }

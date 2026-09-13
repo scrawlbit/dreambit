@@ -468,6 +468,35 @@ namespace DreamBit.Studio.Avalonia
 
         // ---- adicionar componentes ----
 
+        private void OnAddComponentSelected(object? sender, SelectionChangedEventArgs e)
+        {
+            if (sender is not ComboBox box || box.SelectedItem is not ComboBoxItem item)
+                return;
+
+            System.Action? add = (item.Content as string) switch
+            {
+                "Sprite" => _editor.AddSprite,
+                "Animator" => _editor.AddAnimator,
+                "Platformer" => _editor.AddPlatformer,
+                "Colisor" => _editor.AddCollider,
+                "Câmera" => _editor.AddCamera,
+                "Áudio" => _editor.AddAudio,
+                "Partículas" => _editor.AddParticles,
+                "Trigger" => _editor.AddTrigger,
+                "Mensagem" => _editor.AddMessageListener,
+                "Follow" => _editor.AddFollow,
+                "Rotator" => _editor.AddRotator,
+                "Bone" => _editor.AddBone,
+                "Skeleton" => _editor.AddSkeleton,
+                "Script" => _editor.AddScript,
+                _ => null
+            };
+
+            box.SelectedItem = null; // volta ao placeholder (re-entra com null e sai)
+            if (add != null)
+                AddComponent(add);
+        }
+
         private void OnAddSprite(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddSprite);
         private void OnAddAnimator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddAnimator);
         private void OnAddPlatformer(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddPlatformer);

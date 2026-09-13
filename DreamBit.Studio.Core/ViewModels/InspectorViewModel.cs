@@ -51,6 +51,13 @@ namespace DreamBit.Studio.ViewModels
             set { if (_target != null) { _target.Tag = value; OnPropertyChanged(); } }
         }
 
+        /// <summary>Ordem de desenho (z-order): menor atrás, maior na frente.</summary>
+        public int SortOrder
+        {
+            get => _target?.SortOrder ?? 0;
+            set { if (_target != null) { _target.SortOrder = value; OnPropertyChanged(); } }
+        }
+
         public float PositionX
         {
             get => _target?.Transform.Position.X ?? 0f;
@@ -650,6 +657,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasTarget));
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(Tag));
+            OnPropertyChanged(nameof(SortOrder));
             OnPropertyChanged(nameof(PositionX));
             OnPropertyChanged(nameof(PositionY));
             OnPropertyChanged(nameof(RotationDegrees));
