@@ -99,8 +99,11 @@ namespace DreamBit.Engine.Components
 
         private void FireFrameEvent(int frame)
         {
-            if (_frameEvents.TryGetValue(frame, out var name))
-                AnimationEvent?.Invoke(name);
+            if (!_frameEvents.TryGetValue(frame, out var name))
+                return;
+
+            AnimationEvent?.Invoke(name);
+            Owner?.Scene?.Send(name, Owner); // encaminha ao barramento de eventos da cena
         }
 
         protected internal override void Update(GameTime gameTime)

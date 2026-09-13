@@ -453,6 +453,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnAddAudio(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddAudio);
         private void OnAddParticles(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddParticles);
         private void OnAddTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddTrigger);
+        private void OnAddMessageListener(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddMessageListener);
         private void OnAddFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddFollow);
         private void OnAddRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddRotator);
         private void OnAddBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddBone);
@@ -467,6 +468,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveAudio(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAudio);
         private void OnRemoveParticles(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParticles);
         private void OnRemoveTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTrigger);
+        private void OnRemoveMessageListener(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveMessageListener);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

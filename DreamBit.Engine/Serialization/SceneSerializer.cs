@@ -237,7 +237,14 @@ namespace DreamBit.Engine.Serialization
                         G = trigger.Color.G,
                         B = trigger.Color.B,
                         TargetTag = trigger.TargetTag,
-                        DestroyOnEnter = trigger.DestroyOnEnter
+                        DestroyOnEnter = trigger.DestroyOnEnter,
+                        SendOnEnter = trigger.SendOnEnter
+                    });
+                else if (component is MessageListener listener)
+                    data.MessageListeners.Add(new MessageListenerData
+                    {
+                        Message = listener.Message,
+                        Reaction = (int)listener.Reaction
                     });
                 else if (component is ScriptComponent script)
                     data.Scripts.Add(new ScriptData { Source = script.Source });
@@ -376,7 +383,8 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(trigger.Width, trigger.Height),
                     Color = new Color(trigger.R, trigger.G, trigger.B),
                     TargetTag = trigger.TargetTag,
-                    DestroyOnEnter = trigger.DestroyOnEnter
+                    DestroyOnEnter = trigger.DestroyOnEnter,
+                    SendOnEnter = trigger.SendOnEnter
                 });
 
             foreach (var script in data.Scripts)
@@ -390,6 +398,13 @@ namespace DreamBit.Engine.Serialization
                     RestRotation = bone.RestRotation,
                     RestScale = new Vector2(bone.RestScaleX, bone.RestScaleY),
                     HasRestPose = bone.HasRestPose
+                });
+
+            foreach (var listener in data.MessageListeners)
+                obj.AddComponent(new MessageListener
+                {
+                    Message = listener.Message,
+                    Reaction = (MessageReaction)listener.Reaction
                 });
 
             foreach (var skel in data.Skeletons)

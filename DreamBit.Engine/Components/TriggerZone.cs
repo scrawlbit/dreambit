@@ -18,6 +18,7 @@ namespace DreamBit.Engine.Components
         private Color _color = new(120, 230, 150);
         private string _targetTag = "Player";
         private bool _destroyOnEnter = true;
+        private string _sendOnEnter = string.Empty;
 
         private readonly HashSet<GameObject> _inside = new();
         private bool _consumed;
@@ -32,6 +33,9 @@ namespace DreamBit.Engine.Components
 
         /// <summary>Se true, a zona some ao ser tocada (coletável). Se false, é persistente.</summary>
         public bool DestroyOnEnter { get => _destroyOnEnter; set => Set(ref _destroyOnEnter, value); }
+
+        /// <summary>Mensagem enviada à cena ao ser tocada (vazio = nenhuma). Barramento de eventos.</summary>
+        public string SendOnEnter { get => _sendOnEnter; set => Set(ref _sendOnEnter, value ?? string.Empty); }
 
         /// <summary>Disparado quando um objeto com a tag alvo entra na zona.</summary>
         public event Action<GameObject>? Entered;
@@ -70,6 +74,8 @@ namespace DreamBit.Engine.Components
                     continue;
 
                 Entered?.Invoke(candidate);
+                if (!string.IsNullOrEmpty(_sendOnEnter))
+                    scene.Send(_sendOnEnter, Owner);
 
                 if (_destroyOnEnter)
                 {

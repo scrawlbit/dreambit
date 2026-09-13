@@ -10,4 +10,13 @@ namespace DreamBit.Engine.Scripting
     {
         void Update(GameObject self, float deltaSeconds);
     }
+
+    /// <summary>
+    /// Opcional: um script que também reage a mensagens da cena (barramento de eventos).
+    /// Implemente junto com <see cref="IGameScript"/> para tratar <c>OnMessage</c>.
+    /// </summary>
+    public interface IMessageScript
+    {
+        void OnMessage(GameObject self, string message);
+    }
 }

@@ -48,6 +48,7 @@ namespace DreamBit.Engine.Serialization
         public List<ScriptData> Scripts { get; set; } = new();
         public List<BoneData> Bones { get; set; } = new();
         public List<SkeletonData> Skeletons { get; set; } = new();
+        public List<MessageListenerData> MessageListeners { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -65,6 +66,13 @@ namespace DreamBit.Engine.Serialization
         public byte B { get; set; } = 150;
         public string TargetTag { get; set; } = "Player";
         public bool DestroyOnEnter { get; set; } = true;
+        public string SendOnEnter { get; set; } = "";
+    }
+
+    public sealed class MessageListenerData
+    {
+        public string Message { get; set; } = "evento";
+        public int Reaction { get; set; } // MessageReaction
     }
 
     public sealed class FollowData

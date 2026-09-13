@@ -803,6 +803,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(bone);
         }
 
+        public void AddMessageListener()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<MessageListener>().Any())
+                return;
+
+            var listener = new MessageListener();
+            History.Do(new EditorAction("Adicionar Message Listener",
+                doAction: () => obj.AddComponent(listener),
+                undoAction: () => obj.RemoveComponent(listener)));
+        }
+
+        public void RemoveMessageListener()
+        {
+            var listener = SelectedObject?.Components.OfType<MessageListener>().FirstOrDefault();
+            if (listener != null)
+                RemoveComponent(listener);
+        }
+
         public void AddSkeleton()
         {
             var obj = SelectedObject;
@@ -890,8 +909,11 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new TriggerZone
                         {
                             Size = tz.Size, Color = tz.Color,
-                            TargetTag = tz.TargetTag, DestroyOnEnter = tz.DestroyOnEnter
+                            TargetTag = tz.TargetTag, DestroyOnEnter = tz.DestroyOnEnter, SendOnEnter = tz.SendOnEnter
                         });
+                        break;
+                    case MessageListener ml:
+                        clone.AddComponent(new MessageListener { Message = ml.Message, Reaction = ml.Reaction });
                         break;
                     case ScriptComponent sc:
                         clone.AddComponent(new ScriptComponent { Source = sc.Source });

@@ -84,10 +84,51 @@ namespace DreamBit.Engine.Elements
                 gameObject.StartPlay();
         }
 
+        // ---- barramento de mensagens (eventos de jogo) ----
+        private readonly System.Collections.Generic.Queue<Messaging.GameMessage> _messages = new();
+
+        /// <summary>Disparado quando qualquer mensagem é despachada (para logs/observadores).</summary>
+        public event System.Action<Messaging.GameMessage>? MessageSent;
+
+        /// <summary>Enfileira uma mensagem nomeada; será despachada no próximo Update.</summary>
+        public void Send(string name, GameObject? sender = null)
+        {
+            if (!string.IsNullOrEmpty(name))
+                _messages.Enqueue(new Messaging.GameMessage(name, sender));
+        }
+
         public void Update(GameTime gameTime)
         {
             foreach (var gameObject in _objects)
                 gameObject.Update(gameTime);
+
+            DispatchMessages();
+        }
+
+        private void DispatchMessages()
+        {
+            // Snapshot dos receptores antes de despachar (mensagens podem alterar a cena).
+            int guard = 0;
+            while (_messages.Count > 0 && guard++ < 1000)
+            {
+                var message = _messages.Dequeue();
+                MessageSent?.Invoke(message);
+                foreach (var obj in AllObjects(_objects))
+                    foreach (var component in obj.Components.ToArray())
+                        if (component is Messaging.IMessageReceiver receiver)
+                            receiver.OnMessage(message);
+            }
+        }
+
+        private static System.Collections.Generic.IEnumerable<GameObject> AllObjects(
+            System.Collections.Generic.IEnumerable<GameObject> objects)
+        {
+            foreach (var obj in objects.ToArray())
+            {
+                yield return obj;
+                foreach (var child in AllObjects(obj.Children))
+                    yield return child;
+            }
         }
 
         public void Draw(ISceneDrawing drawing)

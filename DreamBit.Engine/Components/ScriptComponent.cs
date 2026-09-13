@@ -1,6 +1,7 @@
 using System;
 using DreamBit.Engine.Diagnostics;
 using DreamBit.Engine.Elements;
+using DreamBit.Engine.Messaging;
 using DreamBit.Engine.Scripting;
 using Microsoft.Xna.Framework;
 
@@ -10,7 +11,7 @@ namespace DreamBit.Engine.Components
     /// Componente de script: compila em runtime (Roslyn) uma classe C# do usuário que
     /// implementa IGameScript e chama Update a cada frame no play. (Marco 3.)
     /// </summary>
-    public sealed class ScriptComponent : SceneComponent
+    public sealed class ScriptComponent : SceneComponent, IMessageReceiver
     {
         public const string DefaultSource =
             "public class Script : IGameScript\n" +
@@ -83,6 +84,27 @@ namespace DreamBit.Engine.Components
                 // Loga uma vez e desliga o script para não inundar o console a cada frame.
                 _runtimeFaulted = true;
                 EngineLog.Error($"Script '{Owner?.Name}': exceção em runtime — {ex.Message}");
+            }
+        }
+
+        public void OnMessage(GameMessage message)
+        {
+            if (_runtimeFaulted)
+                return;
+            if (!_compiled)
+                Compile();
+
+            if (_instance is IMessageScript handler)
+            {
+                try
+                {
+                    handler.OnMessage(Owner, message.Name);
+                }
+                catch (Exception ex)
+                {
+                    _runtimeFaulted = true;
+                    EngineLog.Error($"Script '{Owner?.Name}': exceção em OnMessage — {ex.Message}");
+                }
             }
         }
     }

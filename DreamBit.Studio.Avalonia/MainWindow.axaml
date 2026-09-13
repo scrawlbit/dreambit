@@ -305,6 +305,7 @@
                             <Button Content="Áudio" Click="OnAddAudio" Margin="0,0,4,4" />
                             <Button Content="Partículas" Click="OnAddParticles" Margin="0,0,4,4" />
                             <Button Content="Trigger" Click="OnAddTrigger" Margin="0,0,4,4" />
+                            <Button Content="Mensagem" Click="OnAddMessageListener" Margin="0,0,4,4" />
                             <Button Content="Follow" Click="OnAddFollow" Margin="0,0,4,4" />
                             <Button Content="Rotator" Click="OnAddRotator" Margin="0,0,4,4" />
                             <Button Content="Bone" Click="OnAddBone" Margin="0,0,4,4" />
@@ -510,6 +511,24 @@
                                 <TextBlock Classes="field" Text="Tag que dispara" />
                                 <TextBox Text="{Binding TriggerTargetTag, Mode=TwoWay}" />
                                 <CheckBox Content="Some ao tocar (coletável)" IsChecked="{Binding TriggerDestroyOnEnter, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <TextBlock Classes="field" Text="Enviar mensagem ao tocar (vazio = nenhuma)" />
+                                <TextBox Text="{Binding TriggerSendOnEnter, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Message Listener -->
+                        <Border Classes="component" IsVisible="{Binding HasListener}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Message Listener" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveMessageListener" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Escutar a mensagem" />
+                                <TextBox Text="{Binding ListenerMessage, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Reação" />
+                                <ComboBox ItemsSource="{Binding ListenerReactions}"
+                                          SelectedItem="{Binding ListenerReaction, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                                <TextBlock Classes="field" Text="(scripts com IMessageScript também recebem)" />
                             </StackPanel>
                         </Border>
 

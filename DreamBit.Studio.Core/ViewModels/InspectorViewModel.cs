@@ -294,6 +294,29 @@ namespace DreamBit.Studio.ViewModels
             get => Trigger?.TargetTag ?? string.Empty;
             set { var t = Trigger; if (t != null) t.TargetTag = value; }
         }
+        public string TriggerSendOnEnter
+        {
+            get => Trigger?.SendOnEnter ?? string.Empty;
+            set { var t = Trigger; if (t != null) t.SendOnEnter = value; }
+        }
+
+        // ---- Componente MessageListener (barramento de eventos) ----
+
+        private MessageListener? Listener => _target?.Components.OfType<MessageListener>().FirstOrDefault();
+        public bool HasListener => Listener != null;
+
+        public string ListenerMessage
+        {
+            get => Listener?.Message ?? string.Empty;
+            set { var l = Listener; if (l != null) l.Message = value; }
+        }
+        public MessageReaction ListenerReaction
+        {
+            get => Listener?.Reaction ?? MessageReaction.None;
+            set { var l = Listener; if (l != null) l.Reaction = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<MessageReaction> ListenerReactions { get; }
+            = Scrawlbit.EnumHelper.Values<MessageReaction>();
         public bool TriggerDestroyOnEnter
         {
             get => Trigger?.DestroyOnEnter ?? false;
@@ -511,6 +534,10 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(TriggerHeight));
             OnPropertyChanged(nameof(TriggerTargetTag));
             OnPropertyChanged(nameof(TriggerDestroyOnEnter));
+            OnPropertyChanged(nameof(TriggerSendOnEnter));
+            OnPropertyChanged(nameof(HasListener));
+            OnPropertyChanged(nameof(ListenerMessage));
+            OnPropertyChanged(nameof(ListenerReaction));
             OnPropertyChanged(nameof(HasFollow));
             OnPropertyChanged(nameof(FollowTargetObject));
             OnPropertyChanged(nameof(FollowSpeed));
