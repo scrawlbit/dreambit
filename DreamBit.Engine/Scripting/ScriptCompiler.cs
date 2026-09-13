@@ -27,6 +27,7 @@ namespace DreamBit.Engine.Scripting
             "using DreamBit.Engine.Timing;\n" +
             "using DreamBit.Engine.Pooling;\n" +
             "using DreamBit.Engine.Localization;\n" +
+            "using DreamBit.Engine.Data;\n" +
             "using Scrawlbit;\n" +
             "using Microsoft.Xna.Framework;\n";
 
