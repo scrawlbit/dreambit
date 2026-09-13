@@ -898,6 +898,46 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(camera);
         }
 
+        public void AddUiAnchor()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<UiAnchor>().Any())
+                return;
+
+            var anchor = new UiAnchor();
+            History.Do(new EditorAction("Adicionar UI Anchor",
+                doAction: () => obj.AddComponent(anchor),
+                undoAction: () => obj.RemoveComponent(anchor)));
+        }
+
+        public void RemoveUiAnchor()
+        {
+            var anchor = SelectedObject?.Components.OfType<UiAnchor>().FirstOrDefault();
+            if (anchor != null)
+                RemoveComponent(anchor);
+        }
+
+        public void AddUiButton()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<UiButton>().Any())
+                return;
+
+            // Botão só faz sentido em HUD: marca o objeto como fixo na tela ao adicionar.
+            var button = new UiButton();
+            bool wasScreenSpace = obj.ScreenSpace;
+            History.Do(new EditorAction("Adicionar UI Button",
+                doAction: () => { obj.ScreenSpace = true; obj.AddComponent(button); },
+                undoAction: () => { obj.RemoveComponent(button); obj.ScreenSpace = wasScreenSpace; }));
+        }
+
+        public void RemoveUiButton()
+        {
+            var button = SelectedObject?.Components.OfType<UiButton>().FirstOrDefault();
+            if (button != null)
+                RemoveComponent(button);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -1003,6 +1043,16 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case AnimatorController ac:
                         clone.AddComponent(new AnimatorController { IdleClip = ac.IdleClip, WalkClip = ac.WalkClip, JumpClip = ac.JumpClip });
+                        break;
+                    case UiAnchor an:
+                        clone.AddComponent(new UiAnchor { Anchor = an.Anchor, OffsetX = an.OffsetX, OffsetY = an.OffsetY });
+                        break;
+                    case UiButton bt:
+                        clone.AddComponent(new UiButton
+                        {
+                            Width = bt.Width, Height = bt.Height,
+                            Normal = bt.Normal, Hover = bt.Hover, Pressed = bt.Pressed, SendOnClick = bt.SendOnClick
+                        });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

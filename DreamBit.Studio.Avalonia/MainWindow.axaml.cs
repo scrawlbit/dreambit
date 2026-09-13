@@ -60,7 +60,12 @@ namespace DreamBit.Studio.Avalonia
             _lastTick = now;
 
             if (_editor.IsPlaying)
+            {
+                var scene = this.FindControl<SceneView>("Scene");
+                if (scene != null)
+                    DreamBit.Engine.Input.Input.SetPointer(scene.PointerScreen, scene.PointerIsDown);
                 _editor.Scene.Update(new XnaGameTime(TimeSpan.Zero, dt));
+            }
 
             InvalidateScene();
         }
@@ -493,6 +498,8 @@ namespace DreamBit.Studio.Avalonia
                 "Bone" => _editor.AddBone,
                 "Skeleton" => _editor.AddSkeleton,
                 "Animator Controller" => _editor.AddAnimatorController,
+                "UI Anchor" => _editor.AddUiAnchor,
+                "UI Button" => _editor.AddUiButton,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -531,6 +538,8 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveText(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveText);
         private void OnRemoveTween(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTween);
         private void OnRemoveAnimatorController(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAnimatorController);
+        private void OnRemoveUiAnchor(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiAnchor);
+        private void OnRemoveUiButton(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiButton);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

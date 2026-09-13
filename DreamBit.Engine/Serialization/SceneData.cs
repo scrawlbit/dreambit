@@ -57,6 +57,8 @@ namespace DreamBit.Engine.Serialization
         public List<TextData> Texts { get; set; } = new();
         public List<TweenData> Tweens { get; set; } = new();
         public List<AnimatorControllerData> AnimatorControllers { get; set; } = new();
+        public List<UiAnchorData> Anchors { get; set; } = new();
+        public List<UiButtonData> Buttons { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -153,6 +155,23 @@ namespace DreamBit.Engine.Serialization
         public int Easing { get; set; } = 3; // InOut
         public int Loop { get; set; } = 2; // PingPong
         public bool PlayOnStart { get; set; } = true;
+    }
+
+    public sealed class UiAnchorData
+    {
+        public int Anchor { get; set; } // AnchorPoint (0 = TopLeft)
+        public float OffsetX { get; set; }
+        public float OffsetY { get; set; }
+    }
+
+    public sealed class UiButtonData
+    {
+        public float Width { get; set; } = 160f;
+        public float Height { get; set; } = 48f;
+        public byte NR { get; set; } = 60; public byte NG { get; set; } = 70; public byte NB { get; set; } = 90;
+        public byte HR { get; set; } = 90; public byte HG { get; set; } = 110; public byte HB { get; set; } = 150;
+        public byte PR { get; set; } = 40; public byte PG { get; set; } = 50; public byte PB { get; set; } = 70;
+        public string SendOnClick { get; set; } = "click";
     }
 
     public sealed class TextData

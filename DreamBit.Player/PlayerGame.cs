@@ -49,7 +49,8 @@ namespace DreamBit.Player
 
         protected override void Update(GameTime gameTime)
         {
-            DreamBit.Engine.Input.Input.Update(); // snapshot de teclado/gamepad do frame
+            DreamBit.Engine.Rendering.Screen.Set(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            DreamBit.Engine.Input.Input.Update(); // snapshot de teclado/gamepad/mouse do frame
             _scene.Update(gameTime);
 
             // Transição de fase: um SceneExit pediu para carregar outra cena.

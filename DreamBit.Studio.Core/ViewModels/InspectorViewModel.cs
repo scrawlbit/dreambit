@@ -452,6 +452,53 @@ namespace DreamBit.Studio.ViewModels
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
 
+        // ---- Componente UiAnchor (âncora de HUD) ----
+
+        private UiAnchor? Anchor => _target?.Components.OfType<UiAnchor>().FirstOrDefault();
+        public bool HasAnchor => Anchor != null;
+
+        public AnchorPoint AnchorPointValue
+        {
+            get => Anchor?.Anchor ?? AnchorPoint.TopLeft;
+            set { var a = Anchor; if (a != null) a.Anchor = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<AnchorPoint> AnchorPoints { get; }
+            = Scrawlbit.EnumHelper.Values<AnchorPoint>();
+        public float AnchorOffsetX
+        {
+            get => Anchor?.OffsetX ?? 0f;
+            set { var a = Anchor; if (a != null) a.OffsetX = value; }
+        }
+        public float AnchorOffsetY
+        {
+            get => Anchor?.OffsetY ?? 0f;
+            set { var a = Anchor; if (a != null) a.OffsetY = value; }
+        }
+
+        // ---- Componente UiButton (botão de UI) ----
+
+        private UiButton? Button => _target?.Components.OfType<UiButton>().FirstOrDefault();
+        public bool HasButton => Button != null;
+
+        public float ButtonWidth
+        {
+            get => Button?.Width ?? 160f;
+            set { var b = Button; if (b != null) b.Width = value; }
+        }
+        public float ButtonHeight
+        {
+            get => Button?.Height ?? 48f;
+            set { var b = Button; if (b != null) b.Height = value; }
+        }
+        public string ButtonSendOnClick
+        {
+            get => Button?.SendOnClick ?? string.Empty;
+            set { var b = Button; if (b != null) b.SendOnClick = value; }
+        }
+        public int ButtonR { get => Button?.Normal.R ?? 60; set { var b = Button; if (b != null) b.Normal = new Color((byte)Clamp(value), b.Normal.G, b.Normal.B); } }
+        public int ButtonG { get => Button?.Normal.G ?? 70; set { var b = Button; if (b != null) b.Normal = new Color(b.Normal.R, (byte)Clamp(value), b.Normal.B); } }
+        public int ButtonB { get => Button?.Normal.B ?? 90; set { var b = Button; if (b != null) b.Normal = new Color(b.Normal.R, b.Normal.G, (byte)Clamp(value)); } }
+
         // ---- Componente MessageListener (barramento de eventos) ----
 
         private MessageListener? Listener => _target?.Components.OfType<MessageListener>().FirstOrDefault();
@@ -792,6 +839,17 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(CameraSmoothTime));
             OnPropertyChanged(nameof(CameraZoom));
             OnPropertyChanged(nameof(CameraUseBounds));
+            OnPropertyChanged(nameof(HasAnchor));
+            OnPropertyChanged(nameof(AnchorPointValue));
+            OnPropertyChanged(nameof(AnchorOffsetX));
+            OnPropertyChanged(nameof(AnchorOffsetY));
+            OnPropertyChanged(nameof(HasButton));
+            OnPropertyChanged(nameof(ButtonWidth));
+            OnPropertyChanged(nameof(ButtonHeight));
+            OnPropertyChanged(nameof(ButtonSendOnClick));
+            OnPropertyChanged(nameof(ButtonR));
+            OnPropertyChanged(nameof(ButtonG));
+            OnPropertyChanged(nameof(ButtonB));
             OnPropertyChanged(nameof(HasFollow));
             OnPropertyChanged(nameof(FollowTargetObject));
             OnPropertyChanged(nameof(FollowSpeed));

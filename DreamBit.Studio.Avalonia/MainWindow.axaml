@@ -326,6 +326,8 @@
                             <ComboBoxItem>Bone</ComboBoxItem>
                             <ComboBoxItem>Skeleton</ComboBoxItem>
                             <ComboBoxItem>Animator Controller</ComboBoxItem>
+                            <ComboBoxItem>UI Anchor</ComboBoxItem>
+                            <ComboBoxItem>UI Button</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -669,6 +671,59 @@
                                 </Grid>
                                 <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Anchor -->
+                        <Border Classes="component" IsVisible="{Binding HasAnchor}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Anchor" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiAnchor" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Âncora na tela" />
+                                <ComboBox ItemsSource="{Binding AnchorPoints}"
+                                          SelectedItem="{Binding AnchorPointValue, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Offset X" />
+                                        <TextBox Text="{Binding AnchorOffsetX, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Offset Y" />
+                                        <TextBox Text="{Binding AnchorOffsetY, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Prende o objeto HUD a uma borda/canto da tela (acompanha o redimensionamento)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Button -->
+                        <Border Classes="component" IsVisible="{Binding HasButton}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Button" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiButton" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding ButtonWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura" />
+                                        <TextBox Text="{Binding ButtonHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Cor (normal) R/G/B" />
+                                <Grid ColumnDefinitions="*,4,*,4,*">
+                                    <TextBox Grid.Column="0" Text="{Binding ButtonR, Mode=TwoWay}" />
+                                    <TextBox Grid.Column="2" Text="{Binding ButtonG, Mode=TwoWay}" />
+                                    <TextBox Grid.Column="4" Text="{Binding ButtonB, Mode=TwoWay}" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Enviar ao clicar (mensagem)" />
+                                <TextBox Text="{Binding ButtonSendOnClick, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="No play, clicar dispara a mensagem no barramento (um Message Listener ou script reage)." />
                             </StackPanel>
                         </Border>
 

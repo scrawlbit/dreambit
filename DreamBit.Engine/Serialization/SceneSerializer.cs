@@ -350,6 +350,23 @@ namespace DreamBit.Engine.Serialization
                         BoundsMinX = cam.BoundsMin.X, BoundsMinY = cam.BoundsMin.Y,
                         BoundsMaxX = cam.BoundsMax.X, BoundsMaxY = cam.BoundsMax.Y
                     });
+                else if (component is UiAnchor anchor)
+                    data.Anchors.Add(new UiAnchorData
+                    {
+                        Anchor = (int)anchor.Anchor,
+                        OffsetX = anchor.OffsetX,
+                        OffsetY = anchor.OffsetY
+                    });
+                else if (component is UiButton button)
+                    data.Buttons.Add(new UiButtonData
+                    {
+                        Width = button.Width,
+                        Height = button.Height,
+                        NR = button.Normal.R, NG = button.Normal.G, NB = button.Normal.B,
+                        HR = button.Hover.R, HG = button.Hover.G, HB = button.Hover.B,
+                        PR = button.Pressed.R, PG = button.Pressed.G, PB = button.Pressed.B,
+                        SendOnClick = button.SendOnClick
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -571,6 +588,25 @@ namespace DreamBit.Engine.Serialization
                     UseBounds = cam.UseBounds,
                     BoundsMin = new Vector2(cam.BoundsMinX, cam.BoundsMinY),
                     BoundsMax = new Vector2(cam.BoundsMaxX, cam.BoundsMaxY)
+                });
+
+            foreach (var anchor in data.Anchors)
+                obj.AddComponent(new UiAnchor
+                {
+                    Anchor = (AnchorPoint)anchor.Anchor,
+                    OffsetX = anchor.OffsetX,
+                    OffsetY = anchor.OffsetY
+                });
+
+            foreach (var button in data.Buttons)
+                obj.AddComponent(new UiButton
+                {
+                    Width = button.Width,
+                    Height = button.Height,
+                    Normal = new Color(button.NR, button.NG, button.NB),
+                    Hover = new Color(button.HR, button.HG, button.HB),
+                    Pressed = new Color(button.PR, button.PG, button.PB),
+                    SendOnClick = button.SendOnClick
                 });
 
             foreach (var childData in data.Children)

@@ -25,6 +25,10 @@ namespace DreamBit.Engine.Input
 
         private static KeyboardState _kbNow, _kbPrev;
         private static GamePadState _padNow, _padPrev;
+        private static MouseState _mouseNow, _mousePrev;
+        private static bool _mouseOverride;
+        private static Vector2 _mouseOverridePos;
+        private static bool _mouseOverrideDown, _mouseOverrideDownPrev;
 
         /// <summary>Snapshot do frame (chame uma vez por frame antes do Update da cena).</summary>
         public static void Update()
@@ -33,7 +37,46 @@ namespace DreamBit.Engine.Input
             _kbNow = Keyboard.GetState();
             _padPrev = _padNow;
             _padNow = GamePad.GetState(PlayerIndex.One);
+            if (!_mouseOverride)
+            {
+                _mousePrev = _mouseNow;
+                _mouseNow = Mouse.GetState();
+            }
+            // Com override (editor), o estado do ponteiro é avançado em SetPointer, não aqui.
         }
+
+        /// <summary>Ponteiro (mouse/toque) em coordenadas de tela. O host pode sobrescrever
+        /// via <see cref="SetPointer"/> (ex.: editor Avalonia, que não tem mouse do MonoGame).</summary>
+        public static Vector2 PointerPosition => _mouseOverride
+            ? _mouseOverridePos
+            : new Vector2(_mouseNow.X, _mouseNow.Y);
+
+        /// <summary>True enquanto o botão principal (clique/toque) está pressionado.</summary>
+        public static bool PointerDown => _mouseOverride
+            ? _mouseOverrideDown
+            : _mouseNow.LeftButton == ButtonState.Pressed;
+
+        /// <summary>True no frame em que o clique/toque começou.</summary>
+        public static bool PointerPressed => _mouseOverride
+            ? _mouseOverrideDown && !_mouseOverrideDownPrev
+            : _mouseNow.LeftButton == ButtonState.Pressed && _mousePrev.LeftButton != ButtonState.Pressed;
+
+        /// <summary>True no frame em que o clique/toque terminou.</summary>
+        public static bool PointerReleased => _mouseOverride
+            ? !_mouseOverrideDown && _mouseOverrideDownPrev
+            : _mouseNow.LeftButton != ButtonState.Pressed && _mousePrev.LeftButton == ButtonState.Pressed;
+
+        /// <summary>Host sem mouse do MonoGame (editor) injeta o ponteiro aqui, todo frame.</summary>
+        public static void SetPointer(Vector2 position, bool down)
+        {
+            _mouseOverride = true;
+            _mouseOverrideDownPrev = _mouseOverrideDown;
+            _mouseOverridePos = position;
+            _mouseOverrideDown = down;
+        }
+
+        /// <summary>Volta a usar o mouse do MonoGame (desfaz <see cref="SetPointer"/>).</summary>
+        public static void ClearPointerOverride() => _mouseOverride = false;
 
         /// <summary>Define/atualiza o mapeamento de uma ação.</summary>
         public static void Map(string action, Keys[] keys, Buttons[]? buttons = null)

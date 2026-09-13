@@ -28,6 +28,11 @@ namespace DreamBit.Studio.Avalonia
         private bool _painting;
         private bool _erasing;
 
+        /// <summary>Ponteiro em coordenadas de tela (pixels do controle) — usado para os botões
+        /// de UI durante o play do editor. O MainWindow injeta em Input a cada tick.</summary>
+        public XnaVector2 PointerScreen { get; private set; }
+        public bool PointerIsDown { get; private set; }
+
         private readonly IBrush _background = new SolidColorBrush(Color.FromRgb(24, 26, 32));
         private readonly Pen _gridPen = new(new SolidColorBrush(Color.FromRgb(44, 48, 58)), 1);
         private readonly Pen _selectionPen = new(Brushes.White, 2);
@@ -53,6 +58,7 @@ namespace DreamBit.Studio.Avalonia
 
             int w = Math.Max(1, (int)size.Width);
             int h = Math.Max(1, (int)size.Height);
+            Screen.Set(w, h); // âncoras de UI resolvem contra o tamanho do viewport do editor
 
             using (context.PushClip(new Rect(size)))
             using (context.PushTransform(ToAvalonia(_editor.Camera.GetViewMatrix(w, h))))
@@ -103,6 +109,18 @@ namespace DreamBit.Studio.Avalonia
 
                 var vsize = SceneRenderer.GetVisualSize(obj);
                 var rect = new Rect(-vsize.X / 2, -vsize.Y / 2, vsize.X, vsize.Y);
+
+                var button = obj.Components.OfType<UiButton>().FirstOrDefault();
+                if (button != null)
+                {
+                    // Botão: retângulo em coordenadas de tela, com a cor do estado atual.
+                    var br = button.ScreenRect();
+                    context.FillRectangle(new SolidColorBrush(ToColor(button.CurrentColor)),
+                        new Rect(br.X, br.Y, br.Width, br.Height));
+                    if (obj.IsSelected)
+                        context.DrawRectangle(null, _selectionPen, new Rect(br.X, br.Y, br.Width, br.Height));
+                    continue;
+                }
 
                 using (context.PushTransform(ToAvalonia(obj.Transform.WorldMatrix)))
                 {
@@ -286,6 +304,17 @@ namespace DreamBit.Studio.Avalonia
             var props = e.GetCurrentPoint(this).Properties;
             bool ctrl = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
+            PointerScreen = pos;
+            if (props.IsLeftButtonPressed)
+                PointerIsDown = true;
+
+            // Durante o play, o clique vai para os botões de UI (não para as ferramentas de edição).
+            if (_editor != null && _editor.IsPlaying)
+            {
+                e.Pointer.Capture(this);
+                return;
+            }
+
             // Modo carimbo: clique esquerdo posiciona o carimbo atual no ponto (mundo).
             if (props.IsLeftButtonPressed && _editor != null && _editor.StampMode && _editor.HasStamp)
             {
@@ -336,6 +365,7 @@ namespace DreamBit.Studio.Avalonia
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
+            PointerScreen = Pos(e);
             if (_painting && _editor != null)
             {
                 _editor.PaintAt(_editor.Camera.ScreenToWorld(Pos(e), W, H), _erasing);
@@ -348,6 +378,15 @@ namespace DreamBit.Studio.Avalonia
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
+            PointerScreen = Pos(e);
+            PointerIsDown = false;
+
+            if (_editor != null && _editor.IsPlaying)
+            {
+                e.Pointer.Capture(null);
+                return;
+            }
+
             if (_painting && _editor != null)
             {
                 _editor.EndPaintStroke();
