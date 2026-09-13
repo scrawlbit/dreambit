@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DreamBit.Studio.Avalonia.PreferencesWindow"
+        Title="Preferências" Width="620" Height="240" Background="#1E2128"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Margin="16" Spacing="8">
+        <TextBlock Text="Localização da engine" FontWeight="SemiBold" Foreground="#D6DBE6" />
+        <TextBlock TextWrapping="Wrap" Foreground="#8A93A6" FontSize="12"
+                   Text="Pasta que contém o DreamBit.Player (raiz do repositório, ou uma pasta publicada). Usada para Rodar e Exportar o jogo. Deixe em branco para detectar automaticamente." />
+        <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+            <TextBox x:Name="PathBox" Grid.Column="0" Watermark="(auto)" />
+            <Button Grid.Column="1" Content="Localizar…" Click="OnBrowse" Margin="6,0,0,0" />
+        </Grid>
+        <TextBlock x:Name="StatusText" Foreground="#8A93A6" FontSize="12" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="6" Margin="0,10,0,0">
+            <Button Content="Cancelar" Click="OnCancel" />
+            <Button Content="Salvar" Click="OnSave" />
+        </StackPanel>
+    </StackPanel>
+</Window>

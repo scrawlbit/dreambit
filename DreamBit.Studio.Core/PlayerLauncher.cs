@@ -13,13 +13,21 @@ namespace DreamBit.Studio
     {
         public static void Launch(string scenePath)
         {
-            var root = FindRepositoryRoot();
+            var root = EngineLocator.FindRoot();
             if (root == null)
-                throw new DirectoryNotFoundException("Raiz do repositório (DreamBit.Studio.slnx) não encontrada.");
+                throw new DirectoryNotFoundException(
+                    "Engine não encontrada. Defina a pasta da engine em Preferências (menu).");
+
+            // Pasta já publicada: o executável fica direto na raiz.
+            var direct = Path.Combine(root, "DreamBit.Player.exe");
+            if (File.Exists(direct))
+            {
+                Start(direct, Quote(scenePath));
+                return;
+            }
 
             var playerDir = Path.Combine(root, "DreamBit.Player");
             var exe = FindPlayerExecutable(playerDir);
-
             if (exe != null)
             {
                 Start(exe, Quote(scenePath));
@@ -29,18 +37,6 @@ namespace DreamBit.Studio
             // Fallback: compila e roda pelo SDK.
             var csproj = Path.Combine(playerDir, "DreamBit.Player.csproj");
             Start("dotnet", $"run --project {Quote(csproj)} -- {Quote(scenePath)}");
-        }
-
-        private static string? FindRepositoryRoot()
-        {
-            var dir = new DirectoryInfo(AppContext.BaseDirectory);
-            while (dir != null)
-            {
-                if (File.Exists(Path.Combine(dir.FullName, "DreamBit.Studio.slnx")))
-                    return dir.FullName;
-                dir = dir.Parent;
-            }
-            return null;
         }
 
         private static string? FindPlayerExecutable(string playerDir)

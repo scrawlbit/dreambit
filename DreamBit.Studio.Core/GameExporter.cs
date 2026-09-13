@@ -15,9 +15,9 @@ namespace DreamBit.Studio
     {
         public static (bool Ok, string Message) Publish(string outputDir, string sceneJson)
         {
-            var root = FindRepositoryRoot();
+            var root = EngineLocator.FindRoot();
             if (root == null)
-                return (false, "Raiz do repositório (DreamBit.Studio.slnx) não encontrada.");
+                return (false, "Engine não encontrada. Defina a pasta da engine em Preferências (menu).");
 
             var csproj = Path.Combine(root, "DreamBit.Player", "DreamBit.Player.csproj");
 
@@ -114,18 +114,6 @@ namespace DreamBit.Studio
                 foreach (var child in Flatten(obj.Children))
                     yield return child;
             }
-        }
-
-        private static string? FindRepositoryRoot()
-        {
-            var dir = new DirectoryInfo(AppContext.BaseDirectory);
-            while (dir != null)
-            {
-                if (File.Exists(Path.Combine(dir.FullName, "DreamBit.Studio.slnx")))
-                    return dir.FullName;
-                dir = dir.Parent;
-            }
-            return null;
         }
 
         private static string Tail(string text) => text.Length > 1500 ? "…" + text[^1500..] : text;

@@ -33,60 +33,108 @@
     </Window.Styles>
 
     <DockPanel>
-        <!-- Toolbar -->
-        <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
-            <WrapPanel Orientation="Horizontal">
-                <WrapPanel.Styles>
-                    <Style Selector="Button, ToggleButton, RadioButton, CheckBox">
-                        <Setter Property="Margin" Value="0,0,4,2" />
-                    </Style>
+        <!-- Menu (ações menos frequentes, agrupadas) -->
+        <Menu DockPanel.Dock="Top" Background="#252932">
+            <MenuItem Header="_Arquivo">
+                <MenuItem Header="Abrir projeto…" Click="OnOpenProject" />
+                <Separator />
+                <MenuItem Header="Preferências…" Click="OnPreferences" />
+            </MenuItem>
+            <MenuItem Header="_Cena">
+                <MenuItem Header="Nova" Click="OnNewScene" />
+                <MenuItem Header="Abrir…" Click="OnOpenScene" />
+                <MenuItem Header="Salvar" Click="OnSaveScene" InputGesture="Ctrl+S" />
+                <Separator />
+                <MenuItem Header="Importar TMX…" Click="OnImportTmx" />
+                <MenuItem Header="Novo tilemap…" Click="OnNewTilemap" />
+                <Separator />
+                <MenuItem Header="Salvar prefab…" Click="OnSavePrefab" />
+                <MenuItem Header="Inserir prefab…" Click="OnInsertPrefab" />
+            </MenuItem>
+            <MenuItem Header="_Editar">
+                <MenuItem Header="Desfazer" Command="{Binding UndoCommand}" InputGesture="Ctrl+Z" />
+                <MenuItem Header="Refazer" Command="{Binding RedoCommand}" InputGesture="Ctrl+Y" />
+                <Separator />
+                <MenuItem Header="Duplicar" Click="OnDuplicate" InputGesture="Ctrl+D" />
+                <MenuItem Header="Copiar" Click="OnCopy" InputGesture="Ctrl+C" />
+                <MenuItem Header="Colar" Click="OnPaste" InputGesture="Ctrl+V" />
+                <MenuItem Header="Excluir" Command="{Binding DeleteObjectCommand}" InputGesture="Delete" />
+            </MenuItem>
+            <MenuItem Header="_Jogo">
+                <MenuItem Header="Rodar no Player" Click="OnRunGame" />
+                <MenuItem Header="Exportar…" Click="OnExportGame" />
+                <MenuItem Header="Build de conteúdo (MGCB)" Click="OnBuildContent" />
+            </MenuItem>
+            <MenuItem Header="E_xibir">
+                <MenuItem Header="Alternar tema" Click="OnToggleTheme" />
+                <MenuItem Header="Zoom 100%" Click="OnZoom100" />
+                <MenuItem Header="Focar seleção" Click="OnFocusSelection" InputGesture="F" />
+            </MenuItem>
+        </Menu>
+
+        <!-- Toolbar enxuta (ícones Material) para as ações frequentes -->
+        <Border DockPanel.Dock="Top" Background="#252932" Padding="6,4">
+            <StackPanel Orientation="Horizontal" Spacing="2">
+                <StackPanel.Styles>
                     <Style Selector="Border.sep">
                         <Setter Property="Width" Value="1" />
                         <Setter Property="Background" Value="#11141A" />
-                        <Setter Property="Margin" Value="4,2,8,2" />
+                        <Setter Property="Margin" Value="6,2" />
                     </Style>
-                </WrapPanel.Styles>
+                    <Style Selector="Button.icon, ToggleButton.icon, RadioButton.icon">
+                        <Setter Property="Padding" Value="6,4" />
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </StackPanel.Styles>
 
-                <Button Content="📂 Projeto" Click="OnOpenProject" ToolTip.Tip="Abrir pasta de projeto" />
-                <Button Content="🗋 Nova" Click="OnNewScene" ToolTip.Tip="Nova cena (em aba)" />
-                <Button Content="📂 Abrir" Click="OnOpenScene" ToolTip.Tip="Abrir cena (.dbscene)" />
-                <Button Content="💾 Salvar" Click="OnSaveScene" ToolTip.Tip="Salvar cena" />
+                <Button Classes="icon" Click="OnSaveScene" ToolTip.Tip="Salvar cena (Ctrl+S)">
+                    <PathIcon Classes="tb" Data="{StaticResource IconSave}" />
+                </Button>
                 <Border Classes="sep" />
-                <Button Content="＋ Objeto" Command="{Binding AddObjectCommand}" />
-                <Button Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
-                <Button Content="↶" Command="{Binding UndoCommand}" ToolTip.Tip="Desfazer (Ctrl+Z)" />
-                <Button Content="↷" Command="{Binding RedoCommand}" ToolTip.Tip="Refazer (Ctrl+Y)" />
+                <Button Classes="icon" Command="{Binding AddObjectCommand}" ToolTip.Tip="Novo objeto">
+                    <PathIcon Classes="tb" Data="{StaticResource IconAdd}" />
+                </Button>
+                <Button Classes="icon" Command="{Binding DeleteObjectCommand}" ToolTip.Tip="Excluir (Delete)">
+                    <PathIcon Classes="tb" Data="{StaticResource IconDelete}" />
+                </Button>
+                <Button Classes="icon" Command="{Binding UndoCommand}" ToolTip.Tip="Desfazer (Ctrl+Z)">
+                    <PathIcon Classes="tb" Data="{StaticResource IconUndo}" />
+                </Button>
+                <Button Classes="icon" Command="{Binding RedoCommand}" ToolTip.Tip="Refazer (Ctrl+Y)">
+                    <PathIcon Classes="tb" Data="{StaticResource IconRedo}" />
+                </Button>
                 <Border Classes="sep" />
-                <RadioButton GroupName="tool" Content="Selecionar" VerticalAlignment="Center"
-                             IsChecked="{Binding IsSelectTool, Mode=OneWay}" Command="{Binding SelectToolCommand}" />
-                <RadioButton GroupName="tool" Content="Ledge" VerticalAlignment="Center"
-                             IsChecked="{Binding IsLedgeTool, Mode=OneWay}" Command="{Binding LedgeToolCommand}"
-                             ToolTip.Tip="Desenhar ledges: clique adiciona pontos, direito/duplo/Enter finaliza, Esc cancela" />
-                <RadioButton GroupName="tool" Content="Pincel" VerticalAlignment="Center"
-                             IsChecked="{Binding IsTilemapTool, Mode=OneWay}" Command="{Binding TilemapToolCommand}"
-                             ToolTip.Tip="Pintar tiles no tilemap selecionado (esquerdo pinta, direito apaga)" />
-                <CheckBox Content="One-way" VerticalAlignment="Center" IsChecked="{Binding NewLedgeOneWay}" />
+                <RadioButton Classes="icon" GroupName="tool" IsChecked="{Binding IsSelectTool, Mode=OneWay}"
+                             Command="{Binding SelectToolCommand}" ToolTip.Tip="Selecionar/mover">
+                    <PathIcon Classes="tb" Data="{StaticResource IconSelect}" />
+                </RadioButton>
+                <RadioButton Classes="icon" GroupName="tool" IsChecked="{Binding IsLedgeTool, Mode=OneWay}"
+                             Command="{Binding LedgeToolCommand}"
+                             ToolTip.Tip="Ledge: clique adiciona pontos, direito/duplo/Enter finaliza, Esc cancela">
+                    <PathIcon Classes="tb" Data="{StaticResource IconLedge}" />
+                </RadioButton>
+                <RadioButton Classes="icon" GroupName="tool" IsChecked="{Binding IsTilemapTool, Mode=OneWay}"
+                             Command="{Binding TilemapToolCommand}"
+                             ToolTip.Tip="Pincel de tilemap (esquerdo pinta, direito apaga)">
+                    <PathIcon Classes="tb" Data="{StaticResource IconBrush}" />
+                </RadioButton>
+                <CheckBox Content="One-way" VerticalAlignment="Center" Margin="6,0,0,0" IsChecked="{Binding NewLedgeOneWay}" />
                 <CheckBox Content="Snap" VerticalAlignment="Center" IsChecked="{Binding SnapToGrid}" />
                 <Border Classes="sep" />
-                <Button Content="🖼 Atlas" Click="OnOpenAtlas" ToolTip.Tip="Recortar e carimbar sprites de um atlas" />
-                <Button Content="✕ Carimbo" Click="OnExitStamp" IsVisible="{Binding StampMode}" ToolTip.Tip="Sair do modo carimbo" />
-                <Button Content="🗺 TMX" Click="OnImportTmx" ToolTip.Tip="Importar mapa Tiled (.tmx)" />
-                <Button Content="🧩 Novo tilemap" Click="OnNewTilemap" ToolTip.Tip="Novo tilemap a partir de um tileset PNG (tiles 16px)" />
+                <Button Classes="icon" Click="OnOpenAtlas" ToolTip.Tip="Atlas — recortar e carimbar">
+                    <PathIcon Classes="tb" Data="{StaticResource IconImage}" />
+                </Button>
+                <Button Classes="icon" Click="OnExitStamp" IsVisible="{Binding StampMode}" ToolTip.Tip="Sair do modo carimbo"
+                        Content="✕" Foreground="#39D0FF" />
                 <Border Classes="sep" />
-                <Button Content="⭳ Prefab" Click="OnSavePrefab" ToolTip.Tip="Salvar objeto selecionado como prefab" />
-                <Button Content="⭱ Inserir" Click="OnInsertPrefab" ToolTip.Tip="Inserir um prefab na cena" />
-                <Border Classes="sep" />
-                <Button x:Name="PlayButton" Content="▶ Play" Click="OnPlayToggle" />
-                <Button Content="🎮 Rodar" Click="OnRunGame" ToolTip.Tip="Abrir a cena no DreamBit.Player" />
-                <Button Content="📦 Exportar" Click="OnExportGame" ToolTip.Tip="Publicar o jogo (Player + cena + assets)" />
-                <Button Content="🧱 Conteúdo" Click="OnBuildContent" ToolTip.Tip="Gerar/compilar Content.mgcb" />
-                <Border Classes="sep" />
-                <Button Content="🌓 Tema" Click="OnToggleTheme" ToolTip.Tip="Alternar claro/escuro" />
+                <Button x:Name="PlayButton" Classes="icon" Click="OnPlayToggle" ToolTip.Tip="Play/Stop">
+                    <PathIcon Classes="tb" Data="{StaticResource IconPlay}" />
+                </Button>
                 <TextBlock Text="modo carimbo — clique na cena" VerticalAlignment="Center" Foreground="#39D0FF"
-                           Margin="6,0,0,0" IsVisible="{Binding StampMode}" />
+                           Margin="8,0,0,0" IsVisible="{Binding StampMode}" />
                 <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom {0:0.00}x'}"
                            VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#8A93A6" />
-            </WrapPanel>
+            </StackPanel>
         </Border>
 
         <!-- Console (dock inferior) -->

@@ -68,10 +68,19 @@ namespace DreamBit.Studio.Avalonia
         private void OnPlayToggle(object? sender, RoutedEventArgs e)
         {
             _editor.IsPlaying = !_editor.IsPlaying;
-            var button = this.FindControl<Button>("PlayButton");
-            if (button != null)
-                button.Content = _editor.IsPlaying ? "⏸ Stop" : "▶ Play";
+            if (this.FindControl<Button>("PlayButton")?.Content is PathIcon icon)
+                icon.Data = (global::Avalonia.Media.Geometry)global::Avalonia.Application.Current!
+                    .FindResource(_editor.IsPlaying ? "IconPause" : "IconPlay")!;
         }
+
+        private void OnPreferences(object? sender, RoutedEventArgs e)
+            => new PreferencesWindow().ShowDialog(this);
+
+        private void OnDuplicate(object? sender, RoutedEventArgs e) { _editor.DuplicateSelected(); InvalidateScene(); }
+        private void OnCopy(object? sender, RoutedEventArgs e) => _editor.CopySelected();
+        private void OnPaste(object? sender, RoutedEventArgs e) { _editor.Paste(); InvalidateScene(); }
+        private void OnZoom100(object? sender, RoutedEventArgs e) => _editor.Camera.Zoom = 1f;
+        private void OnFocusSelection(object? sender, RoutedEventArgs e) => _editor.Camera.Position = _editor.SelectionCenter();
 
         // ---- projeto / assets / cena ----
 
@@ -370,6 +379,7 @@ namespace DreamBit.Studio.Avalonia
                 if (_editor.DeleteObjectCommand.CanExecute(null)) _editor.DeleteObjectCommand.Execute(null);
                 else _editor.DeleteLastLedge();
             }
+            else if (ctrl && e.Key == Key.S) OnSaveScene(this, e);
             else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null)) _editor.UndoCommand.Execute(null);
             else if (ctrl && e.Key == Key.Y && _editor.RedoCommand.CanExecute(null)) _editor.RedoCommand.Execute(null);
             else if (ctrl && e.Key == Key.D) _editor.DuplicateSelected();
