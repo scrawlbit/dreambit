@@ -18,6 +18,41 @@ namespace DreamBit.Engine.Tilemap
 
         /// <summary>Caminho absoluto da imagem, resolvido no carregamento.</summary>
         public string? ResolvedImagePath { get; set; }
+
+        /// <summary>Animações por tile local: id do tile → sequência de quadros (id + duração).
+        /// Um tile animado (ex.: água, portal) cicla os quadros pelo tempo. Como no Tiled.</summary>
+        public Dictionary<int, List<TileAnimationFrame>> Animations { get; } = new();
+
+        /// <summary>Resolve o tile local a exibir no instante <paramref name="timeMs"/>: se o tile
+        /// tem animação, devolve o quadro atual; senão, o próprio tile.</summary>
+        public int ResolveLocalTile(int localTile, double timeMs)
+        {
+            if (!Animations.TryGetValue(localTile, out var frames) || frames.Count == 0)
+                return localTile;
+
+            int total = 0;
+            foreach (var f in frames) total += System.Math.Max(1, f.DurationMs);
+            if (total <= 0) return frames[0].TileId;
+
+            double t = ((timeMs % total) + total) % total;
+            foreach (var f in frames)
+            {
+                int dur = System.Math.Max(1, f.DurationMs);
+                if (t < dur) return f.TileId;
+                t -= dur;
+            }
+            return frames[frames.Count - 1].TileId;
+        }
+    }
+
+    /// <summary>Um quadro de animação de tile: qual tile local e por quanto tempo (ms).</summary>
+    public sealed class TileAnimationFrame
+    {
+        public int TileId { get; set; }
+        public int DurationMs { get; set; } = 120;
+
+        public TileAnimationFrame() { }
+        public TileAnimationFrame(int tileId, int durationMs) { TileId = tileId; DurationMs = durationMs; }
     }
 
     /// <summary>Uma camada de tiles editável (dicionário esparso célula → GID).</summary>

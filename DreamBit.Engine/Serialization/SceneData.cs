@@ -355,6 +355,15 @@ namespace DreamBit.Engine.Serialization
         public int Columns { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
+        /// <summary>Animações de tile: tileId, depois pares (frameTileId, duraçãoMs) planos.</summary>
+        public List<TileAnimationData> Animations { get; set; } = new();
+    }
+
+    public sealed class TileAnimationData
+    {
+        public int TileId { get; set; }
+        /// <summary>Quadros planos: id0, dur0, id1, dur1, ...</summary>
+        public int[] Frames { get; set; } = System.Array.Empty<int>();
     }
 
     public sealed class TileLayerData

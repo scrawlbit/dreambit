@@ -150,14 +150,23 @@ namespace DreamBit.Engine.Serialization
                 data.TileHeight = map.TileHeight;
 
                 foreach (var ts in map.Tilesets)
-                    data.Tilesets.Add(new TilesetData
+                {
+                    var tsd = new TilesetData
                     {
                         FirstGid = ts.FirstGid,
                         ImagePath = ts.ResolvedImagePath,
                         Columns = ts.Columns,
                         TileWidth = ts.TileWidth,
                         TileHeight = ts.TileHeight
-                    });
+                    };
+                    foreach (var (tileId, frames) in ts.Animations)
+                    {
+                        var flat = new List<int>();
+                        foreach (var f in frames) { flat.Add(f.TileId); flat.Add(f.DurationMs); }
+                        tsd.Animations.Add(new TileAnimationData { TileId = tileId, Frames = flat.ToArray() });
+                    }
+                    data.Tilesets.Add(tsd);
+                }
 
                 foreach (var layer in map.Layers)
                 {
@@ -184,14 +193,25 @@ namespace DreamBit.Engine.Serialization
                 var map = new Tilemap.Tilemap { TileWidth = data.TileWidth, TileHeight = data.TileHeight };
 
                 foreach (var ts in data.Tilesets)
-                    map.Tilesets.Add(new Tileset
+                {
+                    var tileset = new Tileset
                     {
                         FirstGid = ts.FirstGid,
                         ResolvedImagePath = ts.ImagePath,
                         Columns = ts.Columns,
                         TileWidth = ts.TileWidth,
                         TileHeight = ts.TileHeight
-                    });
+                    };
+                    foreach (var an in ts.Animations)
+                    {
+                        var frames = new System.Collections.Generic.List<TileAnimationFrame>();
+                        for (int i = 0; i + 1 < an.Frames.Length; i += 2)
+                            frames.Add(new TileAnimationFrame(an.Frames[i], an.Frames[i + 1]));
+                        if (frames.Count > 0)
+                            tileset.Animations[an.TileId] = frames;
+                    }
+                    map.Tilesets.Add(tileset);
+                }
 
                 foreach (var ld in data.Layers)
                 {

@@ -18,6 +18,7 @@ namespace DreamBit.Engine.Components
         private Tilemap.Tilemap? _map;
         private bool _solid;
         private string _solidLayer = string.Empty;
+        private double _animMs;
 
         public override string DisplayName => "Tilemap";
 
@@ -109,6 +110,9 @@ namespace DreamBit.Engine.Components
             Edited = true;
         }
 
+        protected internal override void Update(GameTime gameTime)
+            => _animMs += gameTime.ElapsedGameTime.TotalMilliseconds;
+
         protected internal override void Draw(ISceneDrawing drawing)
         {
             var map = Map;
@@ -133,7 +137,8 @@ namespace DreamBit.Engine.Components
                     if (texture == null)
                         continue;
 
-                    int local = gid - tileset.FirstGid;
+                    // Tile animado: resolve o quadro atual pelo tempo acumulado.
+                    int local = tileset.ResolveLocalTile(gid - tileset.FirstGid, _animMs);
                     int col = local % tileset.Columns;
                     int row = local / tileset.Columns;
                     var source = new Rectangle(col * tileset.TileWidth, row * tileset.TileHeight,
