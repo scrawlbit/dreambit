@@ -1053,7 +1053,7 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(animClone);
                         break;
                     case TilemapRenderer t:
-                        clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath });
+                        clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath, Solid = t.Solid, SolidLayer = t.SolidLayer });
                         break;
                     case PlatformerController p:
                         clone.AddComponent(new PlatformerController

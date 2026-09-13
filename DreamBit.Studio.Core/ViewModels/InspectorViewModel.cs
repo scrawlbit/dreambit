@@ -662,6 +662,16 @@ namespace DreamBit.Studio.ViewModels
             get => Tilemap?.TmxPath ?? string.Empty;
             set { var t = Tilemap; if (t != null) { t.TmxPath = string.IsNullOrWhiteSpace(value) ? null : value; Refresh(); } }
         }
+        public bool TilemapSolid
+        {
+            get => Tilemap?.Solid ?? false;
+            set { var t = Tilemap; if (t != null) t.Solid = value; }
+        }
+        public string TilemapSolidLayer
+        {
+            get => Tilemap?.SolidLayer ?? string.Empty;
+            set { var t = Tilemap; if (t != null) t.SolidLayer = value; }
+        }
 
         // ---- Componente Bone (rig cutout) ----
 
@@ -932,6 +942,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(AudioPlayOnStart));
             OnPropertyChanged(nameof(AudioLoop));
             OnPropertyChanged(nameof(HasTilemap));
+            OnPropertyChanged(nameof(TilemapPath));
+            OnPropertyChanged(nameof(TilemapSolid));
+            OnPropertyChanged(nameof(TilemapSolidLayer));
             OnPropertyChanged(nameof(TilemapPath));
             OnPropertyChanged(nameof(HasPlatformer));
             OnPropertyChanged(nameof(PlatGravity));

@@ -16,8 +16,17 @@ namespace DreamBit.Engine.Components
     {
         private string? _tmxPath;
         private Tilemap.Tilemap? _map;
+        private bool _solid;
+        private string _solidLayer = string.Empty;
 
         public override string DisplayName => "Tilemap";
+
+        /// <summary>Se true, os tiles pintados bloqueiam o PlatformerController (colisão sólida
+        /// por célula). Combine com <see cref="SolidLayer"/> para restringir a uma camada.</summary>
+        public bool Solid { get => _solid; set => Set(ref _solid, value); }
+
+        /// <summary>Nome da camada cujos tiles são sólidos (vazio = todas, quando <see cref="Solid"/>).</summary>
+        public string SolidLayer { get => _solidLayer; set => Set(ref _solidLayer, value ?? string.Empty); }
 
         /// <summary>Se o mapa foi pintado no editor (deve ser serializado inline).</summary>
         public bool Edited { get; set; }
@@ -52,6 +61,41 @@ namespace DreamBit.Engine.Components
 
             var local = Vector2.Transform(world, Matrix.Invert(Owner.Transform.WorldMatrix));
             return ((int)Math.Floor(local.X / tw), (int)Math.Floor(local.Y / th));
+        }
+
+        /// <summary>Caixas AABB (em mundo) dos tiles sólidos, para colisão do platformer.
+        /// Vazio se <see cref="Solid"/> for false. Cada célula ocupada vira uma caixa.</summary>
+        public System.Collections.Generic.IEnumerable<(Vector2 Min, Vector2 Max)> SolidBoxes()
+        {
+            var map = Map;
+            if (!_solid || map == null)
+                yield break;
+
+            int tw = map.TileWidth;
+            int th = map.TileHeight;
+            var world = Owner.Transform.WorldMatrix;
+
+            foreach (var layer in map.Layers)
+            {
+                if (!string.IsNullOrEmpty(_solidLayer) &&
+                    !string.Equals(layer.Name, _solidLayer, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                foreach (var (x, y, _) in layer.Tiles)
+                {
+                    // Retângulo local da célula transformado para o mundo (AABB dos 4 cantos).
+                    var a = Vector2.Transform(new Vector2(x * tw, y * th), world);
+                    var b = Vector2.Transform(new Vector2((x + 1) * tw, y * th), world);
+                    var c = Vector2.Transform(new Vector2((x + 1) * tw, (y + 1) * th), world);
+                    var d = Vector2.Transform(new Vector2(x * tw, (y + 1) * th), world);
+
+                    var min = new Vector2(Math.Min(Math.Min(a.X, b.X), Math.Min(c.X, d.X)),
+                                          Math.Min(Math.Min(a.Y, b.Y), Math.Min(c.Y, d.Y)));
+                    var max = new Vector2(Math.Max(Math.Max(a.X, b.X), Math.Max(c.X, d.X)),
+                                          Math.Max(Math.Max(a.Y, b.Y), Math.Max(c.Y, d.Y)));
+                    yield return (min, max);
+                }
+            }
         }
 
         /// <summary>Pinta (ou apaga, se gid=0) um tile na camada de pintura.</summary>

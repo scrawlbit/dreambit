@@ -117,7 +117,7 @@ namespace DreamBit.Engine.Serialization
 
         private static TilemapData ToData(TilemapRenderer tilemap)
         {
-            var data = new TilemapData { TmxPath = tilemap.TmxPath, Edited = tilemap.Edited };
+            var data = new TilemapData { TmxPath = tilemap.TmxPath, Edited = tilemap.Edited, Solid = tilemap.Solid, SolidLayer = tilemap.SolidLayer };
             var map = tilemap.Map;
 
             // Serializa o mapa inline quando pintado (ou quando não veio de .tmx).
@@ -155,7 +155,7 @@ namespace DreamBit.Engine.Serialization
 
         private static TilemapRenderer FromData(TilemapData data)
         {
-            var tilemap = new TilemapRenderer { TmxPath = data.TmxPath, Edited = data.Edited };
+            var tilemap = new TilemapRenderer { TmxPath = data.TmxPath, Edited = data.Edited, Solid = data.Solid, SolidLayer = data.SolidLayer };
 
             if (data.Tilesets.Count > 0 || data.Layers.Count > 0)
             {

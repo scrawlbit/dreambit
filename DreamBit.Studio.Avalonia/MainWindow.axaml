@@ -914,13 +914,17 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- Tilemap (somente leitura por ora) -->
+                        <!-- Tilemap -->
                         <Border Classes="component" IsVisible="{Binding HasTilemap}">
                             <StackPanel>
                                 <TextBlock Classes="section" Text="Tilemap" />
                                 <TextBlock Classes="field" Text="Origem (.tmx)" />
                                 <TextBox Text="{Binding TilemapPath}" IsReadOnly="True" />
-                                <TextBlock Classes="field" Text="Pintura de tiles: use o editor WPF." />
+                                <CheckBox Content="Tiles são sólidos (colisão do platformer)"
+                                          IsChecked="{Binding TilemapSolid, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <TextBlock Classes="field" Text="Camada sólida (vazio = todas)" />
+                                <TextBox Text="{Binding TilemapSolidLayer, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Pinte com a ferramenta de pincel na barra de ferramentas." />
                             </StackPanel>
                         </Border>
 

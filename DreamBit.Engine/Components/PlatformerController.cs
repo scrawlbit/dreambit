@@ -133,11 +133,18 @@ namespace DreamBit.Engine.Components
                 if (obj == Owner)
                     continue;
                 foreach (var component in obj.Components)
+                {
                     if (component is BoxCollider collider)
                     {
                         var (min, max) = collider.WorldBounds();
                         boxes.Add(new SolidPhysics.Box(min, max));
                     }
+                    else if (component is TilemapRenderer tilemap)
+                    {
+                        foreach (var (min, max) in tilemap.SolidBoxes())
+                            boxes.Add(new SolidPhysics.Box(min, max));
+                    }
+                }
             }
             return boxes;
         }

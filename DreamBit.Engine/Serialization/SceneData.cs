@@ -220,6 +220,8 @@ namespace DreamBit.Engine.Serialization
     {
         public string? TmxPath { get; set; }
         public bool Edited { get; set; }
+        public bool Solid { get; set; }
+        public string SolidLayer { get; set; } = "";
         public int TileWidth { get; set; } = 16;
         public int TileHeight { get; set; } = 16;
         public List<TilesetData> Tilesets { get; set; } = new();
