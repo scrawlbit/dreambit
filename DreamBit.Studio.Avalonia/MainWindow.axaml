@@ -35,24 +35,54 @@
     <DockPanel>
         <!-- Toolbar -->
         <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
-            <StackPanel Orientation="Horizontal" Spacing="4">
+            <WrapPanel Orientation="Horizontal">
+                <WrapPanel.Styles>
+                    <Style Selector="Button, ToggleButton, RadioButton, CheckBox">
+                        <Setter Property="Margin" Value="0,0,4,2" />
+                    </Style>
+                    <Style Selector="Border.sep">
+                        <Setter Property="Width" Value="1" />
+                        <Setter Property="Background" Value="#11141A" />
+                        <Setter Property="Margin" Value="4,2,8,2" />
+                    </Style>
+                </WrapPanel.Styles>
+
                 <Button Content="📂 Projeto" Click="OnOpenProject" ToolTip.Tip="Abrir pasta de projeto" />
-                <Button Content="💾 Cena" Click="OnSaveScene" ToolTip.Tip="Salvar cena" />
-                <Border Width="1" Background="#11141A" Margin="4,2" />
+                <Button Content="🗋 Nova" Click="OnNewScene" ToolTip.Tip="Nova cena (em aba)" />
+                <Button Content="📂 Abrir" Click="OnOpenScene" ToolTip.Tip="Abrir cena (.dbscene)" />
+                <Button Content="💾 Salvar" Click="OnSaveScene" ToolTip.Tip="Salvar cena" />
+                <Border Classes="sep" />
                 <Button Content="＋ Objeto" Command="{Binding AddObjectCommand}" />
                 <Button Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
-                <Button Content="↶" Command="{Binding UndoCommand}" ToolTip.Tip="Desfazer" />
-                <Button Content="↷" Command="{Binding RedoCommand}" ToolTip.Tip="Refazer" />
-                <Button x:Name="PlayButton" Content="▶ Play" Click="OnPlayToggle" />
-                <Border Width="1" Background="#11141A" Margin="4,2" />
+                <Button Content="↶" Command="{Binding UndoCommand}" ToolTip.Tip="Desfazer (Ctrl+Z)" />
+                <Button Content="↷" Command="{Binding RedoCommand}" ToolTip.Tip="Refazer (Ctrl+Y)" />
+                <Border Classes="sep" />
+                <RadioButton GroupName="tool" Content="Selecionar" VerticalAlignment="Center"
+                             IsChecked="{Binding IsSelectTool, Mode=OneWay}" Command="{Binding SelectToolCommand}" />
+                <RadioButton GroupName="tool" Content="Ledge" VerticalAlignment="Center"
+                             IsChecked="{Binding IsLedgeTool, Mode=OneWay}" Command="{Binding LedgeToolCommand}"
+                             ToolTip.Tip="Desenhar ledges: clique adiciona pontos, direito/duplo/Enter finaliza, Esc cancela" />
+                <CheckBox Content="One-way" VerticalAlignment="Center" IsChecked="{Binding NewLedgeOneWay}" />
+                <CheckBox Content="Snap" VerticalAlignment="Center" IsChecked="{Binding SnapToGrid}" />
+                <Border Classes="sep" />
                 <Button Content="🖼 Atlas" Click="OnOpenAtlas" ToolTip.Tip="Recortar e carimbar sprites de um atlas" />
-                <Button Content="✕ Carimbo" Click="OnExitStamp" IsVisible="{Binding StampMode}"
-                        ToolTip.Tip="Sair do modo carimbo" />
+                <Button Content="✕ Carimbo" Click="OnExitStamp" IsVisible="{Binding StampMode}" ToolTip.Tip="Sair do modo carimbo" />
+                <Button Content="🗺 TMX" Click="OnImportTmx" ToolTip.Tip="Importar mapa Tiled (.tmx)" />
+                <Border Classes="sep" />
+                <Button Content="⭳ Prefab" Click="OnSavePrefab" ToolTip.Tip="Salvar objeto selecionado como prefab" />
+                <Button Content="⭱ Inserir" Click="OnInsertPrefab" ToolTip.Tip="Inserir um prefab na cena" />
+                <Border Classes="sep" />
+                <Button x:Name="PlayButton" Content="▶ Play" Click="OnPlayToggle" />
+                <Button Content="🎮 Rodar" Click="OnRunGame" ToolTip.Tip="Abrir a cena no DreamBit.Player" />
+                <Button Content="📦 Exportar" Click="OnExportGame" ToolTip.Tip="Publicar o jogo (Player + cena + assets)" />
+                <Button Content="🧱 Conteúdo" Click="OnBuildContent" ToolTip.Tip="Gerar/compilar Content.mgcb" />
+                <Border Classes="sep" />
+                <Button Content="🌓 Tema" Click="OnToggleTheme" ToolTip.Tip="Alternar claro/escuro" />
                 <TextBlock Text="modo carimbo — clique na cena" VerticalAlignment="Center" Foreground="#39D0FF"
                            Margin="6,0,0,0" IsVisible="{Binding StampMode}" />
                 <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom {0:0.00}x'}"
                            VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#8A93A6" />
-            </StackPanel>
+            </WrapPanel>
         </Border>
 
         <!-- Console (dock inferior) -->
@@ -83,9 +113,23 @@
         </Border>
 
         <Grid ColumnDefinitions="230,4,*,4,290">
-            <!-- Coluna esquerda: hierarquia + assets -->
-            <Grid Grid.Column="0" RowDefinitions="*,4,220" Background="#252932">
+            <!-- Coluna esquerda: cenas + hierarquia + assets -->
+            <Grid Grid.Column="0" RowDefinitions="110,4,*,4,200" Background="#252932">
                 <DockPanel Grid.Row="0">
+                    <TextBlock DockPanel.Dock="Top" Text="CENAS (duplo clique abre)" Foreground="#8A93A6" Margin="10,8" />
+                    <ListBox x:Name="ScenesList" Background="Transparent" Margin="4"
+                             ItemsSource="{Binding Project.Scenes}" DoubleTapped="OnSceneActivated">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Foreground="#B9C0CE" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+
+                <GridSplitter Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
+
+                <DockPanel Grid.Row="2">
                     <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA" Foreground="#8A93A6" Margin="10,8" />
                     <ListBox Background="Transparent" Margin="4"
                              ItemsSource="{Binding Scene.Objects}"
@@ -98,9 +142,9 @@
                     </ListBox>
                 </DockPanel>
 
-                <GridSplitter Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
+                <GridSplitter Grid.Row="3" Background="#11141A" ResizeDirection="Rows" />
 
-                <DockPanel Grid.Row="2">
+                <DockPanel Grid.Row="4">
                     <TextBlock DockPanel.Dock="Top" Text="ASSETS (duplo clique aplica)" Foreground="#8A93A6" Margin="10,8" />
                     <ListBox x:Name="AssetsList" Background="Transparent" Margin="4"
                              ItemsSource="{Binding Project.Assets}"
@@ -117,8 +161,32 @@
 
             <GridSplitter Grid.Column="1" Background="#11141A" />
 
-            <!-- Cena -->
-            <local:SceneView Grid.Column="2" x:Name="Scene" />
+            <!-- Cena (com abas) -->
+            <DockPanel Grid.Column="2">
+                <Border DockPanel.Dock="Top" Background="#20242D">
+                    <ItemsControl ItemsSource="{Binding Tabs}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="2,3,0,0" CornerRadius="4,4,0,0" Padding="2"
+                                        Background="{Binding IsActive, Converter={x:Static local:TabBackgroundConverter.Instance}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Background="Transparent" Padding="8,3" Click="OnActivateTab"
+                                                Content="{Binding Title}" Foreground="#D6DBE6" />
+                                        <Button Background="Transparent" Padding="4,3" Click="OnCloseTab"
+                                                Content="✕" Foreground="#8A93A6" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+                <local:SceneView x:Name="Scene" />
+            </DockPanel>
 
             <GridSplitter Grid.Column="3" Background="#11141A" />
 

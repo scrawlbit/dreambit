@@ -1,12 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Styling;
 using Avalonia.Threading;
+using DreamBit.Engine.Diagnostics;
+using DreamBit.Engine.Serialization;
 using DreamBit.Studio.ViewModels;
 using XnaGameTime = Microsoft.Xna.Framework.GameTime;
+using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace DreamBit.Studio.Avalonia
 {
@@ -28,6 +34,8 @@ namespace DreamBit.Studio.Avalonia
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
             _timer.Tick += OnTick;
             _timer.Start();
+
+            KeyDown += OnKeyDown;
 
             // Rola o console para o fim quando chega log novo (após o layout medir a linha).
             _editor.Log.Entries.CollectionChanged += (_, _) =>
@@ -111,6 +119,184 @@ namespace DreamBit.Studio.Avalonia
         }
 
         private void OnExitStamp(object? sender, RoutedEventArgs e) => _editor.ClearStamp();
+
+        // ---- cenas / abas ----
+
+        private void OnNewScene(object? sender, RoutedEventArgs e) => _editor.NewScene();
+
+        private async void OnOpenScene(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Abrir cena", "Cena DreamBit", "*.dbscene");
+            if (path != null)
+                _editor.LoadFrom(path);
+        }
+
+        private void OnSceneActivated(object? sender, RoutedEventArgs e)
+        {
+            if (this.FindControl<ListBox>("ScenesList")?.SelectedItem is string sceneFile)
+                _editor.OpenScene(sceneFile);
+        }
+
+        private void OnActivateTab(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: SceneTab tab })
+                _editor.ActivateTab(tab);
+        }
+
+        private void OnCloseTab(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: SceneTab tab })
+                _editor.CloseTab(tab);
+        }
+
+        // ---- prefabs ----
+
+        private async void OnSavePrefab(object? sender, RoutedEventArgs e)
+        {
+            if (_editor.SelectedObject == null)
+            {
+                EngineLog.Warn("Selecione um objeto para salvar como prefab.");
+                return;
+            }
+            var path = await PickSaveFileAsync("Salvar prefab", _editor.SelectedObject.Name, "dbprefab", "Prefab DreamBit");
+            if (path != null)
+                _editor.SaveSelectedAsPrefab(path);
+        }
+
+        private async void OnInsertPrefab(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Inserir prefab", "Prefab DreamBit", "*.dbprefab");
+            if (path != null)
+                _editor.InsertPrefab(path);
+        }
+
+        // ---- tilemap ----
+
+        private async void OnImportTmx(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Importar mapa Tiled", "Mapa Tiled", "*.tmx");
+            if (path != null)
+                _editor.ImportTilemap(path);
+        }
+
+        // ---- rodar / exportar / conteúdo ----
+
+        private void OnRunGame(object? sender, RoutedEventArgs e)
+        {
+            var scenePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dreambit_play.dbscene");
+            SceneSerializer.Save(_editor.Scene, scenePath);
+            try
+            {
+                DreamBit.Studio.PlayerLauncher.Launch(scenePath);
+                EngineLog.Info("Iniciando o DreamBit.Player…");
+            }
+            catch (Exception ex)
+            {
+                EngineLog.Error("Não foi possível iniciar o Player: " + ex.Message);
+            }
+        }
+
+        private async void OnExportGame(object? sender, RoutedEventArgs e)
+        {
+            var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            { Title = "Pasta de destino do jogo", AllowMultiple = false });
+            var dir = folders.FirstOrDefault()?.TryGetLocalPath();
+            if (string.IsNullOrEmpty(dir))
+                return;
+
+            string sceneJson = SceneSerializer.SaveToString(_editor.Scene);
+            EngineLog.Info("Exportando o jogo… (pode demorar — publica o Player)");
+            var (ok, message) = await Task.Run(() => DreamBit.Studio.GameExporter.Publish(dir, sceneJson));
+            if (ok) EngineLog.Info(message); else EngineLog.Error(message);
+        }
+
+        private void OnBuildContent(object? sender, RoutedEventArgs e)
+        {
+            var project = _editor.Project.Project;
+            if (project == null)
+            {
+                EngineLog.Warn("Abra um projeto primeiro (botão Projeto).");
+                return;
+            }
+            var (ok, message) = DreamBit.Studio.ContentBuilder.Build(project);
+            if (ok) EngineLog.Info(message); else EngineLog.Error(message);
+        }
+
+        private void OnToggleTheme(object? sender, RoutedEventArgs e)
+        {
+            var app = global::Avalonia.Application.Current!;
+            app.RequestedThemeVariant = app.ActualThemeVariant == ThemeVariant.Dark
+                ? ThemeVariant.Light : ThemeVariant.Dark;
+        }
+
+        // ---- atalhos de teclado ----
+
+        private void OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            bool ctrl = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+            bool inText = FocusManager?.GetFocusedElement() is TextBox;
+
+            if (_editor.IsLedgeTool && e.Key == Key.Escape) { _editor.CancelLedge(); InvalidateScene(); }
+            else if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return)) { _editor.FinishLedge(); InvalidateScene(); }
+            else if (e.Key == Key.Delete && !inText)
+            {
+                if (_editor.DeleteObjectCommand.CanExecute(null)) _editor.DeleteObjectCommand.Execute(null);
+                else _editor.DeleteLastLedge();
+            }
+            else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null)) _editor.UndoCommand.Execute(null);
+            else if (ctrl && e.Key == Key.Y && _editor.RedoCommand.CanExecute(null)) _editor.RedoCommand.Execute(null);
+            else if (ctrl && e.Key == Key.D) _editor.DuplicateSelected();
+            else if (ctrl && e.Key == Key.C && !inText) _editor.CopySelected();
+            else if (ctrl && e.Key == Key.V && !inText) _editor.Paste();
+            else if (ctrl && (e.Key == Key.D0 || e.Key == Key.NumPad0)) _editor.Camera.Zoom = 1f;
+            else if (e.Key == Key.F && !inText) _editor.Camera.Position = _editor.SelectionCenter();
+            else if (!inText && TryNudge(e.Key)) { }
+            else return;
+
+            e.Handled = true;
+            InvalidateScene();
+        }
+
+        private bool TryNudge(Key key)
+        {
+            float step = _editor.SnapToGrid ? _editor.GridStep : 1f;
+            var delta = key switch
+            {
+                Key.Left => new XnaVector2(-step, 0),
+                Key.Right => new XnaVector2(step, 0),
+                Key.Up => new XnaVector2(0, -step),
+                Key.Down => new XnaVector2(0, step),
+                _ => XnaVector2.Zero
+            };
+            if (delta == XnaVector2.Zero) return false;
+            _editor.Nudge(delta);
+            return true;
+        }
+
+        // ---- diálogos de arquivo ----
+
+        private async Task<string?> PickOpenFileAsync(string title, string typeName, string pattern)
+        {
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = title,
+                AllowMultiple = false,
+                FileTypeFilter = new[] { new FilePickerFileType(typeName) { Patterns = new[] { pattern } } }
+            });
+            return files.FirstOrDefault()?.TryGetLocalPath();
+        }
+
+        private async Task<string?> PickSaveFileAsync(string title, string suggested, string ext, string typeName)
+        {
+            var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = title,
+                DefaultExtension = ext,
+                SuggestedFileName = suggested,
+                FileTypeChoices = new[] { new FilePickerFileType(typeName) { Patterns = new[] { "*." + ext } } }
+            });
+            return file?.TryGetLocalPath();
+        }
 
         private void OnAssetActivated(object? sender, RoutedEventArgs e)
         {

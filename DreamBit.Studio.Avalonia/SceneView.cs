@@ -76,7 +76,19 @@ namespace DreamBit.Studio.Avalonia
                 }
 
                 DrawLedges(context);
+                DrawSelectionBox(context);
             }
+        }
+
+        private static readonly IBrush _boxFill = new SolidColorBrush(Color.FromArgb(40, 90, 200, 255));
+
+        private void DrawSelectionBox(DrawingContext context)
+        {
+            if (_input?.BoxSelectWorld is not { } box)
+                return;
+
+            var rect = new Rect(box.Min.X, box.Min.Y, box.Max.X - box.Min.X, box.Max.Y - box.Min.Y);
+            context.DrawRectangle(_boxFill, new Pen(new SolidColorBrush(Color.FromRgb(90, 200, 255)), 1), rect);
         }
 
         private void DrawGrid(DrawingContext context, int w, int h)
@@ -120,6 +132,23 @@ namespace DreamBit.Studio.Avalonia
             {
                 var world = _editor.Camera.ScreenToWorld(pos, W, H);
                 _editor.StampCurrentAt(world);
+                e.Pointer.Capture(this);
+                InvalidateVisual();
+                return;
+            }
+
+            // Ferramenta de ledge: desenhar (clique adiciona ponto; direito/duplo finaliza).
+            if (_editor != null && _editor.IsLedgeTool)
+            {
+                var world = _editor.Camera.ScreenToWorld(pos, W, H);
+                if (props.IsLeftButtonPressed)
+                {
+                    if (e.ClickCount >= 2) _editor.FinishLedge();
+                    else _editor.AddLedgePoint(world);
+                }
+                else if (props.IsRightButtonPressed) _editor.FinishLedge();
+                else if (props.IsMiddleButtonPressed) _input!.MiddleDown(pos);
+
                 e.Pointer.Capture(this);
                 InvalidateVisual();
                 return;
