@@ -27,6 +27,9 @@ namespace DreamBit.Engine.Tilemap
 
         public string Name { get; set; } = "";
 
+        /// <summary>Se a camada é desenhada (não afeta a colisão sólida).</summary>
+        public bool Visible { get; set; } = true;
+
         public int Count => _tiles.Count;
 
         /// <summary>Define (ou apaga, se gid=0) o tile numa célula.</summary>
@@ -76,8 +79,16 @@ namespace DreamBit.Engine.Tilemap
         public TileLayer PaintLayer()
         {
             if (Layers.Count == 0)
-                Layers.Add(new TileLayer { Name = "Pintura" });
+                Layers.Add(new TileLayer { Name = "Camada 1" });
             return Layers[Layers.Count - 1];
+        }
+
+        /// <summary>Adiciona uma nova camada no topo (desenhada por último) e a retorna.</summary>
+        public TileLayer AddLayer(string? name = null)
+        {
+            var layer = new TileLayer { Name = string.IsNullOrWhiteSpace(name) ? $"Camada {Layers.Count + 1}" : name };
+            Layers.Add(layer);
+            return layer;
         }
     }
 }

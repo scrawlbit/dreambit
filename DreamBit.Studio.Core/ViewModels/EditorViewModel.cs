@@ -524,6 +524,7 @@ namespace DreamBit.Studio.ViewModels
         private int _brushGid = 1;
         private System.Collections.Generic.List<(int, int, int)>? _strokeBefore;
         private TileLayer? _strokeLayer;
+        private TileLayer? _activeLayer;
 
         /// <summary>GID do tile atual do pincel (escolhido na paleta).</summary>
         public int BrushGid
@@ -536,24 +537,91 @@ namespace DreamBit.Studio.ViewModels
         public TilemapRenderer? ActiveTilemap =>
             SelectedObject?.Components.OfType<TilemapRenderer>().FirstOrDefault();
 
+        /// <summary>Camada de tiles onde o pincel pinta.</summary>
+        public TileLayer? ActiveLayer
+        {
+            get => _activeLayer;
+            set => Set(ref _activeLayer, value);
+        }
+
+        /// <summary>Camadas do tilemap ativo (para o painel de camadas do editor).</summary>
+        public System.Collections.Generic.IReadOnlyList<TileLayer> TileLayers =>
+            ActiveTilemap?.Map?.Layers ?? (System.Collections.Generic.IReadOnlyList<TileLayer>)System.Array.Empty<TileLayer>();
+
+        private TileLayer EnsureActiveLayer(DreamBit.Engine.Tilemap.Tilemap map)
+        {
+            if (_activeLayer != null && map.Layers.Contains(_activeLayer))
+                return _activeLayer;
+            ActiveLayer = map.PaintLayer();
+            return _activeLayer!;
+        }
+
+        public void AddTileLayer()
+        {
+            var map = ActiveTilemap?.Map;
+            if (map == null)
+                return;
+            ActiveLayer = map.AddLayer();
+            ActiveTilemap!.Edited = true;
+            OnPropertyChanged(nameof(TileLayers));
+        }
+
+        public void RemoveTileLayer(TileLayer layer)
+        {
+            var map = ActiveTilemap?.Map;
+            if (map == null || map.Layers.Count <= 1)
+                return;
+            map.Layers.Remove(layer);
+            if (_activeLayer == layer)
+                ActiveLayer = map.Layers[map.Layers.Count - 1];
+            ActiveTilemap!.Edited = true;
+            OnPropertyChanged(nameof(TileLayers));
+        }
+
+        /// <summary>Move a camada na ordem de desenho (+1 = para cima/frente, -1 = para trás).</summary>
+        public void MoveTileLayer(TileLayer layer, int direction)
+        {
+            var map = ActiveTilemap?.Map;
+            if (map == null)
+                return;
+            int i = map.Layers.IndexOf(layer);
+            int j = i + direction;
+            if (i < 0 || j < 0 || j >= map.Layers.Count)
+                return;
+            map.Layers.RemoveAt(i);
+            map.Layers.Insert(j, layer);
+            ActiveTilemap!.Edited = true;
+            OnPropertyChanged(nameof(TileLayers));
+        }
+
+        public void ToggleTileLayerVisible(TileLayer layer)
+        {
+            layer.Visible = !layer.Visible;
+            if (ActiveTilemap != null)
+                ActiveTilemap.Edited = true;
+            OnPropertyChanged(nameof(TileLayers));
+        }
+
         public void BeginPaintStroke()
         {
             var map = ActiveTilemap?.Map;
             if (map == null)
                 return;
 
-            _strokeLayer = map.PaintLayer();
+            _strokeLayer = EnsureActiveLayer(map);
             _strokeBefore = _strokeLayer.Tiles.ToList();
         }
 
         public void PaintAt(Vector2 world, bool erase)
         {
             var tilemap = ActiveTilemap;
-            if (tilemap == null)
+            if (tilemap?.Map == null)
                 return;
 
+            var layer = _strokeLayer ?? EnsureActiveLayer(tilemap.Map);
             var (cellX, cellY) = tilemap.WorldToCell(world);
-            tilemap.Paint(cellX, cellY, erase ? 0 : _brushGid);
+            layer.SetTile(cellX, cellY, erase ? 0 : _brushGid);
+            tilemap.Edited = true;
         }
 
         public void EndPaintStroke()

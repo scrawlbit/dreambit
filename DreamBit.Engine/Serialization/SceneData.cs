@@ -263,6 +263,7 @@ namespace DreamBit.Engine.Serialization
     public sealed class TileLayerData
     {
         public string Name { get; set; } = "";
+        public bool Visible { get; set; } = true;
         /// <summary>Tiles em triplas planas: x0,y0,gid0, x1,y1,gid1, ...</summary>
         public int[] Tiles { get; set; } = System.Array.Empty<int>();
     }

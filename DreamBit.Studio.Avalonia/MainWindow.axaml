@@ -170,6 +170,18 @@
             <DockPanel>
                 <TextBlock DockPanel.Dock="Top" Foreground="#8A93A6" Margin="10,6"
                            Text="PALETA — clique um tile para escolher o pincel (na cena: esquerdo pinta, direito apaga)" />
+                <!-- Camadas (direita) -->
+                <Border DockPanel.Dock="Right" Width="200" Background="#1A1D24" Padding="6">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
+                            <TextBlock Text="CAMADAS" Foreground="#8A93A6" VerticalAlignment="Center" />
+                            <Button Grid.Column="1" Content="+ Camada" Padding="6,2" Click="OnAddTileLayer" />
+                        </Grid>
+                        <ScrollViewer>
+                            <StackPanel x:Name="LayersList" Spacing="2" Margin="0,6,0,0" />
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <Canvas x:Name="PaletteCanvas" Background="Transparent" PointerPressed="OnPalettePick">
                         <Image x:Name="PaletteImage" Stretch="None" Canvas.Left="0" Canvas.Top="0" />

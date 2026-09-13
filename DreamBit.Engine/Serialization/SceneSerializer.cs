@@ -168,7 +168,7 @@ namespace DreamBit.Engine.Serialization
                         flat.Add(y);
                         flat.Add(gid);
                     }
-                    data.Layers.Add(new TileLayerData { Name = layer.Name, Tiles = flat.ToArray() });
+                    data.Layers.Add(new TileLayerData { Name = layer.Name, Visible = layer.Visible, Tiles = flat.ToArray() });
                 }
             }
 
@@ -195,7 +195,7 @@ namespace DreamBit.Engine.Serialization
 
                 foreach (var ld in data.Layers)
                 {
-                    var layer = new TileLayer { Name = ld.Name };
+                    var layer = new TileLayer { Name = ld.Name, Visible = ld.Visible };
                     for (int i = 0; i + 2 < ld.Tiles.Length; i += 3)
                         layer.SetTile(ld.Tiles[i], ld.Tiles[i + 1], ld.Tiles[i + 2]);
                     map.Layers.Add(layer);

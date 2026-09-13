@@ -120,6 +120,9 @@ namespace DreamBit.Engine.Components
 
             foreach (var layer in map.Layers)
             {
+                if (!layer.Visible)
+                    continue;
+
                 foreach (var (x, y, gid) in layer.Tiles)
                 {
                     var tileset = map.TilesetForGid(gid);

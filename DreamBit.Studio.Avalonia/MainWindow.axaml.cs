@@ -6,9 +6,12 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using DreamBit.Engine.Tilemap;
 using DreamBit.Engine.Diagnostics;
 using DreamBit.Engine.Serialization;
 using DreamBit.Studio.ViewModels;
@@ -336,6 +339,79 @@ namespace DreamBit.Studio.Avalonia
             image.Source = bmp;
             canvas.Width = bmp.PixelSize.Width;
             canvas.Height = bmp.PixelSize.Height;
+
+            RebuildLayers();
+        }
+
+        private void OnAddTileLayer(object? sender, RoutedEventArgs e)
+        {
+            _editor.AddTileLayer();
+            RebuildLayers();
+            InvalidateScene();
+        }
+
+        /// <summary>Reconstrói o painel de camadas do tilemap ativo (topo = frente).</summary>
+        private void RebuildLayers()
+        {
+            var host = this.FindControl<StackPanel>("LayersList");
+            if (host == null)
+                return;
+            host.Children.Clear();
+
+            var layers = _editor.TileLayers;
+            // Do topo (última, desenhada por último) para a base.
+            for (int i = layers.Count - 1; i >= 0; i--)
+                host.Children.Add(LayerRow(layers[i]));
+        }
+
+        private Control LayerRow(TileLayer layer)
+        {
+            bool active = ReferenceEquals(layer, _editor.ActiveLayer);
+            var row = new Border
+            {
+                Background = active ? new SolidColorBrush(Color.FromRgb(0x2E, 0x3A, 0x4A)) : Brushes.Transparent,
+                CornerRadius = new global::Avalonia.CornerRadius(3),
+                Padding = new global::Avalonia.Thickness(2)
+            };
+            var grid = new Grid { ColumnDefinitions = new ColumnDefinitions("Auto,*,Auto,Auto,Auto") };
+
+            var vis = new CheckBox { IsChecked = layer.Visible, VerticalAlignment = VerticalAlignment.Center };
+            vis.IsCheckedChanged += (_, __) => { _editor.ToggleTileLayerVisible(layer); InvalidateScene(); };
+            Grid.SetColumn(vis, 0);
+
+            var name = new Button
+            {
+                Content = layer.Name,
+                Background = Brushes.Transparent,
+                Foreground = active ? Brushes.White : new SolidColorBrush(Color.FromRgb(0xB9, 0xC0, 0xCE)),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Left,
+                Padding = new global::Avalonia.Thickness(6, 2)
+            };
+            name.Click += (_, __) => { _editor.ActiveLayer = layer; RebuildLayers(); };
+            Grid.SetColumn(name, 1);
+
+            var up = SmallButton("▲", () => { _editor.MoveTileLayer(layer, 1); RebuildLayers(); InvalidateScene(); });
+            Grid.SetColumn(up, 2);
+            var down = SmallButton("▼", () => { _editor.MoveTileLayer(layer, -1); RebuildLayers(); InvalidateScene(); });
+            Grid.SetColumn(down, 3);
+            var del = SmallButton("✕", () => { _editor.RemoveTileLayer(layer); RebuildLayers(); InvalidateScene(); });
+            Grid.SetColumn(del, 4);
+
+            grid.Children.Add(vis);
+            grid.Children.Add(name);
+            grid.Children.Add(up);
+            grid.Children.Add(down);
+            grid.Children.Add(del);
+            row.Child = grid;
+            return row;
+        }
+
+        private static Button SmallButton(string text, Action onClick)
+        {
+            var b = new Button { Content = text, Padding = new global::Avalonia.Thickness(5, 2), Background = Brushes.Transparent, Foreground = new SolidColorBrush(Color.FromRgb(0x8A, 0x93, 0xA6)) };
+            b.Click += (_, __) => onClick();
+            return b;
         }
 
         private void OnPalettePick(object? sender, PointerPressedEventArgs e)
