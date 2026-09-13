@@ -1075,6 +1075,26 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => obj.RemoveComponent(rb)));
         }
 
+        public void AddPropertyAnimator()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<PropertyAnimator>().Any())
+                return;
+
+            var pa = new PropertyAnimator();
+            pa.Tracks.Add(new PropertyTrack { Channel = AnimChannel.PositionY, Keys = { new AnimKey(0f, 0f), new AnimKey(1f, 100f) } });
+            History.Do(new EditorAction("Adicionar Property Animator",
+                doAction: () => obj.AddComponent(pa),
+                undoAction: () => obj.RemoveComponent(pa)));
+        }
+
+        public void RemovePropertyAnimator()
+        {
+            var pa = SelectedObject?.Components.OfType<PropertyAnimator>().FirstOrDefault();
+            if (pa != null)
+                RemoveComponent(pa);
+        }
+
         public void RemoveRigidbody()
         {
             var rb = SelectedObject?.Components.OfType<Rigidbody2D>().FirstOrDefault();
@@ -1220,6 +1240,16 @@ namespace DreamBit.Studio.ViewModels
                             Kind = rb.Kind, Shape = rb.Shape, Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
                             Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution, FixedRotation = rb.FixedRotation
                         });
+                        break;
+                    case PropertyAnimator pa:
+                        var paClone = new PropertyAnimator { Duration = pa.Duration, Loop = pa.Loop, PlayOnStart = pa.PlayOnStart };
+                        foreach (var tr in pa.Tracks)
+                        {
+                            var t2 = new PropertyTrack { Channel = tr.Channel, Easing = tr.Easing };
+                            t2.Keys.AddRange(tr.Keys);
+                            paClone.Tracks.Add(t2);
+                        }
+                        clone.AddComponent(paClone);
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

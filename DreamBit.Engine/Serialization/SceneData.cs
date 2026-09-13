@@ -64,6 +64,7 @@ namespace DreamBit.Engine.Serialization
         public List<TimerComponentData> Timers { get; set; } = new();
         public List<UiLayoutData> Layouts { get; set; } = new();
         public List<RigidbodyData> Rigidbodies { get; set; } = new();
+        public List<PropertyAnimatorData> PropertyAnimators { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -168,6 +169,22 @@ namespace DreamBit.Engine.Serialization
     {
         public float FactorX { get; set; } = 0.5f;
         public float FactorY { get; set; } = 1f;
+    }
+
+    public sealed class PropertyAnimatorData
+    {
+        public float Duration { get; set; } = 1f;
+        public int Loop { get; set; } = 1; // TweenLoop.Loop
+        public bool PlayOnStart { get; set; } = true;
+        public List<PropertyTrackData> Tracks { get; set; } = new();
+    }
+
+    public sealed class PropertyTrackData
+    {
+        public int Channel { get; set; }
+        public int Easing { get; set; } = 3; // InOut
+        /// <summary>Keyframes em pares planos: t0,v0, t1,v1, ...</summary>
+        public float[] Keys { get; set; } = System.Array.Empty<float>();
     }
 
     public sealed class RigidbodyData

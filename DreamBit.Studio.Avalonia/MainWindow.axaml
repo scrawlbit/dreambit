@@ -348,6 +348,7 @@
                             <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Rigidbody 2D</ComboBoxItem>
+                            <ComboBoxItem>Property Animator</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -735,6 +736,34 @@
                                 </Grid>
                                 <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Property Animator -->
+                        <Border Classes="component" IsVisible="{Binding HasPropAnim}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Property Animator" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemovePropertyAnimator" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Duração (s, 0 = auto)" />
+                                        <TextBox Text="{Binding PropAnimDuration, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Repetição" />
+                                        <ComboBox ItemsSource="{Binding PropAnimLoops}" HorizontalAlignment="Stretch"
+                                                  SelectedItem="{Binding PropAnimLoop, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="Tocar ao iniciar" IsChecked="{Binding PropAnimPlayOnStart, Mode=TwoWay}" Margin="0,4,0,0" />
+                                <TextBlock Classes="field" Text="Trilhas (uma por linha: 'Canal: t=v, t=v')" />
+                                <TextBox Text="{Binding PropAnimTracksText, Mode=TwoWay}" AcceptsReturn="True"
+                                         FontFamily="Consolas,monospace" Height="90" TextWrapping="NoWrap"
+                                         Watermark="PositionY: 0=0, 0.5=100, 1=0" />
+                                <TextBlock Text="Canais: PositionX/Y, Rotation (graus), ScaleX/Y, SpriteAlpha, SpriteR/G/B."
+                                           Foreground="#8A93A6" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" />
                             </StackPanel>
                         </Border>
 

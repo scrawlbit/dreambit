@@ -527,6 +527,70 @@ namespace DreamBit.Studio.ViewModels
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
 
+        // ---- Componente PropertyAnimator (timeline de propriedades) ----
+
+        private PropertyAnimator? PropAnim => _target?.Components.OfType<PropertyAnimator>().FirstOrDefault();
+        public bool HasPropAnim => PropAnim != null;
+
+        public float PropAnimDuration
+        {
+            get => PropAnim?.Duration ?? 1f;
+            set { var p = PropAnim; if (p != null) p.Duration = value; }
+        }
+        public TweenLoop PropAnimLoop
+        {
+            get => PropAnim?.Loop ?? TweenLoop.Loop;
+            set { var p = PropAnim; if (p != null) p.Loop = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<TweenLoop> PropAnimLoops { get; }
+            = Scrawlbit.EnumHelper.Values<TweenLoop>();
+        public bool PropAnimPlayOnStart
+        {
+            get => PropAnim?.PlayOnStart ?? true;
+            set { var p = PropAnim; if (p != null) p.PlayOnStart = value; }
+        }
+
+        /// <summary>Trilhas em texto: uma linha por trilha "Canal: t=v, t=v" (ex.: "PositionY: 0=0, 0.5=100, 1=0").
+        /// Canais: PositionX/Y, Rotation (graus), ScaleX/Y, SpriteAlpha, SpriteR/G/B.</summary>
+        public string PropAnimTracksText
+        {
+            get
+            {
+                var p = PropAnim;
+                if (p == null) return string.Empty;
+                return string.Join("\n", p.Tracks.Select(tr =>
+                    $"{tr.Channel}: " + string.Join(", ", tr.Keys.Select(k =>
+                        $"{k.Time.ToString(System.Globalization.CultureInfo.InvariantCulture)}={k.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)}"))));
+            }
+            set
+            {
+                var p = PropAnim;
+                if (p == null) return;
+                p.Tracks.Clear();
+                foreach (var line in (value ?? string.Empty).Split('\n'))
+                {
+                    var text = line.Trim();
+                    if (text.Length == 0) continue;
+                    int colon = text.IndexOf(':');
+                    if (colon <= 0) continue;
+                    if (!System.Enum.TryParse<AnimChannel>(text[..colon].Trim(), true, out var channel)) continue;
+
+                    var track = new PropertyTrack { Channel = channel };
+                    foreach (var pair in text[(colon + 1)..].Split(','))
+                    {
+                        var kv = pair.Split('=');
+                        if (kv.Length == 2
+                            && float.TryParse(kv[0].Trim(), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var t)
+                            && float.TryParse(kv[1].Trim(), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var v))
+                            track.Keys.Add(new AnimKey(t, v));
+                    }
+                    track.Keys.Sort((a, b) => a.Time.CompareTo(b.Time));
+                    if (track.Keys.Count > 0)
+                        p.Tracks.Add(track);
+                }
+            }
+        }
+
         // ---- Componente Rigidbody2D (física) ----
 
         private Rigidbody2D? Rigidbody => _target?.Components.OfType<Rigidbody2D>().FirstOrDefault();
@@ -1042,6 +1106,11 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(CameraSmoothTime));
             OnPropertyChanged(nameof(CameraZoom));
             OnPropertyChanged(nameof(CameraUseBounds));
+            OnPropertyChanged(nameof(HasPropAnim));
+            OnPropertyChanged(nameof(PropAnimDuration));
+            OnPropertyChanged(nameof(PropAnimLoop));
+            OnPropertyChanged(nameof(PropAnimPlayOnStart));
+            OnPropertyChanged(nameof(PropAnimTracksText));
             OnPropertyChanged(nameof(HasRigidbody));
             OnPropertyChanged(nameof(RigidbodyKindValue));
             OnPropertyChanged(nameof(RigidbodyShapeValue));

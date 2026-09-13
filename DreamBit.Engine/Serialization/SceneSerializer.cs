@@ -423,6 +423,19 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is UiLayout layout)
                     data.Layouts.Add(new UiLayoutData { Direction = (int)layout.Direction, Spacing = layout.Spacing });
+                else if (component is PropertyAnimator panim)
+                    data.PropertyAnimators.Add(new PropertyAnimatorData
+                    {
+                        Duration = panim.Duration,
+                        Loop = (int)panim.Loop,
+                        PlayOnStart = panim.PlayOnStart,
+                        Tracks = panim.Tracks.Select(tr => new PropertyTrackData
+                        {
+                            Channel = (int)tr.Channel,
+                            Easing = (int)tr.Easing,
+                            Keys = tr.Keys.SelectMany(k => new[] { k.Time, k.Value }).ToArray()
+                        }).ToList()
+                    });
                 else if (component is Rigidbody2D rb)
                     data.Rigidbodies.Add(new RigidbodyData
                     {
@@ -700,6 +713,19 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var layout in data.Layouts)
                 obj.AddComponent(new UiLayout { Direction = (LayoutDirection)layout.Direction, Spacing = layout.Spacing });
+
+            foreach (var pa in data.PropertyAnimators)
+            {
+                var animator = new PropertyAnimator { Duration = pa.Duration, Loop = (TweenLoop)pa.Loop, PlayOnStart = pa.PlayOnStart };
+                foreach (var td in pa.Tracks)
+                {
+                    var track = new PropertyTrack { Channel = (AnimChannel)td.Channel, Easing = (Scrawlbit.EasingMode)td.Easing };
+                    for (int i = 0; i + 1 < td.Keys.Length; i += 2)
+                        track.Keys.Add(new AnimKey(td.Keys[i], td.Keys[i + 1]));
+                    animator.Tracks.Add(track);
+                }
+                obj.AddComponent(animator);
+            }
 
             foreach (var rb in data.Rigidbodies)
                 obj.AddComponent(new Rigidbody2D
