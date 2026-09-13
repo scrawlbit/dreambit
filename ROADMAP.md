@@ -42,6 +42,8 @@ MonoGame atualizado.
 - **Áudio com mixer/buses** (`AudioMixer`: Master/Music/SFX, volume por bus ao vivo).
 - **Timeline de propriedades** (`PropertyAnimator`): anima posição/rotação/escala/cor por
   keyframes, além do `TweenComponent` (de-para simples).
+- **Navegação/pathfinding A*** (`Pathfinding` + `NavGrid`): caminho em grade a partir dos
+  tiles sólidos, para IA de inimigos/NPCs.
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
