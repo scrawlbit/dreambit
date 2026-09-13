@@ -243,6 +243,8 @@ namespace DreamBit.Studio.Avalonia
             if (path != null) _editor.Inspector.AnimTexturePath = path;
         }
 
+        private void OnSliceAnimator(object? sender, RoutedEventArgs e) => _editor.Inspector.SliceAnimatorGrid();
+
         private async void OnPickSound(object? sender, RoutedEventArgs e)
         {
             var path = await PickOpenFileAsync("Escolher som", "Som WAV", "*.wav");

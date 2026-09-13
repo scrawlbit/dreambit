@@ -380,6 +380,12 @@
                                 <TextBlock Classes="field" Text="Textura (sheet)" />
                                 <TextBox Text="{Binding AnimTexturePath, Mode=TwoWay}" />
                                 <Button Content="Escolher…" Click="OnPickAnimTexture" Margin="0,2,0,0" HorizontalAlignment="Left" />
+                                <TextBlock Classes="field" Text="Fatiar por grade (colunas × linhas)" />
+                                <Grid ColumnDefinitions="*,4,*,6,Auto">
+                                    <TextBox Grid.Column="0" Text="{Binding AnimCols, Mode=TwoWay}" />
+                                    <TextBox Grid.Column="2" Text="{Binding AnimRows, Mode=TwoWay}" />
+                                    <Button Grid.Column="4" Content="Fatiar" Click="OnSliceAnimator" />
+                                </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Classes="field" Text="Frame W" />

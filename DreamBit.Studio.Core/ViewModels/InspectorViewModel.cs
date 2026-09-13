@@ -187,6 +187,30 @@ namespace DreamBit.Studio.ViewModels
             set { var a = Animator; if (a != null) a.Loop = value; }
         }
 
+        // Fatiador por grade: informa colunas×linhas e deduz frame width/height/count da imagem.
+        private int _animCols = 1;
+        private int _animRows = 1;
+        public int AnimCols { get => _animCols; set { _animCols = value < 1 ? 1 : value; OnPropertyChanged(); } }
+        public int AnimRows { get => _animRows; set { _animRows = value < 1 ? 1 : value; OnPropertyChanged(); } }
+
+        /// <summary>Fatia a sprite sheet do animator em <see cref="AnimCols"/>×<see cref="AnimRows"/>
+        /// células, deduzindo largura/altura/quantidade de frame do tamanho do PNG.</summary>
+        public void SliceAnimatorGrid()
+        {
+            var a = Animator;
+            if (a == null || string.IsNullOrEmpty(a.TexturePath))
+                return;
+
+            var (w, h) = DreamBit.Studio.ImageInfo.GetPngSize(a.TexturePath!);
+            if (w <= 0 || h <= 0)
+                return;
+
+            a.FrameWidth = w / _animCols;
+            a.FrameHeight = h / _animRows;
+            a.FrameCount = _animCols * _animRows;
+            Refresh();
+        }
+
         /// <summary>
         /// Eventos de animação em texto: uma linha por evento no formato "frame: nome"
         /// (ex.: "0: passo"). Disparam ao a animação entrar naquele frame no play.
