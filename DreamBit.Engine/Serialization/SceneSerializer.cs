@@ -83,6 +83,29 @@ namespace DreamBit.Engine.Serialization
             return data;
         }
 
+        private static PoseClipData ToData(DreamBit.Engine.Animation.PoseClip clip)
+        {
+            return new PoseClipData
+            {
+                Name = clip.Name,
+                Duration = clip.Duration,
+                Loop = clip.Loop,
+                Easing = (int)clip.Easing,
+                Events = clip.Events.Select(ev => new SkeletonEventData { Time = ev.Time, Name = ev.Name }).ToList(),
+                Keyframes = clip.Keyframes.Select(k => new PoseKeyframeData
+                {
+                    Time = k.Time,
+                    Bones = k.Bones.Select(b => new BonePoseData
+                    {
+                        Bone = b.Key,
+                        Px = b.Value.Position.X, Py = b.Value.Position.Y,
+                        Rot = b.Value.Rotation,
+                        Sx = b.Value.Scale.X, Sy = b.Value.Scale.Y
+                    }).ToList()
+                }).ToList()
+            };
+        }
+
         private static TilemapData ToData(TilemapRenderer tilemap)
         {
             var data = new TilemapData { TmxPath = tilemap.TmxPath, Edited = tilemap.Edited };
@@ -262,21 +285,8 @@ namespace DreamBit.Engine.Serialization
                 else if (component is SkeletonAnimator skeleton)
                     data.Skeletons.Add(new SkeletonData
                     {
-                        Duration = skeleton.Duration,
-                        Loop = skeleton.Loop,
-                        Easing = (int)skeleton.Easing,
-                        Events = skeleton.Events.Select(ev => new SkeletonEventData { Time = ev.Time, Name = ev.Name }).ToList(),
-                        Keyframes = skeleton.Keyframes.Select(k => new PoseKeyframeData
-                        {
-                            Time = k.Time,
-                            Bones = k.Bones.Select(b => new BonePoseData
-                            {
-                                Bone = b.Key,
-                                Px = b.Value.Position.X, Py = b.Value.Position.Y,
-                                Rot = b.Value.Rotation,
-                                Sx = b.Value.Scale.X, Sy = b.Value.Scale.Y
-                            }).ToList()
-                        }).ToList()
+                        CurrentClip = skeleton.CurrentClipName,
+                        Clips = skeleton.Clips.Select(ToData).ToList()
                     });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
@@ -420,21 +430,39 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var skel in data.Skeletons)
             {
-                var animator = new SkeletonAnimator
+                var animator = new SkeletonAnimator();
+
+                // Formato novo (clipes) ou legado (single-clip) via um clipe "default".
+                var clipDatas = skel.Clips.Count > 0
+                    ? skel.Clips
+                    : new System.Collections.Generic.List<PoseClipData>
+                      {
+                          new() { Name = "default", Duration = skel.Duration, Loop = skel.Loop,
+                                  Easing = skel.Easing, Keyframes = skel.Keyframes, Events = skel.Events }
+                      };
+
+                bool first = true;
+                foreach (var clipData in clipDatas)
                 {
-                    Duration = skel.Duration,
-                    Loop = skel.Loop,
-                    Easing = (Scrawlbit.EasingMode)skel.Easing
-                };
-                animator.SetEvents(skel.Events.Select(ev => (ev.Time, ev.Name)));
-                foreach (var kf in skel.Keyframes)
-                {
-                    var bones = new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>();
-                    foreach (var b in kf.Bones)
-                        bones[b.Bone] = new DreamBit.Engine.Animation.BonePose(
-                            new Vector2(b.Px, b.Py), b.Rot, new Vector2(b.Sx, b.Sy));
-                    animator.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(kf.Time, bones));
+                    // O animador já nasce com "default"; renomeia-o no primeiro clipe.
+                    if (first) { animator.CurrentClip.Name = clipData.Name; first = false; }
+                    else animator.AddClip(clipData.Name);
+
+                    animator.Duration = clipData.Duration;
+                    animator.Loop = clipData.Loop;
+                    animator.Easing = (Scrawlbit.EasingMode)clipData.Easing;
+                    animator.SetEvents(clipData.Events.Select(ev => (ev.Time, ev.Name)));
+                    foreach (var kf in clipData.Keyframes)
+                    {
+                        var bones = new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>();
+                        foreach (var b in kf.Bones)
+                            bones[b.Bone] = new DreamBit.Engine.Animation.BonePose(
+                                new Vector2(b.Px, b.Py), b.Rot, new Vector2(b.Sx, b.Sy));
+                        animator.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(kf.Time, bones));
+                    }
                 }
+
+                animator.CurrentClipName = skel.CurrentClip;
                 obj.AddComponent(animator);
             }
 

@@ -482,6 +482,40 @@ namespace DreamBit.Studio.ViewModels
         }
         public int SkeletonKeyframeCount => Skeleton?.KeyframeCount ?? 0;
 
+        // ---- clipes nomeados ----
+
+        public System.Collections.Generic.IEnumerable<string> SkeletonClipNames => Skeleton?.ClipNames ?? Enumerable.Empty<string>();
+
+        /// <summary>Clipe ativo (idle/walk…). Trocar reavalia toda a seção de skeleton.</summary>
+        public string SkeletonCurrentClip
+        {
+            get => Skeleton?.CurrentClipName ?? string.Empty;
+            set { var s = Skeleton; if (s != null && s.CurrentClipName != value) { s.CurrentClipName = value; Refresh(); } }
+        }
+
+        private string _newClipName = "walk";
+        public string NewClipName
+        {
+            get => _newClipName;
+            set { _newClipName = value; OnPropertyChanged(); }
+        }
+
+        public void AddSkeletonClip()
+        {
+            var s = Skeleton;
+            if (s == null) return;
+            s.AddClip(string.IsNullOrWhiteSpace(_newClipName) ? "clip" : _newClipName);
+            Refresh();
+        }
+
+        public void RemoveSkeletonClip()
+        {
+            var s = Skeleton;
+            if (s == null) return;
+            s.RemoveClip(s.CurrentClipName);
+            Refresh();
+        }
+
         public Scrawlbit.EasingMode SkeletonEasing
         {
             get => Skeleton?.Easing ?? Scrawlbit.EasingMode.Linear;
@@ -662,6 +696,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SkeletonKeyframeTimes));
             OnPropertyChanged(nameof(SkeletonEasing));
             OnPropertyChanged(nameof(SkeletonEventsText));
+            OnPropertyChanged(nameof(SkeletonClipNames));
+            OnPropertyChanged(nameof(SkeletonCurrentClip));
         }
     }
 }

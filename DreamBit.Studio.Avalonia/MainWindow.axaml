@@ -615,7 +615,19 @@
                                     <TextBlock Classes="section" Text="Skeleton (timeline)" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSkeleton" />
                                 </Grid>
-                                <Grid ColumnDefinitions="*,6,*">
+
+                                <TextBlock Classes="field" Text="Clipe ativo (idle/walk…)" />
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <ComboBox Grid.Column="0" ItemsSource="{Binding SkeletonClipNames}"
+                                              SelectedItem="{Binding SkeletonCurrentClip, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                                    <Button Grid.Column="1" Content="− clipe" Click="OnRemoveSkeletonClip" Margin="4,0,0,0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+                                    <TextBox Grid.Column="0" Text="{Binding NewClipName, Mode=TwoWay}" Watermark="nome do clipe" />
+                                    <Button Grid.Column="1" Content="+ clipe" Click="OnAddSkeletonClip" Margin="4,0,0,0" />
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,6,*" Margin="0,6,0,0">
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Classes="field" Text="Duração (s)" />
                                         <TextBox Text="{Binding SkeletonDuration, Mode=TwoWay}" />

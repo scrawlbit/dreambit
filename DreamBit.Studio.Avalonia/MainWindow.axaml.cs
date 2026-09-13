@@ -504,6 +504,8 @@ namespace DreamBit.Studio.Avalonia
 
         private void OnAddSkeletonKeyframe(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.AddSkeletonKeyframe);
         private void OnRemoveSkeletonKeyframe(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RemoveSkeletonKeyframe);
+        private void OnAddSkeletonClip(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.AddSkeletonClip);
+        private void OnRemoveSkeletonClip(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RemoveSkeletonClip);
 
         private void OnGoToKeyframe(object? sender, RoutedEventArgs e)
         {

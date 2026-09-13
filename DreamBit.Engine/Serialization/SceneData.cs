@@ -180,9 +180,23 @@ namespace DreamBit.Engine.Serialization
 
     public sealed class SkeletonData
     {
+        public string CurrentClip { get; set; } = "default";
+        public List<PoseClipData> Clips { get; set; } = new();
+
+        // Campos legados (formato single-clip) — lidos se Clips estiver vazio.
         public float Duration { get; set; } = 1f;
         public bool Loop { get; set; } = true;
-        public int Easing { get; set; } // Scrawlbit.EasingMode
+        public int Easing { get; set; }
+        public List<PoseKeyframeData> Keyframes { get; set; } = new();
+        public List<SkeletonEventData> Events { get; set; } = new();
+    }
+
+    public sealed class PoseClipData
+    {
+        public string Name { get; set; } = "default";
+        public float Duration { get; set; } = 1f;
+        public bool Loop { get; set; } = true;
+        public int Easing { get; set; }
         public List<PoseKeyframeData> Keyframes { get; set; } = new();
         public List<SkeletonEventData> Events { get; set; } = new();
     }

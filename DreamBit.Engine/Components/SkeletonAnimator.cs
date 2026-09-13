@@ -8,56 +8,133 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Engine.Components
 {
     /// <summary>
-    /// Anima um rig de <see cref="Bone"/> por keyframes de pose. Fica no objeto raiz do
-    /// personagem; os ossos são o próprio objeto e seus descendentes que tenham um Bone,
-    /// identificados pelo nome. Cada keyframe guarda a pose local de cada osso num instante;
-    /// no play (ou ao arrastar o playhead no editor) interpola entre keyframes e aplica.
-    /// Osso = transform (cutout), sem deformação de malha.
+    /// Anima um rig de <see cref="Bone"/> por keyframes de pose, organizados em clipes
+    /// nomeados (ex.: "idle", "walk"). Um clipe é o ativo por vez; a API de edição
+    /// (duração/loop/easing/keyframes/eventos) opera sobre o clipe ativo. No play (ou ao
+    /// arrastar o playhead) interpola entre keyframes e aplica. Osso = transform (cutout).
     /// </summary>
     public sealed class SkeletonAnimator : SceneComponent
     {
-        private readonly List<PoseKeyframe> _keyframes = new(); // sempre ordenado por Time
-        private readonly List<(float Time, string Name)> _events = new(); // eventos por tempo
-        private float _duration = 1f;
-        private bool _loop = true;
+        private readonly List<PoseClip> _clips = new();
+        private PoseClip _current;
         private float _time;
         private bool _playing;
-        private Scrawlbit.EasingMode _easing = Scrawlbit.EasingMode.Linear;
+
+        public SkeletonAnimator()
+        {
+            _current = new PoseClip("default");
+            _clips.Add(_current);
+        }
 
         public override string DisplayName => "Skeleton Animator";
 
-        /// <summary>Curva de suavização entre keyframes.</summary>
-        public Scrawlbit.EasingMode Easing
+        // ---- clipes ----
+
+        public IReadOnlyList<PoseClip> Clips => _clips;
+        public IEnumerable<string> ClipNames => _clips.Select(c => c.Name);
+        public PoseClip CurrentClip => _current;
+
+        public string CurrentClipName
         {
-            get => _easing;
-            set => Set(ref _easing, value);
+            get => _current.Name;
+            set
+            {
+                var clip = _clips.FirstOrDefault(c => c.Name == value);
+                if (clip == null || clip == _current)
+                    return;
+                _current = clip;
+                _time = 0f;
+                OnPropertyChanged(nameof(CurrentClipName));
+                RaiseClipChanged();
+            }
         }
 
-        /// <summary>Disparado quando a animação cruza um evento no tempo (nome do evento).</summary>
-        public event System.Action<string>? AnimationEvent;
-
-        public System.Collections.Generic.IEnumerable<(float Time, string Name)> Events => _events;
-
-        public void SetEvents(System.Collections.Generic.IEnumerable<(float Time, string Name)> events)
+        /// <summary>Adiciona (ou retorna, se já existe) um clipe e o torna ativo.</summary>
+        public PoseClip AddClip(string name)
         {
-            _events.Clear();
-            foreach (var e in events)
-                if (e.Time >= 0f && !string.IsNullOrWhiteSpace(e.Name))
-                    _events.Add((e.Time, e.Name.Trim()));
-            _events.Sort((a, b) => a.Time.CompareTo(b.Time));
+            name = string.IsNullOrWhiteSpace(name) ? "clip" : name.Trim();
+            var existing = _clips.FirstOrDefault(c => c.Name == name);
+            if (existing != null)
+            {
+                _current = existing;
+            }
+            else
+            {
+                var clip = new PoseClip(name);
+                _clips.Add(clip);
+                _current = clip;
+                OnPropertyChanged(nameof(Clips));
+                OnPropertyChanged(nameof(ClipNames));
+            }
+            _time = 0f;
+            OnPropertyChanged(nameof(CurrentClipName));
+            RaiseClipChanged();
+            return _current;
+        }
+
+        /// <summary>Remove um clipe (não remove o último). Se remover o ativo, ativa outro.</summary>
+        public bool RemoveClip(string name)
+        {
+            if (_clips.Count <= 1)
+                return false;
+
+            var clip = _clips.FirstOrDefault(c => c.Name == name);
+            if (clip == null)
+                return false;
+
+            _clips.Remove(clip);
+            if (_current == clip)
+                _current = _clips[0];
+
+            _time = 0f;
+            OnPropertyChanged(nameof(Clips));
+            OnPropertyChanged(nameof(ClipNames));
+            OnPropertyChanged(nameof(CurrentClipName));
+            RaiseClipChanged();
+            return true;
+        }
+
+        /// <summary>Toca um clipe nomeado do início (runtime).</summary>
+        public void Play(string name)
+        {
+            var clip = _clips.FirstOrDefault(c => c.Name == name);
+            if (clip == null)
+                return;
+            _current = clip;
+            _time = 0f;
+            _playing = clip.Keyframes.Count > 0;
+            OnPropertyChanged(nameof(CurrentClipName));
+            RaiseClipChanged();
+        }
+
+        /// <summary>Disparado quando o clipe ativo muda ou seu conteúdo (para a UI atualizar).</summary>
+        public event Action? ClipChanged;
+        private void RaiseClipChanged()
+        {
+            ClipChanged?.Invoke();
+            OnPropertyChanged(nameof(Keyframes));
+            OnPropertyChanged(nameof(KeyframeCount));
             OnPropertyChanged(nameof(Events));
         }
 
+        // ---- propriedades do clipe ativo ----
+
         public float Duration
         {
-            get => _duration;
-            set => Set(ref _duration, Math.Max(0.01f, value));
+            get => _current.Duration;
+            set { _current.Duration = Math.Max(0.01f, value); OnPropertyChanged(); }
         }
 
         public bool Loop
         {
-            get => _loop;
-            set => Set(ref _loop, value);
+            get => _current.Loop;
+            set { _current.Loop = value; OnPropertyChanged(); }
+        }
+
+        public Scrawlbit.EasingMode Easing
+        {
+            get => _current.Easing;
+            set { _current.Easing = value; OnPropertyChanged(); }
         }
 
         /// <summary>Tempo atual (segundos) — usado para preview/scrub no editor.</summary>
@@ -67,8 +144,23 @@ namespace DreamBit.Engine.Components
             private set => Set(ref _time, value);
         }
 
-        public IReadOnlyList<PoseKeyframe> Keyframes => _keyframes;
-        public int KeyframeCount => _keyframes.Count;
+        public IReadOnlyList<PoseKeyframe> Keyframes => _current.Keyframes;
+        public int KeyframeCount => _current.Keyframes.Count;
+
+        /// <summary>Disparado quando a animação cruza um evento no tempo (nome do evento).</summary>
+        public event Action<string>? AnimationEvent;
+
+        public IEnumerable<(float Time, string Name)> Events => _current.Events;
+
+        public void SetEvents(IEnumerable<(float Time, string Name)> events)
+        {
+            _current.Events.Clear();
+            foreach (var e in events)
+                if (e.Time >= 0f && !string.IsNullOrWhiteSpace(e.Name))
+                    _current.Events.Add((e.Time, e.Name.Trim()));
+            _current.Events.Sort((a, b) => a.Time.CompareTo(b.Time));
+            OnPropertyChanged(nameof(Events));
+        }
 
         /// <summary>Ossos do rig (este objeto + descendentes com Bone), indexados por nome.</summary>
         public Dictionary<string, GameObject> RigBones()
@@ -86,11 +178,10 @@ namespace DreamBit.Engine.Components
             }
         }
 
-        /// <summary>Captura a pose atual dos ossos como um keyframe no instante informado
-        /// (substitui um keyframe existente no mesmo tempo). Retorna o keyframe.</summary>
+        /// <summary>Captura a pose atual dos ossos como um keyframe no clipe ativo.</summary>
         public PoseKeyframe CaptureKeyframe(float time)
         {
-            time = Scrawlbit.Mathf.Clamp(time, 0f, _duration);
+            time = Scrawlbit.Mathf.Clamp(time, 0f, _current.Duration);
             var bones = new Dictionary<string, BonePose>();
             foreach (var (name, obj) in RigBones())
             {
@@ -98,7 +189,7 @@ namespace DreamBit.Engine.Components
                 bones[name] = new BonePose(t.Position, t.Rotation, t.Scale);
             }
 
-            var existing = _keyframes.FirstOrDefault(k => Math.Abs(k.Time - time) < 0.0001f);
+            var existing = _current.Keyframes.FirstOrDefault(k => Math.Abs(k.Time - time) < 0.0001f);
             if (existing != null)
             {
                 existing.Bones.Clear();
@@ -124,13 +215,13 @@ namespace DreamBit.Engine.Components
         /// <summary>Remove o keyframe mais próximo do tempo informado (dentro da tolerância).</summary>
         public bool RemoveKeyframeNear(float time, float tolerance = 0.02f)
         {
-            var frame = _keyframes
+            var frame = _current.Keyframes
                 .OrderBy(k => Math.Abs(k.Time - time))
                 .FirstOrDefault(k => Math.Abs(k.Time - time) <= tolerance);
             if (frame == null)
                 return false;
 
-            _keyframes.Remove(frame);
+            _current.Keyframes.Remove(frame);
             OnPropertyChanged(nameof(Keyframes));
             OnPropertyChanged(nameof(KeyframeCount));
             return true;
@@ -138,22 +229,22 @@ namespace DreamBit.Engine.Components
 
         private void InsertSorted(PoseKeyframe frame)
         {
-            int i = _keyframes.FindIndex(k => k.Time > frame.Time);
-            if (i < 0) _keyframes.Add(frame);
-            else _keyframes.Insert(i, frame);
+            int i = _current.Keyframes.FindIndex(k => k.Time > frame.Time);
+            if (i < 0) _current.Keyframes.Add(frame);
+            else _current.Keyframes.Insert(i, frame);
         }
 
         /// <summary>Define o tempo e aplica a pose interpolada (preview/scrub no editor).</summary>
         public void SetTime(float time)
         {
-            Time = Scrawlbit.Mathf.Clamp(time, 0f, _duration);
+            Time = Scrawlbit.Mathf.Clamp(time, 0f, _current.Duration);
             Sample(Time);
         }
 
         /// <summary>Amostra a pose no tempo informado e aplica aos ossos do rig.</summary>
         public void Sample(float time)
         {
-            if (_keyframes.Count == 0)
+            if (_current.Keyframes.Count == 0)
                 return;
 
             var pose = ResolvePose(time);
@@ -172,24 +263,24 @@ namespace DreamBit.Engine.Components
         /// <summary>Pose (por osso) interpolada no tempo informado, sem aplicar.</summary>
         public Dictionary<string, BonePose> ResolvePose(float time)
         {
-            if (_keyframes.Count == 0)
+            var keyframes = _current.Keyframes;
+            if (keyframes.Count == 0)
                 return new Dictionary<string, BonePose>();
 
-            if (time <= _keyframes[0].Time)
-                return new Dictionary<string, BonePose>(_keyframes[0].Bones);
+            if (time <= keyframes[0].Time)
+                return new Dictionary<string, BonePose>(keyframes[0].Bones);
 
-            if (time >= _keyframes[^1].Time)
-                return new Dictionary<string, BonePose>(_keyframes[^1].Bones);
+            if (time >= keyframes[^1].Time)
+                return new Dictionary<string, BonePose>(keyframes[^1].Bones);
 
-            // Encontra o par de keyframes que cerca o tempo.
-            for (int i = 0; i < _keyframes.Count - 1; i++)
+            for (int i = 0; i < keyframes.Count - 1; i++)
             {
-                var a = _keyframes[i];
-                var b = _keyframes[i + 1];
+                var a = keyframes[i];
+                var b = keyframes[i + 1];
                 if (time < a.Time || time > b.Time)
                     continue;
 
-                float factor = Scrawlbit.Easing.Apply(_easing, Scrawlbit.Mathf.InverseLerp(a.Time, b.Time, time));
+                float factor = Scrawlbit.Easing.Apply(_current.Easing, Scrawlbit.Mathf.InverseLerp(a.Time, b.Time, time));
 
                 var result = new Dictionary<string, BonePose>();
                 foreach (var (name, poseA) in a.Bones)
@@ -198,7 +289,6 @@ namespace DreamBit.Engine.Components
                         ? BonePose.Lerp(poseA, poseB, factor)
                         : poseA;
                 }
-                // ossos que só existem no keyframe B
                 foreach (var (name, poseB) in b.Bones)
                     if (!result.ContainsKey(name))
                         result[name] = poseB;
@@ -206,38 +296,39 @@ namespace DreamBit.Engine.Components
                 return result;
             }
 
-            return new Dictionary<string, BonePose>(_keyframes[^1].Bones);
+            return new Dictionary<string, BonePose>(keyframes[^1].Bones);
         }
 
         protected internal override void OnPlayStarted()
         {
             _time = 0f;
-            _playing = _keyframes.Count > 0;
+            _playing = _current.Keyframes.Count > 0;
             if (_playing)
                 Sample(0f);
         }
 
         protected internal override void Update(GameTime gameTime)
         {
-            if (!_playing || _keyframes.Count == 0)
+            if (!_playing || _current.Keyframes.Count == 0)
                 return;
 
             float prev = _time;
             _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float duration = _current.Duration;
 
-            if (_time > _duration)
+            if (_time > duration)
             {
-                if (_loop)
+                if (_current.Loop)
                 {
-                    FireEventsInRange(prev, _duration); // fim da volta
-                    _time %= _duration;
-                    FireEventsInRange(0f, _time);       // início da nova volta
+                    FireEventsInRange(prev, duration);
+                    _time %= duration;
+                    FireEventsInRange(0f, _time);
                 }
                 else
                 {
-                    _time = _duration;
+                    _time = duration;
                     _playing = false;
-                    FireEventsInRange(prev, _duration);
+                    FireEventsInRange(prev, duration);
                 }
             }
             else
@@ -250,12 +341,12 @@ namespace DreamBit.Engine.Components
 
         private void FireEventsInRange(float fromExclusive, float toInclusive)
         {
-            foreach (var (time, name) in _events)
+            foreach (var (time, name) in _current.Events)
             {
                 if (time > fromExclusive && time <= toInclusive)
                 {
                     AnimationEvent?.Invoke(name);
-                    Owner?.Scene?.Send(name, Owner); // encaminha ao barramento de eventos
+                    Owner?.Scene?.Send(name, Owner);
                 }
             }
         }

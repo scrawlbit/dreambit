@@ -950,11 +950,21 @@ namespace DreamBit.Studio.ViewModels
                         });
                         break;
                     case SkeletonAnimator skel:
-                        var skelClone = new SkeletonAnimator { Duration = skel.Duration, Loop = skel.Loop, Easing = skel.Easing };
-                        skelClone.SetEvents(skel.Events);
-                        foreach (var kf in skel.Keyframes)
-                            skelClone.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(
-                                kf.Time, new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>(kf.Bones)));
+                        var skelClone = new SkeletonAnimator();
+                        bool firstClip = true;
+                        foreach (var clip in skel.Clips)
+                        {
+                            if (firstClip) { skelClone.CurrentClip.Name = clip.Name; firstClip = false; }
+                            else skelClone.AddClip(clip.Name);
+                            skelClone.Duration = clip.Duration;
+                            skelClone.Loop = clip.Loop;
+                            skelClone.Easing = clip.Easing;
+                            skelClone.SetEvents(clip.Events);
+                            foreach (var kf in clip.Keyframes)
+                                skelClone.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(
+                                    kf.Time, new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>(kf.Bones)));
+                        }
+                        skelClone.CurrentClipName = skel.CurrentClipName;
                         clone.AddComponent(skelClone);
                         break;
                 }
