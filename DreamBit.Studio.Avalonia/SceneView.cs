@@ -82,8 +82,61 @@ namespace DreamBit.Studio.Avalonia
 
                 DrawLedges(context);
                 DrawSelectionBox(context);
+                DrawGizmos(context);
             }
         }
+
+        private static readonly IBrush _handleBrush = new SolidColorBrush(Color.FromRgb(240, 240, 245));
+        private static readonly IBrush _rotBrush = new SolidColorBrush(Color.FromRgb(120, 220, 160));
+        private readonly Pen _gizmoPen = new(new SolidColorBrush(Color.FromArgb(160, 255, 255, 255)), 1);
+
+        /// <summary>Desenha os gizmos de escala (cantos) e rotação (círculo), 1 objeto ou grupo.
+        /// Usa a mesma geometria do SceneInputController, então bate com o hit-test.</summary>
+        private void DrawGizmos(DrawingContext context)
+        {
+            if (_editor == null || !_editor.IsSelectTool || _editor.IsPlaying)
+                return;
+
+            var sel = _editor.SelectedObjects;
+            if (sel.Count == 0)
+                return;
+
+            float zoom = Math.Max(0.0001f, _editor.Camera.Zoom);
+            float grab = GizmoGeometry.GrabScreenRadius / zoom;
+
+            if (sel.Count == 1)
+            {
+                var obj = sel[0];
+                foreach (var c in GizmoGeometry.Corners(obj, SceneRenderer.GetVisualSize(obj)))
+                    Handle(context, c, grab);
+
+                var rh = GizmoGeometry.RotationHandleWorld(obj, zoom);
+                context.DrawLine(_gizmoPen, ToPoint(obj.Transform.WorldPosition), ToPoint(rh));
+                Circle(context, rh, grab);
+            }
+            else
+            {
+                var bounds = GizmoGeometry.GroupBounds(sel);
+                context.DrawRectangle(null, _gizmoPen,
+                    new Rect(bounds.Min.X, bounds.Min.Y, bounds.Max.X - bounds.Min.X, bounds.Max.Y - bounds.Min.Y));
+
+                foreach (var c in GizmoGeometry.GroupCorners(bounds))
+                    Handle(context, c, grab);
+
+                var rh = GizmoGeometry.GroupRotationHandle(bounds, zoom);
+                var topCenter = new XnaVector2((bounds.Min.X + bounds.Max.X) / 2f, bounds.Min.Y);
+                context.DrawLine(_gizmoPen, ToPoint(topCenter), ToPoint(rh));
+                Circle(context, rh, grab);
+            }
+        }
+
+        private void Handle(DrawingContext context, XnaVector2 world, float half)
+            => context.FillRectangle(_handleBrush, new Rect(world.X - half, world.Y - half, half * 2, half * 2));
+
+        private void Circle(DrawingContext context, XnaVector2 world, float radius)
+            => context.DrawEllipse(_rotBrush, _gizmoPen, new Point(world.X, world.Y), radius, radius);
+
+        private static Point ToPoint(XnaVector2 v) => new(v.X, v.Y);
 
         private static readonly IBrush _boxFill = new SolidColorBrush(Color.FromArgb(40, 90, 200, 255));
 
