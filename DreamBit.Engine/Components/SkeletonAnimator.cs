@@ -17,12 +17,36 @@ namespace DreamBit.Engine.Components
     public sealed class SkeletonAnimator : SceneComponent
     {
         private readonly List<PoseKeyframe> _keyframes = new(); // sempre ordenado por Time
+        private readonly List<(float Time, string Name)> _events = new(); // eventos por tempo
         private float _duration = 1f;
         private bool _loop = true;
         private float _time;
         private bool _playing;
+        private Scrawlbit.EasingMode _easing = Scrawlbit.EasingMode.Linear;
 
         public override string DisplayName => "Skeleton Animator";
+
+        /// <summary>Curva de suavização entre keyframes.</summary>
+        public Scrawlbit.EasingMode Easing
+        {
+            get => _easing;
+            set => Set(ref _easing, value);
+        }
+
+        /// <summary>Disparado quando a animação cruza um evento no tempo (nome do evento).</summary>
+        public event System.Action<string>? AnimationEvent;
+
+        public System.Collections.Generic.IEnumerable<(float Time, string Name)> Events => _events;
+
+        public void SetEvents(System.Collections.Generic.IEnumerable<(float Time, string Name)> events)
+        {
+            _events.Clear();
+            foreach (var e in events)
+                if (e.Time >= 0f && !string.IsNullOrWhiteSpace(e.Name))
+                    _events.Add((e.Time, e.Name.Trim()));
+            _events.Sort((a, b) => a.Time.CompareTo(b.Time));
+            OnPropertyChanged(nameof(Events));
+        }
 
         public float Duration
         {
@@ -165,7 +189,7 @@ namespace DreamBit.Engine.Components
                 if (time < a.Time || time > b.Time)
                     continue;
 
-                float factor = Scrawlbit.Mathf.InverseLerp(a.Time, b.Time, time);
+                float factor = Scrawlbit.Easing.Apply(_easing, Scrawlbit.Mathf.InverseLerp(a.Time, b.Time, time));
 
                 var result = new Dictionary<string, BonePose>();
                 foreach (var (name, poseA) in a.Bones)
@@ -198,19 +222,42 @@ namespace DreamBit.Engine.Components
             if (!_playing || _keyframes.Count == 0)
                 return;
 
+            float prev = _time;
             _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (_time > _duration)
             {
                 if (_loop)
+                {
+                    FireEventsInRange(prev, _duration); // fim da volta
                     _time %= _duration;
+                    FireEventsInRange(0f, _time);       // início da nova volta
+                }
                 else
                 {
                     _time = _duration;
                     _playing = false;
+                    FireEventsInRange(prev, _duration);
                 }
+            }
+            else
+            {
+                FireEventsInRange(prev, _time);
             }
 
             Sample(_time);
+        }
+
+        private void FireEventsInRange(float fromExclusive, float toInclusive)
+        {
+            foreach (var (time, name) in _events)
+            {
+                if (time > fromExclusive && time <= toInclusive)
+                {
+                    AnimationEvent?.Invoke(name);
+                    Owner?.Scene?.Send(name, Owner); // encaminha ao barramento de eventos
+                }
+            }
         }
     }
 }

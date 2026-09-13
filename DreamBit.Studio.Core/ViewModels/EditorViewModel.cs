@@ -927,7 +927,8 @@ namespace DreamBit.Studio.ViewModels
                         });
                         break;
                     case SkeletonAnimator skel:
-                        var skelClone = new SkeletonAnimator { Duration = skel.Duration, Loop = skel.Loop };
+                        var skelClone = new SkeletonAnimator { Duration = skel.Duration, Loop = skel.Loop, Easing = skel.Easing };
+                        skelClone.SetEvents(skel.Events);
                         foreach (var kf in skel.Keyframes)
                             skelClone.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(
                                 kf.Time, new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>(kf.Bones)));

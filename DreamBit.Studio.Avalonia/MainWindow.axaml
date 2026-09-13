@@ -591,6 +591,10 @@
                                     </StackPanel>
                                 </Grid>
 
+                                <TextBlock Classes="field" Text="Suavização (easing)" />
+                                <ComboBox ItemsSource="{Binding EasingModes}" SelectedItem="{Binding SkeletonEasing, Mode=TwoWay}"
+                                          HorizontalAlignment="Stretch" />
+
                                 <TextBlock Classes="field" Text="Tempo (arraste para pré-visualizar a pose)" />
                                 <Slider Minimum="0" Maximum="{Binding SkeletonDuration}" Value="{Binding SkeletonTime, Mode=TwoWay}"
                                         SmallChange="0.02" LargeChange="0.1" />
@@ -617,7 +621,11 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <TextBlock Text="Fluxo: arraste o tempo → pose os ossos → + Keyframe. Repita e dê Play."
+                                <TextBlock Classes="field" Text="Eventos por tempo (uma linha 'tempo: nome')" />
+                                <TextBox Text="{Binding SkeletonEventsText, Mode=TwoWay}" AcceptsReturn="True"
+                                         FontFamily="Consolas,monospace" Height="54" TextWrapping="NoWrap"
+                                         Watermark="0.5: passo" />
+                                <TextBlock Text="Fluxo: arraste o tempo → pose os ossos → + Keyframe. Repita e dê Play. Eventos disparam no barramento."
                                            Foreground="#8A93A6" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" />
                             </StackPanel>
                         </Border>

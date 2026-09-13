@@ -451,6 +451,46 @@ namespace DreamBit.Studio.ViewModels
         }
         public int SkeletonKeyframeCount => Skeleton?.KeyframeCount ?? 0;
 
+        public Scrawlbit.EasingMode SkeletonEasing
+        {
+            get => Skeleton?.Easing ?? Scrawlbit.EasingMode.Linear;
+            set { var s = Skeleton; if (s != null) s.Easing = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<Scrawlbit.EasingMode> EasingModes { get; }
+            = Scrawlbit.EnumHelper.Values<Scrawlbit.EasingMode>();
+
+        /// <summary>Eventos do clipe em texto: uma linha por evento "tempo: nome" (ex.: "0.5: passo").</summary>
+        public string SkeletonEventsText
+        {
+            get
+            {
+                var s = Skeleton;
+                if (s == null) return string.Empty;
+                return string.Join("\n", s.Events.OrderBy(e => e.Time).Select(e => $"{e.Time:0.###}: {e.Name}"));
+            }
+            set
+            {
+                var s = Skeleton;
+                if (s == null) return;
+
+                var parsed = new System.Collections.Generic.List<(float, string)>();
+                foreach (var raw in (value ?? string.Empty).Split('\n'))
+                {
+                    var line = raw.Trim();
+                    int sep = line.IndexOf(':');
+                    if (sep <= 0) continue;
+                    if (float.TryParse(line[..sep].Trim(), System.Globalization.NumberStyles.Float,
+                            System.Globalization.CultureInfo.InvariantCulture, out float time))
+                    {
+                        var name = line[(sep + 1)..].Trim();
+                        if (name.Length > 0) parsed.Add((time, name));
+                    }
+                }
+                s.SetEvents(parsed);
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>Tempo atual do clipe (scrub). Aplica a pose interpolada aos ossos.</summary>
         public float SkeletonTime
         {
@@ -583,6 +623,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SkeletonTime));
             OnPropertyChanged(nameof(SkeletonKeyframeCount));
             OnPropertyChanged(nameof(SkeletonKeyframeTimes));
+            OnPropertyChanged(nameof(SkeletonEasing));
+            OnPropertyChanged(nameof(SkeletonEventsText));
         }
     }
 }

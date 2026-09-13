@@ -264,6 +264,8 @@ namespace DreamBit.Engine.Serialization
                     {
                         Duration = skeleton.Duration,
                         Loop = skeleton.Loop,
+                        Easing = (int)skeleton.Easing,
+                        Events = skeleton.Events.Select(ev => new SkeletonEventData { Time = ev.Time, Name = ev.Name }).ToList(),
                         Keyframes = skeleton.Keyframes.Select(k => new PoseKeyframeData
                         {
                             Time = k.Time,
@@ -409,7 +411,13 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var skel in data.Skeletons)
             {
-                var animator = new SkeletonAnimator { Duration = skel.Duration, Loop = skel.Loop };
+                var animator = new SkeletonAnimator
+                {
+                    Duration = skel.Duration,
+                    Loop = skel.Loop,
+                    Easing = (Scrawlbit.EasingMode)skel.Easing
+                };
+                animator.SetEvents(skel.Events.Select(ev => (ev.Time, ev.Name)));
                 foreach (var kf in skel.Keyframes)
                 {
                     var bones = new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>();

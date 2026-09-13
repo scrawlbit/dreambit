@@ -172,7 +172,15 @@ namespace DreamBit.Engine.Serialization
     {
         public float Duration { get; set; } = 1f;
         public bool Loop { get; set; } = true;
+        public int Easing { get; set; } // Scrawlbit.EasingMode
         public List<PoseKeyframeData> Keyframes { get; set; } = new();
+        public List<SkeletonEventData> Events { get; set; } = new();
+    }
+
+    public sealed class SkeletonEventData
+    {
+        public float Time { get; set; }
+        public string Name { get; set; } = "";
     }
 
     public sealed class PoseKeyframeData
