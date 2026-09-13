@@ -154,5 +154,10 @@ namespace DreamBit.Engine.Serialization
         public byte B { get; set; }
         public byte A { get; set; } = 255;
         public string? TexturePath { get; set; }
+        // Recorte no atlas (opcional). W/H = 0 significa "textura inteira".
+        public int SrcX { get; set; }
+        public int SrcY { get; set; }
+        public int SrcW { get; set; }
+        public int SrcH { get; set; }
     }
 }

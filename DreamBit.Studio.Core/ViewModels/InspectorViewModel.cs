@@ -127,6 +127,23 @@ namespace DreamBit.Studio.ViewModels
         }
         public bool SpriteHasTexture => !string.IsNullOrEmpty(Sprite?.TexturePath);
 
+        // Recorte no atlas (source rect). W/H = 0 => textura inteira.
+        private Microsoft.Xna.Framework.Rectangle SpriteSource => Sprite?.SourceRect ?? Microsoft.Xna.Framework.Rectangle.Empty;
+        private void SetSpriteSource(int x, int y, int w, int h)
+        {
+            var s = Sprite;
+            if (s == null) return;
+            s.SourceRect = w > 0 && h > 0 ? new Microsoft.Xna.Framework.Rectangle(x, y, w, h) : null;
+            OnPropertyChanged(nameof(SpriteSrcX));
+            OnPropertyChanged(nameof(SpriteSrcY));
+            OnPropertyChanged(nameof(SpriteSrcW));
+            OnPropertyChanged(nameof(SpriteSrcH));
+        }
+        public int SpriteSrcX { get => SpriteSource.X; set => SetSpriteSource(value, SpriteSource.Y, SpriteSource.Width, SpriteSource.Height); }
+        public int SpriteSrcY { get => SpriteSource.Y; set => SetSpriteSource(SpriteSource.X, value, SpriteSource.Width, SpriteSource.Height); }
+        public int SpriteSrcW { get => SpriteSource.Width; set => SetSpriteSource(SpriteSource.X, SpriteSource.Y, value, SpriteSource.Height); }
+        public int SpriteSrcH { get => SpriteSource.Height; set => SetSpriteSource(SpriteSource.X, SpriteSource.Y, SpriteSource.Width, value); }
+
         // ---- Componente SpriteAnimator ----
 
         private SpriteAnimator? Animator => _target?.Components.OfType<SpriteAnimator>().FirstOrDefault();
@@ -364,6 +381,10 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteB));
             OnPropertyChanged(nameof(SpriteTexturePath));
             OnPropertyChanged(nameof(SpriteHasTexture));
+            OnPropertyChanged(nameof(SpriteSrcX));
+            OnPropertyChanged(nameof(SpriteSrcY));
+            OnPropertyChanged(nameof(SpriteSrcW));
+            OnPropertyChanged(nameof(SpriteSrcH));
             OnPropertyChanged(nameof(HasScript));
             OnPropertyChanged(nameof(ScriptSource));
             OnPropertyChanged(nameof(ScriptError));

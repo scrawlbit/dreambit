@@ -275,6 +275,27 @@ namespace DreamBit.Studio
                 _editor.ImportTilemap(dialog.FileName);
         }
 
+        private AtlasPickerWindow? _atlasPicker;
+
+        private void OnOpenAtlas(object sender, RoutedEventArgs e)
+        {
+            // Reaproveita a janela se já estiver aberta; carimba no centro atual da câmera.
+            if (_atlasPicker == null)
+            {
+                _atlasPicker = new AtlasPickerWindow((path, src) =>
+                {
+                    _editor.StampFromAtlas(path, src, _editor.Camera.Position);
+                }, _editor.Inspector.SpriteTexturePath)
+                { Owner = this };
+                _atlasPicker.Closed += (_, _) => _atlasPicker = null;
+                _atlasPicker.Show();
+            }
+            else
+            {
+                _atlasPicker.Activate();
+            }
+        }
+
         private void OnNewTilemap(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Tileset (*.png)|*.png" };

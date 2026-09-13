@@ -807,7 +807,7 @@ namespace DreamBit.Studio.ViewModels
                 switch (component)
                 {
                     case SpriteRenderer s:
-                        clone.AddComponent(new SpriteRenderer { Size = s.Size, Color = s.Color, TexturePath = s.TexturePath });
+                        clone.AddComponent(new SpriteRenderer { Size = s.Size, Color = s.Color, TexturePath = s.TexturePath, SourceRect = s.SourceRect });
                         break;
                     case RotatorBehavior r:
                         clone.AddComponent(new RotatorBehavior { Speed = r.Speed });
@@ -971,6 +971,29 @@ namespace DreamBit.Studio.ViewModels
             History.Do(new EditorAction("Objeto a partir do asset",
                 doAction: () => { Scene.Add(obj); SelectedObject = obj; },
                 undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+        }
+
+        /// <summary>
+        /// Carimba um recorte de um atlas (textura + source rect) como um novo objeto na
+        /// posição informada (mundo). O tamanho do sprite espelha o recorte. Reversível.
+        /// </summary>
+        public GameObject StampFromAtlas(string texturePath, Rectangle source, Vector2 worldPosition)
+        {
+            var name = Path.GetFileNameWithoutExtension(texturePath);
+            var obj = new GameObject($"{name} [{source.X},{source.Y}]");
+            obj.Transform.Position = worldPosition;
+            obj.AddComponent(new SpriteRenderer
+            {
+                TexturePath = texturePath,
+                SourceRect = source,
+                Size = new Vector2(source.Width, source.Height)
+            });
+
+            History.Do(new EditorAction("Carimbar do atlas",
+                doAction: () => { Scene.Add(obj); SelectedObject = obj; },
+                undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+
+            return obj;
         }
 
         private GameObject BuildObject()

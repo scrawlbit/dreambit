@@ -23,6 +23,7 @@
                 <Button Style="{StaticResource ToolButton}" Content="↻ Rotator" Command="{Binding AddRotatorCommand}" ToolTip="Anexa um comportamento que gira o objeto no play" />
                 <Button Style="{StaticResource ToolButton}" Content="🗺 TMX" Click="OnImportTmx" ToolTip="Importa um mapa Tiled (.tmx) como objeto" />
                 <Button Style="{StaticResource ToolButton}" Content="🧩 Novo tilemap" Click="OnNewTilemap" ToolTip="Cria um tilemap em branco a partir de um tileset PNG (tiles 16px)" />
+                <Button Style="{StaticResource ToolButton}" Content="🖼 Atlas" Click="OnOpenAtlas" ToolTip="Abre um atlas/spritesheet para recortar e carimbar sprites na cena" />
                 <Button Style="{StaticResource ToolButton}" Content="🗑 Excluir" Command="{Binding DeleteObjectCommand}" />
                 <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
                 <Button Style="{StaticResource ToolButton}" Content="⭳ Prefab" Click="OnSavePrefab" ToolTip="Salvar o objeto selecionado como prefab" />
@@ -280,6 +281,17 @@
                                     <Button Content="Limpar" Click="OnClearTexture" Style="{StaticResource ToolButton}"
                                             Visibility="{Binding SpriteHasTexture, Converter={StaticResource BoolToVis}}" />
                                 </StackPanel>
+                                <TextBlock Text="Recorte do atlas (X / Y / L / A) — 0 = inteira" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" /><ColumnDefinition Width="4" /><ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="4" /><ColumnDefinition Width="*" /><ColumnDefinition Width="4" /><ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding SpriteSrcX, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="2" Text="{Binding SpriteSrcY, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="4" Text="{Binding SpriteSrcW, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Grid.Column="6" Text="{Binding SpriteSrcH, UpdateSourceTrigger=LostFocus}" />
+                                </Grid>
                             </StackPanel>
                         </Border>
                         <Button Content="+ Sprite Renderer" Click="OnAddSprite" Style="{StaticResource ToolButton}"

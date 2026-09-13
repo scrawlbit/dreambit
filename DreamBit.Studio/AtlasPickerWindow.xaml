@@ -1,0 +1,31 @@
+<Window x:Class="DreamBit.Studio.AtlasPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Atlas — recortar e carimbar" Height="760" Width="980"
+        Background="{DynamicResource WindowBg}" TextElement.Foreground="{DynamicResource TextFg}" FontSize="12">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="{DynamicResource PanelBg}" Padding="6">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="📂 Abrir PNG…" Click="OnOpen" Style="{StaticResource ToolButton}" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
+                <TextBlock x:Name="SelectionLabel" Text="Arraste um retângulo sobre a imagem"
+                           VerticalAlignment="Center" Foreground="{DynamicResource MutedFg}" Margin="4,0" />
+                <Separator Width="1" Margin="8,2" Background="{DynamicResource BorderBg}" />
+                <Button x:Name="StampButton" Content="🧩 Carimbar na cena" Click="OnStamp"
+                        Style="{StaticResource ToolButton}" IsEnabled="False" />
+                <TextBlock Text="(carimba e mantém a janela aberta)" VerticalAlignment="Center"
+                           Foreground="{DynamicResource MutedFg}" Margin="6,0" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      Background="#20242D">
+            <Canvas x:Name="PickCanvas" Background="Transparent"
+                    MouseLeftButtonDown="OnCanvasDown" MouseMove="OnCanvasMove" MouseLeftButtonUp="OnCanvasUp">
+                <Image x:Name="AtlasImage" Stretch="None" Canvas.Left="0" Canvas.Top="0" />
+                <Rectangle x:Name="SelectionRect" Stroke="#39D0FF" StrokeThickness="1.5"
+                           Fill="#3339D0FF" Visibility="Collapsed" />
+            </Canvas>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

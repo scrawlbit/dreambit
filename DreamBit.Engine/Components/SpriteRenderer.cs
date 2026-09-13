@@ -13,6 +13,7 @@ namespace DreamBit.Engine.Components
         private Vector2 _size = new(120, 80);
         private Color _color = new(70, 130, 200);
         private string? _texturePath;
+        private Rectangle? _sourceRect;
 
         public override string DisplayName => "Sprite Renderer";
 
@@ -35,9 +36,26 @@ namespace DreamBit.Engine.Components
             set => Set(ref _texturePath, value);
         }
 
+        /// <summary>
+        /// Recorte (região de origem) da textura, para usar um sprite de um atlas/spritesheet.
+        /// Null = usa a textura inteira. Largura/altura ≤ 0 são ignoradas (tratadas como null).
+        /// </summary>
+        public Rectangle? SourceRect
+        {
+            get => _sourceRect;
+            set => Set(ref _sourceRect, value is { Width: > 0, Height: > 0 } ? value : null);
+        }
+
         protected internal override void Draw(ISceneDrawing drawing)
         {
             var texture = TextureCache.Get(drawing.SpriteBatch.GraphicsDevice, _texturePath);
+
+            if (texture != null && _sourceRect is { } src)
+            {
+                drawing.DrawFrame(Owner.Transform.WorldMatrix, _size, Color.White, texture, src);
+                return;
+            }
+
             var tint = texture != null ? Color.White : _color;
             drawing.DrawQuad(Owner.Transform.WorldMatrix, _size, tint, texture);
         }

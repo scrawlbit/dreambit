@@ -200,6 +200,13 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Textura (caminho)" />
                                 <TextBox Text="{Binding SpriteTexturePath, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Recorte do atlas (X / Y / L / A) — 0 = textura inteira" />
+                                <Grid ColumnDefinitions="*,4,*,4,*,4,*">
+                                    <TextBox Grid.Column="0" Text="{Binding SpriteSrcX, Mode=TwoWay}" />
+                                    <TextBox Grid.Column="2" Text="{Binding SpriteSrcY, Mode=TwoWay}" />
+                                    <TextBox Grid.Column="4" Text="{Binding SpriteSrcW, Mode=TwoWay}" />
+                                    <TextBox Grid.Column="6" Text="{Binding SpriteSrcH, Mode=TwoWay}" />
+                                </Grid>
                             </StackPanel>
                         </Border>
 
