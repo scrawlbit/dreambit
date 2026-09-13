@@ -32,8 +32,9 @@ MonoGame atualizado.
   que disparam mensagens no barramento; funciona no jogo e no play do editor.
 - **Camadas de render** (grossas, antes do z-order) e **parallax de fundo** por eixo.
 - **Colisão direto do tilemap** (tiles sólidos por célula, opcionalmente por camada).
-- **UI**: âncoras (`UiAnchor`), botões (`UiButton`) e contêiner de layout (`UiLayout`,
-  empilha filhos em coluna/linha) para montar menus e HUD.
+- **UI**: âncoras (`UiAnchor`), botões (`UiButton`), layout (`UiLayout`), **slider** (com
+  ligação a bus de áudio), **toggle**, **barra de progresso** e **campo de texto** editável
+  (foco + teclado) — para menus, opções e HUD.
 - **Localização**: `Localizer` (tabelas de texto por idioma, JSON) e chave de localização
   no `TextRenderer`.
 - **Física 2D com corpos rígidos** (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
@@ -76,6 +77,10 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
 ### Rendering e cena
 - **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — depende do pipeline de shaders (MGCB).
 - **Áudio espacial** e música em camadas (o mixer/buses já existe).
+
+### UI
+- **Scroll container e navegação por foco** (teclado/gamepad) — os controles (botão,
+  slider, toggle, campo de texto, barra, layout) já existem.
 
 ### Animação
 - **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência e o fatiador por

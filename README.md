@@ -31,9 +31,9 @@ independente, multiplataforma e testada.
   `CameraComponent` (follow/deadzone/bounds/zoom), `TextRenderer` (fonte pixel, mundo ou
   **HUD**), `SceneExit` (**transição de fase**), `UiAnchor` + `UiButton` (**UI clicável**),
   `ParallaxLayer` (**parallax**), `TimerComponent`.
-- **Sistema de UI**: âncoras às bordas da tela, botões clicáveis (mouse/toque) que
-  disparam mensagens e contêiner de layout (menus); **camadas de render** e **colisão de
-  tilemap** (tiles sólidos); **localização** (`Localizer` + chave no texto).
+- **Sistema de UI**: âncoras, botões, layout, **slider** (liga a bus de áudio), **toggle**,
+  **barra de progresso** e **campo de texto** editável — para menus, opções e HUD; mais
+  **camadas de render**, **colisão de tilemap** e **localização** (`Localizer`).
 - **Física 2D** com corpos rígidos (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
   colisão com rotação, impulsos, **raycast** e **camadas de colisão** — alternativa ao
   `PlatformerController`.
