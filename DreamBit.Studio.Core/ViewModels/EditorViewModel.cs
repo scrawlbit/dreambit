@@ -1029,6 +1029,45 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
         }
 
+        // ---- carimbo de atlas ----
+
+        private bool _stampMode;
+
+        /// <summary>Carimbo atual selecionado (textura + recorte), ou null.</summary>
+        public (string Path, Rectangle Source)? CurrentStamp { get; private set; }
+
+        /// <summary>Quando ativo, clicar no canvas carimba o <see cref="CurrentStamp"/> no ponto.</summary>
+        public bool StampMode
+        {
+            get => _stampMode;
+            set => Set(ref _stampMode, value);
+        }
+
+        public bool HasStamp => CurrentStamp != null;
+
+        /// <summary>Define o carimbo atual e liga o modo carimbo (clicar na cena posiciona).</summary>
+        public void SetCurrentStamp(string texturePath, Rectangle source)
+        {
+            CurrentStamp = (texturePath, source);
+            StampMode = true;
+            OnPropertyChanged(nameof(HasStamp));
+        }
+
+        public void ClearStamp()
+        {
+            CurrentStamp = null;
+            StampMode = false;
+            OnPropertyChanged(nameof(HasStamp));
+        }
+
+        /// <summary>Carimba o carimbo atual no ponto (mundo). Usado pelo clique no canvas.</summary>
+        public GameObject? StampCurrentAt(Vector2 worldPosition)
+        {
+            if (CurrentStamp is not { } stamp)
+                return null;
+            return StampFromAtlas(stamp.Path, stamp.Source, worldPosition);
+        }
+
         /// <summary>
         /// Carimba um recorte de um atlas (textura + source rect) como um novo objeto na
         /// posição informada (mundo). O tamanho do sprite espelha o recorte. Reversível.

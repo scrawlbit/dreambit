@@ -44,6 +44,12 @@
                 <Button Content="↶" Command="{Binding UndoCommand}" ToolTip.Tip="Desfazer" />
                 <Button Content="↷" Command="{Binding RedoCommand}" ToolTip.Tip="Refazer" />
                 <Button x:Name="PlayButton" Content="▶ Play" Click="OnPlayToggle" />
+                <Border Width="1" Background="#11141A" Margin="4,2" />
+                <Button Content="🖼 Atlas" Click="OnOpenAtlas" ToolTip.Tip="Recortar e carimbar sprites de um atlas" />
+                <Button Content="✕ Carimbo" Click="OnExitStamp" IsVisible="{Binding StampMode}"
+                        ToolTip.Tip="Sair do modo carimbo" />
+                <TextBlock Text="modo carimbo — clique na cena" VerticalAlignment="Center" Foreground="#39D0FF"
+                           Margin="6,0,0,0" IsVisible="{Binding StampMode}" />
                 <TextBlock Text="{Binding Camera.Zoom, StringFormat='Zoom {0:0.00}x'}"
                            VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#8A93A6" />
             </StackPanel>

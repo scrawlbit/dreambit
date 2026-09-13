@@ -115,6 +115,16 @@ namespace DreamBit.Studio.Avalonia
             var props = e.GetCurrentPoint(this).Properties;
             bool ctrl = e.KeyModifiers.HasFlag(KeyModifiers.Control);
 
+            // Modo carimbo: clique esquerdo posiciona o carimbo atual no ponto (mundo).
+            if (props.IsLeftButtonPressed && _editor != null && _editor.StampMode && _editor.HasStamp)
+            {
+                var world = _editor.Camera.ScreenToWorld(pos, W, H);
+                _editor.StampCurrentAt(world);
+                e.Pointer.Capture(this);
+                InvalidateVisual();
+                return;
+            }
+
             if (props.IsLeftButtonPressed)
                 _input!.PrimaryDown(pos, W, H, ctrl);
             else if (props.IsMiddleButtonPressed || props.IsRightButtonPressed)

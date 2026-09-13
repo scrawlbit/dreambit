@@ -94,6 +94,24 @@ namespace DreamBit.Studio.Avalonia
                 _editor.SaveTo(path);
         }
 
+        private AtlasPicker? _atlasPicker;
+
+        private void OnOpenAtlas(object? sender, RoutedEventArgs e)
+        {
+            if (_atlasPicker == null)
+            {
+                _atlasPicker = new AtlasPicker(_editor);
+                _atlasPicker.Closed += (_, _) => _atlasPicker = null;
+                _atlasPicker.Show(this);
+            }
+            else
+            {
+                _atlasPicker.Activate();
+            }
+        }
+
+        private void OnExitStamp(object? sender, RoutedEventArgs e) => _editor.ClearStamp();
+
         private void OnAssetActivated(object? sender, RoutedEventArgs e)
         {
             if (this.FindControl<ListBox>("AssetsList")?.SelectedItem is string asset)
