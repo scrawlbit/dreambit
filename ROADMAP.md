@@ -23,6 +23,9 @@ MonoGame atualizado.
   eventos por tempo), `AnimatorController` (estados idle/walk/jump), `TweenComponent`
   (interpola propriedade com easing), `CameraComponent` (follow/deadzone/bounds/zoom),
   `TextRenderer` (fonte pixel embutida, mundo ou HUD), `SceneExit` (transição de fase).
+- **Fixo na tela (HUD)**: qualquer objeto (com seus filhos e componentes — sprite, texto,
+  barra de vida) pode ser marcado para não andar com a câmera, com a posição virando
+  coordenada de tela.
 - Barramento de mensagens (sinais de jogo); z-order global; input mapeável por ações
   (teclado + gamepad); play restaurável; hot-reload de assets; transição entre fases.
 - Editor: fatiador de sprite sheet por grade; adição de componentes por dropdown.
