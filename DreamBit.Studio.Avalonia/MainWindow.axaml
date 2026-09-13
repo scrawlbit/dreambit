@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:DreamBit.Studio.Avalonia"
         x:Class="DreamBit.Studio.Avalonia.MainWindow"
-        Title="DreamBit Studio (Avalonia — cross-platform)" Width="1240" Height="760"
+        Title="DreamBit" Width="1240" Height="760"
         Background="#1E2128">
 
     <Window.Styles>
@@ -150,10 +150,11 @@
                 <GridSplitter Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
 
                 <DockPanel Grid.Row="2">
-                    <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA" Foreground="#8A93A6" Margin="10,8" />
-                    <ListBox Background="Transparent" Margin="4"
+                    <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA (Ctrl/Shift p/ vários)" Foreground="#8A93A6" Margin="10,8" />
+                    <ListBox x:Name="HierarchyList" Background="Transparent" Margin="4"
                              ItemsSource="{Binding Scene.Objects}"
-                             SelectedItem="{Binding SelectedObject}">
+                             SelectionMode="Multiple"
+                             SelectionChanged="OnHierarchySelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}" Foreground="#D6DBE6" />

@@ -39,6 +39,7 @@ namespace DreamBit.Studio.Avalonia
             KeyDown += OnKeyDown;
             _editor.ToolChanged += RebuildPalette;
             _editor.SelectionChanged += RebuildPalette;
+            _editor.SelectionChanged += SyncHierarchySelection;
 
             // Rola o console para o fim quando chega log novo (após o layout medir a linha).
             _editor.Log.Entries.CollectionChanged += (_, _) =>
@@ -196,6 +197,37 @@ namespace DreamBit.Studio.Avalonia
                 return;
             }
             _editor.CreateTilemap(path, tile, tile, w / tile, h / tile);
+        }
+
+        // ---- multisseleção na hierarquia ----
+
+        private bool _syncingHierarchy;
+
+        private void OnHierarchySelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingHierarchy)
+                return;
+
+            var list = this.FindControl<ListBox>("HierarchyList");
+            if (list == null)
+                return;
+
+            var selected = list.SelectedItems?.Cast<DreamBit.Engine.Elements.GameObject>().ToList()
+                           ?? new List<DreamBit.Engine.Elements.GameObject>();
+            _editor.SetSelection(selected);
+        }
+
+        private void SyncHierarchySelection()
+        {
+            var list = this.FindControl<ListBox>("HierarchyList");
+            if (list?.SelectedItems == null)
+                return;
+
+            _syncingHierarchy = true;
+            list.SelectedItems.Clear();
+            foreach (var obj in _editor.SelectedObjects)
+                list.SelectedItems.Add(obj);
+            _syncingHierarchy = false;
         }
 
         // ---- paleta de tilemap ----
