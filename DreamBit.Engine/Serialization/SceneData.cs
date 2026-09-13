@@ -49,6 +49,7 @@ namespace DreamBit.Engine.Serialization
         public List<BoneData> Bones { get; set; } = new();
         public List<SkeletonData> Skeletons { get; set; } = new();
         public List<MessageListenerData> MessageListeners { get; set; } = new();
+        public List<BoxColliderData> BoxColliders { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -106,10 +107,19 @@ namespace DreamBit.Engine.Serialization
     {
         public float Gravity { get; set; } = 1400f;
         public float HalfHeight { get; set; } = 24f;
+        public float HalfWidth { get; set; } = 24f;
         public float HorizontalSpeed { get; set; }
         public bool UseKeyboard { get; set; } = true;
         public float MoveSpeed { get; set; } = 220f;
         public float JumpSpeed { get; set; } = 620f;
+    }
+
+    public sealed class BoxColliderData
+    {
+        public float Width { get; set; } = 64f;
+        public float Height { get; set; } = 64f;
+        public float OffsetX { get; set; }
+        public float OffsetY { get; set; }
     }
 
     public sealed class TilemapData

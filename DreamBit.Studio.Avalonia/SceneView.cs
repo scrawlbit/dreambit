@@ -81,6 +81,7 @@ namespace DreamBit.Studio.Avalonia
                 }
 
                 DrawLedges(context);
+                DrawColliders(context);
                 DrawSelectionBox(context);
                 DrawGizmos(context);
             }
@@ -137,6 +138,21 @@ namespace DreamBit.Studio.Avalonia
             => context.DrawEllipse(_rotBrush, _gizmoPen, new Point(world.X, world.Y), radius, radius);
 
         private static Point ToPoint(XnaVector2 v) => new(v.X, v.Y);
+
+        private static readonly IBrush _colliderFill = new SolidColorBrush(Color.FromArgb(40, 90, 200, 255));
+        private readonly Pen _colliderPen = new(new SolidColorBrush(Color.FromArgb(150, 90, 200, 255)), 1);
+
+        private void DrawColliders(DrawingContext context)
+        {
+            foreach (var obj in Flatten(_editor!.Scene.Objects))
+                foreach (var c in obj.Components)
+                    if (c is BoxCollider collider)
+                    {
+                        var (min, max) = collider.WorldBounds();
+                        context.DrawRectangle(_colliderFill, _colliderPen,
+                            new Rect(min.X, min.Y, max.X - min.X, max.Y - min.Y));
+                    }
+        }
 
         private static readonly IBrush _boxFill = new SolidColorBrush(Color.FromArgb(40, 90, 200, 255));
 

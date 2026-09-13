@@ -16,6 +16,7 @@ namespace DreamBit.Engine.Components
     {
         private float _gravity = 1400f;
         private float _halfHeight = 24f;
+        private float _halfWidth = 24f;
         private float _horizontalSpeed = 0f;
         private float _moveSpeed = 220f;
         private float _jumpSpeed = 620f;
@@ -31,6 +32,9 @@ namespace DreamBit.Engine.Components
 
         /// <summary>Distância do centro até os "pés" do objeto.</summary>
         public float HalfHeight { get => _halfHeight; set => Set(ref _halfHeight, Math.Max(0f, value)); }
+
+        /// <summary>Meia-largura do objeto (para colisão sólida por AABB).</summary>
+        public float HalfWidth { get => _halfWidth; set => Set(ref _halfWidth, Math.Max(0f, value)); }
 
         /// <summary>Velocidade horizontal constante (px/s) quando não é por teclado.</summary>
         public float HorizontalSpeed { get => _horizontalSpeed; set => Set(ref _horizontalSpeed, value); }
@@ -74,14 +78,25 @@ namespace DreamBit.Engine.Components
                 }
             }
 
+            var scene = Owner.Scene;
+            var solids = CollectSolids(scene);
+
+            // Movimento horizontal + bloqueio por colisores sólidos.
             float x = position.X + vx * dt;
+            x = SolidPhysics.ResolveX(solids, position.X, x, position.Y, _halfWidth, _halfHeight);
 
             _velocityY += _gravity * dt;
             float newY = position.Y + _velocityY * dt;
             _grounded = false;
 
-            var scene = Owner.Scene;
-            if (scene != null && _velocityY >= 0f)
+            // Colisão sólida vertical (chão/teto por todos os lados).
+            var (resolvedY, grounded, ceiling) = SolidPhysics.ResolveY(solids, x, position.Y, newY, _halfWidth, _halfHeight);
+            newY = resolvedY;
+            if (grounded) { _velocityY = 0f; _grounded = true; }
+            else if (ceiling) { _velocityY = 0f; }
+
+            // Ledges (one-way): só pousa caindo e se ainda não estiver no chão de um sólido.
+            if (scene != null && _velocityY >= 0f && !_grounded)
             {
                 float feetFrom = position.Y + _halfHeight;
                 float feetTo = newY + _halfHeight;
@@ -96,6 +111,38 @@ namespace DreamBit.Engine.Components
             }
 
             Owner.Transform.Position = new Vector2(x, newY);
+        }
+
+        /// <summary>Caixas dos BoxColliders da cena (exceto os do próprio objeto).</summary>
+        private System.Collections.Generic.List<SolidPhysics.Box> CollectSolids(Scene? scene)
+        {
+            var boxes = new System.Collections.Generic.List<SolidPhysics.Box>();
+            if (scene == null)
+                return boxes;
+
+            foreach (var obj in AllObjects(scene.Objects))
+            {
+                if (obj == Owner)
+                    continue;
+                foreach (var component in obj.Components)
+                    if (component is BoxCollider collider)
+                    {
+                        var (min, max) = collider.WorldBounds();
+                        boxes.Add(new SolidPhysics.Box(min, max));
+                    }
+            }
+            return boxes;
+        }
+
+        private static System.Collections.Generic.IEnumerable<GameObject> AllObjects(
+            System.Collections.Generic.IEnumerable<GameObject> objects)
+        {
+            foreach (var obj in objects)
+            {
+                yield return obj;
+                foreach (var child in AllObjects(obj.Children))
+                    yield return child;
+            }
         }
     }
 }

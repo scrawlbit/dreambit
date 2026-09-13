@@ -283,10 +283,19 @@ namespace DreamBit.Engine.Serialization
                     {
                         Gravity = platformer.Gravity,
                         HalfHeight = platformer.HalfHeight,
+                        HalfWidth = platformer.HalfWidth,
                         HorizontalSpeed = platformer.HorizontalSpeed,
                         UseKeyboard = platformer.UseKeyboard,
                         MoveSpeed = platformer.MoveSpeed,
                         JumpSpeed = platformer.JumpSpeed
+                    });
+                else if (component is BoxCollider box)
+                    data.BoxColliders.Add(new BoxColliderData
+                    {
+                        Width = box.Size.X,
+                        Height = box.Size.Y,
+                        OffsetX = box.Offset.X,
+                        OffsetY = box.Offset.Y
                     });
             }
 
@@ -434,10 +443,18 @@ namespace DreamBit.Engine.Serialization
                 {
                     Gravity = platformer.Gravity,
                     HalfHeight = platformer.HalfHeight,
+                    HalfWidth = platformer.HalfWidth,
                     HorizontalSpeed = platformer.HorizontalSpeed,
                     UseKeyboard = platformer.UseKeyboard,
                     MoveSpeed = platformer.MoveSpeed,
                     JumpSpeed = platformer.JumpSpeed
+                });
+
+            foreach (var box in data.BoxColliders)
+                obj.AddComponent(new BoxCollider
+                {
+                    Size = new Vector2(box.Width, box.Height),
+                    Offset = new Vector2(box.OffsetX, box.OffsetY)
                 });
 
             foreach (var childData in data.Children)

@@ -471,6 +471,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnAddSprite(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddSprite);
         private void OnAddAnimator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddAnimator);
         private void OnAddPlatformer(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddPlatformer);
+        private void OnAddCollider(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddCollider);
         private void OnAddAudio(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddAudio);
         private void OnAddParticles(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddParticles);
         private void OnAddTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddTrigger);
@@ -486,6 +487,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveSprite(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveSprite);
         private void OnRemoveAnimator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAnimator);
         private void OnRemovePlatformer(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemovePlatformer);
+        private void OnRemoveCollider(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveCollider);
         private void OnRemoveAudio(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAudio);
         private void OnRemoveParticles(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParticles);
         private void OnRemoveTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTrigger);

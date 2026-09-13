@@ -235,6 +235,37 @@ namespace DreamBit.Studio.ViewModels
             get => Platformer?.HalfHeight ?? 0f;
             set { var p = Platformer; if (p != null) p.HalfHeight = value; }
         }
+        public float PlatHalfWidth
+        {
+            get => Platformer?.HalfWidth ?? 0f;
+            set { var p = Platformer; if (p != null) p.HalfWidth = value; }
+        }
+
+        // ---- Componente BoxCollider (sólido) ----
+
+        private BoxCollider? Collider => _target?.Components.OfType<BoxCollider>().FirstOrDefault();
+        public bool HasCollider => Collider != null;
+
+        public float ColliderWidth
+        {
+            get => Collider?.Size.X ?? 0f;
+            set { var c = Collider; if (c != null) c.Size = new Vector2(value, c.Size.Y); }
+        }
+        public float ColliderHeight
+        {
+            get => Collider?.Size.Y ?? 0f;
+            set { var c = Collider; if (c != null) c.Size = new Vector2(c.Size.X, value); }
+        }
+        public float ColliderOffsetX
+        {
+            get => Collider?.Offset.X ?? 0f;
+            set { var c = Collider; if (c != null) c.Offset = new Vector2(value, c.Offset.Y); }
+        }
+        public float ColliderOffsetY
+        {
+            get => Collider?.Offset.Y ?? 0f;
+            set { var c = Collider; if (c != null) c.Offset = new Vector2(c.Offset.X, value); }
+        }
         public float PlatHorizontalSpeed
         {
             get => Platformer?.HorizontalSpeed ?? 0f;
@@ -600,6 +631,12 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasPlatformer));
             OnPropertyChanged(nameof(PlatGravity));
             OnPropertyChanged(nameof(PlatHalfHeight));
+            OnPropertyChanged(nameof(PlatHalfWidth));
+            OnPropertyChanged(nameof(HasCollider));
+            OnPropertyChanged(nameof(ColliderWidth));
+            OnPropertyChanged(nameof(ColliderHeight));
+            OnPropertyChanged(nameof(ColliderOffsetX));
+            OnPropertyChanged(nameof(ColliderOffsetY));
             OnPropertyChanged(nameof(PlatHorizontalSpeed));
             OnPropertyChanged(nameof(PlatUseKeyboard));
             OnPropertyChanged(nameof(PlatMoveSpeed));

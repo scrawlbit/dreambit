@@ -302,6 +302,7 @@
                             <Button Content="Sprite" Click="OnAddSprite" Margin="0,0,4,4" />
                             <Button Content="Animator" Click="OnAddAnimator" Margin="0,0,4,4" />
                             <Button Content="Platformer" Click="OnAddPlatformer" Margin="0,0,4,4" />
+                            <Button Content="Colisor" Click="OnAddCollider" Margin="0,0,4,4" />
                             <Button Content="Áudio" Click="OnAddAudio" Margin="0,0,4,4" />
                             <Button Content="Partículas" Click="OnAddParticles" Margin="0,0,4,4" />
                             <Button Content="Trigger" Click="OnAddTrigger" Margin="0,0,4,4" />
@@ -412,6 +413,8 @@
                                         <TextBox Text="{Binding PlatHalfHeight, Mode=TwoWay}" />
                                     </StackPanel>
                                 </Grid>
+                                <TextBlock Classes="field" Text="Meia-largura (colisão sólida)" />
+                                <TextBox Text="{Binding PlatHalfWidth, Mode=TwoWay}" />
                                 <CheckBox Content="Controle por teclado" IsChecked="{Binding PlatUseKeyboard, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -425,6 +428,37 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Vel. horizontal (auto)" />
                                 <TextBox Text="{Binding PlatHorizontalSpeed, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Box Collider (sólido) -->
+                        <Border Classes="component" IsVisible="{Binding HasCollider}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Box Collider (sólido)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveCollider" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding ColliderWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura" />
+                                        <TextBox Text="{Binding ColliderHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Offset X" />
+                                        <TextBox Text="{Binding ColliderOffsetX, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Offset Y" />
+                                        <TextBox Text="{Binding ColliderOffsetY, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Bloqueia o Platformer por todos os lados (parede/plataforma sólida)." />
                             </StackPanel>
                         </Border>
 

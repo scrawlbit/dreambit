@@ -803,6 +803,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(bone);
         }
 
+        public void AddCollider()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<BoxCollider>().Any())
+                return;
+
+            var collider = new BoxCollider();
+            History.Do(new EditorAction("Adicionar Box Collider",
+                doAction: () => obj.AddComponent(collider),
+                undoAction: () => obj.RemoveComponent(collider)));
+        }
+
+        public void RemoveCollider()
+        {
+            var collider = SelectedObject?.Components.OfType<BoxCollider>().FirstOrDefault();
+            if (collider != null)
+                RemoveComponent(collider);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -885,9 +904,13 @@ namespace DreamBit.Studio.ViewModels
                     case PlatformerController p:
                         clone.AddComponent(new PlatformerController
                         {
-                            Gravity = p.Gravity, HalfHeight = p.HalfHeight, HorizontalSpeed = p.HorizontalSpeed,
+                            Gravity = p.Gravity, HalfHeight = p.HalfHeight, HalfWidth = p.HalfWidth,
+                            HorizontalSpeed = p.HorizontalSpeed,
                             UseKeyboard = p.UseKeyboard, MoveSpeed = p.MoveSpeed, JumpSpeed = p.JumpSpeed
                         });
+                        break;
+                    case BoxCollider bc:
+                        clone.AddComponent(new BoxCollider { Size = bc.Size, Offset = bc.Offset });
                         break;
                     case AudioSource au:
                         clone.AddComponent(new AudioSource
