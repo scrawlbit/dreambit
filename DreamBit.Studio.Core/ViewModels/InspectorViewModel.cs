@@ -58,6 +58,13 @@ namespace DreamBit.Studio.ViewModels
             set { if (_target != null) { _target.SortOrder = value; OnPropertyChanged(); } }
         }
 
+        /// <summary>Camada de render (grossa): desenhada antes do z-order.</summary>
+        public int RenderLayer
+        {
+            get => _target?.RenderLayer ?? 0;
+            set { if (_target != null) { _target.RenderLayer = value; OnPropertyChanged(); } }
+        }
+
         /// <summary>Fixo na tela (HUD): não anda com a câmera; a posição vira coordenada de tela.</summary>
         public bool ScreenSpace
         {
@@ -452,6 +459,22 @@ namespace DreamBit.Studio.ViewModels
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
 
+        // ---- Componente ParallaxLayer (fundo com parallax) ----
+
+        private ParallaxLayer? Parallax => _target?.Components.OfType<ParallaxLayer>().FirstOrDefault();
+        public bool HasParallax => Parallax != null;
+
+        public float ParallaxFactorX
+        {
+            get => Parallax?.FactorX ?? 0.5f;
+            set { var p = Parallax; if (p != null) p.FactorX = value; }
+        }
+        public float ParallaxFactorY
+        {
+            get => Parallax?.FactorY ?? 1f;
+            set { var p = Parallax; if (p != null) p.FactorY = value; }
+        }
+
         // ---- Componente UiAnchor (âncora de HUD) ----
 
         private UiAnchor? Anchor => _target?.Components.OfType<UiAnchor>().FirstOrDefault();
@@ -783,6 +806,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(Tag));
             OnPropertyChanged(nameof(SortOrder));
+            OnPropertyChanged(nameof(RenderLayer));
             OnPropertyChanged(nameof(ScreenSpace));
             OnPropertyChanged(nameof(PositionX));
             OnPropertyChanged(nameof(PositionY));
@@ -839,6 +863,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(CameraSmoothTime));
             OnPropertyChanged(nameof(CameraZoom));
             OnPropertyChanged(nameof(CameraUseBounds));
+            OnPropertyChanged(nameof(HasParallax));
+            OnPropertyChanged(nameof(ParallaxFactorX));
+            OnPropertyChanged(nameof(ParallaxFactorY));
             OnPropertyChanged(nameof(HasAnchor));
             OnPropertyChanged(nameof(AnchorPointValue));
             OnPropertyChanged(nameof(AnchorOffsetX));

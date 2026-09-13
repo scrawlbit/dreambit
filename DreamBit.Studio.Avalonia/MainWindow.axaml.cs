@@ -500,6 +500,7 @@ namespace DreamBit.Studio.Avalonia
                 "Animator Controller" => _editor.AddAnimatorController,
                 "UI Anchor" => _editor.AddUiAnchor,
                 "UI Button" => _editor.AddUiButton,
+                "Parallax" => _editor.AddParallax,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -540,6 +541,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveAnimatorController(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAnimatorController);
         private void OnRemoveUiAnchor(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiAnchor);
         private void OnRemoveUiButton(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiButton);
+        private void OnRemoveParallax(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParallax);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

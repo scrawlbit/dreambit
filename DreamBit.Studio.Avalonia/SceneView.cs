@@ -59,6 +59,7 @@ namespace DreamBit.Studio.Avalonia
             int w = Math.Max(1, (int)size.Width);
             int h = Math.Max(1, (int)size.Height);
             Screen.Set(w, h); // âncoras de UI resolvem contra o tamanho do viewport do editor
+            Screen.CameraPosition = _editor.Camera.Position; // parallax segue a câmera do editor
 
             using (context.PushClip(new Rect(size)))
             using (context.PushTransform(ToAvalonia(_editor.Camera.GetViewMatrix(w, h))))

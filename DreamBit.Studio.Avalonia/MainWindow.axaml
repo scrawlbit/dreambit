@@ -269,12 +269,16 @@
                         <!-- Transform -->
                         <TextBlock Classes="field" Text="Nome" />
                         <TextBox Text="{Binding Name, Mode=TwoWay}" />
-                        <Grid ColumnDefinitions="*,6,Auto">
+                        <Grid ColumnDefinitions="*,6,Auto,6,Auto">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Tag (ex.: Player, Enemy, Hazard)" />
                                 <TextBox Text="{Binding Tag, Mode=TwoWay}" />
                             </StackPanel>
-                            <StackPanel Grid.Column="2" Width="70">
+                            <StackPanel Grid.Column="2" Width="60">
+                                <TextBlock Classes="field" Text="Camada" />
+                                <TextBox Text="{Binding RenderLayer, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="4" Width="60">
                                 <TextBlock Classes="field" Text="Z-order" />
                                 <TextBox Text="{Binding SortOrder, Mode=TwoWay}" />
                             </StackPanel>
@@ -328,6 +332,7 @@
                             <ComboBoxItem>Animator Controller</ComboBoxItem>
                             <ComboBoxItem>UI Anchor</ComboBoxItem>
                             <ComboBoxItem>UI Button</ComboBoxItem>
+                            <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -671,6 +676,27 @@
                                 </Grid>
                                 <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Parallax -->
+                        <Border Classes="component" IsVisible="{Binding HasParallax}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Parallax" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveParallax" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Fator X (0=fixo, 1=mundo)" />
+                                        <TextBox Text="{Binding ParallaxFactorX, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Fator Y" />
+                                        <TextBox Text="{Binding ParallaxFactorY, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Rola em ritmo diferente da câmera (fundo com profundidade). Combine com Camada baixa." />
                             </StackPanel>
                         </Border>
 

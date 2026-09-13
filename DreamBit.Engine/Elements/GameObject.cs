@@ -15,6 +15,7 @@ namespace DreamBit.Engine.Elements
         private string _name = "GameObject";
         private string _tag = string.Empty;
         private int _sortOrder;
+        private int _renderLayer;
         private bool _screenSpace;
         private bool _isVisible = true;
         private bool _isSelected;
@@ -75,6 +76,15 @@ namespace DreamBit.Engine.Elements
         {
             get => _sortOrder;
             set => Set(ref _sortOrder, value);
+        }
+
+        /// <summary>Camada de render (grossa): desenhada antes do <see cref="SortOrder"/>. Use
+        /// para separar fundo / cenário / jogo / frente (ex.: -100 fundo, 0 padrão, 100 frente).
+        /// Equivale às Sorting Layers do Unity / camadas do Godot.</summary>
+        public int RenderLayer
+        {
+            get => _renderLayer;
+            set => Set(ref _renderLayer, value);
         }
 
         /// <summary>

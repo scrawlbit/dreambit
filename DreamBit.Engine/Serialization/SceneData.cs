@@ -31,6 +31,7 @@ namespace DreamBit.Engine.Serialization
         public string Name { get; set; } = "GameObject";
         public string Tag { get; set; } = "";
         public int SortOrder { get; set; }
+        public int RenderLayer { get; set; }
         public bool ScreenSpace { get; set; }
         public bool IsVisible { get; set; } = true;
         public float PositionX { get; set; }
@@ -59,6 +60,7 @@ namespace DreamBit.Engine.Serialization
         public List<AnimatorControllerData> AnimatorControllers { get; set; } = new();
         public List<UiAnchorData> Anchors { get; set; } = new();
         public List<UiButtonData> Buttons { get; set; } = new();
+        public List<ParallaxData> Parallaxes { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -155,6 +157,12 @@ namespace DreamBit.Engine.Serialization
         public int Easing { get; set; } = 3; // InOut
         public int Loop { get; set; } = 2; // PingPong
         public bool PlayOnStart { get; set; } = true;
+    }
+
+    public sealed class ParallaxData
+    {
+        public float FactorX { get; set; } = 0.5f;
+        public float FactorY { get; set; } = 1f;
     }
 
     public sealed class UiAnchorData

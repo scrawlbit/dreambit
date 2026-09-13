@@ -185,6 +185,7 @@ namespace DreamBit.Engine.Serialization
                 Name = obj.Name,
                 Tag = obj.Tag,
                 SortOrder = obj.SortOrder,
+                RenderLayer = obj.RenderLayer,
                 ScreenSpace = obj.ScreenSpace,
                 IsVisible = obj.IsVisible,
                 PositionX = t.Position.X,
@@ -367,6 +368,8 @@ namespace DreamBit.Engine.Serialization
                         PR = button.Pressed.R, PG = button.Pressed.G, PB = button.Pressed.B,
                         SendOnClick = button.SendOnClick
                     });
+                else if (component is ParallaxLayer parallax)
+                    data.Parallaxes.Add(new ParallaxData { FactorX = parallax.FactorX, FactorY = parallax.FactorY });
             }
 
             foreach (var child in obj.Children)
@@ -396,7 +399,7 @@ namespace DreamBit.Engine.Serialization
 
         private static GameObject FromData(GameObjectData data)
         {
-            var obj = new GameObject(data.Name) { Id = data.Id, Tag = data.Tag, SortOrder = data.SortOrder, ScreenSpace = data.ScreenSpace, IsVisible = data.IsVisible };
+            var obj = new GameObject(data.Name) { Id = data.Id, Tag = data.Tag, SortOrder = data.SortOrder, RenderLayer = data.RenderLayer, ScreenSpace = data.ScreenSpace, IsVisible = data.IsVisible };
             obj.Transform.Position = new Vector2(data.PositionX, data.PositionY);
             obj.Transform.Rotation = data.Rotation;
             obj.Transform.Scale = new Vector2(data.ScaleX, data.ScaleY);
@@ -608,6 +611,9 @@ namespace DreamBit.Engine.Serialization
                     Pressed = new Color(button.PR, button.PG, button.PB),
                     SendOnClick = button.SendOnClick
                 });
+
+            foreach (var parallax in data.Parallaxes)
+                obj.AddComponent(new ParallaxLayer { FactorX = parallax.FactorX, FactorY = parallax.FactorY });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

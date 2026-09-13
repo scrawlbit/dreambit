@@ -170,7 +170,8 @@ namespace DreamBit.Engine.Elements
         {
             var flat = new List<GameObject>();
             Collect(_objects, flat);
-            return flat.OrderBy(o => o.SortOrder);
+            // Camada grossa primeiro, depois z-order fino; ordenação estável mantém empates.
+            return flat.OrderBy(o => o.RenderLayer).ThenBy(o => o.SortOrder);
 
             static void Collect(IEnumerable<GameObject> objects, List<GameObject> into)
             {

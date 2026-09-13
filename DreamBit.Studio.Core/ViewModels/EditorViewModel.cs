@@ -938,6 +938,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(button);
         }
 
+        public void AddParallax()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<ParallaxLayer>().Any())
+                return;
+
+            var parallax = new ParallaxLayer();
+            History.Do(new EditorAction("Adicionar Parallax",
+                doAction: () => obj.AddComponent(parallax),
+                undoAction: () => obj.RemoveComponent(parallax)));
+        }
+
+        public void RemoveParallax()
+        {
+            var parallax = SelectedObject?.Components.OfType<ParallaxLayer>().FirstOrDefault();
+            if (parallax != null)
+                RemoveComponent(parallax);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -990,7 +1009,7 @@ namespace DreamBit.Studio.ViewModels
 
         private static GameObject Clone(GameObject src)
         {
-            var clone = new GameObject(src.Name + " (cópia)") { Tag = src.Tag, SortOrder = src.SortOrder, ScreenSpace = src.ScreenSpace };
+            var clone = new GameObject(src.Name + " (cópia)") { Tag = src.Tag, SortOrder = src.SortOrder, RenderLayer = src.RenderLayer, ScreenSpace = src.ScreenSpace };
             clone.Transform.Position = src.Transform.Position + new Vector2(16, 16);
             clone.Transform.Rotation = src.Transform.Rotation;
             clone.Transform.Scale = src.Transform.Scale;
@@ -1053,6 +1072,9 @@ namespace DreamBit.Studio.ViewModels
                             Width = bt.Width, Height = bt.Height,
                             Normal = bt.Normal, Hover = bt.Hover, Pressed = bt.Pressed, SendOnClick = bt.SendOnClick
                         });
+                        break;
+                    case ParallaxLayer px:
+                        clone.AddComponent(new ParallaxLayer { FactorX = px.FactorX, FactorY = px.FactorY });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

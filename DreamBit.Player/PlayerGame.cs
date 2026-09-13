@@ -69,6 +69,8 @@ namespace DreamBit.Player
                     _camera.Position = target.Transform.WorldPosition;
             }
 
+            DreamBit.Engine.Rendering.Screen.CameraPosition = _camera.Position; // parallax do próximo frame
+
             base.Update(gameTime);
         }
 
