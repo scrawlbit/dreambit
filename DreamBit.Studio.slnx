@@ -4,5 +4,4 @@
   <Project Path="DreamBit.Player/DreamBit.Player.csproj" />
   <Project Path="DreamBit.Studio.Avalonia/DreamBit.Studio.Avalonia.csproj" />
   <Project Path="DreamBit.Studio.Core/DreamBit.Studio.Core.csproj" />
-  <Project Path="DreamBit.Studio/DreamBit.Studio.csproj" />
 </Solution>

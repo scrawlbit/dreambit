@@ -34,15 +34,12 @@ function Get-DefaultRid {
     return "linux-x64"
 }
 
-$editorRids = if ($Rids.Count -gt 0) { $Rids } else { @(Get-DefaultRid) }
-# O player e cross-platform; publica para os tres por padrao (ou o -Rids informado).
-$playerRids = if ($Rids.Count -gt 0) { $Rids } else { @("win-x64", "linux-x64", "osx-x64") }
+# Editor e Player sao cross-platform; publica para os tres por padrao (ou o -Rids informado).
+$allRids = if ($Rids.Count -gt 0) { $Rids } else { @("win-x64", "linux-x64", "osx-x64") }
 
-# Projeto, lista de RIDs. O editor WPF so faz sentido no Windows.
 $targets = @(
-    @{ Name = "DreamBit.Studio";          Proj = "DreamBit.Studio/DreamBit.Studio.csproj";                   Rids = ($editorRids | Where-Object { $_ -like "win-*" }) },
-    @{ Name = "DreamBit.Studio.Avalonia";  Proj = "DreamBit.Studio.Avalonia/DreamBit.Studio.Avalonia.csproj"; Rids = $editorRids },
-    @{ Name = "DreamBit.Player";           Proj = "DreamBit.Player/DreamBit.Player.csproj";                   Rids = $playerRids }
+    @{ Name = "DreamBit.Studio.Avalonia";  Proj = "DreamBit.Studio.Avalonia/DreamBit.Studio.Avalonia.csproj"; Rids = $allRids },
+    @{ Name = "DreamBit.Player";           Proj = "DreamBit.Player/DreamBit.Player.csproj";                   Rids = $allRids }
 )
 
 Write-Host "DreamBit — publish ($Configuration)" -ForegroundColor Cyan

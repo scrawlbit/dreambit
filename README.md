@@ -12,9 +12,8 @@ independente, multiplataforma e testada.
 | Projeto | O que é |
 |---|---|
 | **DreamBit.Engine** | Modelo e runtime da engine (cena, objetos, componentes, física de ledges, tilemap, áudio, scripting, animação). Multi-target `net8.0-windows;net8.0`. |
-| **DreamBit.Studio.Avalonia** | Editor **cross-platform** (Windows/macOS/Linux, Rider). Editor principal daqui pra frente. |
-| **DreamBit.Studio** | Editor WPF (Windows). Mais completo hoje (canvas MonoGame, pincel de tilemap); em processo de aposentadoria conforme o Avalonia alcança paridade. |
-| **DreamBit.Studio.Core** | ViewModels/lógica de editor compartilhados pelos dois editores (sem dependência de UI). |
+| **DreamBit.Studio.Avalonia** | **O editor** — cross-platform (Windows/macOS/Linux, Rider). Canvas com texturas, tilemap, ledges, carimbo de atlas, timeline de rig, console. |
+| **DreamBit.Studio.Core** | ViewModels e lógica de editor (sem dependência de UI): ViewModels, `SceneInputController`, exportador/launcher/content-builder. |
 | **DreamBit.Player** | Runtime do jogo (DesktopGL), roda um `.dbscene`. Cross-platform. |
 | **DreamBit.Engine.Tests** | Testes do motor (MSTest). |
 
@@ -35,16 +34,10 @@ independente, multiplataforma e testada.
 
 ## Rodar
 
-Editor cross-platform (Avalonia):
+Editor (Avalonia, cross-platform):
 
 ```bash
 dotnet run --project DreamBit.Studio.Avalonia/DreamBit.Studio.Avalonia.csproj -c Debug
-```
-
-Editor WPF (Windows):
-
-```bash
-dotnet run --project DreamBit.Studio/DreamBit.Studio.csproj -c Debug
 ```
 
 Rodar um jogo (uma cena) no runtime:
