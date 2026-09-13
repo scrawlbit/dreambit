@@ -41,6 +41,10 @@ independente, multiplataforma e testada.
   `StateMachine` (**máquina de estados**).
 - **Hot-reload de script** (arquivo `.cs` externo recompila ao mudar) e **overlay de
   debug** no Player (F3).
+- **Sprites**: recorte de atlas, autodetecção de frames por transparência e **chroma key**
+  (remover cor de fundo, automático ou por cor).
+- **Editor de tilemap**: novo mapa de um PNG, paleta visual, pintar/apagar com undo,
+  **camadas** (visibilidade/ordem) e colisão sólida por tile.
 - **Barramento de mensagens** (sinais de jogo) ligando tags, triggers, eventos de
   animação e scripts.
 - **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor); play restaurável;

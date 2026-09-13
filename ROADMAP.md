@@ -46,6 +46,10 @@ MonoGame atualizado.
   **overlay de debug** no Player (F3: FPS, objetos, cena).
 - **Autodetecção de frames por transparência**: `FrameDetector` acha frames de tamanhos
   diferentes numa sprite sheet (regiões conexas), além do fatiador por grade.
+- **Chroma key**: remove a cor de fundo de sprites/animações (automático pela borda ou por
+  cor escolhida, com tolerância).
+- **Editor de tilemap**: criar de um PNG, paleta visual para escolher o tile, pintar/apagar
+  com undo, **camadas** (adicionar/selecionar/visibilidade/ordem) e colisão sólida por tile.
 - Barramento de mensagens (sinais de jogo); z-order global; input mapeável por ações
   (teclado + gamepad + mouse/toque); play restaurável; hot-reload de assets; transição
   entre fases.
