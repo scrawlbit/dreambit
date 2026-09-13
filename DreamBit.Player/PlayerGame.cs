@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
@@ -23,14 +24,16 @@ namespace DreamBit.Player
         private readonly string? _shotPath;
         private readonly int _shotFrame;
         private readonly bool _autoWalk;
+        private readonly string? _clip;
         private int _frames;
 
-        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false)
+        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null)
         {
             _scenePath = scenePath;
             _shotPath = shotPath;
             _shotFrame = shotFrame;
             _autoWalk = autoWalk;
+            _clip = clip;
             _graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
@@ -55,6 +58,22 @@ namespace DreamBit.Player
                 : BuildFallbackScene();
 
             _scene.StartPlay(); // dispara sons iniciais, reseta estados
+
+            // Modo captura: força um clipe de skeleton (para fotografar idle/walk/attack/jump).
+            if (_clip != null)
+                foreach (var obj in EnumerateAll(_scene.Objects))
+                    foreach (var sk in obj.Components.OfType<DreamBit.Engine.Components.SkeletonAnimator>())
+                        sk.Play(_clip);
+        }
+
+        private static System.Collections.Generic.IEnumerable<GameObject> EnumerateAll(System.Collections.Generic.IEnumerable<GameObject> objects)
+        {
+            foreach (var obj in objects)
+            {
+                yield return obj;
+                foreach (var c in EnumerateAll(obj.Children))
+                    yield return c;
+            }
         }
 
         protected override void Update(GameTime gameTime)

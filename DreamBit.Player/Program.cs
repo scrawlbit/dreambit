@@ -12,6 +12,7 @@ namespace DreamBit.Player
         {
             string? scenePath = null;
             string? shotPath = null;
+            string? clip = null;
             int shotFrame = 110;
             bool walk = false;
 
@@ -22,6 +23,7 @@ namespace DreamBit.Player
                     case "--shot": shotPath = i + 1 < args.Length ? args[++i] : null; break;
                     case "--shot-frame": if (i + 1 < args.Length && int.TryParse(args[++i], out var n)) shotFrame = n; break;
                     case "--walk": walk = true; break;
+                    case "--clip": clip = i + 1 < args.Length ? args[++i] : null; break;
                     default: scenePath ??= args[i]; break;
                 }
             }
@@ -33,7 +35,7 @@ namespace DreamBit.Player
                     scenePath = bundled;
             }
 
-            using var game = new PlayerGame(scenePath, shotPath, shotFrame, walk);
+            using var game = new PlayerGame(scenePath, shotPath, shotFrame, walk, clip);
             game.Run();
         }
     }
