@@ -20,10 +20,12 @@ MonoGame atualizado.
   enter/exit, envio de mensagem), `MessageListener`, `AudioSource`, `ParticleEmitter`,
   `FollowTarget`, `RotatorBehavior`, `ScriptComponent` (C# em runtime via Roslyn),
   `Bone` + `SkeletonAnimator` (rig cutout, keyframes de pose, clipes nomeados, easing,
-  eventos por tempo), `CameraComponent` (follow/deadzone/suavização/bounds/zoom),
+  eventos por tempo), `AnimatorController` (estados idle/walk/jump), `TweenComponent`
+  (interpola propriedade com easing), `CameraComponent` (follow/deadzone/bounds/zoom),
   `TextRenderer` (fonte pixel embutida, mundo ou HUD), `SceneExit` (transição de fase).
-- Barramento de mensagens (sinais de jogo); z-order global; play restaurável;
-  hot-reload de assets; transição entre fases.
+- Barramento de mensagens (sinais de jogo); z-order global; input mapeável por ações
+  (teclado + gamepad); play restaurável; hot-reload de assets; transição entre fases.
+- Editor: fatiador de sprite sheet por grade; adição de componentes por dropdown.
 
 ### Editor (Avalonia, cross-platform)
 - Cenas em abas, abrir/salvar, lista de cenas do projeto, prefabs.
@@ -44,19 +46,17 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
 - **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D).
 
 ### Animação
-- **Máquina de estados de animação** (idle→walk→jump por parâmetros/blend) — Unity
-  Animator, Godot `AnimationTree`.
-- **Tweening** de propriedades por curva (Godot `Tween`, DOTween).
-- **Fatiador de sprite sheet** no editor (grid ou por transparência, import Aseprite) —
-  Unity Sprite Editor, Godot `SpriteFrames`.
+- **Máquina de estados genérica** com parâmetros/transições/blend além do controlador
+  idle/walk/jump atual (Unity Animator, Godot `AnimationTree`).
+- **Auto-detecção de frames por transparência** e import Aseprite (o fatiador por grade
+  já existe) — Unity Sprite Editor.
 
 ### Física
 - **Física 2D com corpos rígidos, rotação, joints, raycast e camadas de colisão** —
   Godot/Unity usam Box2D/Chipmunk; no MonoGame há Aether.Physics2D.
 - **Colisão direto do tilemap** (Godot TileMap physics, Tiled collision).
 
-### Input e UI
-- **Input mapeável (actions)** com gamepad e touch (Godot `InputMap`, Unity Input System).
+### UI
 - **Sistema de UI** com botões, âncoras, layout e menus além do texto/HUD atual
   (Godot `Control`, Unity UGUI).
 
