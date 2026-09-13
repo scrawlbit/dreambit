@@ -83,6 +83,12 @@ namespace DreamBit.Engine.Tests
             hud.AddChild(botao);
             scene.Add(hud);
 
+            // Caixa com física real (corpo rígido) caindo.
+            var caixa = new GameObject("Caixa");
+            caixa.Transform.Position = new Vector2(50, -60);
+            caixa.AddComponent(new Rigidbody2D { Kind = RigidbodyKind.Dynamic, Shape = ColliderShape.Box, Width = 24, Height = 24 });
+            scene.Add(caixa);
+
             // Ouvinte reage ao clique escondendo o HUD.
             var ouvinte = new GameObject("Ouvinte");
             ouvinte.AddComponent(new MessageListener { Message = "start", Reaction = MessageReaction.None });
@@ -157,6 +163,9 @@ namespace DreamBit.Engine.Tests
 
             var titulo = scene.VisibleInDrawOrder().First(o => o.Name == "Titulo");
             Assert.AreEqual("JOGAR", titulo.Components.OfType<TextRenderer>().Single().DisplayText, "texto localizado");
+
+            var caixa = scene.VisibleInDrawOrder().First(o => o.Name == "Caixa");
+            Assert.IsTrue(caixa.Transform.Position.Y > -60f + 10f, "corpo rígido caiu pela física");
 
             // 5) Clica no botão (posição de tela calculada) e confirma a mensagem.
             var botao = scene.VisibleInDrawOrder().First(o => o.Name == "Botao").Components.OfType<UiButton>().Single();

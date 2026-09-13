@@ -36,6 +36,9 @@ MonoGame atualizado.
   empilha filhos em coluna/linha) para montar menus e HUD.
 - **Localização**: `Localizer` (tabelas de texto por idioma, JSON) e chave de localização
   no `TextRenderer`.
+- **Física 2D com corpos rígidos** (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
+  colisão com rotação, empilhamento, impulsos; formas caixa/círculo; alternativa ao
+  `PlatformerController`.
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -69,8 +72,8 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
   grade já cobrem sprite sheets PNG.
 
 ### Física
-- **Física 2D com corpos rígidos, rotação, joints, raycast e camadas de colisão** —
-  Godot/Unity usam Box2D/Chipmunk; no MonoGame há Aether.Physics2D (pacote NuGet).
+- **Joints, raycast e camadas de colisão** — os corpos rígidos já existem
+  (`Rigidbody2D`); falta expor juntas, raycast e filtros de colisão do Aether.
 
 ### Sistemas de jogo
 - **Prefabs aninhados com overrides** (cenas-como-prefab de Unity/Godot).

@@ -34,6 +34,8 @@ independente, multiplataforma e testada.
 - **Sistema de UI**: âncoras às bordas da tela, botões clicáveis (mouse/toque) que
   disparam mensagens e contêiner de layout (menus); **camadas de render** e **colisão de
   tilemap** (tiles sólidos); **localização** (`Localizer` + chave no texto).
+- **Física 2D** com corpos rígidos (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
+  colisão com rotação, impulsos — alternativa ao `PlatformerController`.
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
   (**timers/coroutines**), `ObjectPool` (**pooling**), `DataCatalog` (**data-driven**),
   `StateMachine` (**máquina de estados**).
