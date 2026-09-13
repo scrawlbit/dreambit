@@ -19,9 +19,18 @@ namespace DreamBit.Player
         private Scene _scene = new();
         private readonly Camera2D _camera = new();
 
-        public PlayerGame(string? scenePath)
+        // Modo captura (--shot): renderiza N frames, salva o backbuffer em PNG e sai.
+        private readonly string? _shotPath;
+        private readonly int _shotFrame;
+        private readonly bool _autoWalk;
+        private int _frames;
+
+        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false)
         {
             _scenePath = scenePath;
+            _shotPath = shotPath;
+            _shotFrame = shotFrame;
+            _autoWalk = autoWalk;
             _graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
@@ -52,6 +61,12 @@ namespace DreamBit.Player
         {
             DreamBit.Engine.Rendering.Screen.Set(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             DreamBit.Engine.Input.Input.Update(); // snapshot de teclado/gamepad/mouse do frame
+
+            _frames++;
+            // Captura: deixa assentar ~40 frames e então "anda" para a direita (clipe walk).
+            if (_shotPath != null && _autoWalk && _frames > 40)
+                DreamBit.Engine.Input.Input.HoldAction("MoveRight");
+
             _scene.Update(gameTime);
 
             // Transição de fase: um SceneExit pediu para carregar outra cena.
@@ -162,6 +177,25 @@ namespace DreamBit.Player
             _renderer.Render(_scene, _camera,
                 GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             base.Draw(gameTime);
+
+            if (_shotPath != null && _frames >= _shotFrame)
+                CaptureAndExit();
+        }
+
+        /// <summary>Salva o backbuffer em PNG e encerra (modo --shot).</summary>
+        private void CaptureAndExit()
+        {
+            int w = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            int h = GraphicsDevice.PresentationParameters.BackBufferHeight;
+            var data = new Color[w * h];
+            GraphicsDevice.GetBackBufferData(data);
+            using (var tex = new Microsoft.Xna.Framework.Graphics.Texture2D(GraphicsDevice, w, h))
+            {
+                tex.SetData(data);
+                using var fs = File.Create(_shotPath!);
+                tex.SaveAsPng(fs, w, h);
+            }
+            Exit();
         }
 
         private static Scene BuildFallbackScene()

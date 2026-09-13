@@ -32,9 +32,13 @@ namespace DreamBit.Engine.Rendering
             if (string.IsNullOrEmpty(path))
                 return null;
 
-            // Caminho relativo: resolve ao lado do executável (jogo exportado).
+            // Caminho relativo: tenta ao lado do executável (jogo exportado) e, se não
+            // existir lá, relativo ao diretório atual (rodando do código-fonte / editor).
             if (!Path.IsPathRooted(path))
-                path = Path.Combine(AppContext.BaseDirectory, path);
+            {
+                var atBase = Path.Combine(AppContext.BaseDirectory, path);
+                path = File.Exists(atBase) ? atBase : Path.GetFullPath(path);
+            }
 
             lock (_gate)
             {
