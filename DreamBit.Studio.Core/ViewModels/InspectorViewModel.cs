@@ -768,6 +768,13 @@ namespace DreamBit.Studio.ViewModels
             get => Audio?.Loop ?? false;
             set { var a = Audio; if (a != null) a.Loop = value; }
         }
+        public string AudioBus
+        {
+            get => Audio?.Bus ?? DreamBit.Engine.Audio.AudioMixer.Sfx;
+            set { var a = Audio; if (a != null) a.Bus = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<string> AudioBuses { get; } =
+            new[] { DreamBit.Engine.Audio.AudioMixer.Master, DreamBit.Engine.Audio.AudioMixer.Music, DreamBit.Engine.Audio.AudioMixer.Sfx };
 
         // ---- Componente TilemapRenderer ----
 
@@ -1087,6 +1094,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(AudioVolume));
             OnPropertyChanged(nameof(AudioPlayOnStart));
             OnPropertyChanged(nameof(AudioLoop));
+            OnPropertyChanged(nameof(AudioBus));
             OnPropertyChanged(nameof(HasTilemap));
             OnPropertyChanged(nameof(TilemapPath));
             OnPropertyChanged(nameof(TilemapSolid));

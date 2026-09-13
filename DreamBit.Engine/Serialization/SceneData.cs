@@ -116,6 +116,7 @@ namespace DreamBit.Engine.Serialization
         public float Volume { get; set; } = 1f;
         public bool PlayOnStart { get; set; } = true;
         public bool Loop { get; set; }
+        public string Bus { get; set; } = "SFX";
     }
 
     public sealed class PlatformerData

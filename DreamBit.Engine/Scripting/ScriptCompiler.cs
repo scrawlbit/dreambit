@@ -24,6 +24,7 @@ namespace DreamBit.Engine.Scripting
             "using DreamBit.Engine.Scripting;\n" +
             "using DreamBit.Engine.Diagnostics;\n" +
             "using DreamBit.Engine.Input;\n" +
+            "using DreamBit.Engine.Audio;\n" +
             "using DreamBit.Engine.Saving;\n" +
             "using DreamBit.Engine.Timing;\n" +
             "using DreamBit.Engine.Pooling;\n" +

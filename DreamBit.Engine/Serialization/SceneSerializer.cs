@@ -277,7 +277,8 @@ namespace DreamBit.Engine.Serialization
                         SoundPath = audio.SoundPath,
                         Volume = audio.Volume,
                         PlayOnStart = audio.PlayOnStart,
-                        Loop = audio.Loop
+                        Loop = audio.Loop,
+                        Bus = audio.Bus
                     });
                 else if (component is ParticleEmitter particles)
                     data.Particles.Add(new ParticleData
@@ -513,7 +514,8 @@ namespace DreamBit.Engine.Serialization
                     SoundPath = audio.SoundPath,
                     Volume = audio.Volume,
                     PlayOnStart = audio.PlayOnStart,
-                    Loop = audio.Loop
+                    Loop = audio.Loop,
+                    Bus = audio.Bus
                 });
 
             foreach (var particles in data.Particles)

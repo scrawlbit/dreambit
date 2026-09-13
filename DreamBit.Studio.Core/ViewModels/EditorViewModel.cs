@@ -1232,7 +1232,7 @@ namespace DreamBit.Studio.ViewModels
                     case AudioSource au:
                         clone.AddComponent(new AudioSource
                         {
-                            SoundPath = au.SoundPath, Volume = au.Volume, PlayOnStart = au.PlayOnStart, Loop = au.Loop
+                            SoundPath = au.SoundPath, Volume = au.Volume, PlayOnStart = au.PlayOnStart, Loop = au.Loop, Bus = au.Bus
                         });
                         break;
                     case ParticleEmitter pe:

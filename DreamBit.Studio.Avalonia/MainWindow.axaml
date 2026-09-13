@@ -548,8 +548,17 @@
                                 <TextBlock Classes="field" Text="Som (.wav)" />
                                 <TextBox Text="{Binding AudioPath, Mode=TwoWay}" />
                                 <Button Content="Escolher .wav…" Click="OnPickSound" Margin="0,2,0,0" HorizontalAlignment="Left" />
-                                <TextBlock Classes="field" Text="Volume" />
-                                <TextBox Text="{Binding AudioVolume, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Volume" />
+                                        <TextBox Text="{Binding AudioVolume, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Bus (mixer)" />
+                                        <ComboBox ItemsSource="{Binding AudioBuses}" HorizontalAlignment="Stretch"
+                                                  SelectedItem="{Binding AudioBus, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
                                 <CheckBox Content="Tocar ao iniciar" IsChecked="{Binding AudioPlayOnStart, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <CheckBox Content="Loop" IsChecked="{Binding AudioLoop, Mode=TwoWay}" />
                             </StackPanel>
