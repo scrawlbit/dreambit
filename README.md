@@ -1,48 +1,70 @@
 # DreamBit
 
-This project was an effort of study and passion to XNA/Monogame.
-We stopped working on it due the little to no free time a few years ago.
-Altough it's in really initial stage, we learned a lot from game development, archtecture and programming with .Net
+Engine e editor de jogos 2D **standalone em .NET 8**, com MonoGame. Nasceu como uma
+extensão do Visual Studio (VSIX, .NET Framework) e foi migrado para uma solução
+independente, multiplataforma e testada.
 
-We hope it can serve as a code reference or that maybe one day we can continue the development, or maybe even helps the community in any ideas for MonoGame engines.
+> O código do VSIX antigo (projetos `Old.*`, `Scrawlbit.*`, `DreamBit.Extension`, etc.)
+> foi removido após a migração — o histórico continua no Git.
 
----
-DreamBit is an engine developped as a VSIX extension.
-The goal is to create windows and menus to interact with the game project inside the Visual Studio, without the need of an external application.
+## Projetos
 
-It uses the game loop to create a canvas (within a WPF window) and render it inside the Visual Studio with other windows to create game scenes.
-There's also support in the Solution Explorer with menus to add Fonts, Scenes and Scripts to the content project. It also iddentify the files added to the content project and automatic includes them to the pipeline.
+| Projeto | O que é |
+|---|---|
+| **DreamBit.Engine** | Modelo e runtime da engine (cena, objetos, componentes, física de ledges, tilemap, áudio, scripting, animação). Multi-target `net8.0-windows;net8.0`. |
+| **DreamBit.Studio.Avalonia** | Editor **cross-platform** (Windows/macOS/Linux, Rider). Editor principal daqui pra frente. |
+| **DreamBit.Studio** | Editor WPF (Windows). Mais completo hoje (canvas MonoGame, pincel de tilemap); em processo de aposentadoria conforme o Avalonia alcança paridade. |
+| **DreamBit.Studio.Core** | ViewModels/lógica de editor compartilhados pelos dois editores (sem dependência de UI). |
+| **DreamBit.Player** | Runtime do jogo (DesktopGL), roda um `.dbscene`. Cross-platform. |
+| **DreamBit.Engine.Tests** | Testes do motor (MSTest). |
 
-### Overview
-![Alt text](Images/overview.png?raw=true "Overview")
+## Funcionalidades da engine
 
-### Extension and windows
-![Alt text](Images/extension.png?raw=true "Extension and windows")
+- Cena com hierarquia de objetos e `Transform` pai→filho.
+- Componentes: `SpriteRenderer` (com **recorte de atlas** via source rect), `SpriteAnimator`
+  (sprite sheet, com **eventos por frame**), `PlatformerController`, `TriggerZone`
+  (colisão por sobreposição, filtra por **tag**, dispara eventos enter/exit), `AudioSource`,
+  `ParticleEmitter`, `FollowTarget`, `RotatorBehavior`, `ScriptComponent` (C# em runtime via
+  Roslyn), `TilemapRenderer` (importa Tiled `.tmx`), `Bone` (rig 2D cutout) e
+  `SkeletonAnimator` (**keyframes de pose por osso** com timeline).
+- **Ledges**: bordas caminháveis one-way (estilo Dust: An Elysian Tail) — a colisão é via
+  plataforma, não por tilemap.
+- **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor).
+- Serialização em JSON (`.dbscene`, `.dbprefab`, `.dbproj`), play mode restaurável,
+  console de logs, export de jogo portátil.
 
-### Solution explorer
-![Alt text](Images/solution-explorer.png?raw=true "Solution Explorer")
+## Rodar
 
-### Functionalities
-There's a lot of functionalities we already implemented:
-* Select game objects in the Scene Editor,
-* Select game objets in the Scene Hierarchy with mouse range, one by one (Ctrl) or a sequential list (Shift),
-* Move and drag game objects within the Scene Hierarchy,
-* Drag game objects in the Scene Inspect (keep L pressed to not change the view),
-* Move, rotate and scaling game objects in the Scene Editor (with shortcuts to proportional scaling),
-* State control of the scene (Ctrl Z, Ctrl Y),
-* Add or remove components from the Game Object,
-* Creation of game objects with camera,
-* Image Renderer component,
-* Text Renderer component,
-* Project Scripts as components (with the identification of the properties in the c# script as fields in the inspect),
-* Zoom in and out in the Scene Editor (with scroll too)
-* and a lot more...
+Editor cross-platform (Avalonia):
 
-### Development
-It uses the MonoGame 3.7 installation version, not the new packages versions.
+```bash
+dotnet run --project DreamBit.Studio.Avalonia/DreamBit.Studio.Avalonia.csproj -c Debug
+```
 
-There's a zip file with a test project to use with the development.
-It has some files to work with the extension. We would later create visual studio templates for MonoGame projects that has this file organization.
+Editor WPF (Windows):
 
-One last important point is that the libraries named with "Old" is from an old project we created for an external version of the engine.
-These libraries contains the logic for scenes, game objects and other things. There's a version for the engine and one that would be used in the Game Project.
+```bash
+dotnet run --project DreamBit.Studio/DreamBit.Studio.csproj -c Debug
+```
+
+Rodar um jogo (uma cena) no runtime:
+
+```bash
+dotnet run --project DreamBit.Player/DreamBit.Player.csproj -c Debug -- caminho/para/fase.dbscene
+```
+
+## Build e testes
+
+```bash
+dotnet build DreamBit.Studio.slnx -c Debug
+dotnet test DreamBit.Engine.Tests/DreamBit.Engine.Tests.csproj -c Debug
+```
+
+## Empacotar para distribuição
+
+`publish.ps1` gera binários self-contained (sem exigir .NET no destino) dos editores e do
+Player por RID (win/linux/osx). Ver `ROADMAP-PROXIMAS-FUNCIONALIDADES.md` para o status.
+
+## Requisitos
+
+.NET 8 SDK. No Rider (qualquer SO), abra `DreamBit.Studio.slnx`.
