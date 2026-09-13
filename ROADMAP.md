@@ -44,8 +44,15 @@ MonoGame atualizado.
 - **Áudio com mixer/buses** (`AudioMixer`: Master/Music/SFX, volume por bus ao vivo).
 - **Timeline de propriedades** (`PropertyAnimator`): anima posição/rotação/escala/cor por
   keyframes, além do `TweenComponent` (de-para simples).
+- **Animação de sprite por clipes** (`SpriteClip` + `SpriteAnimator.Play`): várias animações
+  nomeadas (andar/pular/bater/parado) na mesma folha, com FPS/loop por clipe, evento "terminou",
+  espelhamento (flip) e um `SpriteAnimatorController` que escolhe o clipe pelo movimento e
+  dispara o ataque — equivalente ao AnimatedSprite2D do Godot.
 - **Navegação/pathfinding A*** (`Pathfinding` + `NavGrid`): caminho em grade a partir dos
-  tiles sólidos, para IA de inimigos/NPCs.
+  tiles sólidos, para IA de inimigos/NPCs; componente pronto `NavChaser` (persegue a tag alvo
+  recalculando o caminho, com fallback em linha reta).
+- **Áudio espacial 2D** (`AudioListener` + `AudioSource.Spatial`): atenuação por distância e
+  panorâmica (pan) em relação ao ouvinte, sobre os buses do mixer.
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -76,12 +83,14 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — depende do pipeline de shaders (MGCB).
-- **Áudio espacial** e música em camadas (o mixer/buses já existe).
+- **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — via render target/lightmap com
+  blend aditivo (não exige shaders customizados) ou pelo pipeline MGCB.
+- **Música em camadas** (o mixer/buses e o áudio espacial já existem).
 
 ### Animação
-- **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência e o fatiador por
-  grade já cobrem sprite sheets PNG.
+- **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência, o fatiador por
+  grade e os clipes de sprite já cobrem sprite sheets PNG.
+- **Tiles animados / autotiling** no tilemap.
 
 ### Física
 - **Joints** (juntas entre corpos) — raycast e camadas de colisão já existem.

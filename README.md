@@ -35,9 +35,14 @@ independente, multiplataforma e testada.
   **barra de progresso**, **campo de texto**, **scroll** e **navegação por foco**
   (teclado/gamepad) — para menus, opções e HUD; mais **camadas de render**, **colisão de
   tilemap** e **localização** (`Localizer`).
+- **Animação de sprite por clipes** (`SpriteClip` + `SpriteAnimator`): várias animações
+  nomeadas (andar/pular/bater/parado) na mesma folha, com FPS/loop por clipe, evento de fim,
+  **flip** e `SpriteAnimatorController` (escolhe o clipe pelo estado e dispara o ataque).
 - **Física 2D** com corpos rígidos (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
   colisão com rotação, impulsos, **raycast** e **camadas de colisão** — alternativa ao
   `PlatformerController`.
+- **IA de perseguição** (`NavChaser`): segue a tag alvo por pathfinding A* (ou linha reta).
+- **Áudio espacial** (`AudioListener` + `AudioSource.Spatial`): atenuação e pan por distância.
 - **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
   (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
@@ -53,6 +58,15 @@ independente, multiplataforma e testada.
   animação e scripts.
 - **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor); play restaurável;
   console de logs; export de jogo portátil.
+
+## Fase de demonstração
+
+`DemoAssets/forest-demo.dbscene` é uma fase completa que exercita quase toda a engine numa
+cena só (herói animado por clipes, tilemap sólido, plataforma, câmera, parallax, decoração
+por atlas, perseguição por pathfinding, física rígida, timeline, trigger de meta, áudio
+espacial e HUD). A arte é de terceiros e não vai no repositório — veja
+[DemoAssets/README.md](DemoAssets/README.md). O `ForestDemoSmokeTests` monta e valida a fase
+inteira sem tela.
 
 Estado detalhado e itens planejados: veja [ROADMAP.md](ROADMAP.md).
 
