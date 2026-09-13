@@ -1338,6 +1338,12 @@ namespace DreamBit.Studio.ViewModels
                     case AudioListener:
                         clone.AddComponent(new AudioListener());
                         break;
+                    case Light2D li:
+                        clone.AddComponent(new Light2D { Radius = li.Radius, Intensity = li.Intensity, Color = li.Color });
+                        break;
+                    case AmbientLight al:
+                        clone.AddComponent(new AmbientLight { Color = al.Color });
+                        break;
                     case NavChaser nc:
                         clone.AddComponent(new NavChaser
                         {

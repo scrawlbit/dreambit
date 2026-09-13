@@ -408,6 +408,14 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is AudioListener)
                     data.AudioListeners.Add(new AudioListenerData());
+                else if (component is Light2D light)
+                    data.Lights.Add(new Light2DData
+                    {
+                        Radius = light.Radius, Intensity = light.Intensity,
+                        R = light.Color.R, G = light.Color.G, B = light.Color.B
+                    });
+                else if (component is AmbientLight amb)
+                    data.AmbientLights.Add(new AmbientLightData { R = amb.Color.R, G = amb.Color.G, B = amb.Color.B });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -624,6 +632,16 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var _ in data.AudioListeners)
                 obj.AddComponent(new AudioListener());
+
+            foreach (var light in data.Lights)
+                obj.AddComponent(new Light2D
+                {
+                    Radius = light.Radius, Intensity = light.Intensity,
+                    Color = new Color(light.R, light.G, light.B)
+                });
+
+            foreach (var amb in data.AmbientLights)
+                obj.AddComponent(new AmbientLight { Color = new Color(amb.R, amb.G, amb.B) });
 
             foreach (var chaser in data.NavChasers)
                 obj.AddComponent(new NavChaser

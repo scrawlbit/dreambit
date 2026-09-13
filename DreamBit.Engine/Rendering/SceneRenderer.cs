@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DreamBit.Engine.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +15,17 @@ namespace DreamBit.Engine.Rendering
     {
         private SpriteBatch _spriteBatch = null!;
         private Texture2D _pixel = null!;
+
+        // Iluminação 2D (lightmap): disco radial + alvo de render + blend de multiplicação.
+        private Texture2D _lightSprite = null!;
+        private RenderTarget2D? _lightMap;
+        private static readonly BlendState MultiplyBlend = new()
+        {
+            ColorSourceBlend = Blend.DestinationColor,
+            ColorDestinationBlend = Blend.Zero,
+            AlphaSourceBlend = Blend.DestinationAlpha,
+            AlphaDestinationBlend = Blend.Zero
+        };
 
         public SpriteBatch SpriteBatch => _spriteBatch;
         public Texture2D Pixel => _pixel;
@@ -43,14 +55,40 @@ namespace DreamBit.Engine.Rendering
             _spriteBatch = new SpriteBatch(device);
             _pixel = new Texture2D(device, 1, 1);
             _pixel.SetData(new[] { Color.White });
+            _lightSprite = CreateRadialLight(device, 128);
+        }
+
+        /// <summary>Gera um disco de luz radial (branco no centro, some nas bordas) para o lightmap.</summary>
+        private static Texture2D CreateRadialLight(GraphicsDevice device, int size)
+        {
+            var tex = new Texture2D(device, size, size);
+            var data = new Color[size * size];
+            float r = size / 2f;
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    float dx = (x + 0.5f - r) / r, dy = (y + 0.5f - r) / r;
+                    float d = (float)Math.Sqrt(dx * dx + dy * dy);
+                    float v = Math.Clamp(1f - d, 0f, 1f);
+                    v = v * v; // queda suave (quadrática)
+                    byte b = (byte)(v * 255);
+                    data[y * size + x] = new Color(b, b, b, b);
+                }
+            tex.SetData(data);
+            return tex;
         }
 
         public void Render(Scene scene, Camera2D camera, int width, int height)
         {
             var device = _spriteBatch.GraphicsDevice;
+            var view = camera.GetViewMatrix(width, height);
+
+            // Iluminação: monta o lightmap ANTES do mundo (alternar render target depois de
+            // desenhar apagaria o backbuffer). Depois multiplica sobre o mundo já desenhado.
+            bool lit = BuildLightMap(scene, view, width, height);
+
             device.Clear(Background);
 
-            var view = camera.GetViewMatrix(width, height);
             _spriteBatch.Begin(transformMatrix: view, samplerState: SamplerState.PointClamp);
 
             if (ShowGrid)
@@ -68,6 +106,13 @@ namespace DreamBit.Engine.Rendering
 
             _spriteBatch.End();
 
+            if (lit && _lightMap != null)
+            {
+                _spriteBatch.Begin(blendState: MultiplyBlend, samplerState: SamplerState.PointClamp);
+                _spriteBatch.Draw(_lightMap, new Rectangle(0, 0, width, height), Color.White);
+                _spriteBatch.End();
+            }
+
             // Passe de tela (HUD): fora da transformação de câmera. Desenha os objetos
             // marcados como ScreenSpace e o passe legado DrawScreen (TextRenderer.ScreenSpace).
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
@@ -81,6 +126,57 @@ namespace DreamBit.Engine.Rendering
                 DrawDebugOverlay();
 
             _spriteBatch.End();
+        }
+
+        /// <summary>Monta o lightmap (ambiente + discos de luz) num render target, em world space.
+        /// Retorna false se a cena não tem luzes (aí o mundo é desenhado normal, sem escurecer).
+        /// Deve ser chamado ANTES de desenhar o mundo (troca de render target apaga o backbuffer).</summary>
+        private bool BuildLightMap(Scene scene, Matrix view, int width, int height)
+        {
+            var lights = new List<(Vector2 Pos, float Radius, Color Color, float Intensity)>();
+            Color ambient = new(40, 44, 60);
+            bool hasAmbient = false;
+
+            foreach (var obj in scene.VisibleInDrawOrder())
+                foreach (var component in obj.Components)
+                {
+                    if (!component.Enabled)
+                        continue;
+                    if (component is Components.Light2D light)
+                        lights.Add((obj.Transform.WorldPosition, light.Radius, light.Color, light.Intensity));
+                    else if (component is Components.AmbientLight amb && !hasAmbient)
+                    {
+                        ambient = amb.Color;
+                        hasAmbient = true;
+                    }
+                }
+
+            if (lights.Count == 0)
+                return false; // cena sem luzes: renderização normal (totalmente iluminada)
+
+            var device = _spriteBatch.GraphicsDevice;
+            if (_lightMap == null || _lightMap.Width != width || _lightMap.Height != height)
+            {
+                _lightMap?.Dispose();
+                _lightMap = new RenderTarget2D(device, width, height);
+            }
+
+            device.SetRenderTarget(_lightMap);
+            device.Clear(ambient);
+            _spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: view, samplerState: SamplerState.LinearClamp);
+            var origin = new Vector2(_lightSprite.Width / 2f, _lightSprite.Height / 2f);
+            foreach (var (pos, radius, color, intensity) in lights)
+            {
+                float scale = radius * 2f / _lightSprite.Width;
+                var tint = new Color(
+                    (byte)Math.Min(255, color.R * intensity),
+                    (byte)Math.Min(255, color.G * intensity),
+                    (byte)Math.Min(255, color.B * intensity));
+                _spriteBatch.Draw(_lightSprite, pos, null, tint, 0f, origin, scale, SpriteEffects.None, 0f);
+            }
+            _spriteBatch.End();
+            device.SetRenderTarget(null);
+            return true;
         }
 
         private void DrawDebugOverlay()
@@ -365,6 +461,8 @@ namespace DreamBit.Engine.Rendering
         {
             _spriteBatch?.Dispose();
             _pixel?.Dispose();
+            _lightSprite?.Dispose();
+            _lightMap?.Dispose();
         }
     }
 }

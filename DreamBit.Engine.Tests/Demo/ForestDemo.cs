@@ -62,6 +62,7 @@ namespace DreamBit.Engine.Tests.Demo
             BuildPickup(scene);
             BuildPhysicsCrates(scene);
             BuildGoal(scene);
+            BuildLights(scene);
             BuildHud(scene);
 
             return scene;
@@ -154,6 +155,7 @@ namespace DreamBit.Engine.Tests.Demo
             });
 
             hero.AddComponent(new AudioListener());
+            hero.AddComponent(new Light2D { Radius = 340f, Color = new Color(255, 236, 200), Intensity = 1.15f });
             scene.Add(hero);
             return hero;
         }
@@ -205,7 +207,22 @@ namespace DreamBit.Engine.Tests.Demo
             pickup.AddComponent(anim);
             // Som ambiente espacial (some ao se afastar do herói).
             pickup.AddComponent(new AudioSource { Spatial = true, MaxDistance = 500f, Loop = true, Bus = AudioMixer.Sfx });
+            pickup.AddComponent(new Light2D { Radius = 240f, Color = new Color(120, 255, 220), Intensity = 1.3f });
             scene.Add(pickup);
+        }
+
+        private static void BuildLights(Scene scene)
+        {
+            // Ambiente de fim de tarde (a cena fica em penumbra; as luzes abrem clareiras).
+            var amb = new GameObject("Ambiente");
+            amb.AddComponent(new AmbientLight { Color = new Color(82, 88, 116) });
+            scene.Add(amb);
+
+            // Luz quente na tenda (meta).
+            var tentLight = new GameObject("LuzTenda");
+            tentLight.Transform.Position = new Vector2(2300, 430);
+            tentLight.AddComponent(new Light2D { Radius = 300f, Color = new Color(255, 210, 150), Intensity = 1.1f });
+            scene.Add(tentLight);
         }
 
         private static void BuildPhysicsCrates(Scene scene)

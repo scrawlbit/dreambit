@@ -74,7 +74,21 @@ namespace DreamBit.Engine.Serialization
         public List<SpriteAnimatorControllerData> SpriteAnimatorControllers { get; set; } = new();
         public List<NavChaserData> NavChasers { get; set; } = new();
         public List<AudioListenerData> AudioListeners { get; set; } = new();
+        public List<Light2DData> Lights { get; set; } = new();
+        public List<AmbientLightData> AmbientLights { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class Light2DData
+    {
+        public float Radius { get; set; } = 200f;
+        public float Intensity { get; set; } = 1f;
+        public byte R { get; set; } = 255; public byte G { get; set; } = 240; public byte B { get; set; } = 210;
+    }
+
+    public sealed class AmbientLightData
+    {
+        public byte R { get; set; } = 40; public byte G { get; set; } = 44; public byte B { get; set; } = 60;
     }
 
     public sealed class NavChaserData

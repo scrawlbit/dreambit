@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "8bfa7754-e6f2-4b8f-9eb8-4ec074bb61e6",
+      "Id": "3c17c87f-e4da-4360-b054-a11bd1c5c696",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -74,10 +74,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "2b95d1b3-4281-43f8-8447-ca8c5bce9180",
+      "Id": "a2cf898a-fa2d-4913-a3ba-5435f2fbf536",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -149,10 +151,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "d8229859-7525-42c5-a06f-bd6fc7a1405e",
+      "Id": "b261430a-160f-4f2c-bbdc-8ef16e7bbcc5",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -393,10 +397,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "5d0be957-522b-4fe4-8df7-e7aa14244866",
+      "Id": "4c32f514-4704-499e-b33f-9a2aa7c9800e",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -463,10 +469,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "4c93c66a-f3ed-4eb6-b548-c063f342c682",
+      "Id": "5c6031d9-44bc-4471-ac5e-5ca684edbd23",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -533,10 +541,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "13bf4d09-bf51-4f16-915b-66b3cf0f0612",
+      "Id": "728e3ba6-e2d3-44fc-b7b3-62342d9050cf",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -603,10 +613,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "8745e47c-7516-4141-8a2b-b2b8811b1fab",
+      "Id": "22739d0b-8802-4db2-bc99-0ada562d10a8",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -673,10 +685,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "ce953174-911a-4c3e-abe0-2745a734c4c3",
+      "Id": "2f7c2e6b-53c7-44d3-a62e-63a8e0d0f301",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1492,10 +1506,20 @@
       "AudioListeners": [
         {}
       ],
+      "Lights": [
+        {
+          "Radius": 340,
+          "Intensity": 1.15,
+          "R": 255,
+          "G": 236,
+          "B": 200
+        }
+      ],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "e223ca69-8f86-467d-ab33-73ee6efdd734",
+      "Id": "3ef1af8f-7afe-423e-a655-715376a6dda5",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1555,10 +1579,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "a90bad5f-bacf-4695-9d84-f90c4c88c3e0",
+      "Id": "416293ef-bdfc-4043-b4bf-58949992cfad",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1633,10 +1659,12 @@
         }
       ],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "6c1d1c5d-480c-49fc-a173-102d7d47c563",
+      "Id": "0151b618-9219-4902-b1ee-ff78e48e5dcb",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1740,10 +1768,20 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [
+        {
+          "Radius": 240,
+          "Intensity": 1.3,
+          "R": 120,
+          "G": 255,
+          "B": 220
+        }
+      ],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "9dd2005c-494f-4804-a885-ca7f81060dbd",
+      "Id": "f0c03f4c-8158-4bd2-a180-e055e1933941",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -1804,10 +1842,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "afcfc6bb-21f6-4da3-a8e7-33d45caeb89c",
+      "Id": "fa4ff99e-cbbd-4514-968c-90e66db834c4",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -1887,10 +1927,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "3644dc5f-14b0-4f91-88b0-86f57bfd18b8",
+      "Id": "35e42a73-e0a9-4218-8c81-0ced4652abdb",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -1970,10 +2012,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "4973a16c-bd95-41ee-a1e3-a6c545ed473a",
+      "Id": "118e3d4c-8a36-4608-87df-40c923eaac8f",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2053,10 +2097,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "60946cc2-7606-4d7c-847a-e3c3bc868059",
+      "Id": "31d4262d-e8dd-4a3b-969e-90f4b02c78a1",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2123,10 +2169,12 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "2c30f9b5-62b3-4d20-8b74-66f17aede037",
+      "Id": "471d5a8d-69f1-4f42-8bf3-0db1a7362438",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2184,10 +2232,130 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": []
     },
     {
-      "Id": "b5c795b7-07db-4d96-ac5e-2fa31cde66ff",
+      "Id": "4bd63b8d-fd0a-466b-bf85-ad063502f1dc",
+      "Name": "Ambiente",
+      "Tag": "",
+      "SortOrder": 0,
+      "RenderLayer": 0,
+      "ScreenSpace": false,
+      "IsVisible": true,
+      "PositionX": 0,
+      "PositionY": 0,
+      "Rotation": 0,
+      "ScaleX": 1,
+      "ScaleY": 1,
+      "Sprites": [],
+      "Rotators": [],
+      "Animators": [],
+      "Tilemaps": [],
+      "Platformers": [],
+      "Audios": [],
+      "Particles": [],
+      "Follows": [],
+      "Triggers": [],
+      "Scripts": [],
+      "Bones": [],
+      "Skeletons": [],
+      "MessageListeners": [],
+      "BoxColliders": [],
+      "SceneExits": [],
+      "Cameras": [],
+      "Texts": [],
+      "Tweens": [],
+      "AnimatorControllers": [],
+      "Anchors": [],
+      "Buttons": [],
+      "Parallaxes": [],
+      "Timers": [],
+      "Layouts": [],
+      "Sliders": [],
+      "Toggles": [],
+      "ProgressBars": [],
+      "TextFields": [],
+      "Navigators": [],
+      "ScrollViews": [],
+      "Rigidbodies": [],
+      "PropertyAnimators": [],
+      "SpriteAnimatorControllers": [],
+      "NavChasers": [],
+      "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [
+        {
+          "R": 82,
+          "G": 88,
+          "B": 116
+        }
+      ],
+      "Children": []
+    },
+    {
+      "Id": "d690a2df-544d-43f0-834d-adf842135c7c",
+      "Name": "LuzTenda",
+      "Tag": "",
+      "SortOrder": 0,
+      "RenderLayer": 0,
+      "ScreenSpace": false,
+      "IsVisible": true,
+      "PositionX": 2300,
+      "PositionY": 430,
+      "Rotation": 0,
+      "ScaleX": 1,
+      "ScaleY": 1,
+      "Sprites": [],
+      "Rotators": [],
+      "Animators": [],
+      "Tilemaps": [],
+      "Platformers": [],
+      "Audios": [],
+      "Particles": [],
+      "Follows": [],
+      "Triggers": [],
+      "Scripts": [],
+      "Bones": [],
+      "Skeletons": [],
+      "MessageListeners": [],
+      "BoxColliders": [],
+      "SceneExits": [],
+      "Cameras": [],
+      "Texts": [],
+      "Tweens": [],
+      "AnimatorControllers": [],
+      "Anchors": [],
+      "Buttons": [],
+      "Parallaxes": [],
+      "Timers": [],
+      "Layouts": [],
+      "Sliders": [],
+      "Toggles": [],
+      "ProgressBars": [],
+      "TextFields": [],
+      "Navigators": [],
+      "ScrollViews": [],
+      "Rigidbodies": [],
+      "PropertyAnimators": [],
+      "SpriteAnimatorControllers": [],
+      "NavChasers": [],
+      "AudioListeners": [],
+      "Lights": [
+        {
+          "Radius": 300,
+          "Intensity": 1.1,
+          "R": 255,
+          "G": 210,
+          "B": 150
+        }
+      ],
+      "AmbientLights": [],
+      "Children": []
+    },
+    {
+      "Id": "66e7992d-b2ce-4f5b-957c-ed698e72e638",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2234,9 +2402,11 @@
       "SpriteAnimatorControllers": [],
       "NavChasers": [],
       "AudioListeners": [],
+      "Lights": [],
+      "AmbientLights": [],
       "Children": [
         {
-          "Id": "dc9b17c3-27be-4d21-b824-91dce6d96f32",
+          "Id": "6c0bc6bf-96de-4111-85bc-04b76033fded",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2301,10 +2471,12 @@
           "SpriteAnimatorControllers": [],
           "NavChasers": [],
           "AudioListeners": [],
+          "Lights": [],
+          "AmbientLights": [],
           "Children": []
         },
         {
-          "Id": "36a7dfae-f104-4530-9db7-d57aa644b227",
+          "Id": "3c409871-173d-4b84-a794-cecbd52b8a4d",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2367,10 +2539,12 @@
           "SpriteAnimatorControllers": [],
           "NavChasers": [],
           "AudioListeners": [],
+          "Lights": [],
+          "AmbientLights": [],
           "Children": []
         },
         {
-          "Id": "bbd49f98-9ef0-44fb-8ff6-514722d53f34",
+          "Id": "f4e00304-89d6-4e02-b2ab-c671bec3afa1",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,
@@ -2440,6 +2614,8 @@
           "SpriteAnimatorControllers": [],
           "NavChasers": [],
           "AudioListeners": [],
+          "Lights": [],
+          "AmbientLights": [],
           "Children": []
         }
       ]
