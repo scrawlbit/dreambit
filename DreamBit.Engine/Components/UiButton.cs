@@ -63,10 +63,12 @@ namespace DreamBit.Engine.Components
                 _isPressed = false;
         }
 
-        /// <summary>Retângulo do botão em coordenadas de tela (centrado na posição do objeto).</summary>
+        /// <summary>Retângulo do botão em coordenadas de tela (centrado na posição do objeto).
+        /// Usa a posição de mundo — que, num objeto HUD, equivale à coordenada de tela — para
+        /// funcionar também quando o botão é filho de um painel (UiLayout/UiAnchor).</summary>
         public Rectangle ScreenRect()
         {
-            var pos = Owner.Transform.Position;
+            var pos = Owner.Transform.WorldPosition;
             return new Rectangle(
                 (int)(pos.X - _width / 2f), (int)(pos.Y - _height / 2f),
                 (int)_width, (int)_height);

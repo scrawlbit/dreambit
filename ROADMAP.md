@@ -41,6 +41,8 @@ MonoGame atualizado.
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
 - **Hot-reload de script** durante o play (arquivo `.cs` externo recompila ao mudar);
   **overlay de debug** no Player (F3: FPS, objetos, cena).
+- **Autodetecção de frames por transparência**: `FrameDetector` acha frames de tamanhos
+  diferentes numa sprite sheet (regiões conexas), além do fatiador por grade.
 - Barramento de mensagens (sinais de jogo); z-order global; input mapeável por ações
   (teclado + gamepad + mouse/toque); play restaurável; hot-reload de assets; transição
   entre fases.
@@ -63,8 +65,8 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
 - **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — depende do pipeline de shaders (MGCB).
 
 ### Animação
-- **Auto-detecção de frames por transparência** e import Aseprite (o fatiador por grade
-  já existe) — Unity Sprite Editor.
+- **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência e o fatiador por
+  grade já cobrem sprite sheets PNG.
 
 ### Física
 - **Física 2D com corpos rígidos, rotação, joints, raycast e camadas de colisão** —
