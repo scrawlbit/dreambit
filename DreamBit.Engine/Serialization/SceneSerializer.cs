@@ -283,7 +283,9 @@ namespace DreamBit.Engine.Serialization
                         Volume = audio.Volume,
                         PlayOnStart = audio.PlayOnStart,
                         Loop = audio.Loop,
-                        Bus = audio.Bus
+                        Bus = audio.Bus,
+                        Spatial = audio.Spatial,
+                        MaxDistance = audio.MaxDistance
                     });
                 else if (component is ParticleEmitter particles)
                     data.Particles.Add(new ParticleData
@@ -377,6 +379,15 @@ namespace DreamBit.Engine.Serialization
                         AttackAction = spriteCtrl.AttackAction, FlipByVelocity = spriteCtrl.FlipByVelocity,
                         ArtFacesRight = spriteCtrl.ArtFacesRight
                     });
+                else if (component is NavChaser chaser)
+                    data.NavChasers.Add(new NavChaserData
+                    {
+                        TargetTag = chaser.TargetTag, Speed = chaser.Speed,
+                        RepathInterval = chaser.RepathInterval, ArriveRadius = chaser.ArriveRadius,
+                        AllowDiagonal = chaser.AllowDiagonal
+                    });
+                else if (component is AudioListener)
+                    data.AudioListeners.Add(new AudioListenerData());
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -586,7 +597,20 @@ namespace DreamBit.Engine.Serialization
                     Volume = audio.Volume,
                     PlayOnStart = audio.PlayOnStart,
                     Loop = audio.Loop,
-                    Bus = audio.Bus
+                    Bus = audio.Bus,
+                    Spatial = audio.Spatial,
+                    MaxDistance = audio.MaxDistance
+                });
+
+            foreach (var _ in data.AudioListeners)
+                obj.AddComponent(new AudioListener());
+
+            foreach (var chaser in data.NavChasers)
+                obj.AddComponent(new NavChaser
+                {
+                    TargetTag = chaser.TargetTag, Speed = chaser.Speed,
+                    RepathInterval = chaser.RepathInterval, ArriveRadius = chaser.ArriveRadius,
+                    AllowDiagonal = chaser.AllowDiagonal
                 });
 
             foreach (var particles in data.Particles)

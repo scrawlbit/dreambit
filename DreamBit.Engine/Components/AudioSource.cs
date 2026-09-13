@@ -16,6 +16,8 @@ namespace DreamBit.Engine.Components
         private bool _playOnStart = true;
         private bool _loop;
         private string _bus = AudioMixer.Sfx;
+        private bool _spatial;
+        private float _maxDistance = 600f;
 
         private SoundEffectInstance? _instance;
 
@@ -29,7 +31,21 @@ namespace DreamBit.Engine.Components
         /// <summary>Barramento do mixer por onde este som passa (ex.: "Music", "SFX").</summary>
         public string Bus { get => _bus; set => Set(ref _bus, string.IsNullOrEmpty(value) ? AudioMixer.Sfx : value); }
 
-        private float EffectiveVolume => MathHelper.Clamp(_volume, 0f, 1f) * AudioMixer.Effective(_bus);
+        /// <summary>Se o som é posicional (atenua/pan pela distância ao <see cref="AudioListener"/>).</summary>
+        public bool Spatial { get => _spatial; set => Set(ref _spatial, value); }
+
+        /// <summary>Distância (px) em que o som espacial some por completo.</summary>
+        public float MaxDistance { get => _maxDistance; set => Set(ref _maxDistance, System.Math.Max(1f, value)); }
+
+        /// <summary>Fatores espaciais (atenuação, pan) deste frame, ou (1,0) se não for espacial.</summary>
+        private (float Attenuation, float Pan) Spatialize()
+        {
+            if (!_spatial || AudioListener.Position is not Vector2 listener || Owner == null)
+                return (1f, 0f);
+            return AudioSpatial.Compute(Owner.Transform.WorldPosition, listener, _maxDistance);
+        }
+
+        private float EffectiveVolume => MathHelper.Clamp(_volume, 0f, 1f) * AudioMixer.Effective(_bus) * Spatialize().Attenuation;
 
         protected internal override void OnPlayStarted()
         {
@@ -59,10 +75,16 @@ namespace DreamBit.Engine.Components
 
         protected internal override void Update(GameTime gameTime)
         {
-            // Reflete ao vivo mudanças de volume do bus/Master (ex.: menu de opções).
+            // Reflete ao vivo mudanças de volume do bus/Master (ex.: menu de opções) e a
+            // posição espacial (atenuação + pan pela distância ao ouvinte).
             if (_instance != null && _instance.State == SoundState.Playing)
             {
-                try { _instance.Volume = EffectiveVolume; }
+                try
+                {
+                    _instance.Volume = EffectiveVolume;
+                    if (_spatial)
+                        _instance.Pan = Spatialize().Pan;
+                }
                 catch { /* motor de áudio indisponível */ }
             }
         }

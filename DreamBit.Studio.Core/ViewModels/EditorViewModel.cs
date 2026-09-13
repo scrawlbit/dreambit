@@ -1331,7 +1331,18 @@ namespace DreamBit.Studio.ViewModels
                     case AudioSource au:
                         clone.AddComponent(new AudioSource
                         {
-                            SoundPath = au.SoundPath, Volume = au.Volume, PlayOnStart = au.PlayOnStart, Loop = au.Loop, Bus = au.Bus
+                            SoundPath = au.SoundPath, Volume = au.Volume, PlayOnStart = au.PlayOnStart, Loop = au.Loop, Bus = au.Bus,
+                            Spatial = au.Spatial, MaxDistance = au.MaxDistance
+                        });
+                        break;
+                    case AudioListener:
+                        clone.AddComponent(new AudioListener());
+                        break;
+                    case NavChaser nc:
+                        clone.AddComponent(new NavChaser
+                        {
+                            TargetTag = nc.TargetTag, Speed = nc.Speed, RepathInterval = nc.RepathInterval,
+                            ArriveRadius = nc.ArriveRadius, AllowDiagonal = nc.AllowDiagonal
                         });
                         break;
                     case ParticleEmitter pe:

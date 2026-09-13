@@ -72,8 +72,21 @@ namespace DreamBit.Engine.Serialization
         public List<RigidbodyData> Rigidbodies { get; set; } = new();
         public List<PropertyAnimatorData> PropertyAnimators { get; set; } = new();
         public List<SpriteAnimatorControllerData> SpriteAnimatorControllers { get; set; } = new();
+        public List<NavChaserData> NavChasers { get; set; } = new();
+        public List<AudioListenerData> AudioListeners { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
+
+    public sealed class NavChaserData
+    {
+        public string TargetTag { get; set; } = "player";
+        public float Speed { get; set; } = 120f;
+        public float RepathInterval { get; set; } = 0.4f;
+        public float ArriveRadius { get; set; } = 10f;
+        public bool AllowDiagonal { get; set; } = true;
+    }
+
+    public sealed class AudioListenerData { }
 
     public sealed class ScriptData
     {
@@ -125,6 +138,8 @@ namespace DreamBit.Engine.Serialization
         public bool PlayOnStart { get; set; } = true;
         public bool Loop { get; set; }
         public string Bus { get; set; } = "SFX";
+        public bool Spatial { get; set; }
+        public float MaxDistance { get; set; } = 600f;
     }
 
     public sealed class PlatformerData
