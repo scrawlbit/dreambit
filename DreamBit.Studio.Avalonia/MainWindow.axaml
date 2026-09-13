@@ -274,25 +274,25 @@
                         <Grid ColumnDefinitions="*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Posição X" />
-                                <TextBox Text="{Binding PositionX, Mode=TwoWay}" />
+                                <TextBox Text="{Binding PositionX, Mode=TwoWay}" GotFocus="OnTransformFocus" LostFocus="OnTransformBlur" />
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <TextBlock Classes="field" Text="Posição Y" />
-                                <TextBox Text="{Binding PositionY, Mode=TwoWay}" />
+                                <TextBox Text="{Binding PositionY, Mode=TwoWay}" GotFocus="OnTransformFocus" LostFocus="OnTransformBlur" />
                             </StackPanel>
                         </Grid>
                         <Grid ColumnDefinitions="*,6,*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Rotação°" />
-                                <TextBox Text="{Binding RotationDegrees, Mode=TwoWay}" />
+                                <TextBox Text="{Binding RotationDegrees, Mode=TwoWay}" GotFocus="OnTransformFocus" LostFocus="OnTransformBlur" />
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <TextBlock Classes="field" Text="Escala X" />
-                                <TextBox Text="{Binding ScaleX, Mode=TwoWay}" />
+                                <TextBox Text="{Binding ScaleX, Mode=TwoWay}" GotFocus="OnTransformFocus" LostFocus="OnTransformBlur" />
                             </StackPanel>
                             <StackPanel Grid.Column="4">
                                 <TextBlock Classes="field" Text="Escala Y" />
-                                <TextBox Text="{Binding ScaleY, Mode=TwoWay}" />
+                                <TextBox Text="{Binding ScaleY, Mode=TwoWay}" GotFocus="OnTransformFocus" LostFocus="OnTransformBlur" />
                             </StackPanel>
                         </Grid>
 

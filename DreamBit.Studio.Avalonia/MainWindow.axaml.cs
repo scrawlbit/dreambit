@@ -76,6 +76,27 @@ namespace DreamBit.Studio.Avalonia
         private void OnPreferences(object? sender, RoutedEventArgs e)
             => new PreferencesWindow().ShowDialog(this);
 
+        // Undo de transform digitado no inspetor: captura ao focar, registra ao sair (se mudou).
+        private EditorViewModel.TransformState? _inspectorBefore;
+
+        private void OnTransformFocus(object? sender, GotFocusEventArgs e)
+        {
+            if (_editor.SelectedObject != null)
+                _inspectorBefore = EditorViewModel.Capture(_editor.SelectedObject);
+        }
+
+        private void OnTransformBlur(object? sender, RoutedEventArgs e)
+        {
+            var obj = _editor.SelectedObject;
+            if (_inspectorBefore == null || obj == null)
+                return;
+
+            var after = EditorViewModel.Capture(obj);
+            if (!after.Equals(_inspectorBefore.Value))
+                _editor.PushGroupTransform(new[] { obj }, new[] { _inspectorBefore.Value }, new[] { after });
+            _inspectorBefore = null;
+        }
+
         private void OnDuplicate(object? sender, RoutedEventArgs e) { _editor.DuplicateSelected(); InvalidateScene(); }
         private void OnCopy(object? sender, RoutedEventArgs e) => _editor.CopySelected();
         private void OnPaste(object? sender, RoutedEventArgs e) { _editor.Paste(); InvalidateScene(); }
