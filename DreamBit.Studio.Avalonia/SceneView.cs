@@ -67,7 +67,9 @@ namespace DreamBit.Studio.Avalonia
 
                     using (context.PushTransform(ToAvalonia(obj.Transform.WorldMatrix)))
                     {
-                        context.FillRectangle(new SolidColorBrush(ToColor(FillColor(obj))), rect);
+                        if (!TryDrawTexture(context, obj, rect))
+                            context.FillRectangle(new SolidColorBrush(ToColor(FillColor(obj))), rect);
+
                         if (obj.IsSelected)
                             context.DrawRectangle(null, _selectionPen, rect);
                     }
@@ -148,6 +150,44 @@ namespace DreamBit.Studio.Avalonia
         {
             var p = e.GetPosition(this);
             return new XnaVector2((float)p.X, (float)p.Y);
+        }
+
+        /// <summary>Desenha a textura do objeto (sprite com recorte, ou frame do animator) no rect.
+        /// Retorna false se não há textura carregável (aí o chamador desenha o retângulo colorido).</summary>
+        private static bool TryDrawTexture(DrawingContext context, GameObject obj, Rect rect)
+        {
+            foreach (var c in obj.Components)
+            {
+                if (c is SpriteRenderer sprite && !string.IsNullOrEmpty(sprite.TexturePath))
+                {
+                    var bmp = AvaloniaImageCache.Get(sprite.TexturePath);
+                    if (bmp == null)
+                        return false;
+
+                    var src = sprite.SourceRect is { } r
+                        ? new Rect(r.X, r.Y, r.Width, r.Height)
+                        : new Rect(0, 0, bmp.PixelSize.Width, bmp.PixelSize.Height);
+                    context.DrawImage(bmp, src, rect);
+                    return true;
+                }
+
+                if (c is SpriteAnimator anim && !string.IsNullOrEmpty(anim.TexturePath))
+                {
+                    var bmp = AvaloniaImageCache.Get(anim.TexturePath);
+                    if (bmp == null)
+                        return false;
+
+                    int columns = Math.Max(1, bmp.PixelSize.Width / Math.Max(1, anim.FrameWidth));
+                    int frame = Math.Clamp(anim.CurrentFrame, 0, Math.Max(0, anim.FrameCount - 1));
+                    int col = frame % columns;
+                    int row = frame / columns;
+                    var src = new Rect(col * anim.FrameWidth, row * anim.FrameHeight, anim.FrameWidth, anim.FrameHeight);
+                    context.DrawImage(bmp, src, rect);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static XnaColor FillColor(GameObject obj)

@@ -20,6 +20,12 @@ namespace DreamBit.Engine.Rendering
             new(StringComparer.OrdinalIgnoreCase);
         private static readonly object _gate = new();
 
+        /// <summary>
+        /// Disparado quando um caminho é invalidado (hot-reload). Permite que outros caches
+        /// (ex.: o cache de Bitmap do editor Avalonia) recarreguem a mesma imagem.
+        /// </summary>
+        public static event Action<string>? Invalidated;
+
         public static Texture2D? Get(GraphicsDevice device, string? path)
         {
             if (string.IsNullOrEmpty(path))
@@ -77,6 +83,8 @@ namespace DreamBit.Engine.Rendering
                 if (_cache.ContainsKey(path))
                     _stale.Add(path);
             }
+
+            Invalidated?.Invoke(path);
         }
     }
 }
