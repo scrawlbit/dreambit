@@ -199,6 +199,26 @@ namespace DreamBit.Studio.Avalonia
             _editor.CreateTilemap(path, tile, tile, w / tile, h / tile);
         }
 
+        // ---- seletores de arquivo do inspetor ----
+
+        private async void OnPickTexture(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Escolher textura", "Imagens", "*.png");
+            if (path != null) _editor.Inspector.SpriteTexturePath = path;
+        }
+
+        private async void OnPickAnimTexture(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Escolher sprite sheet", "Imagens", "*.png");
+            if (path != null) _editor.Inspector.AnimTexturePath = path;
+        }
+
+        private async void OnPickSound(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Escolher som", "Som WAV", "*.wav");
+            if (path != null) _editor.Inspector.AudioPath = path;
+        }
+
         // ---- multisseleção na hierarquia ----
 
         private bool _syncingHierarchy;

@@ -297,6 +297,7 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Textura (caminho)" />
                                 <TextBox Text="{Binding SpriteTexturePath, Mode=TwoWay}" />
+                                <Button Content="Escolher…" Click="OnPickTexture" Margin="0,2,0,0" HorizontalAlignment="Left" />
                                 <TextBlock Classes="field" Text="Recorte do atlas (X / Y / L / A) — 0 = textura inteira" />
                                 <Grid ColumnDefinitions="*,4,*,4,*,4,*">
                                     <TextBox Grid.Column="0" Text="{Binding SpriteSrcX, Mode=TwoWay}" />
@@ -316,6 +317,7 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Textura (sheet)" />
                                 <TextBox Text="{Binding AnimTexturePath, Mode=TwoWay}" />
+                                <Button Content="Escolher…" Click="OnPickAnimTexture" Margin="0,2,0,0" HorizontalAlignment="Left" />
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Classes="field" Text="Frame W" />
@@ -386,6 +388,7 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Som (.wav)" />
                                 <TextBox Text="{Binding AudioPath, Mode=TwoWay}" />
+                                <Button Content="Escolher .wav…" Click="OnPickSound" Margin="0,2,0,0" HorizontalAlignment="Left" />
                                 <TextBlock Classes="field" Text="Volume" />
                                 <TextBox Text="{Binding AudioVolume, Mode=TwoWay}" />
                                 <CheckBox Content="Tocar ao iniciar" IsChecked="{Binding AudioPlayOnStart, Mode=TwoWay}" Margin="0,6,0,0" />
