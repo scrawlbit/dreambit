@@ -71,7 +71,45 @@ namespace DreamBit.Player
 
             DreamBit.Engine.Rendering.Screen.CameraPosition = _camera.Position; // parallax do próximo frame
 
+            UpdateDebugOverlay(gameTime);
+
             base.Update(gameTime);
+        }
+
+        // ---- overlay de debug (F3) ----
+        private float _fps;
+        private bool _f3Prev;
+
+        private void UpdateDebugOverlay(GameTime gameTime)
+        {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (dt > 0f)
+                _fps = _fps <= 0f ? 1f / dt : _fps * 0.9f + (1f / dt) * 0.1f; // suavizado
+
+            bool f3 = Microsoft.Xna.Framework.Input.Keyboard.GetState()
+                .IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F3);
+            if (f3 && !_f3Prev)
+                _renderer.ShowDebugOverlay = !_renderer.ShowDebugOverlay;
+            _f3Prev = f3;
+
+            if (_renderer.ShowDebugOverlay)
+                _renderer.DebugLines = new[]
+                {
+                    $"FPS {_fps:0}",
+                    $"OBJ {CountObjects(_scene.Objects)}",
+                    $"CENA {_scene.Name}"
+                };
+        }
+
+        private static int CountObjects(System.Collections.Generic.IEnumerable<GameObject> objects)
+        {
+            int n = 0;
+            foreach (var obj in objects)
+            {
+                n++;
+                n += CountObjects(obj.Children);
+            }
+            return n;
         }
 
         private void LoadNextScene(string sceneFile)

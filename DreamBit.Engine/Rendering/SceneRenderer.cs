@@ -28,6 +28,13 @@ namespace DreamBit.Engine.Rendering
         /// <summary>Ledge destacada (selecionada no editor), desenhada em branco.</summary>
         public Ledge? HighlightedLedge { get; set; }
 
+        /// <summary>Mostra um overlay de debug (FPS/contadores) no canto da tela.</summary>
+        public bool ShowDebugOverlay { get; set; }
+
+        /// <summary>Linhas do overlay de debug (o host preenche por frame).</summary>
+        public System.Collections.Generic.IReadOnlyList<string> DebugLines { get; set; }
+            = System.Array.Empty<string>();
+
         /// <summary>Retângulo de seleção por caixa em andamento (mundo), ou null.</summary>
         public (Vector2 Min, Vector2 Max)? SelectionBox { get; set; }
 
@@ -68,7 +75,50 @@ namespace DreamBit.Engine.Rendering
             foreach (var obj in scene.VisibleInDrawOrder())
                 foreach (var component in obj.Components)
                     component.DrawScreen(this);
+
+            if (ShowDebugOverlay)
+                DrawDebugOverlay();
+
             _spriteBatch.End();
+        }
+
+        private void DrawDebugOverlay()
+        {
+            const int pad = 6, px = 3, lineH = (PixelFont.GlyphHeight + 2) * 3;
+            int maxW = 0;
+            foreach (var line in DebugLines)
+                maxW = Math.Max(maxW, PixelFont.MeasureWidth(line) * px);
+
+            // Fundo semitransparente atrás do texto.
+            _spriteBatch.Draw(_pixel,
+                new Rectangle(pad - 3, pad - 3, maxW + 8, DebugLines.Count * lineH + 4),
+                new Color(0, 0, 0, 150));
+
+            int y = pad;
+            foreach (var line in DebugLines)
+            {
+                DrawHudText(line, pad, y, px, new Color(120, 240, 140));
+                y += lineH;
+            }
+        }
+
+        /// <summary>Desenha texto com a fonte pixel em coordenadas de tela (para overlays).</summary>
+        public void DrawHudText(string text, int originX, int originY, int px, Color color)
+        {
+            int cursor = originX;
+            foreach (char ch in text)
+            {
+                var glyph = PixelFont.Glyph(ch);
+                for (int row = 0; row < PixelFont.GlyphHeight; row++)
+                {
+                    byte bits = glyph[row];
+                    for (int col = 0; col < PixelFont.GlyphWidth; col++)
+                        if (((bits >> (PixelFont.GlyphWidth - 1 - col)) & 1) != 0)
+                            _spriteBatch.Draw(_pixel,
+                                new Rectangle(cursor + col * px, originY + row * px, px, px), color);
+                }
+                cursor += (PixelFont.GlyphWidth + PixelFont.Spacing) * px;
+            }
         }
 
         private void DrawSelectionBox((Vector2 Min, Vector2 Max) box, Camera2D camera)
