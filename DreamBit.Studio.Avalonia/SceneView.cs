@@ -25,6 +25,8 @@ namespace DreamBit.Studio.Avalonia
     {
         private EditorViewModel? _editor;
         private SceneInputController? _input;
+        private bool _painting;
+        private bool _erasing;
 
         private readonly IBrush _background = new SolidColorBrush(Color.FromRgb(24, 26, 32));
         private readonly Pen _gridPen = new(new SolidColorBrush(Color.FromRgb(44, 48, 58)), 1);
@@ -67,7 +69,10 @@ namespace DreamBit.Studio.Avalonia
 
                     using (context.PushTransform(ToAvalonia(obj.Transform.WorldMatrix)))
                     {
-                        if (!TryDrawTexture(context, obj, rect))
+                        var tilemap = obj.Components.OfType<TilemapRenderer>().FirstOrDefault();
+                        if (tilemap?.Map != null)
+                            DrawTilemap(context, tilemap.Map);
+                        else if (!TryDrawTexture(context, obj, rect))
                             context.FillRectangle(new SolidColorBrush(ToColor(FillColor(obj))), rect);
 
                         if (obj.IsSelected)
@@ -137,6 +142,18 @@ namespace DreamBit.Studio.Avalonia
                 return;
             }
 
+            // Ferramenta de pincel: pinta (esquerdo) / apaga (direito) tiles no tilemap ativo.
+            if (_editor != null && _editor.IsTilemapTool && (props.IsLeftButtonPressed || props.IsRightButtonPressed))
+            {
+                _painting = true;
+                _erasing = props.IsRightButtonPressed;
+                _editor.BeginPaintStroke();
+                _editor.PaintAt(_editor.Camera.ScreenToWorld(pos, W, H), _erasing);
+                e.Pointer.Capture(this);
+                InvalidateVisual();
+                return;
+            }
+
             // Ferramenta de ledge: desenhar (clique adiciona ponto; direito/duplo finaliza).
             if (_editor != null && _editor.IsLedgeTool)
             {
@@ -165,12 +182,26 @@ namespace DreamBit.Studio.Avalonia
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
+            if (_painting && _editor != null)
+            {
+                _editor.PaintAt(_editor.Camera.ScreenToWorld(Pos(e), W, H), _erasing);
+                InvalidateVisual();
+                return;
+            }
             _input?.Move(Pos(e), W, H);
             InvalidateVisual();
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
+            if (_painting && _editor != null)
+            {
+                _editor.EndPaintStroke();
+                _painting = false;
+                e.Pointer.Capture(null);
+                InvalidateVisual();
+                return;
+            }
             _input?.Up();
             e.Pointer.Capture(null);
             InvalidateVisual();
@@ -189,6 +220,32 @@ namespace DreamBit.Studio.Avalonia
         {
             var p = e.GetPosition(this);
             return new XnaVector2((float)p.X, (float)p.Y);
+        }
+
+        /// <summary>Desenha um tilemap: cada tile no seu local, recortado do tileset.</summary>
+        private static void DrawTilemap(DrawingContext context, DreamBit.Engine.Tilemap.Tilemap map)
+        {
+            foreach (var layer in map.Layers)
+            {
+                foreach (var (x, y, gid) in layer.Tiles)
+                {
+                    var tileset = map.TilesetForGid(gid);
+                    if (tileset == null || tileset.Columns <= 0)
+                        continue;
+
+                    var bmp = AvaloniaImageCache.Get(tileset.ResolvedImagePath);
+                    if (bmp == null)
+                        continue;
+
+                    int local = gid - tileset.FirstGid;
+                    int col = local % tileset.Columns;
+                    int row = local / tileset.Columns;
+                    var src = new Rect(col * tileset.TileWidth, row * tileset.TileHeight,
+                        tileset.TileWidth, tileset.TileHeight);
+                    var dest = new Rect(x * map.TileWidth, y * map.TileHeight, map.TileWidth, map.TileHeight);
+                    context.DrawImage(bmp, src, dest);
+                }
+            }
         }
 
         /// <summary>Desenha a textura do objeto (sprite com recorte, ou frame do animator) no rect.

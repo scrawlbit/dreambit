@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -36,6 +37,8 @@ namespace DreamBit.Studio.Avalonia
             _timer.Start();
 
             KeyDown += OnKeyDown;
+            _editor.ToolChanged += RebuildPalette;
+            _editor.SelectionChanged += RebuildPalette;
 
             // Rola o console para o fim quando chega log novo (após o layout medir a linha).
             _editor.Log.Entries.CollectionChanged += (_, _) =>
@@ -177,6 +180,78 @@ namespace DreamBit.Studio.Avalonia
             var path = await PickOpenFileAsync("Importar mapa Tiled", "Mapa Tiled", "*.tmx");
             if (path != null)
                 _editor.ImportTilemap(path);
+        }
+
+        private async void OnNewTilemap(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Tileset (PNG)", "Imagem PNG", "*.png");
+            if (path == null)
+                return;
+
+            const int tile = 16;
+            var (w, h) = DreamBit.Studio.ImageInfo.GetPngSize(path);
+            if (w <= 0 || h <= 0)
+            {
+                EngineLog.Warn("Não foi possível ler o tamanho do PNG.");
+                return;
+            }
+            _editor.CreateTilemap(path, tile, tile, w / tile, h / tile);
+        }
+
+        // ---- paleta de tilemap ----
+
+        private DreamBit.Engine.Tilemap.Tileset? _paletteTileset;
+
+        private void RebuildPalette()
+        {
+            var image = this.FindControl<Image>("PaletteImage");
+            var canvas = this.FindControl<Canvas>("PaletteCanvas");
+            var sel = this.FindControl<Rectangle>("PaletteSelection");
+            if (image == null || canvas == null || sel == null)
+                return;
+
+            _paletteTileset = null;
+            image.Source = null;
+            sel.IsVisible = false;
+
+            var map = _editor.ActiveTilemap?.Map;
+            if (!_editor.IsTilemapTool || map == null)
+                return;
+
+            var tileset = map.Tilesets.FirstOrDefault(t => !string.IsNullOrEmpty(t.ResolvedImagePath));
+            if (tileset == null)
+                return;
+
+            var bmp = AvaloniaImageCache.Get(tileset.ResolvedImagePath);
+            if (bmp == null)
+                return;
+
+            _paletteTileset = tileset;
+            image.Source = bmp;
+            canvas.Width = bmp.PixelSize.Width;
+            canvas.Height = bmp.PixelSize.Height;
+        }
+
+        private void OnPalettePick(object? sender, PointerPressedEventArgs e)
+        {
+            var canvas = this.FindControl<Canvas>("PaletteCanvas");
+            var sel = this.FindControl<Rectangle>("PaletteSelection");
+            if (_paletteTileset is not { Columns: > 0 } ts || canvas == null || sel == null)
+                return;
+
+            var p = e.GetPosition(canvas);
+            int col = (int)(p.X / ts.TileWidth);
+            int row = (int)(p.Y / ts.TileHeight);
+            if (col < 0 || row < 0 || col >= ts.Columns)
+                return;
+
+            _editor.BrushGid = ts.FirstGid + row * ts.Columns + col;
+
+            Canvas.SetLeft(sel, col * ts.TileWidth);
+            Canvas.SetTop(sel, row * ts.TileHeight);
+            sel.Width = ts.TileWidth;
+            sel.Height = ts.TileHeight;
+            sel.IsVisible = true;
         }
 
         // ---- rodar / exportar / conteúdo ----

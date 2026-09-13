@@ -62,12 +62,16 @@
                 <RadioButton GroupName="tool" Content="Ledge" VerticalAlignment="Center"
                              IsChecked="{Binding IsLedgeTool, Mode=OneWay}" Command="{Binding LedgeToolCommand}"
                              ToolTip.Tip="Desenhar ledges: clique adiciona pontos, direito/duplo/Enter finaliza, Esc cancela" />
+                <RadioButton GroupName="tool" Content="Pincel" VerticalAlignment="Center"
+                             IsChecked="{Binding IsTilemapTool, Mode=OneWay}" Command="{Binding TilemapToolCommand}"
+                             ToolTip.Tip="Pintar tiles no tilemap selecionado (esquerdo pinta, direito apaga)" />
                 <CheckBox Content="One-way" VerticalAlignment="Center" IsChecked="{Binding NewLedgeOneWay}" />
                 <CheckBox Content="Snap" VerticalAlignment="Center" IsChecked="{Binding SnapToGrid}" />
                 <Border Classes="sep" />
                 <Button Content="🖼 Atlas" Click="OnOpenAtlas" ToolTip.Tip="Recortar e carimbar sprites de um atlas" />
                 <Button Content="✕ Carimbo" Click="OnExitStamp" IsVisible="{Binding StampMode}" ToolTip.Tip="Sair do modo carimbo" />
                 <Button Content="🗺 TMX" Click="OnImportTmx" ToolTip.Tip="Importar mapa Tiled (.tmx)" />
+                <Button Content="🧩 Novo tilemap" Click="OnNewTilemap" ToolTip.Tip="Novo tilemap a partir de um tileset PNG (tiles 16px)" />
                 <Border Classes="sep" />
                 <Button Content="⭳ Prefab" Click="OnSavePrefab" ToolTip.Tip="Salvar objeto selecionado como prefab" />
                 <Button Content="⭱ Inserir" Click="OnInsertPrefab" ToolTip.Tip="Inserir um prefab na cena" />
@@ -108,6 +112,22 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- Paleta de tilemap (dock inferior, acima do console) -->
+        <Border x:Name="PalettePanel" DockPanel.Dock="Bottom" Height="130" Background="#20242D"
+                IsVisible="{Binding IsTilemapTool}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Foreground="#8A93A6" Margin="10,6"
+                           Text="PALETA — clique um tile para escolher o pincel (na cena: esquerdo pinta, direito apaga)" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Canvas x:Name="PaletteCanvas" Background="Transparent" PointerPressed="OnPalettePick">
+                        <Image x:Name="PaletteImage" Stretch="None" Canvas.Left="0" Canvas.Top="0" />
+                        <Rectangle x:Name="PaletteSelection" Stroke="#39D0FF" StrokeThickness="2"
+                                   Fill="#3339D0FF" IsVisible="False" />
+                    </Canvas>
                 </ScrollViewer>
             </DockPanel>
         </Border>
