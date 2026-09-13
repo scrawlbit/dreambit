@@ -15,7 +15,9 @@ namespace DreamBit.Engine.Rendering
         /// <summary>Desenha um quad (textura ou cor sólida) posicionado pela matriz de mundo.</summary>
         void DrawQuad(Matrix world, Vector2 size, Color color, Texture2D? texture = null);
 
-        /// <summary>Desenha um frame (região de origem) de uma textura, pela matriz de mundo.</summary>
-        void DrawFrame(Matrix world, Vector2 size, Color color, Texture2D texture, Rectangle source);
+        /// <summary>Desenha um frame (região de origem) de uma textura, pela matriz de mundo.
+        /// <paramref name="effects"/> permite espelhar horizontal/verticalmente (flip do sprite).</summary>
+        void DrawFrame(Matrix world, Vector2 size, Color color, Texture2D texture, Rectangle source,
+            SpriteEffects effects = SpriteEffects.None);
     }
 }

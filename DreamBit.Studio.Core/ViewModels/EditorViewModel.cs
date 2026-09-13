@@ -1206,11 +1206,22 @@ namespace DreamBit.Studio.ViewModels
                         {
                             TexturePath = a.TexturePath, FrameWidth = a.FrameWidth, FrameHeight = a.FrameHeight,
                             FrameCount = a.FrameCount, Fps = a.Fps, Loop = a.Loop, Size = a.Size,
-                            ChromaKeyEnabled = a.ChromaKeyEnabled, ChromaAuto = a.ChromaAuto, ChromaColor = a.ChromaColor, ChromaTolerance = a.ChromaTolerance
+                            ChromaKeyEnabled = a.ChromaKeyEnabled, ChromaAuto = a.ChromaAuto, ChromaColor = a.ChromaColor, ChromaTolerance = a.ChromaTolerance,
+                            FlipX = a.FlipX
                         };
                         animClone.SetEvents(a.Events);
                         animClone.SetFrames(a.Frames);
+                        animClone.SetClips(a.Clips.Select(c => new SpriteClip(c.Name, c.Frames, c.Fps, c.Loop)));
+                        if (a.CurrentClip != null) animClone.Play(a.CurrentClip);
                         clone.AddComponent(animClone);
+                        break;
+                    case SpriteAnimatorController sac:
+                        clone.AddComponent(new SpriteAnimatorController
+                        {
+                            IdleClip = sac.IdleClip, WalkClip = sac.WalkClip, JumpClip = sac.JumpClip,
+                            AttackClip = sac.AttackClip, AttackAction = sac.AttackAction,
+                            FlipByVelocity = sac.FlipByVelocity, ArtFacesRight = sac.ArtFacesRight
+                        });
                         break;
                     case TilemapRenderer t:
                         clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath, Solid = t.Solid, SolidLayer = t.SolidLayer });

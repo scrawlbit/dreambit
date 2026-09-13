@@ -265,6 +265,11 @@ namespace DreamBit.Engine.Serialization
                         ChromaAuto = animator.ChromaAuto,
                         ChromaR = animator.ChromaColor.R, ChromaG = animator.ChromaColor.G, ChromaB = animator.ChromaColor.B,
                         ChromaTolerance = animator.ChromaTolerance,
+                        FlipX = animator.FlipX,
+                        DefaultClip = animator.CurrentClip ?? string.Empty,
+                        Clips = animator.Clips
+                            .Select(c => new SpriteClipData { Name = c.Name, Frames = c.Frames, Fps = c.Fps, Loop = c.Loop })
+                            .ToList(),
                         Events = animator.Events
                             .Select(ev => new AnimEventData { Frame = ev.Frame, Name = ev.Name })
                             .ToList()
@@ -363,6 +368,14 @@ namespace DreamBit.Engine.Serialization
                     data.AnimatorControllers.Add(new AnimatorControllerData
                     {
                         IdleClip = animCtrl.IdleClip, WalkClip = animCtrl.WalkClip, JumpClip = animCtrl.JumpClip
+                    });
+                else if (component is SpriteAnimatorController spriteCtrl)
+                    data.SpriteAnimatorControllers.Add(new SpriteAnimatorControllerData
+                    {
+                        IdleClip = spriteCtrl.IdleClip, WalkClip = spriteCtrl.WalkClip,
+                        JumpClip = spriteCtrl.JumpClip, AttackClip = spriteCtrl.AttackClip,
+                        AttackAction = spriteCtrl.AttackAction, FlipByVelocity = spriteCtrl.FlipByVelocity,
+                        ArtFacesRight = spriteCtrl.ArtFacesRight
                     });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
@@ -556,6 +569,10 @@ namespace DreamBit.Engine.Serialization
                 };
                 anim.SetEvents(animator.Events.Select(ev => new AnimationFrameEvent(ev.Frame, ev.Name)));
                 anim.SetFrames(FramesFromFlat(animator.Frames));
+                anim.SetClips(animator.Clips.Select(c => new SpriteClip(c.Name, c.Frames, c.Fps, c.Loop)));
+                anim.FlipX = animator.FlipX;
+                if (!string.IsNullOrEmpty(animator.DefaultClip))
+                    anim.Play(animator.DefaultClip);
                 obj.AddComponent(anim);
             }
 
@@ -686,6 +703,14 @@ namespace DreamBit.Engine.Serialization
                 obj.AddComponent(new AnimatorController
                 {
                     IdleClip = ac.IdleClip, WalkClip = ac.WalkClip, JumpClip = ac.JumpClip
+                });
+
+            foreach (var sc in data.SpriteAnimatorControllers)
+                obj.AddComponent(new SpriteAnimatorController
+                {
+                    IdleClip = sc.IdleClip, WalkClip = sc.WalkClip, JumpClip = sc.JumpClip,
+                    AttackClip = sc.AttackClip, AttackAction = sc.AttackAction,
+                    FlipByVelocity = sc.FlipByVelocity, ArtFacesRight = sc.ArtFacesRight
                 });
 
             foreach (var tween in data.Tweens)

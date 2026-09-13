@@ -4,6 +4,7 @@ using System.Linq;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DreamBit.Engine.Components
 {
@@ -31,10 +32,62 @@ namespace DreamBit.Engine.Components
 
         private int _currentFrame;
         private double _accumulator;
+        private bool _flipX;
         private readonly Dictionary<int, string> _frameEvents = new();
         private readonly List<Rectangle> _frames = new();
+        private readonly List<SpriteClip> _clips = new();
+        private SpriteClip? _activeClip;
+        private bool _clipDone;
 
         public override string DisplayName => "Sprite Animator";
+
+        /// <summary>Espelha o sprite na horizontal (para virar o personagem ao mudar de direção).</summary>
+        public bool FlipX { get => _flipX; set => Set(ref _flipX, value); }
+
+        /// <summary>Clipes nomeados (andar/pular/bater). Vazio = toca a folha inteira como hoje.</summary>
+        public IReadOnlyList<SpriteClip> Clips => _clips;
+
+        /// <summary>Nome do clipe em reprodução, ou null (folha inteira).</summary>
+        public string? CurrentClip => _activeClip?.Name;
+
+        /// <summary>True quando o clipe ativo (sem repetição) já chegou ao fim.</summary>
+        public bool CurrentClipFinished => _clipDone;
+
+        /// <summary>Disparado quando um clipe sem repetição chega ao fim (para encadear estados,
+        /// ex.: voltar ao idle depois do ataque). Passa o nome do clipe.</summary>
+        public event Action<string>? ClipFinished;
+
+        /// <summary>Substitui o conjunto de clipes.</summary>
+        public void SetClips(IEnumerable<SpriteClip> clips)
+        {
+            _clips.Clear();
+            if (clips != null)
+                _clips.AddRange(clips);
+            _activeClip = null;
+            OnPropertyChanged(nameof(Clips));
+        }
+
+        /// <summary>Adiciona (ou substitui pelo nome) um clipe.</summary>
+        public void AddClip(SpriteClip clip)
+        {
+            if (clip == null) return;
+            _clips.RemoveAll(c => c.Name == clip.Name);
+            _clips.Add(clip);
+            OnPropertyChanged(nameof(Clips));
+        }
+
+        /// <summary>Começa a tocar um clipe pelo nome (reinicia do primeiro frame do clipe).
+        /// Nome vazio/desconhecido volta a tocar a folha inteira.</summary>
+        public void Play(string? name)
+        {
+            var clip = string.IsNullOrEmpty(name) ? null : _clips.FirstOrDefault(c => c.Name == name);
+            if (ReferenceEquals(clip, _activeClip) && clip != null)
+                return; // já tocando este clipe
+            _activeClip = clip;
+            _currentFrame = 0;
+            _accumulator = 0;
+            _clipDone = false;
+        }
 
         /// <summary>Retângulos de origem explícitos (frames de tamanhos diferentes). Quando não
         /// vazio, têm prioridade sobre a grade uniforme — preenchidos pela autodetecção.</summary>
@@ -86,23 +139,41 @@ namespace DreamBit.Engine.Components
         public Color ChromaColor { get => _chromaColor; set => Set(ref _chromaColor, value); }
         public int ChromaTolerance { get => _chromaTolerance; set => Set(ref _chromaTolerance, value < 0 ? 0 : value); }
 
+        /// <summary>Índice na sequência ativa (dentro do clipe, se houver clipe ativo).</summary>
         public int CurrentFrame => _currentFrame;
+
+        // Sequência ativa: o clipe corrente, senão a folha inteira.
+        private int SequenceLength => _activeClip != null ? _activeClip.Frames.Length : EffectiveFrameCount;
+        private float SequenceFps => _activeClip?.Fps ?? _fps;
+        private bool SequenceLoop => _activeClip?.Loop ?? _loop;
+
+        /// <summary>Traduz o índice na sequência (clipe) para o índice de frame global da folha.</summary>
+        private int GlobalFrame(int sequenceIndex)
+        {
+            if (_activeClip == null)
+                return sequenceIndex;
+            if (_activeClip.Frames.Length == 0)
+                return 0;
+            return _activeClip.Frames[Math.Clamp(sequenceIndex, 0, _activeClip.Frames.Length - 1)];
+        }
 
         public void Reset()
         {
             _currentFrame = 0;
             _accumulator = 0;
+            _clipDone = false;
         }
 
         /// <summary>Avança a animação por um intervalo de tempo (lógica pura, testável).</summary>
         public void Advance(double deltaSeconds)
         {
-            int total = EffectiveFrameCount;
-            if (_fps <= 0f || total <= 1)
+            int total = SequenceLength;
+            float fps = SequenceFps;
+            if (fps <= 0f || total <= 1)
                 return;
 
             _accumulator += deltaSeconds;
-            double frameTime = 1.0 / _fps;
+            double frameTime = 1.0 / fps;
 
             while (_accumulator >= frameTime)
             {
@@ -111,7 +182,7 @@ namespace DreamBit.Engine.Components
 
                 if (_currentFrame >= total)
                 {
-                    if (_loop)
+                    if (SequenceLoop)
                     {
                         _currentFrame = 0;
                     }
@@ -120,11 +191,17 @@ namespace DreamBit.Engine.Components
                         // Segura no último frame (já disparado ao entrar nele); não re-dispara.
                         _currentFrame = total - 1;
                         _accumulator = 0;
+                        if (!_clipDone)
+                        {
+                            _clipDone = true;
+                            if (_activeClip != null)
+                                ClipFinished?.Invoke(_activeClip.Name);
+                        }
                         break;
                     }
                 }
 
-                FireFrameEvent(_currentFrame); // dispara ao entrar no frame
+                FireFrameEvent(GlobalFrame(_currentFrame)); // dispara ao entrar no frame (global)
             }
         }
 
@@ -152,22 +229,30 @@ namespace DreamBit.Engine.Components
                 return;
             }
 
+            int globalFrame = GlobalFrame(_currentFrame);
             Rectangle source;
             if (_frames.Count > 0)
             {
                 // Frames explícitos (tamanhos diferentes): usa o retângulo detectado.
-                source = _frames[Math.Clamp(_currentFrame, 0, _frames.Count - 1)];
+                source = _frames[Math.Clamp(globalFrame, 0, _frames.Count - 1)];
             }
             else
             {
                 int columns = Math.Max(1, texture.Width / _frameWidth);
-                int frame = Math.Clamp(_currentFrame, 0, _frameCount - 1);
+                int frame = Math.Clamp(globalFrame, 0, Math.Max(0, _frameCount - 1));
                 int col = frame % columns;
                 int row = frame / columns;
                 source = new Rectangle(col * _frameWidth, row * _frameHeight, _frameWidth, _frameHeight);
             }
 
-            drawing.DrawFrame(Owner.Transform.WorldMatrix, _size, Color.White, texture, source);
+            // Mantém a proporção do frame (importante para frames de larguras diferentes):
+            // escala pela altura e deixa a largura seguir a razão do recorte.
+            var drawSize = _size;
+            if (source.Height > 0)
+                drawSize = new Vector2(_size.Y * source.Width / source.Height, _size.Y);
+
+            var effects = _flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            drawing.DrawFrame(Owner.Transform.WorldMatrix, drawSize, Color.White, texture, source, effects);
         }
     }
 }

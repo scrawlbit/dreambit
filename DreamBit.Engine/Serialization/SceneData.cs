@@ -71,6 +71,7 @@ namespace DreamBit.Engine.Serialization
         public List<UiScrollViewData> ScrollViews { get; set; } = new();
         public List<RigidbodyData> Rigidbodies { get; set; } = new();
         public List<PropertyAnimatorData> PropertyAnimators { get; set; } = new();
+        public List<SpriteAnimatorControllerData> SpriteAnimatorControllers { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -367,6 +368,31 @@ namespace DreamBit.Engine.Serialization
         public byte ChromaR { get; set; } = 255; public byte ChromaG { get; set; } public byte ChromaB { get; set; } = 255;
         public int ChromaTolerance { get; set; } = 30;
         public List<AnimEventData> Events { get; set; } = new();
+        /// <summary>Espelhamento horizontal inicial.</summary>
+        public bool FlipX { get; set; }
+        /// <summary>Clipes nomeados (andar/pular/bater); vazio = folha inteira.</summary>
+        public List<SpriteClipData> Clips { get; set; } = new();
+        /// <summary>Clipe tocado ao iniciar (vazio = nenhum).</summary>
+        public string DefaultClip { get; set; } = "";
+    }
+
+    public sealed class SpriteClipData
+    {
+        public string Name { get; set; } = "";
+        public int[] Frames { get; set; } = System.Array.Empty<int>();
+        public float Fps { get; set; } = 8f;
+        public bool Loop { get; set; } = true;
+    }
+
+    public sealed class SpriteAnimatorControllerData
+    {
+        public string IdleClip { get; set; } = "idle";
+        public string WalkClip { get; set; } = "walk";
+        public string JumpClip { get; set; } = "jump";
+        public string AttackClip { get; set; } = "attack";
+        public string AttackAction { get; set; } = "Action";
+        public bool FlipByVelocity { get; set; } = true;
+        public bool ArtFacesRight { get; set; } = true;
     }
 
     public sealed class AnimEventData

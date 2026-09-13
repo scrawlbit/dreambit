@@ -61,6 +61,10 @@ namespace DreamBit.Engine.Input
             _padPrev = _padNow;
             _padNow = GamePad.GetState(PlayerIndex.One);
 
+            // Rotaciona as ações forçadas: o que foi mantido no frame anterior vira "prev".
+            (_forcedPrev, _forcedNow) = (_forcedNow, _forcedPrev);
+            _forcedNow.Clear();
+
             // Double-buffer do texto digitado: o que foi acumulado desde o último frame vira o
             // texto deste frame (estável para os campos lerem), e o pendente reinicia.
             PumpText();
@@ -117,9 +121,24 @@ namespace DreamBit.Engine.Input
         public static void Map(string action, Keys[] keys, Buttons[]? buttons = null)
             => _map[action] = new Binding(keys, buttons ?? System.Array.Empty<Buttons>());
 
-        public static bool IsDown(string action) => IsDown(action, _kbNow, _padNow);
-        public static bool JustPressed(string action) => IsDown(action, _kbNow, _padNow) && !IsDown(action, _kbPrev, _padPrev);
-        public static bool JustReleased(string action) => !IsDown(action, _kbNow, _padNow) && IsDown(action, _kbPrev, _padPrev);
+        // Ações forçadas por software (host sem teclado real: preview do editor, testes).
+        // Rotacionadas como o teclado em Update() para preservar a detecção de borda.
+        private static HashSet<string> _forcedNow = new();
+        private static HashSet<string> _forcedPrev = new();
+
+        /// <summary>Mantém uma ação "pressionada" neste frame por software (chame após
+        /// <see cref="Update"/>, antes de ler o input). Útil para o preview do editor e testes.</summary>
+        public static void HoldAction(string action)
+        {
+            if (!string.IsNullOrEmpty(action))
+                _forcedNow.Add(action);
+        }
+
+        public static bool IsDown(string action) => IsDown(action, _kbNow, _padNow, _forcedNow);
+        public static bool JustPressed(string action)
+            => IsDown(action, _kbNow, _padNow, _forcedNow) && !IsDown(action, _kbPrev, _padPrev, _forcedPrev);
+        public static bool JustReleased(string action)
+            => !IsDown(action, _kbNow, _padNow, _forcedNow) && IsDown(action, _kbPrev, _padPrev, _forcedPrev);
 
         /// <summary>Eixo horizontal em [-1,1] (MoveRight - MoveLeft), com thumbstick analógico.</summary>
         public static float Horizontal()
@@ -131,8 +150,11 @@ namespace DreamBit.Engine.Input
             return MathHelper.Clamp(v, -1f, 1f);
         }
 
-        private static bool IsDown(string action, KeyboardState kb, GamePadState pad)
+        private static bool IsDown(string action, KeyboardState kb, GamePadState pad, HashSet<string> forced)
         {
+            if (forced.Contains(action))
+                return true;
+
             if (!_map.TryGetValue(action, out var b))
                 return false;
 
