@@ -148,9 +148,9 @@ namespace DreamBit.Studio.Avalonia
                     if (c is TextRenderer t && !t.ScreenSpace)
                     {
                         var p = obj.Transform.WorldPosition;
-                        int w = PixelFont.MeasureWidth(t.Text) * t.PixelSize;
+                        int w = PixelFont.MeasureWidth(t.DisplayText) * t.PixelSize;
                         int h = PixelFont.GlyphHeight * t.PixelSize;
-                        DrawPixelText(context, t.Text, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
+                        DrawPixelText(context, t.DisplayText, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
                     }
             }
         }
@@ -165,13 +165,13 @@ namespace DreamBit.Studio.Avalonia
                         // objeto HUD centraliza no ponto (igual à engine); legado usa canto.
                         if (obj.EffectiveScreenSpace && !t.ScreenSpace)
                         {
-                            int w = PixelFont.MeasureWidth(t.Text) * t.PixelSize;
+                            int w = PixelFont.MeasureWidth(t.DisplayText) * t.PixelSize;
                             int h = PixelFont.GlyphHeight * t.PixelSize;
-                            DrawPixelText(context, t.Text, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
+                            DrawPixelText(context, t.DisplayText, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
                         }
                         else
                         {
-                            DrawPixelText(context, t.Text, p.X, p.Y, t.PixelSize, ToColor(t.Color));
+                            DrawPixelText(context, t.DisplayText, p.X, p.Y, t.PixelSize, ToColor(t.Color));
                         }
                     }
         }

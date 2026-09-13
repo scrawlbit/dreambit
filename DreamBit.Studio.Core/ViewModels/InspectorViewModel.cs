@@ -409,6 +409,11 @@ namespace DreamBit.Studio.ViewModels
             get => Text?.Text ?? string.Empty;
             set { var t = Text; if (t != null) t.Text = value; }
         }
+        public string TextLocKey
+        {
+            get => Text?.LocKey ?? string.Empty;
+            set { var t = Text; if (t != null) t.LocKey = value; }
+        }
         public int TextPixelSize
         {
             get => Text?.PixelSize ?? 4;
@@ -892,6 +897,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(TweenPlayOnStart));
             OnPropertyChanged(nameof(HasText));
             OnPropertyChanged(nameof(TextValue));
+            OnPropertyChanged(nameof(TextLocKey));
             OnPropertyChanged(nameof(TextPixelSize));
             OnPropertyChanged(nameof(TextScreenSpace));
             OnPropertyChanged(nameof(TextR));

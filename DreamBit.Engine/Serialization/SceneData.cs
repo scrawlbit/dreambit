@@ -195,6 +195,7 @@ namespace DreamBit.Engine.Serialization
     public sealed class TextData
     {
         public string Text { get; set; } = "TEXTO";
+        public string LocKey { get; set; } = "";
         public byte R { get; set; } = 255;
         public byte G { get; set; } = 255;
         public byte B { get; set; } = 255;

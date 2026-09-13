@@ -628,6 +628,8 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Conteúdo" />
                                 <TextBox Text="{Binding TextValue, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Chave de localização (opcional)" />
+                                <TextBox Text="{Binding TextLocKey, Mode=TwoWay}" Watermark="ex.: menu.play" />
                                 <Grid ColumnDefinitions="*,6,Auto">
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Classes="field" Text="Tamanho (px por ponto)" />

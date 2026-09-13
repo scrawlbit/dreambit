@@ -344,6 +344,7 @@ namespace DreamBit.Engine.Serialization
                     data.Texts.Add(new TextData
                     {
                         Text = text.Text,
+                        LocKey = text.LocKey,
                         R = text.Color.R, G = text.Color.G, B = text.Color.B,
                         PixelSize = text.PixelSize,
                         ScreenSpace = text.ScreenSpace
@@ -593,6 +594,7 @@ namespace DreamBit.Engine.Serialization
                 obj.AddComponent(new TextRenderer
                 {
                     Text = text.Text,
+                    LocKey = text.LocKey,
                     Color = new Color(text.R, text.G, text.B),
                     PixelSize = text.PixelSize,
                     ScreenSpace = text.ScreenSpace

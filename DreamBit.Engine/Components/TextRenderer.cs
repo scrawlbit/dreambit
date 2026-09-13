@@ -11,6 +11,7 @@ namespace DreamBit.Engine.Components
     public sealed class TextRenderer : SceneComponent
     {
         private string _text = "TEXTO";
+        private string _locKey = string.Empty;
         private Color _color = Color.White;
         private int _pixelSize = 4;
         private bool _screenSpace;
@@ -18,6 +19,15 @@ namespace DreamBit.Engine.Components
         public override string DisplayName => "Text";
 
         public string Text { get => _text; set => Set(ref _text, value ?? string.Empty); }
+
+        /// <summary>Chave de localização (opcional): se preenchida, o texto exibido vem de
+        /// <see cref="Localization.Localizer"/> no idioma atual; senão usa <see cref="Text"/>.</summary>
+        public string LocKey { get => _locKey; set => Set(ref _locKey, value ?? string.Empty); }
+
+        /// <summary>Texto efetivamente exibido (localizado quando há <see cref="LocKey"/>).</summary>
+        public string DisplayText => string.IsNullOrEmpty(_locKey)
+            ? _text
+            : Localization.Localizer.Get(_locKey, _text);
         public Color Color { get => _color; set => Set(ref _color, value); }
 
         /// <summary>Tamanho de cada "pixel" da fonte (escala).</summary>
@@ -33,7 +43,7 @@ namespace DreamBit.Engine.Components
 
             // Rótulo no mundo, centrado no objeto.
             var p = Owner.Transform.WorldPosition;
-            int w = PixelFont.MeasureWidth(_text) * _pixelSize;
+            int w = PixelFont.MeasureWidth(DisplayText) * _pixelSize;
             int h = PixelFont.GlyphHeight * _pixelSize;
             DrawText(drawing, (int)p.X - w / 2, (int)p.Y - h / 2);
         }
@@ -53,7 +63,7 @@ namespace DreamBit.Engine.Components
             int px = _pixelSize;
             int cursor = originX;
 
-            foreach (char ch in _text)
+            foreach (char ch in DisplayText)
             {
                 var glyph = PixelFont.Glyph(ch);
                 for (int row = 0; row < PixelFont.GlyphHeight; row++)

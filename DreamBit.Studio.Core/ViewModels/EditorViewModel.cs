@@ -1070,7 +1070,7 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new SceneExit { Size = se.Size, TargetTag = se.TargetTag, TargetScene = se.TargetScene });
                         break;
                     case TextRenderer tr:
-                        clone.AddComponent(new TextRenderer { Text = tr.Text, Color = tr.Color, PixelSize = tr.PixelSize, ScreenSpace = tr.ScreenSpace });
+                        clone.AddComponent(new TextRenderer { Text = tr.Text, LocKey = tr.LocKey, Color = tr.Color, PixelSize = tr.PixelSize, ScreenSpace = tr.ScreenSpace });
                         break;
                     case TweenComponent tw:
                         clone.AddComponent(new TweenComponent
