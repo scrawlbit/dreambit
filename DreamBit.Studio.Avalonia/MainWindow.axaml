@@ -926,6 +926,8 @@
                                 </Grid>
                                 <TextBox Text="{Binding ScriptSource, Mode=TwoWay}" AcceptsReturn="True"
                                          FontFamily="Consolas,monospace" Height="140" TextWrapping="NoWrap" />
+                                <TextBlock Classes="field" Text="Arquivo .cs externo (opcional, hot-reload)" />
+                                <TextBox Text="{Binding ScriptSourcePath, Mode=TwoWay}" Watermark="ex.: scripts/Player.cs" />
                                 <Button Content="Compilar" Click="OnCompileScript" Margin="0,4,0,0" />
                                 <TextBlock Text="{Binding ScriptError}" Foreground="#E06C6C" TextWrapping="Wrap"
                                            IsVisible="{Binding ScriptError, Converter={x:Static local:NonEmptyConverter.Instance}}"

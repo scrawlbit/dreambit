@@ -342,6 +342,11 @@ namespace DreamBit.Studio.ViewModels
             get => Script?.Source ?? string.Empty;
             set { var s = Script; if (s != null) s.Source = value; }
         }
+        public string ScriptSourcePath
+        {
+            get => Script?.SourcePath ?? string.Empty;
+            set { var s = Script; if (s != null) { s.SourcePath = value; Refresh(); } }
+        }
         public string ScriptError => Script?.Error ?? string.Empty;
 
         public void CompileScript()
@@ -891,6 +896,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteSrcH));
             OnPropertyChanged(nameof(HasScript));
             OnPropertyChanged(nameof(ScriptSource));
+            OnPropertyChanged(nameof(ScriptSourcePath));
             OnPropertyChanged(nameof(ScriptError));
             OnPropertyChanged(nameof(HasTrigger));
             OnPropertyChanged(nameof(TriggerWidth));

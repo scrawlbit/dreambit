@@ -1159,7 +1159,7 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new MessageListener { Message = ml.Message, Reaction = ml.Reaction });
                         break;
                     case ScriptComponent sc:
-                        clone.AddComponent(new ScriptComponent { Source = sc.Source });
+                        clone.AddComponent(new ScriptComponent { Source = sc.Source, SourcePath = sc.SourcePath });
                         break;
                     case Bone bone:
                         clone.AddComponent(new Bone

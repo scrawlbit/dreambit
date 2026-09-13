@@ -69,6 +69,7 @@ namespace DreamBit.Engine.Serialization
     public sealed class ScriptData
     {
         public string Source { get; set; } = "";
+        public string SourcePath { get; set; } = "";
     }
 
     public sealed class TriggerData

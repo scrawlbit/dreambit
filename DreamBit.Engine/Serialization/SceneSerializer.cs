@@ -282,7 +282,7 @@ namespace DreamBit.Engine.Serialization
                         Reaction = (int)listener.Reaction
                     });
                 else if (component is ScriptComponent script)
-                    data.Scripts.Add(new ScriptData { Source = script.Source });
+                    data.Scripts.Add(new ScriptData { Source = script.Source, SourcePath = script.SourcePath });
                 else if (component is Bone bone)
                     data.Bones.Add(new BoneData
                     {
@@ -493,7 +493,7 @@ namespace DreamBit.Engine.Serialization
                 });
 
             foreach (var script in data.Scripts)
-                obj.AddComponent(new ScriptComponent { Source = script.Source });
+                obj.AddComponent(new ScriptComponent { Source = script.Source, SourcePath = script.SourcePath });
 
             foreach (var bone in data.Bones)
                 obj.AddComponent(new Bone
