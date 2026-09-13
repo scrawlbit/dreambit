@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DreamBit.Engine.Rendering
@@ -63,6 +64,41 @@ namespace DreamBit.Engine.Rendering
                 _cache[path] = texture;
 
             return texture;
+        }
+
+        private static readonly Dictionary<string, Texture2D?> _chromaCache =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Versão da textura com chroma key aplicado (fundo transparente). Se <paramref name="auto"/>,
+        /// a cor de fundo é detectada da própria imagem; senão usa <paramref name="chroma"/>.
+        /// O resultado é cacheado por (caminho, cor, tolerância). Deve rodar na thread de desenho.
+        /// </summary>
+        public static Texture2D? GetChromaKeyed(GraphicsDevice device, string? path, bool auto, Color chroma, int tolerance)
+        {
+            var baseTexture = Get(device, path);
+            if (baseTexture == null)
+                return null;
+
+            var pixels = new Color[baseTexture.Width * baseTexture.Height];
+            baseTexture.GetData(pixels);
+
+            var key = auto ? ChromaKey.DetectBackground(pixels, baseTexture.Width, baseTexture.Height) : chroma;
+            string cacheKey = $"{path}|{key.PackedValue}|{tolerance}|{(auto ? "a" : "m")}";
+
+            lock (_gate)
+            {
+                if (_chromaCache.TryGetValue(cacheKey, out var cached) && !_stale.Contains(path!))
+                    return cached;
+            }
+
+            ChromaKey.Apply(pixels, key, tolerance);
+            var result = new Texture2D(device, baseTexture.Width, baseTexture.Height);
+            result.SetData(pixels);
+
+            lock (_gate)
+                _chromaCache[cacheKey] = result;
+            return result;
         }
 
         /// <summary>

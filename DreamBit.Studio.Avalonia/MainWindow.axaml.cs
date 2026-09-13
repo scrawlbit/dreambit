@@ -270,6 +270,26 @@ namespace DreamBit.Studio.Avalonia
             InvalidateScene();
         }
 
+        private void OnDetectSpriteChroma(object? sender, RoutedEventArgs e)
+        {
+            if (PngMask.TryLoadColors(_editor.Inspector.SpriteTexturePath, out var colors, out int w, out int h))
+            {
+                var bg = DreamBit.Engine.Rendering.ChromaKey.DetectBackground(colors, w, h);
+                _editor.Inspector.SetSpriteChroma(bg);
+                InvalidateScene();
+            }
+        }
+
+        private void OnDetectAnimChroma(object? sender, RoutedEventArgs e)
+        {
+            if (PngMask.TryLoadColors(_editor.Inspector.AnimTexturePath, out var colors, out int w, out int h))
+            {
+                var bg = DreamBit.Engine.Rendering.ChromaKey.DetectBackground(colors, w, h);
+                _editor.Inspector.SetAnimChroma(bg);
+                InvalidateScene();
+            }
+        }
+
         private async void OnPickSound(object? sender, RoutedEventArgs e)
         {
             var path = await PickOpenFileAsync("Escolher som", "Som WAV", "*.wav");

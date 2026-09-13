@@ -280,6 +280,11 @@ namespace DreamBit.Engine.Serialization
         public float Height { get; set; } = 64;
         /// <summary>Frames explícitos em quádruplas planas: x0,y0,w0,h0, x1,... (vazio = grade uniforme).</summary>
         public int[] Frames { get; set; } = System.Array.Empty<int>();
+        // Chroma key (remoção de cor de fundo).
+        public bool ChromaKey { get; set; }
+        public bool ChromaAuto { get; set; } = true;
+        public byte ChromaR { get; set; } = 255; public byte ChromaG { get; set; } public byte ChromaB { get; set; } = 255;
+        public int ChromaTolerance { get; set; } = 30;
         public List<AnimEventData> Events { get; set; } = new();
     }
 
@@ -364,5 +369,10 @@ namespace DreamBit.Engine.Serialization
         public int SrcY { get; set; }
         public int SrcW { get; set; }
         public int SrcH { get; set; }
+        // Chroma key (remoção de cor de fundo).
+        public bool ChromaKey { get; set; }
+        public bool ChromaAuto { get; set; } = true;
+        public byte ChromaR { get; set; } = 255; public byte ChromaG { get; set; } public byte ChromaB { get; set; } = 255;
+        public int ChromaTolerance { get; set; } = 30;
     }
 }

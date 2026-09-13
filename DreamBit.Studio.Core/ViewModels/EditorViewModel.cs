@@ -1144,7 +1144,8 @@ namespace DreamBit.Studio.ViewModels
                 switch (component)
                 {
                     case SpriteRenderer s:
-                        clone.AddComponent(new SpriteRenderer { Size = s.Size, Color = s.Color, TexturePath = s.TexturePath, SourceRect = s.SourceRect });
+                        clone.AddComponent(new SpriteRenderer { Size = s.Size, Color = s.Color, TexturePath = s.TexturePath, SourceRect = s.SourceRect,
+                            ChromaKeyEnabled = s.ChromaKeyEnabled, ChromaAuto = s.ChromaAuto, ChromaColor = s.ChromaColor, ChromaTolerance = s.ChromaTolerance });
                         break;
                     case RotatorBehavior r:
                         clone.AddComponent(new RotatorBehavior { Speed = r.Speed });
@@ -1153,7 +1154,8 @@ namespace DreamBit.Studio.ViewModels
                         var animClone = new SpriteAnimator
                         {
                             TexturePath = a.TexturePath, FrameWidth = a.FrameWidth, FrameHeight = a.FrameHeight,
-                            FrameCount = a.FrameCount, Fps = a.Fps, Loop = a.Loop, Size = a.Size
+                            FrameCount = a.FrameCount, Fps = a.Fps, Loop = a.Loop, Size = a.Size,
+                            ChromaKeyEnabled = a.ChromaKeyEnabled, ChromaAuto = a.ChromaAuto, ChromaColor = a.ChromaColor, ChromaTolerance = a.ChromaTolerance
                         };
                         animClone.SetEvents(a.Events);
                         animClone.SetFrames(a.Frames);

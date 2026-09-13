@@ -14,8 +14,21 @@ namespace DreamBit.Engine.Components
         private Color _color = new(70, 130, 200);
         private string? _texturePath;
         private Rectangle? _sourceRect;
+        private bool _chromaKey;
+        private bool _chromaAuto = true;
+        private Color _chromaColor = new(255, 0, 255);
+        private int _chromaTolerance = 30;
 
         public override string DisplayName => "Sprite Renderer";
+
+        /// <summary>Remove a cor de fundo da textura (chroma key / green screen).</summary>
+        public bool ChromaKeyEnabled { get => _chromaKey; set => Set(ref _chromaKey, value); }
+        /// <summary>Detecta a cor de fundo automaticamente (senão usa <see cref="ChromaColor"/>).</summary>
+        public bool ChromaAuto { get => _chromaAuto; set => Set(ref _chromaAuto, value); }
+        /// <summary>Cor de fundo a remover, quando não é automático.</summary>
+        public Color ChromaColor { get => _chromaColor; set => Set(ref _chromaColor, value); }
+        /// <summary>Tolerância de cor (0 = exata; maior = mais tons removidos).</summary>
+        public int ChromaTolerance { get => _chromaTolerance; set => Set(ref _chromaTolerance, value < 0 ? 0 : value); }
 
         public Vector2 Size
         {
@@ -48,7 +61,10 @@ namespace DreamBit.Engine.Components
 
         protected internal override void Draw(ISceneDrawing drawing)
         {
-            var texture = TextureCache.Get(drawing.SpriteBatch.GraphicsDevice, _texturePath);
+            var device = drawing.SpriteBatch.GraphicsDevice;
+            var texture = _chromaKey
+                ? TextureCache.GetChromaKeyed(device, _texturePath, _chromaAuto, _chromaColor, _chromaTolerance)
+                : TextureCache.Get(device, _texturePath);
 
             if (texture != null && _sourceRect is { } src)
             {

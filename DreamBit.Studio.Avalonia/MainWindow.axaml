@@ -392,6 +392,18 @@
                                     <TextBox Grid.Column="4" Text="{Binding SpriteSrcW, Mode=TwoWay}" />
                                     <TextBox Grid.Column="6" Text="{Binding SpriteSrcH, Mode=TwoWay}" />
                                 </Grid>
+                                <CheckBox Content="Chroma key (remover cor de fundo)" IsChecked="{Binding SpriteChroma, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <StackPanel IsVisible="{Binding SpriteChroma}">
+                                    <CheckBox Content="Detectar cor automaticamente" IsChecked="{Binding SpriteChromaAuto, Mode=TwoWay}" />
+                                    <Grid ColumnDefinitions="*,4,*,4,*,6,Auto" IsVisible="{Binding !SpriteChromaAuto}">
+                                        <TextBox Grid.Column="0" Text="{Binding SpriteChromaR, Mode=TwoWay}" />
+                                        <TextBox Grid.Column="2" Text="{Binding SpriteChromaG, Mode=TwoWay}" />
+                                        <TextBox Grid.Column="4" Text="{Binding SpriteChromaB, Mode=TwoWay}" />
+                                        <Button Grid.Column="6" Content="Detectar" Click="OnDetectSpriteChroma" />
+                                    </Grid>
+                                    <TextBlock Classes="field" Text="Tolerância" />
+                                    <TextBox Text="{Binding SpriteChromaTolerance, Mode=TwoWay}" />
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -441,6 +453,18 @@
                                     </StackPanel>
                                 </Grid>
                                 <CheckBox Content="Loop" IsChecked="{Binding AnimLoop, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <CheckBox Content="Chroma key (remover cor de fundo)" IsChecked="{Binding AnimChroma, Mode=TwoWay}" />
+                                <StackPanel IsVisible="{Binding AnimChroma}">
+                                    <CheckBox Content="Detectar cor automaticamente" IsChecked="{Binding AnimChromaAuto, Mode=TwoWay}" />
+                                    <Grid ColumnDefinitions="*,4,*,4,*,6,Auto" IsVisible="{Binding !AnimChromaAuto}">
+                                        <TextBox Grid.Column="0" Text="{Binding AnimChromaR, Mode=TwoWay}" />
+                                        <TextBox Grid.Column="2" Text="{Binding AnimChromaG, Mode=TwoWay}" />
+                                        <TextBox Grid.Column="4" Text="{Binding AnimChromaB, Mode=TwoWay}" />
+                                        <Button Grid.Column="6" Content="Detectar" Click="OnDetectAnimChroma" />
+                                    </Grid>
+                                    <TextBlock Classes="field" Text="Tolerância" />
+                                    <TextBox Text="{Binding AnimChromaTolerance, Mode=TwoWay}" />
+                                </StackPanel>
                                 <TextBlock Classes="field" Text="Eventos (uma linha 'frame: nome')" />
                                 <TextBox Text="{Binding AnimEventsText, Mode=TwoWay}" AcceptsReturn="True"
                                          FontFamily="Consolas,monospace" Height="70" TextWrapping="NoWrap"

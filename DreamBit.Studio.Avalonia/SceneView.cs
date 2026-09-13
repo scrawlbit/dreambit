@@ -450,7 +450,9 @@ namespace DreamBit.Studio.Avalonia
             {
                 if (c is SpriteRenderer sprite && !string.IsNullOrEmpty(sprite.TexturePath))
                 {
-                    var bmp = AvaloniaImageCache.Get(sprite.TexturePath);
+                    var bmp = sprite.ChromaKeyEnabled
+                        ? AvaloniaImageCache.GetChromaKeyed(sprite.TexturePath, sprite.ChromaAuto, sprite.ChromaColor, sprite.ChromaTolerance)
+                        : AvaloniaImageCache.Get(sprite.TexturePath);
                     if (bmp == null)
                         return false;
 
@@ -463,7 +465,9 @@ namespace DreamBit.Studio.Avalonia
 
                 if (c is SpriteAnimator anim && !string.IsNullOrEmpty(anim.TexturePath))
                 {
-                    var bmp = AvaloniaImageCache.Get(anim.TexturePath);
+                    var bmp = anim.ChromaKeyEnabled
+                        ? AvaloniaImageCache.GetChromaKeyed(anim.TexturePath, anim.ChromaAuto, anim.ChromaColor, anim.ChromaTolerance)
+                        : AvaloniaImageCache.Get(anim.TexturePath);
                     if (bmp == null)
                         return false;
 

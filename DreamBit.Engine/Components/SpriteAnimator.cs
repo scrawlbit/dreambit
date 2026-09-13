@@ -24,6 +24,10 @@ namespace DreamBit.Engine.Components
         private float _fps = 8f;
         private bool _loop = true;
         private Vector2 _size = new(64, 64);
+        private bool _chromaKey;
+        private bool _chromaAuto = true;
+        private Color _chromaColor = new(255, 0, 255);
+        private int _chromaTolerance = 30;
 
         private int _currentFrame;
         private double _accumulator;
@@ -75,6 +79,12 @@ namespace DreamBit.Engine.Components
         public float Fps { get => _fps; set => Set(ref _fps, Math.Max(0f, value)); }
         public bool Loop { get => _loop; set => Set(ref _loop, value); }
         public Vector2 Size { get => _size; set => Set(ref _size, value); }
+
+        /// <summary>Remove a cor de fundo da sheet (chroma key).</summary>
+        public bool ChromaKeyEnabled { get => _chromaKey; set => Set(ref _chromaKey, value); }
+        public bool ChromaAuto { get => _chromaAuto; set => Set(ref _chromaAuto, value); }
+        public Color ChromaColor { get => _chromaColor; set => Set(ref _chromaColor, value); }
+        public int ChromaTolerance { get => _chromaTolerance; set => Set(ref _chromaTolerance, value < 0 ? 0 : value); }
 
         public int CurrentFrame => _currentFrame;
 
@@ -132,7 +142,10 @@ namespace DreamBit.Engine.Components
 
         protected internal override void Draw(ISceneDrawing drawing)
         {
-            var texture = TextureCache.Get(drawing.SpriteBatch.GraphicsDevice, _texturePath);
+            var device = drawing.SpriteBatch.GraphicsDevice;
+            var texture = _chromaKey
+                ? TextureCache.GetChromaKeyed(device, _texturePath, _chromaAuto, _chromaColor, _chromaTolerance)
+                : TextureCache.Get(device, _texturePath);
             if (texture == null)
             {
                 drawing.DrawQuad(Owner.Transform.WorldMatrix, _size, new Color(110, 110, 120));

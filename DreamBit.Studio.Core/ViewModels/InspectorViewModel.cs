@@ -165,6 +165,24 @@ namespace DreamBit.Studio.ViewModels
         public int SpriteSrcW { get => SpriteSource.Width; set => SetSpriteSource(SpriteSource.X, SpriteSource.Y, value, SpriteSource.Height); }
         public int SpriteSrcH { get => SpriteSource.Height; set => SetSpriteSource(SpriteSource.X, SpriteSource.Y, SpriteSource.Width, value); }
 
+        // Chroma key do sprite (remover cor de fundo).
+        public bool SpriteChroma { get => Sprite?.ChromaKeyEnabled ?? false; set { var s = Sprite; if (s != null) { s.ChromaKeyEnabled = value; OnPropertyChanged(); } } }
+        public bool SpriteChromaAuto { get => Sprite?.ChromaAuto ?? true; set { var s = Sprite; if (s != null) { s.ChromaAuto = value; OnPropertyChanged(); } } }
+        public int SpriteChromaR { get => Sprite?.ChromaColor.R ?? 255; set { var s = Sprite; if (s != null) s.ChromaColor = new Color((byte)Clamp(value), s.ChromaColor.G, s.ChromaColor.B); } }
+        public int SpriteChromaG { get => Sprite?.ChromaColor.G ?? 0; set { var s = Sprite; if (s != null) s.ChromaColor = new Color(s.ChromaColor.R, (byte)Clamp(value), s.ChromaColor.B); } }
+        public int SpriteChromaB { get => Sprite?.ChromaColor.B ?? 255; set { var s = Sprite; if (s != null) s.ChromaColor = new Color(s.ChromaColor.R, s.ChromaColor.G, (byte)Clamp(value)); } }
+        public int SpriteChromaTolerance { get => Sprite?.ChromaTolerance ?? 30; set { var s = Sprite; if (s != null) s.ChromaTolerance = value; } }
+
+        /// <summary>Define a cor de fundo do chroma do sprite (usado pelo botão "detectar cor").</summary>
+        public void SetSpriteChroma(Color color)
+        {
+            var s = Sprite;
+            if (s == null) return;
+            s.ChromaColor = color;
+            s.ChromaAuto = false;
+            RaiseAll();
+        }
+
         // ---- Componente SpriteAnimator ----
 
         private SpriteAnimator? Animator => _target?.Components.OfType<SpriteAnimator>().FirstOrDefault();
@@ -199,6 +217,23 @@ namespace DreamBit.Studio.ViewModels
         {
             get => Animator?.Loop ?? false;
             set { var a = Animator; if (a != null) a.Loop = value; }
+        }
+
+        // Chroma key do animator.
+        public bool AnimChroma { get => Animator?.ChromaKeyEnabled ?? false; set { var a = Animator; if (a != null) { a.ChromaKeyEnabled = value; OnPropertyChanged(); } } }
+        public bool AnimChromaAuto { get => Animator?.ChromaAuto ?? true; set { var a = Animator; if (a != null) { a.ChromaAuto = value; OnPropertyChanged(); } } }
+        public int AnimChromaR { get => Animator?.ChromaColor.R ?? 255; set { var a = Animator; if (a != null) a.ChromaColor = new Color((byte)Clamp(value), a.ChromaColor.G, a.ChromaColor.B); } }
+        public int AnimChromaG { get => Animator?.ChromaColor.G ?? 0; set { var a = Animator; if (a != null) a.ChromaColor = new Color(a.ChromaColor.R, (byte)Clamp(value), a.ChromaColor.B); } }
+        public int AnimChromaB { get => Animator?.ChromaColor.B ?? 255; set { var a = Animator; if (a != null) a.ChromaColor = new Color(a.ChromaColor.R, a.ChromaColor.G, (byte)Clamp(value)); } }
+        public int AnimChromaTolerance { get => Animator?.ChromaTolerance ?? 30; set { var a = Animator; if (a != null) a.ChromaTolerance = value; } }
+
+        public void SetAnimChroma(Color color)
+        {
+            var a = Animator;
+            if (a == null) return;
+            a.ChromaColor = color;
+            a.ChromaAuto = false;
+            RaiseAll();
         }
 
         /// <summary>Quantos frames explícitos (detectados) o animator usa; 0 = grade uniforme.</summary>
@@ -948,6 +983,18 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SpriteSrcY));
             OnPropertyChanged(nameof(SpriteSrcW));
             OnPropertyChanged(nameof(SpriteSrcH));
+            OnPropertyChanged(nameof(SpriteChroma));
+            OnPropertyChanged(nameof(SpriteChromaAuto));
+            OnPropertyChanged(nameof(SpriteChromaR));
+            OnPropertyChanged(nameof(SpriteChromaG));
+            OnPropertyChanged(nameof(SpriteChromaB));
+            OnPropertyChanged(nameof(SpriteChromaTolerance));
+            OnPropertyChanged(nameof(AnimChroma));
+            OnPropertyChanged(nameof(AnimChromaAuto));
+            OnPropertyChanged(nameof(AnimChromaR));
+            OnPropertyChanged(nameof(AnimChromaG));
+            OnPropertyChanged(nameof(AnimChromaB));
+            OnPropertyChanged(nameof(AnimChromaTolerance));
             OnPropertyChanged(nameof(HasScript));
             OnPropertyChanged(nameof(ScriptSource));
             OnPropertyChanged(nameof(ScriptSourcePath));

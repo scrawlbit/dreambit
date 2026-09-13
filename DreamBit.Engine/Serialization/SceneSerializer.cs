@@ -241,7 +241,11 @@ namespace DreamBit.Engine.Serialization
                         SrcX = sprite.SourceRect?.X ?? 0,
                         SrcY = sprite.SourceRect?.Y ?? 0,
                         SrcW = sprite.SourceRect?.Width ?? 0,
-                        SrcH = sprite.SourceRect?.Height ?? 0
+                        SrcH = sprite.SourceRect?.Height ?? 0,
+                        ChromaKey = sprite.ChromaKeyEnabled,
+                        ChromaAuto = sprite.ChromaAuto,
+                        ChromaR = sprite.ChromaColor.R, ChromaG = sprite.ChromaColor.G, ChromaB = sprite.ChromaColor.B,
+                        ChromaTolerance = sprite.ChromaTolerance
                     });
                 else if (component is RotatorBehavior rotator)
                     data.Rotators.Add(new RotatorData { Speed = rotator.Speed });
@@ -257,6 +261,10 @@ namespace DreamBit.Engine.Serialization
                         Width = animator.Size.X,
                         Height = animator.Size.Y,
                         Frames = FramesToFlat(animator.Frames),
+                        ChromaKey = animator.ChromaKeyEnabled,
+                        ChromaAuto = animator.ChromaAuto,
+                        ChromaR = animator.ChromaColor.R, ChromaG = animator.ChromaColor.G, ChromaB = animator.ChromaColor.B,
+                        ChromaTolerance = animator.ChromaTolerance,
                         Events = animator.Events
                             .Select(ev => new AnimEventData { Frame = ev.Frame, Name = ev.Name })
                             .ToList()
@@ -465,7 +473,11 @@ namespace DreamBit.Engine.Serialization
                     TexturePath = sprite.TexturePath,
                     SourceRect = sprite.SrcW > 0 && sprite.SrcH > 0
                         ? new Rectangle(sprite.SrcX, sprite.SrcY, sprite.SrcW, sprite.SrcH)
-                        : null
+                        : null,
+                    ChromaKeyEnabled = sprite.ChromaKey,
+                    ChromaAuto = sprite.ChromaAuto,
+                    ChromaColor = new Color(sprite.ChromaR, sprite.ChromaG, sprite.ChromaB),
+                    ChromaTolerance = sprite.ChromaTolerance
                 });
 
             foreach (var rotator in data.Rotators)
@@ -481,7 +493,11 @@ namespace DreamBit.Engine.Serialization
                     FrameCount = animator.FrameCount,
                     Fps = animator.Fps,
                     Loop = animator.Loop,
-                    Size = new Vector2(animator.Width, animator.Height)
+                    Size = new Vector2(animator.Width, animator.Height),
+                    ChromaKeyEnabled = animator.ChromaKey,
+                    ChromaAuto = animator.ChromaAuto,
+                    ChromaColor = new Color(animator.ChromaR, animator.ChromaG, animator.ChromaB),
+                    ChromaTolerance = animator.ChromaTolerance
                 };
                 anim.SetEvents(animator.Events.Select(ev => new AnimationFrameEvent(ev.Frame, ev.Name)));
                 anim.SetFrames(FramesFromFlat(animator.Frames));
