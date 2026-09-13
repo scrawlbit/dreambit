@@ -11,7 +11,7 @@ namespace DreamBit.Studio
     /// Exporta o jogo: publica o DreamBit.Player numa pasta e inclui a cena atual
     /// como "game.dbscene" (o Player a carrega automaticamente).
     /// </summary>
-    internal static class GameExporter
+    public static class GameExporter
     {
         public static (bool Ok, string Message) Publish(string outputDir, string sceneJson)
         {

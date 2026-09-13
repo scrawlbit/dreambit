@@ -9,7 +9,7 @@ namespace DreamBit.Studio
     /// Localiza e inicia o executável DreamBit.Player para rodar uma cena.
     /// Procura o .exe já compilado; se não achar, cai para `dotnet run`.
     /// </summary>
-    internal static class PlayerLauncher
+    public static class PlayerLauncher
     {
         public static void Launch(string scenePath)
         {

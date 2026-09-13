@@ -8,7 +8,7 @@ namespace DreamBit.Studio
     /// Gera o Content.mgcb do projeto e invoca o `dotnet mgcb` para compilar os assets.
     /// Degrada graciosamente quando a ferramenta não está instalada.
     /// </summary>
-    internal static class ContentBuilder
+    public static class ContentBuilder
     {
         public static (bool Ok, string Message) Build(GameProject project)
         {

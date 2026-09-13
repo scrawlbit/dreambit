@@ -3,7 +3,7 @@ using System.IO;
 namespace DreamBit.Studio
 {
     /// <summary>Lê dimensões de imagens sem carregar em GPU (só o cabeçalho PNG).</summary>
-    internal static class ImageInfo
+    public static class ImageInfo
     {
         /// <summary>Largura/altura de um PNG lendo o chunk IHDR, ou (0,0) se falhar.</summary>
         public static (int Width, int Height) GetPngSize(string path)
