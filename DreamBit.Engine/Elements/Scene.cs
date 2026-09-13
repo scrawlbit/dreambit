@@ -78,10 +78,15 @@ namespace DreamBit.Engine.Elements
             return removed;
         }
 
+        /// <summary>Mundo de física 2D (corpos rígidos) da cena, criado no início do play.</summary>
+        private Physics2D.PhysicsWorld? _physics;
+        public Physics2D.PhysicsWorld Physics => _physics ??= new Physics2D.PhysicsWorld(new Vector2(0f, 980f));
+
         /// <summary>Avisa todos os componentes que o play mode começou.</summary>
         public void StartPlay()
         {
             Timing.Scheduler.Clear(); // callbacks agendados não vazam entre execuções
+            _physics = null;          // mundo de física novo a cada play (os corpos re-registram)
             foreach (var gameObject in _objects)
                 gameObject.StartPlay();
         }
@@ -116,10 +121,13 @@ namespace DreamBit.Engine.Elements
 
         public void Update(GameTime gameTime)
         {
-            Timing.Scheduler.Tick((float)gameTime.ElapsedGameTime.TotalSeconds);
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Timing.Scheduler.Tick(dt);
 
             foreach (var gameObject in _objects)
                 gameObject.Update(gameTime);
+
+            _physics?.Step(dt); // avança a física e sincroniza os Transforms dos corpos
 
             DispatchMessages();
         }

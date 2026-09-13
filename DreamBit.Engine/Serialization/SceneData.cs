@@ -63,6 +63,7 @@ namespace DreamBit.Engine.Serialization
         public List<ParallaxData> Parallaxes { get; set; } = new();
         public List<TimerComponentData> Timers { get; set; } = new();
         public List<UiLayoutData> Layouts { get; set; } = new();
+        public List<RigidbodyData> Rigidbodies { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -166,6 +167,19 @@ namespace DreamBit.Engine.Serialization
     {
         public float FactorX { get; set; } = 0.5f;
         public float FactorY { get; set; } = 1f;
+    }
+
+    public sealed class RigidbodyData
+    {
+        public int Kind { get; set; } = 1;   // RigidbodyKind (1 = Dynamic)
+        public int Shape { get; set; }        // ColliderShape (0 = Box)
+        public float Width { get; set; } = 48f;
+        public float Height { get; set; } = 48f;
+        public float Radius { get; set; } = 24f;
+        public float Density { get; set; } = 1f;
+        public float Friction { get; set; } = 0.3f;
+        public float Restitution { get; set; }
+        public bool FixedRotation { get; set; }
     }
 
     public sealed class UiLayoutData

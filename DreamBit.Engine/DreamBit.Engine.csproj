@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <!-- Compilação de scripts C# do usuário em runtime (componente Script). -->
+    <PackageReference Include="Aether.Physics2D" Version="2.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
   </ItemGroup>
 

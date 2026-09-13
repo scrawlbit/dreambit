@@ -492,6 +492,37 @@ namespace DreamBit.Studio.ViewModels
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
 
+        // ---- Componente Rigidbody2D (física) ----
+
+        private Rigidbody2D? Rigidbody => _target?.Components.OfType<Rigidbody2D>().FirstOrDefault();
+        public bool HasRigidbody => Rigidbody != null;
+
+        public RigidbodyKind RigidbodyKindValue
+        {
+            get => Rigidbody?.Kind ?? RigidbodyKind.Dynamic;
+            set { var r = Rigidbody; if (r != null) r.Kind = value; }
+        }
+        public System.Collections.Generic.IReadOnlyList<RigidbodyKind> RigidbodyKinds { get; }
+            = Scrawlbit.EnumHelper.Values<RigidbodyKind>();
+
+        public ColliderShape RigidbodyShapeValue
+        {
+            get => Rigidbody?.Shape ?? ColliderShape.Box;
+            set { var r = Rigidbody; if (r != null) { r.Shape = value; OnPropertyChanged(nameof(RigidbodyIsCircle)); OnPropertyChanged(nameof(RigidbodyIsBox)); } }
+        }
+        public System.Collections.Generic.IReadOnlyList<ColliderShape> RigidbodyShapes { get; }
+            = Scrawlbit.EnumHelper.Values<ColliderShape>();
+        public bool RigidbodyIsBox => (Rigidbody?.Shape ?? ColliderShape.Box) == ColliderShape.Box;
+        public bool RigidbodyIsCircle => (Rigidbody?.Shape ?? ColliderShape.Box) == ColliderShape.Circle;
+
+        public float RigidbodyWidth { get => Rigidbody?.Width ?? 48f; set { var r = Rigidbody; if (r != null) r.Width = value; } }
+        public float RigidbodyHeight { get => Rigidbody?.Height ?? 48f; set { var r = Rigidbody; if (r != null) r.Height = value; } }
+        public float RigidbodyRadius { get => Rigidbody?.Radius ?? 24f; set { var r = Rigidbody; if (r != null) r.Radius = value; } }
+        public float RigidbodyDensity { get => Rigidbody?.Density ?? 1f; set { var r = Rigidbody; if (r != null) r.Density = value; } }
+        public float RigidbodyFriction { get => Rigidbody?.Friction ?? 0.3f; set { var r = Rigidbody; if (r != null) r.Friction = value; } }
+        public float RigidbodyRestitution { get => Rigidbody?.Restitution ?? 0f; set { var r = Rigidbody; if (r != null) r.Restitution = value; } }
+        public bool RigidbodyFixedRotation { get => Rigidbody?.FixedRotation ?? false; set { var r = Rigidbody; if (r != null) r.FixedRotation = value; } }
+
         // ---- Componente TimerComponent (timer) ----
 
         private TimerComponent? Timer => _target?.Components.OfType<TimerComponent>().FirstOrDefault();
@@ -957,6 +988,18 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(CameraSmoothTime));
             OnPropertyChanged(nameof(CameraZoom));
             OnPropertyChanged(nameof(CameraUseBounds));
+            OnPropertyChanged(nameof(HasRigidbody));
+            OnPropertyChanged(nameof(RigidbodyKindValue));
+            OnPropertyChanged(nameof(RigidbodyShapeValue));
+            OnPropertyChanged(nameof(RigidbodyIsBox));
+            OnPropertyChanged(nameof(RigidbodyIsCircle));
+            OnPropertyChanged(nameof(RigidbodyWidth));
+            OnPropertyChanged(nameof(RigidbodyHeight));
+            OnPropertyChanged(nameof(RigidbodyRadius));
+            OnPropertyChanged(nameof(RigidbodyDensity));
+            OnPropertyChanged(nameof(RigidbodyFriction));
+            OnPropertyChanged(nameof(RigidbodyRestitution));
+            OnPropertyChanged(nameof(RigidbodyFixedRotation));
             OnPropertyChanged(nameof(HasTimer));
             OnPropertyChanged(nameof(TimerDuration));
             OnPropertyChanged(nameof(TimerRepeat));

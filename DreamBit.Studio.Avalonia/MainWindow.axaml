@@ -335,6 +335,7 @@
                             <ComboBoxItem>UI Layout</ComboBoxItem>
                             <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Timer</ComboBoxItem>
+                            <ComboBoxItem>Rigidbody 2D</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -689,6 +690,58 @@
                                 </Grid>
                                 <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Rigidbody 2D -->
+                        <Border Classes="component" IsVisible="{Binding HasRigidbody}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Rigidbody 2D" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveRigidbody" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Tipo" />
+                                        <ComboBox ItemsSource="{Binding RigidbodyKinds}" HorizontalAlignment="Stretch"
+                                                  SelectedItem="{Binding RigidbodyKindValue, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Forma" />
+                                        <ComboBox ItemsSource="{Binding RigidbodyShapes}" HorizontalAlignment="Stretch"
+                                                  SelectedItem="{Binding RigidbodyShapeValue, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*" IsVisible="{Binding RigidbodyIsBox}">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding RigidbodyWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura" />
+                                        <TextBox Text="{Binding RigidbodyHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel IsVisible="{Binding RigidbodyIsCircle}">
+                                    <TextBlock Classes="field" Text="Raio" />
+                                    <TextBox Text="{Binding RigidbodyRadius, Mode=TwoWay}" />
+                                </StackPanel>
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Densidade" />
+                                        <TextBox Text="{Binding RigidbodyDensity, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Atrito" />
+                                        <TextBox Text="{Binding RigidbodyFriction, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Classes="field" Text="Elasticidade" />
+                                        <TextBox Text="{Binding RigidbodyRestitution, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="Travar rotação (personagem)" IsChecked="{Binding RigidbodyFixedRotation, Mode=TwoWay}" Margin="0,4,0,0" />
+                                <TextBlock Classes="field" Text="Física real (gravidade/colisão/impulso). Alternativa ao Platformer Controller." />
                             </StackPanel>
                         </Border>
 

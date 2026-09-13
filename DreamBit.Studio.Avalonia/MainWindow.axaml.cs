@@ -520,6 +520,7 @@ namespace DreamBit.Studio.Avalonia
                 "UI Layout" => _editor.AddUiLayout,
                 "Parallax" => _editor.AddParallax,
                 "Timer" => _editor.AddTimer,
+                "Rigidbody 2D" => _editor.AddRigidbody,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -563,6 +564,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveUiLayout(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiLayout);
         private void OnRemoveParallax(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParallax);
         private void OnRemoveTimer(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTimer);
+        private void OnRemoveRigidbody(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRigidbody);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

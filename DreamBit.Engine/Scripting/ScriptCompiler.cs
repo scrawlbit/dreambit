@@ -20,6 +20,7 @@ namespace DreamBit.Engine.Scripting
         private const string Header =
             "using System;\n" +
             "using DreamBit.Engine.Elements;\n" +
+            "using DreamBit.Engine.Components;\n" +
             "using DreamBit.Engine.Scripting;\n" +
             "using DreamBit.Engine.Diagnostics;\n" +
             "using DreamBit.Engine.Input;\n" +

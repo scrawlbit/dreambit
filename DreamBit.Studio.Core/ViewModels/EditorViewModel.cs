@@ -995,6 +995,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(layout);
         }
 
+        public void AddRigidbody()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<Rigidbody2D>().Any())
+                return;
+
+            var rb = new Rigidbody2D();
+            History.Do(new EditorAction("Adicionar Rigidbody 2D",
+                doAction: () => obj.AddComponent(rb),
+                undoAction: () => obj.RemoveComponent(rb)));
+        }
+
+        public void RemoveRigidbody()
+        {
+            var rb = SelectedObject?.Components.OfType<Rigidbody2D>().FirstOrDefault();
+            if (rb != null)
+                RemoveComponent(rb);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -1124,6 +1143,13 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case UiLayout ul:
                         clone.AddComponent(new UiLayout { Direction = ul.Direction, Spacing = ul.Spacing });
+                        break;
+                    case Rigidbody2D rb:
+                        clone.AddComponent(new Rigidbody2D
+                        {
+                            Kind = rb.Kind, Shape = rb.Shape, Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
+                            Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution, FixedRotation = rb.FixedRotation
+                        });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

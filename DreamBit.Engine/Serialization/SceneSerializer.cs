@@ -414,6 +414,15 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is UiLayout layout)
                     data.Layouts.Add(new UiLayoutData { Direction = (int)layout.Direction, Spacing = layout.Spacing });
+                else if (component is Rigidbody2D rb)
+                    data.Rigidbodies.Add(new RigidbodyData
+                    {
+                        Kind = (int)rb.Kind,
+                        Shape = (int)rb.Shape,
+                        Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
+                        Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution,
+                        FixedRotation = rb.FixedRotation
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -673,6 +682,16 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var layout in data.Layouts)
                 obj.AddComponent(new UiLayout { Direction = (LayoutDirection)layout.Direction, Spacing = layout.Spacing });
+
+            foreach (var rb in data.Rigidbodies)
+                obj.AddComponent(new Rigidbody2D
+                {
+                    Kind = (RigidbodyKind)rb.Kind,
+                    Shape = (ColliderShape)rb.Shape,
+                    Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
+                    Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution,
+                    FixedRotation = rb.FixedRotation
+                });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));
