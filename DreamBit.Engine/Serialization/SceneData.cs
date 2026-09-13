@@ -61,6 +61,7 @@ namespace DreamBit.Engine.Serialization
         public List<UiAnchorData> Anchors { get; set; } = new();
         public List<UiButtonData> Buttons { get; set; } = new();
         public List<ParallaxData> Parallaxes { get; set; } = new();
+        public List<TimerComponentData> Timers { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -163,6 +164,15 @@ namespace DreamBit.Engine.Serialization
     {
         public float FactorX { get; set; } = 0.5f;
         public float FactorY { get; set; } = 1f;
+    }
+
+    public sealed class TimerComponentData
+    {
+        public float Duration { get; set; } = 1f;
+        public bool Repeat { get; set; }
+        public bool AutoStart { get; set; } = true;
+        public string SendOnElapsed { get; set; } = "timeout";
+        public string StartOn { get; set; } = "";
     }
 
     public sealed class UiAnchorData

@@ -370,6 +370,15 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is ParallaxLayer parallax)
                     data.Parallaxes.Add(new ParallaxData { FactorX = parallax.FactorX, FactorY = parallax.FactorY });
+                else if (component is TimerComponent timer)
+                    data.Timers.Add(new TimerComponentData
+                    {
+                        Duration = timer.Duration,
+                        Repeat = timer.Repeat,
+                        AutoStart = timer.AutoStart,
+                        SendOnElapsed = timer.SendOnElapsed,
+                        StartOn = timer.StartOn
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -614,6 +623,16 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var parallax in data.Parallaxes)
                 obj.AddComponent(new ParallaxLayer { FactorX = parallax.FactorX, FactorY = parallax.FactorY });
+
+            foreach (var timer in data.Timers)
+                obj.AddComponent(new TimerComponent
+                {
+                    Duration = timer.Duration,
+                    Repeat = timer.Repeat,
+                    AutoStart = timer.AutoStart,
+                    SendOnElapsed = timer.SendOnElapsed,
+                    StartOn = timer.StartOn
+                });
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

@@ -957,6 +957,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(parallax);
         }
 
+        public void AddTimer()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<TimerComponent>().Any())
+                return;
+
+            var timer = new TimerComponent();
+            History.Do(new EditorAction("Adicionar Timer",
+                doAction: () => obj.AddComponent(timer),
+                undoAction: () => obj.RemoveComponent(timer)));
+        }
+
+        public void RemoveTimer()
+        {
+            var timer = SelectedObject?.Components.OfType<TimerComponent>().FirstOrDefault();
+            if (timer != null)
+                RemoveComponent(timer);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -1075,6 +1094,13 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case ParallaxLayer px:
                         clone.AddComponent(new ParallaxLayer { FactorX = px.FactorX, FactorY = px.FactorY });
+                        break;
+                    case TimerComponent tm:
+                        clone.AddComponent(new TimerComponent
+                        {
+                            Duration = tm.Duration, Repeat = tm.Repeat, AutoStart = tm.AutoStart,
+                            SendOnElapsed = tm.SendOnElapsed, StartOn = tm.StartOn
+                        });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

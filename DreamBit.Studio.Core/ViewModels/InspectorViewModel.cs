@@ -459,6 +459,37 @@ namespace DreamBit.Studio.ViewModels
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
 
+        // ---- Componente TimerComponent (timer) ----
+
+        private TimerComponent? Timer => _target?.Components.OfType<TimerComponent>().FirstOrDefault();
+        public bool HasTimer => Timer != null;
+
+        public float TimerDuration
+        {
+            get => Timer?.Duration ?? 1f;
+            set { var t = Timer; if (t != null) t.Duration = value; }
+        }
+        public bool TimerRepeat
+        {
+            get => Timer?.Repeat ?? false;
+            set { var t = Timer; if (t != null) t.Repeat = value; }
+        }
+        public bool TimerAutoStart
+        {
+            get => Timer?.AutoStart ?? true;
+            set { var t = Timer; if (t != null) t.AutoStart = value; }
+        }
+        public string TimerSendOnElapsed
+        {
+            get => Timer?.SendOnElapsed ?? string.Empty;
+            set { var t = Timer; if (t != null) t.SendOnElapsed = value; }
+        }
+        public string TimerStartOn
+        {
+            get => Timer?.StartOn ?? string.Empty;
+            set { var t = Timer; if (t != null) t.StartOn = value; }
+        }
+
         // ---- Componente ParallaxLayer (fundo com parallax) ----
 
         private ParallaxLayer? Parallax => _target?.Components.OfType<ParallaxLayer>().FirstOrDefault();
@@ -863,6 +894,12 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(CameraSmoothTime));
             OnPropertyChanged(nameof(CameraZoom));
             OnPropertyChanged(nameof(CameraUseBounds));
+            OnPropertyChanged(nameof(HasTimer));
+            OnPropertyChanged(nameof(TimerDuration));
+            OnPropertyChanged(nameof(TimerRepeat));
+            OnPropertyChanged(nameof(TimerAutoStart));
+            OnPropertyChanged(nameof(TimerSendOnElapsed));
+            OnPropertyChanged(nameof(TimerStartOn));
             OnPropertyChanged(nameof(HasParallax));
             OnPropertyChanged(nameof(ParallaxFactorX));
             OnPropertyChanged(nameof(ParallaxFactorY));

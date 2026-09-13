@@ -81,6 +81,7 @@ namespace DreamBit.Engine.Elements
         /// <summary>Avisa todos os componentes que o play mode começou.</summary>
         public void StartPlay()
         {
+            Timing.Scheduler.Clear(); // callbacks agendados não vazam entre execuções
             foreach (var gameObject in _objects)
                 gameObject.StartPlay();
         }
@@ -115,6 +116,8 @@ namespace DreamBit.Engine.Elements
 
         public void Update(GameTime gameTime)
         {
+            Timing.Scheduler.Tick((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             foreach (var gameObject in _objects)
                 gameObject.Update(gameTime);
 

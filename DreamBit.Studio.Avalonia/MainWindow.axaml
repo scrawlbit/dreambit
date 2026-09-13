@@ -333,6 +333,7 @@
                             <ComboBoxItem>UI Anchor</ComboBoxItem>
                             <ComboBoxItem>UI Button</ComboBoxItem>
                             <ComboBoxItem>Parallax</ComboBoxItem>
+                            <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -676,6 +677,24 @@
                                 </Grid>
                                 <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Timer -->
+                        <Border Classes="component" IsVisible="{Binding HasTimer}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Timer" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTimer" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Duração (s)" />
+                                <TextBox Text="{Binding TimerDuration, Mode=TwoWay}" />
+                                <CheckBox Content="Repetir" IsChecked="{Binding TimerRepeat, Mode=TwoWay}" Margin="0,4,0,0" />
+                                <CheckBox Content="Iniciar automaticamente no play" IsChecked="{Binding TimerAutoStart, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Enviar ao esgotar (mensagem)" />
+                                <TextBox Text="{Binding TimerSendOnElapsed, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="(Re)iniciar ao receber (mensagem, opcional)" />
+                                <TextBox Text="{Binding TimerStartOn, Mode=TwoWay}" />
                             </StackPanel>
                         </Border>
 
