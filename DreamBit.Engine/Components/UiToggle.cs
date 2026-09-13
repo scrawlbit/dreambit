@@ -9,7 +9,7 @@ namespace DreamBit.Engine.Components
     /// Interruptor de UI (checkbox): liga/desliga ao clicar, com uma marca quando ligado, e
     /// dispara uma mensagem ao mudar. Espaço de tela (HUD). Equivale ao CheckBox de Godot/Unity.
     /// </summary>
-    public sealed class UiToggle : SceneComponent
+    public sealed class UiToggle : SceneComponent, IUiFocusable
     {
         private bool _isOn;
         private float _size = 28f;
@@ -40,11 +40,7 @@ namespace DreamBit.Engine.Components
             if (GameInput.PointerReleased)
             {
                 if (_armed && inside)
-                {
-                    IsOn = !IsOn;
-                    if (!string.IsNullOrEmpty(_sendOnChange))
-                        Owner?.Scene?.Send(_sendOnChange, Owner);
-                }
+                    Toggle();
                 _armed = false;
             }
             if (!GameInput.PointerDown)
@@ -57,6 +53,19 @@ namespace DreamBit.Engine.Components
             return new Rectangle((int)(pos.X - _size / 2f), (int)(pos.Y - _size / 2f), (int)_size, (int)_size);
         }
 
+        private void Toggle()
+        {
+            IsOn = !IsOn;
+            if (!string.IsNullOrEmpty(_sendOnChange))
+                Owner?.Scene?.Send(_sendOnChange, Owner);
+        }
+
+        // IUiFocusable
+        public bool Focusable => Owner?.IsVisible ?? false;
+        public Rectangle FocusRect => ScreenRect();
+        public void Activate() => Toggle();
+        public void Nudge(int dir) { }
+
         protected internal override void Draw(ISceneDrawing drawing)
         {
             var r = ScreenRect();
@@ -67,6 +76,7 @@ namespace DreamBit.Engine.Components
                 drawing.SpriteBatch.Draw(drawing.Pixel,
                     new Rectangle(r.X + pad, r.Y + pad, r.Width - pad * 2, r.Height - pad * 2), _check);
             }
+            UiFocusDraw.Outline(drawing, r, UiFocus.Has(this));
         }
     }
 }

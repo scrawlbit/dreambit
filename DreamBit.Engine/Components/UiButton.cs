@@ -12,7 +12,7 @@ namespace DreamBit.Engine.Components
     /// pode ouvir. Pensado para HUD/menus; combine com <see cref="UiAnchor"/> e um filho de
     /// texto para o rótulo. Equivale a Button de Godot/Unity.
     /// </summary>
-    public sealed class UiButton : SceneComponent
+    public sealed class UiButton : SceneComponent, IUiFocusable
     {
         private float _width = 160f;
         private float _height = 48f;
@@ -76,12 +76,23 @@ namespace DreamBit.Engine.Components
 
         public bool Contains(Vector2 screenPoint) => ScreenRect().Contains((int)screenPoint.X, (int)screenPoint.Y);
 
-        public Color CurrentColor => _isPressed ? _pressed : _isHover ? _hover : _normal;
+        public Color CurrentColor => _isPressed ? _pressed : _isHover || UiFocus.Has(this) ? _hover : _normal;
+
+        // IUiFocusable
+        public bool Focusable => Owner?.IsVisible ?? false;
+        public Rectangle FocusRect => ScreenRect();
+        public void Activate()
+        {
+            if (!string.IsNullOrEmpty(_sendOnClick))
+                Owner?.Scene?.Send(_sendOnClick, Owner);
+        }
+        public void Nudge(int dir) { }
 
         protected internal override void Draw(ISceneDrawing drawing)
         {
             // Owner em espaço de tela => este Draw roda no passe de HUD (sem câmera).
             drawing.SpriteBatch.Draw(drawing.Pixel, ScreenRect(), CurrentColor);
+            UiFocusDraw.Outline(drawing, ScreenRect(), UiFocus.Has(this));
         }
     }
 }

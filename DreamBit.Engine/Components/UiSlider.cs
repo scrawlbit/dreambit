@@ -12,7 +12,7 @@ namespace DreamBit.Engine.Components
     /// (<see cref="BusTarget"/>), virando um controle de volume, e/ou disparar uma mensagem ao
     /// mudar. Espaço de tela (HUD). Equivale ao HSlider do Godot / Slider do Unity.
     /// </summary>
-    public sealed class UiSlider : SceneComponent
+    public sealed class UiSlider : SceneComponent, IUiFocusable
     {
         private float _value = 1f;
         private float _width = 200f;
@@ -102,11 +102,28 @@ namespace DreamBit.Engine.Components
             return new Rectangle(kx - kw / 2, r.Y - 2, kw, r.Height + 4);
         }
 
+        // IUiFocusable
+        public bool Focusable => Owner?.IsVisible ?? false;
+        public Rectangle FocusRect => ScreenRect();
+        public void Activate() { }
+        public void Nudge(int dir)
+        {
+            float old = _value;
+            Value = _value + dir * 0.05f;
+            if (_value != old)
+            {
+                ApplyBus();
+                if (!string.IsNullOrEmpty(_sendOnChange))
+                    Owner?.Scene?.Send(_sendOnChange, Owner);
+            }
+        }
+
         protected internal override void Draw(ISceneDrawing drawing)
         {
             drawing.SpriteBatch.Draw(drawing.Pixel, ScreenRect(), _track);
             drawing.SpriteBatch.Draw(drawing.Pixel, FillRect(), _fill);
             drawing.SpriteBatch.Draw(drawing.Pixel, KnobRect(), _knob);
+            UiFocusDraw.Outline(drawing, ScreenRect(), UiFocus.Has(this));
         }
     }
 }

@@ -618,6 +618,8 @@ namespace DreamBit.Studio.Avalonia
                 "UI Toggle" => _editor.AddUiToggle,
                 "UI Progress Bar" => _editor.AddUiProgressBar,
                 "UI Text Field" => _editor.AddUiTextField,
+                "UI Scroll View" => _editor.AddUiScrollView,
+                "UI Navigator" => _editor.AddUiNavigator,
                 "Parallax" => _editor.AddParallax,
                 "Timer" => _editor.AddTimer,
                 "Rigidbody 2D" => _editor.AddRigidbody,
@@ -667,6 +669,8 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveUiToggle(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiToggle);
         private void OnRemoveUiProgressBar(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiProgressBar);
         private void OnRemoveUiTextField(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiTextField);
+        private void OnRemoveUiNavigator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiNavigator);
+        private void OnRemoveUiScrollView(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveUiScrollView);
         private void OnRemoveParallax(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveParallax);
         private void OnRemoveTimer(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTimer);
         private void OnRemoveRigidbody(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRigidbody);

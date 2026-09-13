@@ -157,6 +157,14 @@ namespace DreamBit.Studio.Avalonia
                     continue;
                 }
 
+                var scroll = obj.Components.OfType<UiScrollView>().FirstOrDefault();
+                if (scroll != null)
+                {
+                    Fill(context, scroll.ScreenRect(), scroll.Background);
+                    if (obj.IsSelected) Outline(context, scroll.ScreenRect());
+                    continue;
+                }
+
                 var field = obj.Components.OfType<UiTextField>().FirstOrDefault();
                 if (field != null)
                 {

@@ -1071,6 +1071,10 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveUiProgressBar() => RemoveSingle<UiProgressBar>();
         public void AddUiTextField() => AddSingle(() => new UiTextField(), "Adicionar UI Text Field");
         public void RemoveUiTextField() => RemoveSingle<UiTextField>();
+        public void AddUiNavigator() => AddSingle(() => new UiNavigator(), "Adicionar UI Navigator");
+        public void RemoveUiNavigator() => RemoveSingle<UiNavigator>();
+        public void AddUiScrollView() => AddSingle(() => new UiScrollView(), "Adicionar UI Scroll View");
+        public void RemoveUiScrollView() => RemoveSingle<UiScrollView>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1280,6 +1284,12 @@ namespace DreamBit.Studio.ViewModels
                             Text = tf.Text, Placeholder = tf.Placeholder, Width = tf.Width, Height = tf.Height,
                             PixelSize = tf.PixelSize, MaxLength = tf.MaxLength, SendOnSubmit = tf.SendOnSubmit
                         });
+                        break;
+                    case UiNavigator nav:
+                        clone.AddComponent(new UiNavigator { AutoFocusFirst = nav.AutoFocusFirst });
+                        break;
+                    case UiScrollView sv:
+                        clone.AddComponent(new UiScrollView { Width = sv.Width, Height = sv.Height, Spacing = sv.Spacing, ScrollSpeed = sv.ScrollSpeed, Background = sv.Background });
                         break;
                     case Rigidbody2D rb:
                         clone.AddComponent(new Rigidbody2D

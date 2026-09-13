@@ -12,7 +12,7 @@ namespace DreamBit.Engine.Components
     /// Equivale ao LineEdit do Godot / InputField do Unity. O host precisa alimentar o texto
     /// digitado em <see cref="Input.Input.PushText"/> (o Player faz isso pelo evento da janela).
     /// </summary>
-    public sealed class UiTextField : SceneComponent
+    public sealed class UiTextField : SceneComponent, IUiFocusable
     {
         private string _text = string.Empty;
         private string _placeholder = "…";
@@ -40,6 +40,12 @@ namespace DreamBit.Engine.Components
         public string SendOnSubmit { get => _sendOnSubmit; set => Set(ref _sendOnSubmit, value ?? string.Empty); }
 
         public bool IsFocused => UiFocus.Has(this);
+
+        // IUiFocusable
+        public bool Focusable => Owner?.IsVisible ?? false;
+        public Rectangle FocusRect => ScreenRect();
+        public void Activate() => UiFocus.Set(this); // ao confirmar, entra em edição
+        public void Nudge(int dir) { }
 
         protected internal override void OnPlayStarted()
         {
@@ -105,6 +111,8 @@ namespace DreamBit.Engine.Components
             if (IsFocused && ((int)(System.Environment.TickCount / 500) % 2 == 0))
                 drawing.SpriteBatch.Draw(drawing.Pixel,
                     new Rectangle(cursorX + 1, ty, _pixelSize, PixelFont.GlyphHeight * _pixelSize), _textColor);
+
+            UiFocusDraw.Outline(drawing, r, IsFocused);
         }
 
         private int DrawText(ISceneDrawing drawing, string text, int originX, int originY, Color color)

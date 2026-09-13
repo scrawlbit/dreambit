@@ -50,6 +50,8 @@ namespace DreamBit.Engine.Input
         private static bool _mouseOverride;
         private static Vector2 _mouseOverridePos;
         private static bool _mouseOverrideDown, _mouseOverrideDownPrev;
+        private static int _wheelDelta;
+        private static float _overrideWheel;
 
         /// <summary>Snapshot do frame (chame uma vez por frame antes do Update da cena).</summary>
         public static void Update()
@@ -66,6 +68,7 @@ namespace DreamBit.Engine.Input
             {
                 _mousePrev = _mouseNow;
                 _mouseNow = Mouse.GetState();
+                _wheelDelta = (_mouseNow.ScrollWheelValue - _mousePrev.ScrollWheelValue) / 120; // detents
             }
             // Com override (editor), o estado do ponteiro é avançado em SetPointer, não aqui.
         }
@@ -90,6 +93,13 @@ namespace DreamBit.Engine.Input
         public static bool PointerReleased => _mouseOverride
             ? !_mouseOverrideDown && _mouseOverrideDownPrev
             : _mouseNow.LeftButton != ButtonState.Pressed && _mousePrev.LeftButton == ButtonState.Pressed;
+
+        /// <summary>Passos da roda do mouse neste frame (+ para cima, - para baixo). O host sem
+        /// mouse do MonoGame pode injetar com <see cref="SetWheel"/>.</summary>
+        public static int WheelDelta => _mouseOverride ? (int)_overrideWheel : _wheelDelta;
+
+        /// <summary>Host (editor) injeta passos de roda para este frame.</summary>
+        public static void SetWheel(float steps) => _overrideWheel = steps;
 
         /// <summary>Host sem mouse do MonoGame (editor) injeta o ponteiro aqui, todo frame.</summary>
         public static void SetPointer(Vector2 position, bool down)

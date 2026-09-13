@@ -349,6 +349,8 @@
                             <ComboBoxItem>UI Toggle</ComboBoxItem>
                             <ComboBoxItem>UI Progress Bar</ComboBoxItem>
                             <ComboBoxItem>UI Text Field</ComboBoxItem>
+                            <ComboBoxItem>UI Scroll View</ComboBoxItem>
+                            <ComboBoxItem>UI Navigator</ComboBoxItem>
                             <ComboBoxItem>Parallax</ComboBoxItem>
                             <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Rigidbody 2D</ComboBoxItem>
@@ -947,6 +949,49 @@
                                     </StackPanel>
                                 </Grid>
                                 <TextBlock Classes="field" Text="Só leitura (barra de vida/energia). Scripts ajustam o valor." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Scroll View -->
+                        <Border Classes="component" IsVisible="{Binding HasScrollView}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Scroll View" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiScrollView" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Largura" />
+                                        <TextBox Text="{Binding ScrollWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Altura (viewport)" />
+                                        <TextBox Text="{Binding ScrollHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Espaçamento" />
+                                        <TextBox Text="{Binding ScrollSpacing, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Velocidade da roda" />
+                                        <TextBox Text="{Binding ScrollSpeedValue, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Empilha os filhos e rola com a roda; itens fora somem." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- UI Navigator -->
+                        <Border Classes="component" IsVisible="{Binding HasNavigator}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="UI Navigator" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiNavigator" />
+                                </Grid>
+                                <CheckBox Content="Focar o primeiro controle automaticamente" IsChecked="{Binding NavigatorAutoFocus, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Setas/D-pad movem o foco; Enter/A confirma; ←/→ ajustam slider. Um por cena." />
                             </StackPanel>
                         </Border>
 

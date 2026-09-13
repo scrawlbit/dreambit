@@ -455,6 +455,14 @@ namespace DreamBit.Engine.Serialization
                         PixelSize = field.PixelSize, MaxLength = field.MaxLength,
                         SendOnSubmit = field.SendOnSubmit
                     });
+                else if (component is UiNavigator nav)
+                    data.Navigators.Add(new UiNavigatorData { AutoFocusFirst = nav.AutoFocusFirst });
+                else if (component is UiScrollView scroll)
+                    data.ScrollViews.Add(new UiScrollViewData
+                    {
+                        Width = scroll.Width, Height = scroll.Height, Spacing = scroll.Spacing, ScrollSpeed = scroll.ScrollSpeed,
+                        BR = scroll.Background.R, BG = scroll.Background.G, BB = scroll.Background.B
+                    });
                 else if (component is PropertyAnimator panim)
                     data.PropertyAnimators.Add(new PropertyAnimatorData
                     {
@@ -777,6 +785,16 @@ namespace DreamBit.Engine.Serialization
                     Width = f.Width, Height = f.Height,
                     PixelSize = f.PixelSize, MaxLength = f.MaxLength,
                     SendOnSubmit = f.SendOnSubmit
+                });
+
+            foreach (var n in data.Navigators)
+                obj.AddComponent(new UiNavigator { AutoFocusFirst = n.AutoFocusFirst });
+
+            foreach (var sc in data.ScrollViews)
+                obj.AddComponent(new UiScrollView
+                {
+                    Width = sc.Width, Height = sc.Height, Spacing = sc.Spacing, ScrollSpeed = sc.ScrollSpeed,
+                    Background = new Color(sc.BR, sc.BG, sc.BB)
                 });
 
             foreach (var pa in data.PropertyAnimators)

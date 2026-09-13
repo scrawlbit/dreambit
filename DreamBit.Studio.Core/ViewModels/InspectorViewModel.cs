@@ -747,6 +747,21 @@ namespace DreamBit.Studio.ViewModels
         public int TextFieldMaxLength { get => TextField?.MaxLength ?? 32; set { var f = TextField; if (f != null) f.MaxLength = value; } }
         public string TextFieldSendOnSubmit { get => TextField?.SendOnSubmit ?? string.Empty; set { var f = TextField; if (f != null) f.SendOnSubmit = value; } }
 
+        // ---- Componente UiNavigator ----
+
+        private UiNavigator? Navigator => _target?.Components.OfType<UiNavigator>().FirstOrDefault();
+        public bool HasNavigator => Navigator != null;
+        public bool NavigatorAutoFocus { get => Navigator?.AutoFocusFirst ?? true; set { var n = Navigator; if (n != null) n.AutoFocusFirst = value; } }
+
+        // ---- Componente UiScrollView ----
+
+        private UiScrollView? ScrollView => _target?.Components.OfType<UiScrollView>().FirstOrDefault();
+        public bool HasScrollView => ScrollView != null;
+        public float ScrollWidth { get => ScrollView?.Width ?? 240f; set { var s = ScrollView; if (s != null) s.Width = value; } }
+        public float ScrollHeight { get => ScrollView?.Height ?? 260f; set { var s = ScrollView; if (s != null) s.Height = value; } }
+        public float ScrollSpacing { get => ScrollView?.Spacing ?? 8f; set { var s = ScrollView; if (s != null) s.Spacing = value; } }
+        public float ScrollSpeedValue { get => ScrollView?.ScrollSpeed ?? 24f; set { var s = ScrollView; if (s != null) s.ScrollSpeed = value; } }
+
         // ---- Componente UiButton (botão de UI) ----
 
         private UiButton? Button => _target?.Components.OfType<UiButton>().FirstOrDefault();
@@ -1193,6 +1208,13 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(TextFieldWidth));
             OnPropertyChanged(nameof(TextFieldMaxLength));
             OnPropertyChanged(nameof(TextFieldSendOnSubmit));
+            OnPropertyChanged(nameof(HasNavigator));
+            OnPropertyChanged(nameof(NavigatorAutoFocus));
+            OnPropertyChanged(nameof(HasScrollView));
+            OnPropertyChanged(nameof(ScrollWidth));
+            OnPropertyChanged(nameof(ScrollHeight));
+            OnPropertyChanged(nameof(ScrollSpacing));
+            OnPropertyChanged(nameof(ScrollSpeedValue));
             OnPropertyChanged(nameof(HasAnchor));
             OnPropertyChanged(nameof(AnchorPointValue));
             OnPropertyChanged(nameof(AnchorOffsetX));
