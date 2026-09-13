@@ -35,7 +35,10 @@ independente, multiplataforma e testada.
   disparam mensagens e contêiner de layout (menus); **camadas de render** e **colisão de
   tilemap** (tiles sólidos); **localização** (`Localizer` + chave no texto).
 - **Física 2D** com corpos rígidos (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
-  colisão com rotação, impulsos — alternativa ao `PlatformerController`.
+  colisão com rotação, impulsos, **raycast** e **camadas de colisão** — alternativa ao
+  `PlatformerController`.
+- **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
+  (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
   (**timers/coroutines**), `ObjectPool` (**pooling**), `DataCatalog` (**data-driven**),
   `StateMachine` (**máquina de estados**).

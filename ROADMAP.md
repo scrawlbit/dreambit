@@ -37,8 +37,11 @@ MonoGame atualizado.
 - **Localização**: `Localizer` (tabelas de texto por idioma, JSON) e chave de localização
   no `TextRenderer`.
 - **Física 2D com corpos rígidos** (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
-  colisão com rotação, empilhamento, impulsos; formas caixa/círculo; alternativa ao
-  `PlatformerController`.
+  colisão com rotação, empilhamento, impulsos; formas caixa/círculo; **raycast** e
+  **camadas de colisão** (categoria/máscara); alternativa ao `PlatformerController`.
+- **Áudio com mixer/buses** (`AudioMixer`: Master/Music/SFX, volume por bus ao vivo).
+- **Timeline de propriedades** (`PropertyAnimator`): anima posição/rotação/escala/cor por
+  keyframes, além do `TweenComponent` (de-para simples).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -70,14 +73,14 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
 
 ### Rendering e cena
 - **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — depende do pipeline de shaders (MGCB).
+- **Áudio espacial** e música em camadas (o mixer/buses já existe).
 
 ### Animação
 - **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência e o fatiador por
   grade já cobrem sprite sheets PNG.
 
 ### Física
-- **Joints, raycast e camadas de colisão** — os corpos rígidos já existem
-  (`Rigidbody2D`); falta expor juntas, raycast e filtros de colisão do Aether.
+- **Joints** (juntas entre corpos) — raycast e camadas de colisão já existem.
 
 ### Sistemas de jogo
 - **Prefabs aninhados com overrides** (cenas-como-prefab de Unity/Godot).
