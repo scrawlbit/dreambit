@@ -31,10 +31,14 @@ independente, multiplataforma e testada.
   `CameraComponent` (follow/deadzone/bounds/zoom), `TextRenderer` (fonte pixel, mundo ou
   **HUD**), `SceneExit` (**transição de fase**), `UiAnchor` + `UiButton` (**UI clicável**),
   `ParallaxLayer` (**parallax**), `TimerComponent`.
-- **Sistema de UI**: âncoras às bordas da tela e botões clicáveis (mouse/toque) que
-  disparam mensagens; **camadas de render** e **colisão de tilemap** (tiles sólidos).
+- **Sistema de UI**: âncoras às bordas da tela, botões clicáveis (mouse/toque) que
+  disparam mensagens e contêiner de layout (menus); **camadas de render** e **colisão de
+  tilemap** (tiles sólidos); **localização** (`Localizer` + chave no texto).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
-  (**timers/coroutines**), `ObjectPool` (**pooling**).
+  (**timers/coroutines**), `ObjectPool` (**pooling**), `DataCatalog` (**data-driven**),
+  `StateMachine` (**máquina de estados**).
+- **Hot-reload de script** (arquivo `.cs` externo recompila ao mudar) e **overlay de
+  debug** no Player (F3).
 - **Barramento de mensagens** (sinais de jogo) ligando tags, triggers, eventos de
   animação e scripts.
 - **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor); play restaurável;

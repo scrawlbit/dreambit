@@ -32,8 +32,15 @@ MonoGame atualizado.
   que disparam mensagens no barramento; funciona no jogo e no play do editor.
 - **Camadas de render** (grossas, antes do z-order) e **parallax de fundo** por eixo.
 - **Colisão direto do tilemap** (tiles sólidos por célula, opcionalmente por camada).
-- Sistemas de runtime: `SaveGame` (salvar/carregar progresso, JSON), `Scheduler`
-  (timers/coroutines por tempo para scripts), `ObjectPool` (reaproveitar objetos).
+- **UI**: âncoras (`UiAnchor`), botões (`UiButton`) e contêiner de layout (`UiLayout`,
+  empilha filhos em coluna/linha) para montar menus e HUD.
+- **Localização**: `Localizer` (tabelas de texto por idioma, JSON) e chave de localização
+  no `TextRenderer`.
+- Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
+  `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
+  `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
+- **Hot-reload de script** durante o play (arquivo `.cs` externo recompila ao mudar);
+  **overlay de debug** no Player (F3: FPS, objetos, cena).
 - Barramento de mensagens (sinais de jogo); z-order global; input mapeável por ações
   (teclado + gamepad + mouse/toque); play restaurável; hot-reload de assets; transição
   entre fases.
@@ -53,25 +60,19 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D).
-- **Layout de UI** com contêineres/menus além de âncoras e botões (Godot `Control`, Unity UGUI).
+- **Luzes e shaders 2D** (Godot 2D lights, Unity URP 2D) — depende do pipeline de shaders (MGCB).
 
 ### Animação
-- **Máquina de estados genérica** com parâmetros/transições/blend além do controlador
-  idle/walk/jump atual (Unity Animator, Godot `AnimationTree`).
 - **Auto-detecção de frames por transparência** e import Aseprite (o fatiador por grade
   já existe) — Unity Sprite Editor.
 
 ### Física
 - **Física 2D com corpos rígidos, rotação, joints, raycast e camadas de colisão** —
-  Godot/Unity usam Box2D/Chipmunk; no MonoGame há Aether.Physics2D.
+  Godot/Unity usam Box2D/Chipmunk; no MonoGame há Aether.Physics2D (pacote NuGet).
 
 ### Sistemas de jogo
-- **Recursos data-driven** para catálogos (Unity `ScriptableObject`, Godot `Resource`).
 - **Prefabs aninhados com overrides** (cenas-como-prefab de Unity/Godot).
 
 ### Scripting e build
-- **Hot-reload de script durante o play**.
 - **Export para web (HTML5) e mobile** (hoje só desktop DesktopGL).
-- **Overlay de debug / profiler / inspector remoto** (Godot remote debugger).
-- **Localização**.
+- **Profiler / inspector remoto** (Godot remote debugger).
