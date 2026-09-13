@@ -74,7 +74,8 @@ namespace DreamBit.Engine.Rendering
             scene.DrawScreenSpace(this);
             foreach (var obj in scene.VisibleInDrawOrder())
                 foreach (var component in obj.Components)
-                    component.DrawScreen(this);
+                    if (component.Enabled)
+                        component.DrawScreen(this);
 
             if (ShowDebugOverlay)
                 DrawDebugOverlay();

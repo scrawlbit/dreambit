@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "177ca784-d2fe-4e50-bc6f-b5e2a44e634e",
+      "Id": "d5615304-caf9-4da3-92a4-d6f21bd8b9ed",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -77,7 +77,7 @@
       "Children": []
     },
     {
-      "Id": "c99e3535-c3eb-4c93-9bee-e8b8a144615a",
+      "Id": "d208f5b6-4b81-4e86-8fc5-73cef5ee44b8",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -152,7 +152,7 @@
       "Children": []
     },
     {
-      "Id": "019033ba-5f20-4b64-8822-7b5796d57404",
+      "Id": "75206081-2acb-411e-9226-a0f8ff9cc6e3",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -395,7 +395,7 @@
       "Children": []
     },
     {
-      "Id": "69e44e17-700d-4904-8f79-521d4c858913",
+      "Id": "0dec631f-573b-43b5-94f5-648c93c152d9",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -465,7 +465,7 @@
       "Children": []
     },
     {
-      "Id": "183abb2d-d537-4f2b-bb05-5e8a0b782edf",
+      "Id": "68db8ddb-0645-40a8-bca2-3929244bbe08",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -535,7 +535,7 @@
       "Children": []
     },
     {
-      "Id": "1b8674f4-b637-4fa8-a167-5ecd0af65c74",
+      "Id": "7dce7266-2307-48c8-9d96-145ef98bc7d2",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -605,7 +605,7 @@
       "Children": []
     },
     {
-      "Id": "dfcbd861-ed00-41bb-8d60-0f253c1bff5a",
+      "Id": "fc7a5bc9-64e0-480e-99c6-bb99b444edd0",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -675,7 +675,7 @@
       "Children": []
     },
     {
-      "Id": "bc882ed9-af0a-4fd6-94da-cb9e83d44fda",
+      "Id": "3e3f68c3-cf36-484b-91dd-edff22f6e908",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1494,7 +1494,7 @@
       "Children": []
     },
     {
-      "Id": "2ed38da1-62f6-45ed-80c2-2e5dd6b19311",
+      "Id": "64c14332-b215-499e-80b9-4101ab43ccf6",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1557,7 +1557,7 @@
       "Children": []
     },
     {
-      "Id": "aeddc4bb-8d04-414f-864a-c6b1855f1add",
+      "Id": "e8558d16-5d5a-41e4-85ae-7f73fe669252",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1635,7 +1635,7 @@
       "Children": []
     },
     {
-      "Id": "d32b0e50-cffa-4307-b8a6-6c7492e24f77",
+      "Id": "c883ad0b-3722-408c-b0fd-4450f0682317",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1742,7 +1742,7 @@
       "Children": []
     },
     {
-      "Id": "c80d947a-e395-4188-9817-a1d82a55b985",
+      "Id": "6b86f13f-82c6-42be-bd88-e5ae89dce8bd",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -1806,7 +1806,7 @@
       "Children": []
     },
     {
-      "Id": "b07c9e94-7cd2-4a35-914e-c032588f5b65",
+      "Id": "120f03f7-c84d-42a3-8d0c-c41f8356f041",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -1889,7 +1889,7 @@
       "Children": []
     },
     {
-      "Id": "e4a102ff-ff7b-4770-8c1b-cfb7b876a175",
+      "Id": "5f9248f7-67e1-4ffa-8444-39c1d7f94515",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -1972,7 +1972,7 @@
       "Children": []
     },
     {
-      "Id": "55ae7e87-b5d2-4f81-bf17-ba83d5467b63",
+      "Id": "5029b0ce-14d7-4e9e-a9ef-a5acedb0b9c8",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2055,7 +2055,7 @@
       "Children": []
     },
     {
-      "Id": "50b28aff-e678-4bb9-bc8a-235a17d2cf31",
+      "Id": "81f0a17b-c03e-4b8d-8562-7b12d19f645b",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2125,7 +2125,7 @@
       "Children": []
     },
     {
-      "Id": "a4a0636e-c071-41a7-9072-2425cb7c0ad4",
+      "Id": "7374f371-d5e3-4d8c-88fe-d690de887afa",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2186,7 +2186,7 @@
       "Children": []
     },
     {
-      "Id": "4cfe63e8-b5df-4fff-b064-df317264e2df",
+      "Id": "d127ed9b-7c29-425c-8bc8-fec6c9eed162",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2235,7 +2235,7 @@
       "AudioListeners": [],
       "Children": [
         {
-          "Id": "8c775de3-4599-4d97-9802-14e4d3e10bdd",
+          "Id": "cfa24ea7-47bc-49d1-afd1-8a8f2f3c5e1f",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2303,7 +2303,7 @@
           "Children": []
         },
         {
-          "Id": "6c8510a7-e444-443e-a608-ba0615774dfb",
+          "Id": "4d33488c-3fbe-40b2-b1f5-65220149e4ba",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2369,7 +2369,7 @@
           "Children": []
         },
         {
-          "Id": "c4023bce-2361-425c-9f8b-d8a76c347e05",
+          "Id": "2de10fcf-1074-4813-a2ac-baeff84a212d",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,

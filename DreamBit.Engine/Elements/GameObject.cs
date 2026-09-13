@@ -169,7 +169,8 @@ namespace DreamBit.Engine.Elements
         internal void Update(GameTime gameTime)
         {
             foreach (var component in _components)
-                component.Update(gameTime);
+                if (component.Enabled)
+                    component.Update(gameTime);
 
             foreach (var child in _children)
                 child.Update(gameTime);
@@ -181,7 +182,8 @@ namespace DreamBit.Engine.Elements
                 return;
 
             foreach (var component in _components)
-                component.Draw(drawing);
+                if (component.Enabled)
+                    component.Draw(drawing);
 
             foreach (var child in _children)
                 child.Draw(drawing);
@@ -192,7 +194,8 @@ namespace DreamBit.Engine.Elements
         internal void DrawSelf(ISceneDrawing drawing)
         {
             foreach (var component in _components)
-                component.Draw(drawing);
+                if (component.Enabled)
+                    component.Draw(drawing);
         }
     }
 }
