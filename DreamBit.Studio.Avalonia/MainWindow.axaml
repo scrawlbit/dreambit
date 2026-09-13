@@ -164,6 +164,7 @@
                             <Button Content="Trigger" Click="OnAddTrigger" Margin="0,0,4,4" />
                             <Button Content="Follow" Click="OnAddFollow" Margin="0,0,4,4" />
                             <Button Content="Rotator" Click="OnAddRotator" Margin="0,0,4,4" />
+                            <Button Content="Bone" Click="OnAddBone" Margin="0,0,4,4" />
                             <Button Content="Script" Click="OnAddScript" Margin="0,0,4,4" />
                         </WrapPanel>
 
@@ -387,6 +388,23 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Velocidade (rad/s)" />
                                 <TextBox Text="{Binding RotatorSpeed, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Bone (rig cutout) -->
+                        <Border Classes="component" IsVisible="{Binding HasBone}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Bone (rig)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveBone" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Comprimento" />
+                                <TextBox Text="{Binding BoneLength, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="O rig é a hierarquia: aninhe ossos e ponha sprites como filhos." />
+                                <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,6,0,0">
+                                    <Button Content="Capturar pose" Click="OnCaptureBonePose" />
+                                    <Button Content="Resetar pose" Click="OnResetBonePose" />
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 

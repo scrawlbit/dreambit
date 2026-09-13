@@ -258,6 +258,10 @@ namespace DreamBit.Studio
         private void OnAddScript(object sender, RoutedEventArgs e) => _editor.AddScript();
         private void OnRemoveScript(object sender, RoutedEventArgs e) => _editor.RemoveScript();
         private void OnCompileScript(object sender, RoutedEventArgs e) => _editor.Inspector.CompileScript();
+        private void OnAddBone(object sender, RoutedEventArgs e) => _editor.AddBone();
+        private void OnRemoveBone(object sender, RoutedEventArgs e) => _editor.RemoveBone();
+        private void OnCaptureBonePose(object sender, RoutedEventArgs e) => _editor.Inspector.CaptureBonePose();
+        private void OnResetBonePose(object sender, RoutedEventArgs e) => _editor.Inspector.ResetBonePose();
 
         private void OnPickSound(object sender, RoutedEventArgs e)
         {

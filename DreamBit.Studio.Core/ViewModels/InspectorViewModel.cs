@@ -387,6 +387,30 @@ namespace DreamBit.Studio.ViewModels
             set { var t = Tilemap; if (t != null) { t.TmxPath = string.IsNullOrWhiteSpace(value) ? null : value; Refresh(); } }
         }
 
+        // ---- Componente Bone (rig cutout) ----
+
+        private Bone? Bone => _target?.Components.OfType<Bone>().FirstOrDefault();
+        public bool HasBone => Bone != null;
+
+        public float BoneLength
+        {
+            get => Bone?.Length ?? 0f;
+            set { var b = Bone; if (b != null) b.Length = value; }
+        }
+        public bool BoneHasRestPose => Bone?.HasRestPose ?? false;
+
+        public void CaptureBonePose()
+        {
+            Bone?.CaptureRestPose();
+            OnPropertyChanged(nameof(BoneHasRestPose));
+        }
+
+        public void ResetBonePose()
+        {
+            Bone?.ResetToRestPose();
+            RaiseAll(); // posição/rotação/escala mudaram
+        }
+
         // ---- Componente RotatorBehavior ----
 
         private RotatorBehavior? Rotator => _target?.Components.OfType<RotatorBehavior>().FirstOrDefault();
@@ -469,6 +493,9 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(AnimEventsText));
             OnPropertyChanged(nameof(HasRotator));
             OnPropertyChanged(nameof(RotatorSpeed));
+            OnPropertyChanged(nameof(HasBone));
+            OnPropertyChanged(nameof(BoneLength));
+            OnPropertyChanged(nameof(BoneHasRestPose));
         }
     }
 }

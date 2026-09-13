@@ -114,6 +114,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnAddTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddTrigger);
         private void OnAddFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddFollow);
         private void OnAddRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddRotator);
+        private void OnAddBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddBone);
         private void OnAddScript(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddScript);
 
         // ---- remover componentes ----
@@ -126,9 +127,12 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTrigger);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
+        private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);
         private void OnRemoveScript(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveScript);
 
         private void OnCompileScript(object? sender, RoutedEventArgs e) => _editor.Inspector.CompileScript();
+        private void OnCaptureBonePose(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.CaptureBonePose);
+        private void OnResetBonePose(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.ResetBonePose);
 
         /// <summary>Executa a operação de componente e atualiza inspetor + cena.</summary>
         private void AddComponent(Action operation)

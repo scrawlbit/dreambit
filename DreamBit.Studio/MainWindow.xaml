@@ -356,6 +356,28 @@
                                 HorizontalAlignment="Left" Margin="0,2"
                                 Visibility="{Binding HasRotator, Converter={StaticResource BoolToVisInverse}}" />
 
+                        <!-- Bone (rig cutout) -->
+                        <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
+                                Visibility="{Binding HasBone, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="✕" Padding="6,0" Click="OnRemoveBone"
+                                            Style="{StaticResource ToolButton}" />
+                                    <TextBlock Text="Bone (rig)" Foreground="{DynamicResource TextFg}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock Text="Comprimento" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding BoneLength, UpdateSourceTrigger=LostFocus, StringFormat=0.#}" />
+                                <TextBlock Text="Rig = hierarquia: aninhe ossos e ponha sprites como filhos." Foreground="{DynamicResource MutedFg}" TextWrapping="Wrap" Margin="0,6,0,0" />
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <Button Content="Capturar pose" Click="OnCaptureBonePose" Style="{StaticResource ToolButton}" />
+                                    <Button Content="Resetar pose" Click="OnResetBonePose" Style="{StaticResource ToolButton}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <Button Content="+ Bone" Click="OnAddBone" Style="{StaticResource ToolButton}"
+                                HorizontalAlignment="Left" Margin="0,2"
+                                Visibility="{Binding HasBone, Converter={StaticResource BoolToVisInverse}}" />
+
                         <!-- Platformer Controller -->
                         <Border Background="{DynamicResource FieldBg}" Padding="6" Margin="0,4,0,2" CornerRadius="3"
                                 Visibility="{Binding HasPlatformer, Converter={StaticResource BoolToVis}}">

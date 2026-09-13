@@ -241,6 +241,17 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is ScriptComponent script)
                     data.Scripts.Add(new ScriptData { Source = script.Source });
+                else if (component is Bone bone)
+                    data.Bones.Add(new BoneData
+                    {
+                        Length = bone.Length,
+                        HasRestPose = bone.HasRestPose,
+                        RestX = bone.RestPosition.X,
+                        RestY = bone.RestPosition.Y,
+                        RestRotation = bone.RestRotation,
+                        RestScaleX = bone.RestScale.X,
+                        RestScaleY = bone.RestScale.Y
+                    });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -353,6 +364,16 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var script in data.Scripts)
                 obj.AddComponent(new ScriptComponent { Source = script.Source });
+
+            foreach (var bone in data.Bones)
+                obj.AddComponent(new Bone
+                {
+                    Length = bone.Length,
+                    RestPosition = new Vector2(bone.RestX, bone.RestY),
+                    RestRotation = bone.RestRotation,
+                    RestScale = new Vector2(bone.RestScaleX, bone.RestScaleY),
+                    HasRestPose = bone.HasRestPose
+                });
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController

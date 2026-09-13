@@ -783,6 +783,26 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(animator);
         }
 
+        public void AddBone()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<Bone>().Any())
+                return;
+
+            var bone = new Bone();
+            bone.CaptureRestPose();
+            History.Do(new EditorAction("Adicionar Bone",
+                doAction: () => obj.AddComponent(bone),
+                undoAction: () => obj.RemoveComponent(bone)));
+        }
+
+        public void RemoveBone()
+        {
+            var bone = SelectedObject?.Components.OfType<Bone>().FirstOrDefault();
+            if (bone != null)
+                RemoveComponent(bone);
+        }
+
         /// <summary>Duplica os objetos selecionados (com seus componentes) — reversível.</summary>
         public void DuplicateSelected()
         {
@@ -856,6 +876,14 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case ScriptComponent sc:
                         clone.AddComponent(new ScriptComponent { Source = sc.Source });
+                        break;
+                    case Bone bone:
+                        clone.AddComponent(new Bone
+                        {
+                            Length = bone.Length, RestPosition = bone.RestPosition,
+                            RestRotation = bone.RestRotation, RestScale = bone.RestScale,
+                            HasRestPose = bone.HasRestPose
+                        });
                         break;
                 }
             }
