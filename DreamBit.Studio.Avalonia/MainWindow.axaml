@@ -165,6 +165,7 @@
                             <Button Content="Follow" Click="OnAddFollow" Margin="0,0,4,4" />
                             <Button Content="Rotator" Click="OnAddRotator" Margin="0,0,4,4" />
                             <Button Content="Bone" Click="OnAddBone" Margin="0,0,4,4" />
+                            <Button Content="Skeleton" Click="OnAddSkeleton" Margin="0,0,4,4" />
                             <Button Content="Script" Click="OnAddScript" Margin="0,0,4,4" />
                         </WrapPanel>
 
@@ -405,6 +406,54 @@
                                     <Button Content="Capturar pose" Click="OnCaptureBonePose" />
                                     <Button Content="Resetar pose" Click="OnResetBonePose" />
                                 </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Skeleton Animator (timeline de pose por osso) -->
+                        <Border Classes="component" IsVisible="{Binding HasSkeleton}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Skeleton (timeline)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSkeleton" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Duração (s)" />
+                                        <TextBox Text="{Binding SkeletonDuration, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                        <CheckBox Content="Loop" IsChecked="{Binding SkeletonLoop, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <TextBlock Classes="field" Text="Tempo (arraste para pré-visualizar a pose)" />
+                                <Slider Minimum="0" Maximum="{Binding SkeletonDuration}" Value="{Binding SkeletonTime, Mode=TwoWay}"
+                                        SmallChange="0.02" LargeChange="0.1" />
+                                <TextBlock Text="{Binding SkeletonTime, StringFormat='t = {0:0.00}s'}" Foreground="#8A93A6" FontSize="11" />
+
+                                <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,6,0,0">
+                                    <Button Content="+ Keyframe" Click="OnAddSkeletonKeyframe"
+                                            ToolTip.Tip="Captura a pose atual dos ossos no tempo atual" />
+                                    <Button Content="− Keyframe" Click="OnRemoveSkeletonKeyframe"
+                                            ToolTip.Tip="Remove o keyframe mais próximo do tempo atual" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding SkeletonKeyframeCount, StringFormat='{}{0} keyframe(s) — clique para pular:'}"
+                                           Foreground="#8A93A6" FontSize="11" Margin="0,6,0,2" />
+                                <ItemsControl ItemsSource="{Binding SkeletonKeyframeTimes}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding StringFormat='{}{0:0.00}s'}" Click="OnGoToKeyframe"
+                                                    Margin="0,0,4,4" Padding="6,2" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Text="Fluxo: arraste o tempo → pose os ossos → + Keyframe. Repita e dê Play."
+                                           Foreground="#8A93A6" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" />
                             </StackPanel>
                         </Border>
 

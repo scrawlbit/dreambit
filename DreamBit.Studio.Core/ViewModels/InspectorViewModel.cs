@@ -411,6 +411,60 @@ namespace DreamBit.Studio.ViewModels
             RaiseAll(); // posição/rotação/escala mudaram
         }
 
+        // ---- Componente SkeletonAnimator (keyframes de pose) ----
+
+        private SkeletonAnimator? Skeleton => _target?.Components.OfType<SkeletonAnimator>().FirstOrDefault();
+        public bool HasSkeleton => Skeleton != null;
+
+        public float SkeletonDuration
+        {
+            get => Skeleton?.Duration ?? 1f;
+            set { var s = Skeleton; if (s != null) { s.Duration = value; OnPropertyChanged(); OnPropertyChanged(nameof(SkeletonTime)); } }
+        }
+        public bool SkeletonLoop
+        {
+            get => Skeleton?.Loop ?? true;
+            set { var s = Skeleton; if (s != null) s.Loop = value; }
+        }
+        public int SkeletonKeyframeCount => Skeleton?.KeyframeCount ?? 0;
+
+        /// <summary>Tempo atual do clipe (scrub). Aplica a pose interpolada aos ossos.</summary>
+        public float SkeletonTime
+        {
+            get => Skeleton?.Time ?? 0f;
+            set { var s = Skeleton; if (s != null) { s.SetTime(value); OnPropertyChanged(); } }
+        }
+
+        /// <summary>Tempos (segundos) dos keyframes, para exibir/pular na timeline.</summary>
+        public IEnumerable<float> SkeletonKeyframeTimes =>
+            Skeleton?.Keyframes.Select(k => k.Time).ToList() ?? Enumerable.Empty<float>();
+
+        /// <summary>Captura a pose atual dos ossos como keyframe no tempo atual.</summary>
+        public void AddSkeletonKeyframe()
+        {
+            var s = Skeleton;
+            if (s == null) return;
+            s.CaptureKeyframe(s.Time);
+            OnPropertyChanged(nameof(SkeletonKeyframeCount));
+            OnPropertyChanged(nameof(SkeletonKeyframeTimes));
+        }
+
+        /// <summary>Remove o keyframe mais próximo do tempo atual.</summary>
+        public void RemoveSkeletonKeyframe()
+        {
+            var s = Skeleton;
+            if (s == null) return;
+            s.RemoveKeyframeNear(s.Time);
+            OnPropertyChanged(nameof(SkeletonKeyframeCount));
+            OnPropertyChanged(nameof(SkeletonKeyframeTimes));
+        }
+
+        /// <summary>Move o playhead para um tempo específico (pular para um keyframe).</summary>
+        public void GoToSkeletonTime(float time)
+        {
+            SkeletonTime = time;
+        }
+
         // ---- Componente RotatorBehavior ----
 
         private RotatorBehavior? Rotator => _target?.Components.OfType<RotatorBehavior>().FirstOrDefault();
@@ -496,6 +550,12 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasBone));
             OnPropertyChanged(nameof(BoneLength));
             OnPropertyChanged(nameof(BoneHasRestPose));
+            OnPropertyChanged(nameof(HasSkeleton));
+            OnPropertyChanged(nameof(SkeletonDuration));
+            OnPropertyChanged(nameof(SkeletonLoop));
+            OnPropertyChanged(nameof(SkeletonTime));
+            OnPropertyChanged(nameof(SkeletonKeyframeCount));
+            OnPropertyChanged(nameof(SkeletonKeyframeTimes));
         }
     }
 }
