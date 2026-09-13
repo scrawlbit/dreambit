@@ -180,6 +180,46 @@ namespace DreamBit.Studio.ViewModels
             set { var a = Animator; if (a != null) a.Loop = value; }
         }
 
+        /// <summary>
+        /// Eventos de animação em texto: uma linha por evento no formato "frame: nome"
+        /// (ex.: "0: passo"). Disparam ao a animação entrar naquele frame no play.
+        /// </summary>
+        public string AnimEventsText
+        {
+            get
+            {
+                var a = Animator;
+                if (a == null) return string.Empty;
+                return string.Join("\n", a.Events
+                    .OrderBy(e => e.Frame)
+                    .Select(e => $"{e.Frame}: {e.Name}"));
+            }
+            set
+            {
+                var a = Animator;
+                if (a == null) return;
+
+                var parsed = new List<AnimationFrameEvent>();
+                foreach (var raw in (value ?? string.Empty).Split('\n'))
+                {
+                    var line = raw.Trim();
+                    if (line.Length == 0) continue;
+
+                    int sep = line.IndexOf(':');
+                    if (sep <= 0) continue;
+
+                    if (int.TryParse(line[..sep].Trim(), out int frame))
+                    {
+                        var name = line[(sep + 1)..].Trim();
+                        if (name.Length > 0)
+                            parsed.Add(new AnimationFrameEvent(frame, name));
+                    }
+                }
+                a.SetEvents(parsed);
+                OnPropertyChanged();
+            }
+        }
+
         // ---- Componente PlatformerController ----
 
         private PlatformerController? Platformer => _target?.Components.OfType<PlatformerController>().FirstOrDefault();
@@ -426,6 +466,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(AnimFrameCount));
             OnPropertyChanged(nameof(AnimFps));
             OnPropertyChanged(nameof(AnimLoop));
+            OnPropertyChanged(nameof(AnimEventsText));
             OnPropertyChanged(nameof(HasRotator));
             OnPropertyChanged(nameof(RotatorSpeed));
         }

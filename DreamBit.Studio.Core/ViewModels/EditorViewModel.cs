@@ -813,11 +813,13 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new RotatorBehavior { Speed = r.Speed });
                         break;
                     case SpriteAnimator a:
-                        clone.AddComponent(new SpriteAnimator
+                        var animClone = new SpriteAnimator
                         {
                             TexturePath = a.TexturePath, FrameWidth = a.FrameWidth, FrameHeight = a.FrameHeight,
                             FrameCount = a.FrameCount, Fps = a.Fps, Loop = a.Loop, Size = a.Size
-                        });
+                        };
+                        animClone.SetEvents(a.Events);
+                        clone.AddComponent(animClone);
                         break;
                     case TilemapRenderer t:
                         clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath });

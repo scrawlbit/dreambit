@@ -138,6 +138,13 @@ namespace DreamBit.Engine.Serialization
         public bool Loop { get; set; } = true;
         public float Width { get; set; } = 64;
         public float Height { get; set; } = 64;
+        public List<AnimEventData> Events { get; set; } = new();
+    }
+
+    public sealed class AnimEventData
+    {
+        public int Frame { get; set; }
+        public string Name { get; set; } = "";
     }
 
     public sealed class RotatorData

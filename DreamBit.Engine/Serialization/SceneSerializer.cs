@@ -198,7 +198,10 @@ namespace DreamBit.Engine.Serialization
                         Fps = animator.Fps,
                         Loop = animator.Loop,
                         Width = animator.Size.X,
-                        Height = animator.Size.Y
+                        Height = animator.Size.Y,
+                        Events = animator.Events
+                            .Select(ev => new AnimEventData { Frame = ev.Frame, Name = ev.Name })
+                            .ToList()
                     });
                 else if (component is TilemapRenderer tilemap)
                     data.Tilemaps.Add(ToData(tilemap));
@@ -297,7 +300,8 @@ namespace DreamBit.Engine.Serialization
                 obj.AddComponent(new RotatorBehavior { Speed = rotator.Speed });
 
             foreach (var animator in data.Animators)
-                obj.AddComponent(new SpriteAnimator
+            {
+                var anim = new SpriteAnimator
                 {
                     TexturePath = animator.TexturePath,
                     FrameWidth = animator.FrameWidth,
@@ -306,7 +310,10 @@ namespace DreamBit.Engine.Serialization
                     Fps = animator.Fps,
                     Loop = animator.Loop,
                     Size = new Vector2(animator.Width, animator.Height)
-                });
+                };
+                anim.SetEvents(animator.Events.Select(ev => new AnimationFrameEvent(ev.Frame, ev.Name)));
+                obj.AddComponent(anim);
+            }
 
             foreach (var tilemap in data.Tilemaps)
                 obj.AddComponent(FromData(tilemap));

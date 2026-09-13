@@ -329,6 +329,10 @@
                                 </Grid>
                                 <CheckBox Content="Repetir (loop)" Margin="0,6,0,0" Foreground="{DynamicResource TextFg}"
                                           IsChecked="{Binding AnimLoop}" />
+                                <TextBlock Text="Eventos (uma linha 'frame: nome')" Foreground="{DynamicResource MutedFg}" Margin="0,6,0,0" />
+                                <TextBox Text="{Binding AnimEventsText, UpdateSourceTrigger=LostFocus}" AcceptsReturn="True"
+                                         FontFamily="Consolas" Height="60" VerticalScrollBarVisibility="Auto"
+                                         ToolTip="Ex.: 0: passo (dispara ao entrar no frame no play)" />
                             </StackPanel>
                         </Border>
                         <Button Content="+ Sprite Animator" Click="OnAddAnimator" Style="{StaticResource ToolButton}"

@@ -240,6 +240,10 @@
                                     </StackPanel>
                                 </Grid>
                                 <CheckBox Content="Loop" IsChecked="{Binding AnimLoop, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <TextBlock Classes="field" Text="Eventos (uma linha 'frame: nome')" />
+                                <TextBox Text="{Binding AnimEventsText, Mode=TwoWay}" AcceptsReturn="True"
+                                         FontFamily="Consolas,monospace" Height="70" TextWrapping="NoWrap"
+                                         Watermark="0: passo&#10;4: passo" />
                             </StackPanel>
                         </Border>
 
