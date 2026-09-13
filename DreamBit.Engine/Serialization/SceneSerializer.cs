@@ -56,6 +56,15 @@ namespace DreamBit.Engine.Serialization
             return obj;
         }
 
+        /// <summary>Clona um objeto (deep copy via round-trip de dados), com novos Ids —
+        /// pronto para inserir na cena. Usado pelo pool de objetos e por spawns em runtime.</summary>
+        public static GameObject CloneObject(GameObject source)
+        {
+            var obj = FromData(ToData(source));
+            ReassignIds(obj);
+            return obj;
+        }
+
         private static void ReassignIds(GameObject obj)
         {
             obj.Id = System.Guid.NewGuid();
