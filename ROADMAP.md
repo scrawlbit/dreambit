@@ -64,6 +64,10 @@ MonoGame atualizado.
   (pisca ao levar dano). `Scene.Destroy` (remoção adiada segura).
 - **Movimento top-down** (`TopDownController`): 8 direções com colisão sólida, sem gravidade
   (RPG/dungeon/tile); `Input.Vertical()`.
+- **Joints de física** (`Joint2D` sobre Aether): distância (haste/mola), revolute (dobradiça)
+  e weld (solda); conecta dois corpos por tag ou prende num ponto fixo do mundo.
+- **Sombras nas luzes 2D** (`ShadowCaster`): oclusores bloqueiam as `Light2D` — o renderer
+  monta o volume de sombra por luz num render target (sem shader).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -103,7 +107,7 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
   grade e os clipes de sprite já cobrem sprite sheets PNG.
 
 ### Física
-- **Joints** (juntas entre corpos) — raycast e camadas de colisão já existem.
+- **Mais joints** (prismatic/pulley/gear) e motores/limites — distância, revolute e weld já existem.
 
 ### Sistemas de jogo
 - **Prefabs aninhados com overrides** (cenas-como-prefab de Unity/Godot).

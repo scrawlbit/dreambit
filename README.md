@@ -50,6 +50,8 @@ independente, multiplataforma e testada.
 - **Combate**: `Health`, `Hurtbox`/`Hitbox` (dano por time, ativado por evento de frame) e
   `SpriteFlash`; **movimento top-down** (`TopDownController`, 8 direções com colisão) para
   jogos de cima com tile.
+- **Joints** (`Joint2D`: distância/dobradiça/solda) e **sombras nas luzes** (`ShadowCaster`
+  bloqueia as `Light2D`). Todos os componentes são adicionáveis pelo dropdown do editor.
 - **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
   (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
