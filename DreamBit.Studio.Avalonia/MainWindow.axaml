@@ -313,6 +313,7 @@
                             <ComboBoxItem>Platformer</ComboBoxItem>
                             <ComboBoxItem>Colisor</ComboBoxItem>
                             <ComboBoxItem>Câmera</ComboBoxItem>
+                            <ComboBoxItem>Texto</ComboBoxItem>
                             <ComboBoxItem>Áudio</ComboBoxItem>
                             <ComboBoxItem>Partículas</ComboBoxItem>
                             <ComboBoxItem>Trigger</ComboBoxItem>
@@ -557,6 +558,33 @@
                                 <CheckBox Content="Some ao tocar (coletável)" IsChecked="{Binding TriggerDestroyOnEnter, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="Enviar mensagem ao tocar (vazio = nenhuma)" />
                                 <TextBox Text="{Binding TriggerSendOnEnter, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Text -->
+                        <Border Classes="component" IsVisible="{Binding HasText}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Texto" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveText" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Conteúdo" />
+                                <TextBox Text="{Binding TextValue, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,Auto">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Tamanho (px por ponto)" />
+                                        <TextBox Text="{Binding TextPixelSize, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                        <CheckBox Content="HUD (tela)" IsChecked="{Binding TextScreenSpace, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,4,*,4,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding TextR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="G" /><TextBox Text="{Binding TextG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="B" /><TextBox Text="{Binding TextB, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Fonte pixel 3×5 (A-Z 0-9 e símbolos). HUD fica fixo na tela." />
                             </StackPanel>
                         </Border>
 

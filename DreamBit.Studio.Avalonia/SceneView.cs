@@ -81,6 +81,48 @@ namespace DreamBit.Studio.Avalonia
                 DrawColliders(context);
                 DrawSelectionBox(context);
                 DrawGizmos(context);
+                DrawWorldTexts(context);
+            }
+
+            DrawScreenTexts(context); // HUD: fora da transformação de câmera
+        }
+
+        private void DrawWorldTexts(DrawingContext context)
+        {
+            foreach (var obj in _editor!.Scene.VisibleInDrawOrder())
+                foreach (var c in obj.Components)
+                    if (c is TextRenderer t && !t.ScreenSpace)
+                    {
+                        var p = obj.Transform.WorldPosition;
+                        int w = PixelFont.MeasureWidth(t.Text) * t.PixelSize;
+                        int h = PixelFont.GlyphHeight * t.PixelSize;
+                        DrawPixelText(context, t.Text, p.X - w / 2f, p.Y - h / 2f, t.PixelSize, ToColor(t.Color));
+                    }
+        }
+
+        private void DrawScreenTexts(DrawingContext context)
+        {
+            foreach (var obj in _editor!.Scene.VisibleInDrawOrder())
+                foreach (var c in obj.Components)
+                    if (c is TextRenderer t && t.ScreenSpace)
+                    {
+                        var p = obj.Transform.Position;
+                        DrawPixelText(context, t.Text, p.X, p.Y, t.PixelSize, ToColor(t.Color));
+                    }
+        }
+
+        private static void DrawPixelText(DrawingContext context, string text, double ox, double oy, int px, Color color)
+        {
+            var brush = new SolidColorBrush(color);
+            double cursor = 0;
+            foreach (char ch in text)
+            {
+                var glyph = PixelFont.Glyph(ch);
+                for (int row = 0; row < PixelFont.GlyphHeight; row++)
+                    for (int col = 0; col < PixelFont.GlyphWidth; col++)
+                        if (((glyph[row] >> (PixelFont.GlyphWidth - 1 - col)) & 1) != 0)
+                            context.FillRectangle(brush, new Rect(ox + cursor + col * px, oy + row * px, px, px));
+                cursor += (PixelFont.GlyphWidth + PixelFont.Spacing) * px;
             }
         }
 

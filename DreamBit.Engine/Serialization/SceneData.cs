@@ -53,6 +53,7 @@ namespace DreamBit.Engine.Serialization
         public List<BoxColliderData> BoxColliders { get; set; } = new();
         public List<SceneExitData> SceneExits { get; set; } = new();
         public List<CameraData> Cameras { get; set; } = new();
+        public List<TextData> Texts { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -131,6 +132,16 @@ namespace DreamBit.Engine.Serialization
         public float Height { get; set; } = 96f;
         public string TargetTag { get; set; } = "Player";
         public string TargetScene { get; set; } = "";
+    }
+
+    public sealed class TextData
+    {
+        public string Text { get; set; } = "TEXTO";
+        public byte R { get; set; } = 255;
+        public byte G { get; set; } = 255;
+        public byte B { get; set; } = 255;
+        public int PixelSize { get; set; } = 4;
+        public bool ScreenSpace { get; set; }
     }
 
     public sealed class CameraData

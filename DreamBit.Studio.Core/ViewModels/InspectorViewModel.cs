@@ -338,6 +338,30 @@ namespace DreamBit.Studio.ViewModels
             set { var t = Trigger; if (t != null) t.SendOnEnter = value; }
         }
 
+        // ---- Componente TextRenderer ----
+
+        private TextRenderer? Text => _target?.Components.OfType<TextRenderer>().FirstOrDefault();
+        public bool HasText => Text != null;
+
+        public string TextValue
+        {
+            get => Text?.Text ?? string.Empty;
+            set { var t = Text; if (t != null) t.Text = value; }
+        }
+        public int TextPixelSize
+        {
+            get => Text?.PixelSize ?? 4;
+            set { var t = Text; if (t != null) t.PixelSize = value; }
+        }
+        public bool TextScreenSpace
+        {
+            get => Text?.ScreenSpace ?? false;
+            set { var t = Text; if (t != null) t.ScreenSpace = value; }
+        }
+        public int TextR { get => Text?.Color.R ?? 255; set { var t = Text; if (t != null) t.Color = new Color((byte)Clamp(value), t.Color.G, t.Color.B); } }
+        public int TextG { get => Text?.Color.G ?? 255; set { var t = Text; if (t != null) t.Color = new Color(t.Color.R, (byte)Clamp(value), t.Color.B); } }
+        public int TextB { get => Text?.Color.B ?? 255; set { var t = Text; if (t != null) t.Color = new Color(t.Color.R, t.Color.G, (byte)Clamp(value)); } }
+
         // ---- Componente CameraComponent ----
 
         private CameraComponent? Camera => _target?.Components.OfType<CameraComponent>().FirstOrDefault();
@@ -687,6 +711,13 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasListener));
             OnPropertyChanged(nameof(ListenerMessage));
             OnPropertyChanged(nameof(ListenerReaction));
+            OnPropertyChanged(nameof(HasText));
+            OnPropertyChanged(nameof(TextValue));
+            OnPropertyChanged(nameof(TextPixelSize));
+            OnPropertyChanged(nameof(TextScreenSpace));
+            OnPropertyChanged(nameof(TextR));
+            OnPropertyChanged(nameof(TextG));
+            OnPropertyChanged(nameof(TextB));
             OnPropertyChanged(nameof(HasCamera));
             OnPropertyChanged(nameof(CameraTargetTag));
             OnPropertyChanged(nameof(CameraDeadzoneWidth));

@@ -60,6 +60,13 @@ namespace DreamBit.Engine.Rendering
                 DrawSelectionBox(SelectionBox.Value, camera);
 
             _spriteBatch.End();
+
+            // Passe de tela (HUD): fora da transformação de câmera.
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            foreach (var obj in scene.VisibleInDrawOrder())
+                foreach (var component in obj.Components)
+                    component.DrawScreen(this);
+            _spriteBatch.End();
         }
 
         private void DrawSelectionBox((Vector2 Min, Vector2 Max) box, Camera2D camera)

@@ -822,6 +822,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(collider);
         }
 
+        public void AddText()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<TextRenderer>().Any())
+                return;
+
+            var text = new TextRenderer();
+            History.Do(new EditorAction("Adicionar Text",
+                doAction: () => obj.AddComponent(text),
+                undoAction: () => obj.RemoveComponent(text)));
+        }
+
+        public void RemoveText()
+        {
+            var text = SelectedObject?.Components.OfType<TextRenderer>().FirstOrDefault();
+            if (text != null)
+                RemoveComponent(text);
+        }
+
         public void AddCamera()
         {
             var obj = SelectedObject;
@@ -933,6 +952,9 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case SceneExit se:
                         clone.AddComponent(new SceneExit { Size = se.Size, TargetTag = se.TargetTag, TargetScene = se.TargetScene });
+                        break;
+                    case TextRenderer tr:
+                        clone.AddComponent(new TextRenderer { Text = tr.Text, Color = tr.Color, PixelSize = tr.PixelSize, ScreenSpace = tr.ScreenSpace });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

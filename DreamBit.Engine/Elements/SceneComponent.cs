@@ -22,5 +22,8 @@ namespace DreamBit.Engine.Elements
         protected internal virtual void Update(GameTime gameTime) { }
 
         protected internal virtual void Draw(ISceneDrawing drawing) { }
+
+        /// <summary>Desenho em espaço de tela (HUD), fora da transformação de câmera.</summary>
+        protected internal virtual void DrawScreen(ISceneDrawing drawing) { }
     }
 }

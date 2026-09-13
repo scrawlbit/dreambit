@@ -480,6 +480,7 @@ namespace DreamBit.Studio.Avalonia
                 "Platformer" => _editor.AddPlatformer,
                 "Colisor" => _editor.AddCollider,
                 "Câmera" => _editor.AddCamera,
+                "Texto" => _editor.AddText,
                 "Áudio" => _editor.AddAudio,
                 "Partículas" => _editor.AddParticles,
                 "Trigger" => _editor.AddTrigger,
@@ -523,6 +524,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveTrigger(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTrigger);
         private void OnRemoveMessageListener(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveMessageListener);
         private void OnRemoveCamera(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveCamera);
+        private void OnRemoveText(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveText);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

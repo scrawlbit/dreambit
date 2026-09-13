@@ -316,6 +316,14 @@ namespace DreamBit.Engine.Serialization
                         TargetTag = exit.TargetTag,
                         TargetScene = exit.TargetScene
                     });
+                else if (component is TextRenderer text)
+                    data.Texts.Add(new TextData
+                    {
+                        Text = text.Text,
+                        R = text.Color.R, G = text.Color.G, B = text.Color.B,
+                        PixelSize = text.PixelSize,
+                        ScreenSpace = text.ScreenSpace
+                    });
                 else if (component is CameraComponent cam)
                     data.Cameras.Add(new CameraData
                     {
@@ -512,6 +520,15 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(exit.Width, exit.Height),
                     TargetTag = exit.TargetTag,
                     TargetScene = exit.TargetScene
+                });
+
+            foreach (var text in data.Texts)
+                obj.AddComponent(new TextRenderer
+                {
+                    Text = text.Text,
+                    Color = new Color(text.R, text.G, text.B),
+                    PixelSize = text.PixelSize,
+                    ScreenSpace = text.ScreenSpace
                 });
 
             foreach (var cam in data.Cameras)
