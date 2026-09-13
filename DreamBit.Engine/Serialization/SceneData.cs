@@ -50,6 +50,7 @@ namespace DreamBit.Engine.Serialization
         public List<SkeletonData> Skeletons { get; set; } = new();
         public List<MessageListenerData> MessageListeners { get; set; } = new();
         public List<BoxColliderData> BoxColliders { get; set; } = new();
+        public List<SceneExitData> SceneExits { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -120,6 +121,14 @@ namespace DreamBit.Engine.Serialization
         public float Height { get; set; } = 64f;
         public float OffsetX { get; set; }
         public float OffsetY { get; set; }
+    }
+
+    public sealed class SceneExitData
+    {
+        public float Width { get; set; } = 48f;
+        public float Height { get; set; } = 96f;
+        public string TargetTag { get; set; } = "Player";
+        public string TargetScene { get; set; } = "";
     }
 
     public sealed class TilemapData

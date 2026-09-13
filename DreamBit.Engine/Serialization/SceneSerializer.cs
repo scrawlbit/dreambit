@@ -307,6 +307,14 @@ namespace DreamBit.Engine.Serialization
                         OffsetX = box.Offset.X,
                         OffsetY = box.Offset.Y
                     });
+                else if (component is SceneExit exit)
+                    data.SceneExits.Add(new SceneExitData
+                    {
+                        Width = exit.Size.X,
+                        Height = exit.Size.Y,
+                        TargetTag = exit.TargetTag,
+                        TargetScene = exit.TargetScene
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -483,6 +491,14 @@ namespace DreamBit.Engine.Serialization
                 {
                     Size = new Vector2(box.Width, box.Height),
                     Offset = new Vector2(box.OffsetX, box.OffsetY)
+                });
+
+            foreach (var exit in data.SceneExits)
+                obj.AddComponent(new SceneExit
+                {
+                    Size = new Vector2(exit.Width, exit.Height),
+                    TargetTag = exit.TargetTag,
+                    TargetScene = exit.TargetScene
                 });
 
             foreach (var childData in data.Children)

@@ -31,10 +31,14 @@ namespace DreamBit.Player
             Window.Title = "DreamBit Player";
         }
 
+        private string? _sceneFolder;
+
         protected override void LoadContent()
         {
             _renderer.Initialize(GraphicsDevice);
             _renderer.ShowGrid = false;
+
+            _sceneFolder = _scenePath != null ? Path.GetDirectoryName(_scenePath) : null;
 
             _scene = _scenePath != null && File.Exists(_scenePath)
                 ? SceneSerializer.Load(_scenePath)
@@ -47,12 +51,30 @@ namespace DreamBit.Player
         {
             _scene.Update(gameTime);
 
+            // Transição de fase: um SceneExit pediu para carregar outra cena.
+            if (_scene.PendingSceneLoad is { } next)
+                LoadNextScene(next);
+
             // Câmera segue o personagem (primeiro objeto com PlatformerController).
             var target = FindPlayer(_scene.Objects);
             if (target != null)
                 _camera.Position = target.Transform.WorldPosition;
 
             base.Update(gameTime);
+        }
+
+        private void LoadNextScene(string sceneFile)
+        {
+            var path = _sceneFolder != null ? Path.Combine(_sceneFolder, sceneFile) : sceneFile;
+            if (!File.Exists(path))
+            {
+                _scene.ClearPendingSceneLoad();
+                return;
+            }
+
+            _scene = SceneSerializer.Load(path);
+            _scene.StartPlay();
+            Window.Title = "DreamBit Player — " + Path.GetFileNameWithoutExtension(path);
         }
 
         private static GameObject? FindPlayer(System.Collections.Generic.IEnumerable<GameObject> objects)

@@ -97,6 +97,21 @@ namespace DreamBit.Engine.Elements
                 _messages.Enqueue(new Messaging.GameMessage(name, sender));
         }
 
+        // ---- transição de fase ----
+
+        /// <summary>Arquivo de cena solicitado para carregar (transição de fase), ou null.
+        /// O host (Player) verifica após o Update e troca de cena.</summary>
+        public string? PendingSceneLoad { get; private set; }
+
+        /// <summary>Solicita carregar outra fase (arquivo .dbscene, relativo à pasta atual).</summary>
+        public void RequestSceneLoad(string sceneFile)
+        {
+            if (!string.IsNullOrWhiteSpace(sceneFile))
+                PendingSceneLoad = sceneFile;
+        }
+
+        public void ClearPendingSceneLoad() => PendingSceneLoad = null;
+
         public void Update(GameTime gameTime)
         {
             foreach (var gameObject in _objects)

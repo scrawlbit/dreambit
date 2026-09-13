@@ -912,6 +912,9 @@ namespace DreamBit.Studio.ViewModels
                     case BoxCollider bc:
                         clone.AddComponent(new BoxCollider { Size = bc.Size, Offset = bc.Offset });
                         break;
+                    case SceneExit se:
+                        clone.AddComponent(new SceneExit { Size = se.Size, TargetTag = se.TargetTag, TargetScene = se.TargetScene });
+                        break;
                     case AudioSource au:
                         clone.AddComponent(new AudioSource
                         {
