@@ -55,6 +55,7 @@ namespace DreamBit.Engine.Serialization
         public List<CameraData> Cameras { get; set; } = new();
         public List<TextData> Texts { get; set; } = new();
         public List<TweenData> Tweens { get; set; } = new();
+        public List<AnimatorControllerData> AnimatorControllers { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -133,6 +134,13 @@ namespace DreamBit.Engine.Serialization
         public float Height { get; set; } = 96f;
         public string TargetTag { get; set; } = "Player";
         public string TargetScene { get; set; } = "";
+    }
+
+    public sealed class AnimatorControllerData
+    {
+        public string IdleClip { get; set; } = "idle";
+        public string WalkClip { get; set; } = "walk";
+        public string JumpClip { get; set; } = "jump";
     }
 
     public sealed class TweenData

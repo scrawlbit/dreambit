@@ -362,6 +362,14 @@ namespace DreamBit.Studio.ViewModels
             set { var t = Trigger; if (t != null) t.SendOnEnter = value; }
         }
 
+        // ---- Componente AnimatorController ----
+
+        private AnimatorController? AnimController => _target?.Components.OfType<AnimatorController>().FirstOrDefault();
+        public bool HasAnimController => AnimController != null;
+        public string CtrlIdleClip { get => AnimController?.IdleClip ?? string.Empty; set { var c = AnimController; if (c != null) c.IdleClip = value; } }
+        public string CtrlWalkClip { get => AnimController?.WalkClip ?? string.Empty; set { var c = AnimController; if (c != null) c.WalkClip = value; } }
+        public string CtrlJumpClip { get => AnimController?.JumpClip ?? string.Empty; set { var c = AnimController; if (c != null) c.JumpClip = value; } }
+
         // ---- Componente TweenComponent ----
 
         private TweenComponent? Tween => _target?.Components.OfType<TweenComponent>().FirstOrDefault();
@@ -750,6 +758,10 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasListener));
             OnPropertyChanged(nameof(ListenerMessage));
             OnPropertyChanged(nameof(ListenerReaction));
+            OnPropertyChanged(nameof(HasAnimController));
+            OnPropertyChanged(nameof(CtrlIdleClip));
+            OnPropertyChanged(nameof(CtrlWalkClip));
+            OnPropertyChanged(nameof(CtrlJumpClip));
             OnPropertyChanged(nameof(HasTween));
             OnPropertyChanged(nameof(TweenChannel));
             OnPropertyChanged(nameof(TweenLoop));

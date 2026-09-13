@@ -316,6 +316,11 @@ namespace DreamBit.Engine.Serialization
                         TargetTag = exit.TargetTag,
                         TargetScene = exit.TargetScene
                     });
+                else if (component is AnimatorController animCtrl)
+                    data.AnimatorControllers.Add(new AnimatorControllerData
+                    {
+                        IdleClip = animCtrl.IdleClip, WalkClip = animCtrl.WalkClip, JumpClip = animCtrl.JumpClip
+                    });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -528,6 +533,12 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(exit.Width, exit.Height),
                     TargetTag = exit.TargetTag,
                     TargetScene = exit.TargetScene
+                });
+
+            foreach (var ac in data.AnimatorControllers)
+                obj.AddComponent(new AnimatorController
+                {
+                    IdleClip = ac.IdleClip, WalkClip = ac.WalkClip, JumpClip = ac.JumpClip
                 });
 
             foreach (var tween in data.Tweens)

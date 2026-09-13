@@ -492,6 +492,7 @@ namespace DreamBit.Studio.Avalonia
                 "Tween" => _editor.AddTween,
                 "Bone" => _editor.AddBone,
                 "Skeleton" => _editor.AddSkeleton,
+                "Animator Controller" => _editor.AddAnimatorController,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -529,6 +530,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveCamera(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveCamera);
         private void OnRemoveText(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveText);
         private void OnRemoveTween(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTween);
+        private void OnRemoveAnimatorController(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAnimatorController);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

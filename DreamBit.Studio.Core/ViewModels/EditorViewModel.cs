@@ -822,6 +822,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(collider);
         }
 
+        public void AddAnimatorController()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<AnimatorController>().Any())
+                return;
+
+            var ctrl = new AnimatorController();
+            History.Do(new EditorAction("Adicionar Animator Controller",
+                doAction: () => obj.AddComponent(ctrl),
+                undoAction: () => obj.RemoveComponent(ctrl)));
+        }
+
+        public void RemoveAnimatorController()
+        {
+            var ctrl = SelectedObject?.Components.OfType<AnimatorController>().FirstOrDefault();
+            if (ctrl != null)
+                RemoveComponent(ctrl);
+        }
+
         public void AddTween()
         {
             var obj = SelectedObject;
@@ -981,6 +1000,9 @@ namespace DreamBit.Studio.ViewModels
                             Channel = tw.Channel, From = tw.From, To = tw.To, Duration = tw.Duration,
                             Easing = tw.Easing, Loop = tw.Loop, PlayOnStart = tw.PlayOnStart
                         });
+                        break;
+                    case AnimatorController ac:
+                        clone.AddComponent(new AnimatorController { IdleClip = ac.IdleClip, WalkClip = ac.WalkClip, JumpClip = ac.JumpClip });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

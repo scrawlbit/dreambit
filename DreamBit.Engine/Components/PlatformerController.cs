@@ -24,8 +24,18 @@ namespace DreamBit.Engine.Components
 
         private float _velocityY;
         private bool _grounded;
+        private float _currentVx;
 
         public override string DisplayName => "Platformer Controller";
+
+        /// <summary>True quando está no chão (para máquina de estados de animação).</summary>
+        public bool Grounded => _grounded;
+
+        /// <summary>Velocidade horizontal atual (px/s) neste frame.</summary>
+        public float CurrentVelocityX => _currentVx;
+
+        /// <summary>True se está se movendo na horizontal.</summary>
+        public bool IsMovingHorizontally => System.Math.Abs(_currentVx) > 1f;
 
         /// <summary>Aceleração da gravidade (px/s²).</summary>
         public float Gravity { get => _gravity; set => Set(ref _gravity, value); }
@@ -75,6 +85,7 @@ namespace DreamBit.Engine.Components
                 }
             }
 
+            _currentVx = vx;
             var scene = Owner.Scene;
             var solids = CollectSolids(scene);
 

@@ -323,6 +323,7 @@
                             <ComboBoxItem>Tween</ComboBoxItem>
                             <ComboBoxItem>Bone</ComboBoxItem>
                             <ComboBoxItem>Skeleton</ComboBoxItem>
+                            <ComboBoxItem>Animator Controller</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -565,6 +566,23 @@
                                 <CheckBox Content="Some ao tocar (coletável)" IsChecked="{Binding TriggerDestroyOnEnter, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="Enviar mensagem ao tocar (vazio = nenhuma)" />
                                 <TextBox Text="{Binding TriggerSendOnEnter, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Animator Controller -->
+                        <Border Classes="component" IsVisible="{Binding HasAnimController}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Animator Controller" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAnimatorController" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Clipe parado (idle)" />
+                                <TextBox Text="{Binding CtrlIdleClip, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Clipe andando (walk)" />
+                                <TextBox Text="{Binding CtrlWalkClip, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Clipe no ar (jump)" />
+                                <TextBox Text="{Binding CtrlJumpClip, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Troca o clipe do Skeleton conforme o estado do Platformer." />
                             </StackPanel>
                         </Border>
 
