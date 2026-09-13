@@ -263,6 +263,8 @@ namespace DreamBit.Engine.Serialization
         public bool Loop { get; set; } = true;
         public float Width { get; set; } = 64;
         public float Height { get; set; } = 64;
+        /// <summary>Frames explícitos em quádruplas planas: x0,y0,w0,h0, x1,... (vazio = grade uniforme).</summary>
+        public int[] Frames { get; set; } = System.Array.Empty<int>();
         public List<AnimEventData> Events { get; set; } = new();
     }
 

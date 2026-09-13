@@ -56,6 +56,28 @@ namespace DreamBit.Engine.Serialization
             return obj;
         }
 
+        /// <summary>Retângulos de frame → array plano [x,y,w,h, ...] (para serialização compacta).</summary>
+        private static int[] FramesToFlat(System.Collections.Generic.IReadOnlyList<Rectangle> frames)
+        {
+            var flat = new int[frames.Count * 4];
+            for (int i = 0; i < frames.Count; i++)
+            {
+                flat[i * 4] = frames[i].X;
+                flat[i * 4 + 1] = frames[i].Y;
+                flat[i * 4 + 2] = frames[i].Width;
+                flat[i * 4 + 3] = frames[i].Height;
+            }
+            return flat;
+        }
+
+        private static System.Collections.Generic.IEnumerable<Rectangle> FramesFromFlat(int[] flat)
+        {
+            if (flat == null)
+                yield break;
+            for (int i = 0; i + 3 < flat.Length; i += 4)
+                yield return new Rectangle(flat[i], flat[i + 1], flat[i + 2], flat[i + 3]);
+        }
+
         /// <summary>Clona um objeto (deep copy via round-trip de dados), com novos Ids —
         /// pronto para inserir na cena. Usado pelo pool de objetos e por spawns em runtime.</summary>
         public static GameObject CloneObject(GameObject source)
@@ -234,6 +256,7 @@ namespace DreamBit.Engine.Serialization
                         Loop = animator.Loop,
                         Width = animator.Size.X,
                         Height = animator.Size.Y,
+                        Frames = FramesToFlat(animator.Frames),
                         Events = animator.Events
                             .Select(ev => new AnimEventData { Frame = ev.Frame, Name = ev.Name })
                             .ToList()
@@ -452,6 +475,7 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(animator.Width, animator.Height)
                 };
                 anim.SetEvents(animator.Events.Select(ev => new AnimationFrameEvent(ev.Frame, ev.Name)));
+                anim.SetFrames(FramesFromFlat(animator.Frames));
                 obj.AddComponent(anim);
             }
 

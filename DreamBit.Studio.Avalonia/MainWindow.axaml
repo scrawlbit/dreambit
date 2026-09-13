@@ -398,6 +398,15 @@
                                     <TextBox Grid.Column="2" Text="{Binding AnimRows, Mode=TwoWay}" />
                                     <Button Grid.Column="4" Content="Fatiar" Click="OnSliceAnimator" />
                                 </Grid>
+                                <Grid ColumnDefinitions="*,6,Auto" Margin="0,4,0,0">
+                                    <Button Grid.Column="0" Content="Autodetectar frames (transparência)"
+                                            Click="OnAutoDetectFrames" HorizontalAlignment="Stretch" />
+                                    <Button Grid.Column="2" Content="Limpar" Click="OnClearDetectedFrames"
+                                            IsVisible="{Binding AnimUsesDetectedFrames}" />
+                                </Grid>
+                                <TextBlock Classes="field" IsVisible="{Binding AnimUsesDetectedFrames}"
+                                           Text="{Binding AnimDetectedFrames, StringFormat='{}{0} frames detectados (tamanhos variados)'}" />
+                                <TextBlock Classes="field" Text="Para frames de tamanhos diferentes, use a autodetecção." />
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Classes="field" Text="Frame W" />

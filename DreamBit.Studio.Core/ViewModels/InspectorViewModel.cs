@@ -201,6 +201,29 @@ namespace DreamBit.Studio.ViewModels
             set { var a = Animator; if (a != null) a.Loop = value; }
         }
 
+        /// <summary>Quantos frames explícitos (detectados) o animator usa; 0 = grade uniforme.</summary>
+        public int AnimDetectedFrames => Animator?.Frames.Count ?? 0;
+        public bool AnimUsesDetectedFrames => AnimDetectedFrames > 0;
+
+        /// <summary>Aplica frames explícitos (autodetecção por transparência). Vazio volta à grade.</summary>
+        public void ApplyDetectedFrames(System.Collections.Generic.IReadOnlyList<Rectangle> rects)
+        {
+            var a = Animator;
+            if (a == null)
+                return;
+            a.SetFrames(rects);
+            if (rects.Count > 0)
+                a.FrameCount = rects.Count;
+            Refresh();
+        }
+
+        /// <summary>Descarta os frames detectados e volta à grade uniforme.</summary>
+        public void ClearDetectedFrames()
+        {
+            Animator?.SetFrames(System.Array.Empty<Rectangle>());
+            Refresh();
+        }
+
         // Fatiador por grade: informa colunas×linhas e deduz frame width/height/count da imagem.
         private int _animCols = 1;
         private int _animRows = 1;
@@ -997,6 +1020,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(AnimFrameWidth));
             OnPropertyChanged(nameof(AnimFrameHeight));
             OnPropertyChanged(nameof(AnimFrameCount));
+            OnPropertyChanged(nameof(AnimDetectedFrames));
+            OnPropertyChanged(nameof(AnimUsesDetectedFrames));
             OnPropertyChanged(nameof(AnimFps));
             OnPropertyChanged(nameof(AnimLoop));
             OnPropertyChanged(nameof(AnimEventsText));

@@ -28,8 +28,28 @@ namespace DreamBit.Engine.Components
         private int _currentFrame;
         private double _accumulator;
         private readonly Dictionary<int, string> _frameEvents = new();
+        private readonly List<Rectangle> _frames = new();
 
         public override string DisplayName => "Sprite Animator";
+
+        /// <summary>Retângulos de origem explícitos (frames de tamanhos diferentes). Quando não
+        /// vazio, têm prioridade sobre a grade uniforme — preenchidos pela autodetecção.</summary>
+        public IReadOnlyList<Rectangle> Frames => _frames;
+
+        /// <summary>Define os frames explícitos (substitui). Vazio volta para a grade uniforme.</summary>
+        public void SetFrames(IEnumerable<Rectangle> frames)
+        {
+            _frames.Clear();
+            if (frames != null)
+                _frames.AddRange(frames);
+            _currentFrame = 0;
+            _accumulator = 0;
+            OnPropertyChanged(nameof(Frames));
+            OnPropertyChanged(nameof(EffectiveFrameCount));
+        }
+
+        /// <summary>Número de frames em uso: os explícitos, se houver, senão <see cref="FrameCount"/>.</summary>
+        public int EffectiveFrameCount => _frames.Count > 0 ? _frames.Count : _frameCount;
 
         /// <summary>Disparado quando a animação entra em um frame que tem um evento associado.</summary>
         public event Action<string>? AnimationEvent;
@@ -67,7 +87,8 @@ namespace DreamBit.Engine.Components
         /// <summary>Avança a animação por um intervalo de tempo (lógica pura, testável).</summary>
         public void Advance(double deltaSeconds)
         {
-            if (_fps <= 0f || _frameCount <= 1)
+            int total = EffectiveFrameCount;
+            if (_fps <= 0f || total <= 1)
                 return;
 
             _accumulator += deltaSeconds;
@@ -78,7 +99,7 @@ namespace DreamBit.Engine.Components
                 _accumulator -= frameTime;
                 _currentFrame++;
 
-                if (_currentFrame >= _frameCount)
+                if (_currentFrame >= total)
                 {
                     if (_loop)
                     {
@@ -87,7 +108,7 @@ namespace DreamBit.Engine.Components
                     else
                     {
                         // Segura no último frame (já disparado ao entrar nele); não re-dispara.
-                        _currentFrame = _frameCount - 1;
+                        _currentFrame = total - 1;
                         _accumulator = 0;
                         break;
                     }
@@ -118,12 +139,21 @@ namespace DreamBit.Engine.Components
                 return;
             }
 
-            int columns = Math.Max(1, texture.Width / _frameWidth);
-            int frame = Math.Clamp(_currentFrame, 0, _frameCount - 1);
-            int col = frame % columns;
-            int row = frame / columns;
+            Rectangle source;
+            if (_frames.Count > 0)
+            {
+                // Frames explícitos (tamanhos diferentes): usa o retângulo detectado.
+                source = _frames[Math.Clamp(_currentFrame, 0, _frames.Count - 1)];
+            }
+            else
+            {
+                int columns = Math.Max(1, texture.Width / _frameWidth);
+                int frame = Math.Clamp(_currentFrame, 0, _frameCount - 1);
+                int col = frame % columns;
+                int row = frame / columns;
+                source = new Rectangle(col * _frameWidth, row * _frameHeight, _frameWidth, _frameHeight);
+            }
 
-            var source = new Rectangle(col * _frameWidth, row * _frameHeight, _frameWidth, _frameHeight);
             drawing.DrawFrame(Owner.Transform.WorldMatrix, _size, Color.White, texture, source);
         }
     }

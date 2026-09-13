@@ -467,11 +467,21 @@ namespace DreamBit.Studio.Avalonia
                     if (bmp == null)
                         return false;
 
-                    int columns = Math.Max(1, bmp.PixelSize.Width / Math.Max(1, anim.FrameWidth));
-                    int frame = Math.Clamp(anim.CurrentFrame, 0, Math.Max(0, anim.FrameCount - 1));
-                    int col = frame % columns;
-                    int row = frame / columns;
-                    var src = new Rect(col * anim.FrameWidth, row * anim.FrameHeight, anim.FrameWidth, anim.FrameHeight);
+                    Rect src;
+                    if (anim.Frames.Count > 0)
+                    {
+                        // Frames explícitos (autodetectados, tamanhos variados).
+                        var r = anim.Frames[Math.Clamp(anim.CurrentFrame, 0, anim.Frames.Count - 1)];
+                        src = new Rect(r.X, r.Y, r.Width, r.Height);
+                    }
+                    else
+                    {
+                        int columns = Math.Max(1, bmp.PixelSize.Width / Math.Max(1, anim.FrameWidth));
+                        int frame = Math.Clamp(anim.CurrentFrame, 0, Math.Max(0, anim.FrameCount - 1));
+                        int col = frame % columns;
+                        int row = frame / columns;
+                        src = new Rect(col * anim.FrameWidth, row * anim.FrameHeight, anim.FrameWidth, anim.FrameHeight);
+                    }
                     context.DrawImage(bmp, src, rect);
                     return true;
                 }

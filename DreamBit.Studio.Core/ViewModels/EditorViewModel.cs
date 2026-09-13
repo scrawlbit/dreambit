@@ -1069,6 +1069,7 @@ namespace DreamBit.Studio.ViewModels
                             FrameCount = a.FrameCount, Fps = a.Fps, Loop = a.Loop, Size = a.Size
                         };
                         animClone.SetEvents(a.Events);
+                        animClone.SetFrames(a.Frames);
                         clone.AddComponent(animClone);
                         break;
                     case TilemapRenderer t:

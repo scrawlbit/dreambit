@@ -250,6 +250,23 @@ namespace DreamBit.Studio.Avalonia
 
         private void OnSliceAnimator(object? sender, RoutedEventArgs e) => _editor.Inspector.SliceAnimatorGrid();
 
+        private void OnAutoDetectFrames(object? sender, RoutedEventArgs e)
+        {
+            var path = _editor.Inspector.AnimTexturePath;
+            if (PngMask.TryLoad(path, out var opaque, out int w, out int h))
+            {
+                var rects = DreamBit.Engine.Rendering.FrameDetector.Detect(opaque, w, h);
+                _editor.Inspector.ApplyDetectedFrames(rects);
+                InvalidateScene();
+            }
+        }
+
+        private void OnClearDetectedFrames(object? sender, RoutedEventArgs e)
+        {
+            _editor.Inspector.ClearDetectedFrames();
+            InvalidateScene();
+        }
+
         private async void OnPickSound(object? sender, RoutedEventArgs e)
         {
             var path = await PickOpenFileAsync("Escolher som", "Som WAV", "*.wav");
