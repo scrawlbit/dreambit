@@ -621,6 +621,8 @@ namespace DreamBit.Studio.ViewModels
         public float RigidbodyFriction { get => Rigidbody?.Friction ?? 0.3f; set { var r = Rigidbody; if (r != null) r.Friction = value; } }
         public float RigidbodyRestitution { get => Rigidbody?.Restitution ?? 0f; set { var r = Rigidbody; if (r != null) r.Restitution = value; } }
         public bool RigidbodyFixedRotation { get => Rigidbody?.FixedRotation ?? false; set { var r = Rigidbody; if (r != null) r.FixedRotation = value; } }
+        public int RigidbodyCategory { get => Rigidbody?.CollisionCategory ?? 1; set { var r = Rigidbody; if (r != null) r.CollisionCategory = value; } }
+        public int RigidbodyMask { get => Rigidbody?.CollidesWith ?? -1; set { var r = Rigidbody; if (r != null) r.CollidesWith = value; } }
 
         // ---- Componente TimerComponent (timer) ----
 
@@ -1123,6 +1125,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(RigidbodyFriction));
             OnPropertyChanged(nameof(RigidbodyRestitution));
             OnPropertyChanged(nameof(RigidbodyFixedRotation));
+            OnPropertyChanged(nameof(RigidbodyCategory));
+            OnPropertyChanged(nameof(RigidbodyMask));
             OnPropertyChanged(nameof(HasTimer));
             OnPropertyChanged(nameof(TimerDuration));
             OnPropertyChanged(nameof(TimerRepeat));

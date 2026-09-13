@@ -443,7 +443,8 @@ namespace DreamBit.Engine.Serialization
                         Shape = (int)rb.Shape,
                         Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
                         Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution,
-                        FixedRotation = rb.FixedRotation
+                        FixedRotation = rb.FixedRotation,
+                        CollisionCategory = rb.CollisionCategory, CollidesWith = rb.CollidesWith
                     });
             }
 
@@ -734,7 +735,8 @@ namespace DreamBit.Engine.Serialization
                     Shape = (ColliderShape)rb.Shape,
                     Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
                     Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution,
-                    FixedRotation = rb.FixedRotation
+                    FixedRotation = rb.FixedRotation,
+                    CollisionCategory = rb.CollisionCategory, CollidesWith = rb.CollidesWith
                 });
 
             foreach (var childData in data.Children)

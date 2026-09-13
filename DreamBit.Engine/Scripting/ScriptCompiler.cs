@@ -31,6 +31,7 @@ namespace DreamBit.Engine.Scripting
             "using DreamBit.Engine.Localization;\n" +
             "using DreamBit.Engine.Data;\n" +
             "using DreamBit.Engine.Animation;\n" +
+            "using DreamBit.Engine.Physics2D;\n" +
             "using Scrawlbit;\n" +
             "using Microsoft.Xna.Framework;\n";
 

@@ -815,6 +815,16 @@
                                     </StackPanel>
                                 </Grid>
                                 <CheckBox Content="Travar rotação (personagem)" IsChecked="{Binding RigidbodyFixedRotation, Mode=TwoWay}" Margin="0,4,0,0" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Categoria (bits)" />
+                                        <TextBox Text="{Binding RigidbodyCategory, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Colide com (máscara, -1 = tudo)" />
+                                        <TextBox Text="{Binding RigidbodyMask, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
                                 <TextBlock Classes="field" Text="Física real (gravidade/colisão/impulso). Alternativa ao Platformer Controller." />
                             </StackPanel>
                         </Border>

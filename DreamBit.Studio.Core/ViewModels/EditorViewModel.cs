@@ -1238,7 +1238,8 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new Rigidbody2D
                         {
                             Kind = rb.Kind, Shape = rb.Shape, Width = rb.Width, Height = rb.Height, Radius = rb.Radius,
-                            Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution, FixedRotation = rb.FixedRotation
+                            Density = rb.Density, Friction = rb.Friction, Restitution = rb.Restitution, FixedRotation = rb.FixedRotation,
+                            CollisionCategory = rb.CollisionCategory, CollidesWith = rb.CollidesWith
                         });
                         break;
                     case PropertyAnimator pa:

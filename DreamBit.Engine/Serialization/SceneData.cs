@@ -198,6 +198,8 @@ namespace DreamBit.Engine.Serialization
         public float Friction { get; set; } = 0.3f;
         public float Restitution { get; set; }
         public bool FixedRotation { get; set; }
+        public int CollisionCategory { get; set; } = 1;
+        public int CollidesWith { get; set; } = -1;
     }
 
     public sealed class UiLayoutData

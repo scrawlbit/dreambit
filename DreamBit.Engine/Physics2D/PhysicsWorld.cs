@@ -46,6 +46,37 @@ namespace DreamBit.Engine.Physics2D
                 body.SyncFromBody();
         }
 
+        /// <summary>
+        /// Lança um raio (em pixels) e retorna o primeiro corpo atingido, ou null. O ponto e a
+        /// normal voltam em pixels. Útil para tiros, sensores de chão, linha de visão.
+        /// </summary>
+        public RaycastHit? Raycast(Vector2 fromPixels, Vector2 toPixels)
+        {
+            var a = ToMeters(fromPixels);
+            var b = ToMeters(toPixels);
+            if (a == b)
+                return null;
+
+            RaycastHit? best = null;
+            float bestFraction = float.MaxValue;
+
+            _world.RayCast((fixture, point, normal, fraction) =>
+            {
+                if (fraction < bestFraction)
+                {
+                    bestFraction = fraction;
+                    best = new RaycastHit(
+                        ToPixels(point),
+                        new Vector2(normal.X, normal.Y),
+                        fixture.Body.Tag as Rigidbody2D,
+                        fraction);
+                }
+                return fraction; // limita ao mais próximo
+            }, a, b);
+
+            return best;
+        }
+
         // ---- conversões pixel ↔ metro ----
         public static AVector2 ToMeters(Vector2 pixels) => new(pixels.X / PixelsPerMeter, pixels.Y / PixelsPerMeter);
         public static Vector2 ToPixels(AVector2 meters) => new(meters.X * PixelsPerMeter, meters.Y * PixelsPerMeter);

@@ -29,6 +29,8 @@ namespace DreamBit.Engine.Components
         private float _friction = 0.3f;
         private float _restitution = 0f;
         private bool _fixedRotation;
+        private int _category = 1;
+        private int _mask = -1;
 
         private Body? _body;
 
@@ -45,6 +47,11 @@ namespace DreamBit.Engine.Components
         public float Restitution { get => _restitution; set => Set(ref _restitution, value); }
         /// <summary>Impede o corpo de girar (útil para personagens).</summary>
         public bool FixedRotation { get => _fixedRotation; set => Set(ref _fixedRotation, value); }
+
+        /// <summary>Categorias de colisão às quais este corpo pertence (bits). Padrão 1.</summary>
+        public int CollisionCategory { get => _category; set => Set(ref _category, value); }
+        /// <summary>Categorias com que este corpo colide (máscara de bits). Padrão -1 (todas).</summary>
+        public int CollidesWith { get => _mask; set => Set(ref _mask, value); }
 
         /// <summary>Velocidade linear em pixels/s (para scripts).</summary>
         public Vector2 LinearVelocity
@@ -69,12 +76,15 @@ namespace DreamBit.Engine.Components
             var pos = PhysicsWorld.ToMeters(Owner!.Transform.Position);
             _body = world.Raw.CreateBody(pos, Owner.Transform.Rotation, MapKind());
             _body.FixedRotation = _fixedRotation;
+            _body.Tag = this; // permite recuperar o Rigidbody2D a partir do corpo (ex.: raycast)
 
             Fixture fixture = _shape == ColliderShape.Circle
                 ? _body.CreateCircle(PhysicsWorld.ToMeters(_radius), _density)
                 : _body.CreateRectangle(PhysicsWorld.ToMeters(_width), PhysicsWorld.ToMeters(_height), _density, AVector2.Zero);
             fixture.Friction = _friction;
             fixture.Restitution = _restitution;
+            fixture.CollisionCategories = (Category)_category;
+            fixture.CollidesWith = (Category)_mask;
 
             world.Register(this);
         }
