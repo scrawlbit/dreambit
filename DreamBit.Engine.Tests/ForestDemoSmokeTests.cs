@@ -98,6 +98,18 @@ namespace DreamBit.Engine.Tests
             float enemyDist1 = Vector2.Distance(enemy.Transform.Position, hero.Transform.Position);
             Assert.IsTrue(enemyDist1 < enemyDist0 - 20f, $"inimigo se aproximou ({enemyDist0:0}->{enemyDist1:0})");
 
+            // 6b) Combate: encosta o inimigo e ataca — o evento do golpe ativa a hitbox e fere.
+            var enemyHp = enemy.Components.OfType<Health>().Single();
+            float enemyHpBefore = enemyHp.Current;
+            GameInput.Update(); GameInput.HoldAction("Action"); scene.Update(Frame(0.016));
+            for (int i = 0; i < 40; i++)
+            {
+                enemy.Transform.Position = hero.Transform.Position + new Vector2(90, 0); // mantém encostado
+                Step(scene);
+            }
+            Assert.IsTrue(enemyHp.Current < enemyHpBefore,
+                $"o golpe do herói feriu o inimigo ({enemyHpBefore:0}->{enemyHp.Current:0})");
+
             // 7) Física rígida: as caixas caem e assentam.
             var topCrate = Find(scene, "Caixa2");
             Assert.IsTrue(topCrate.Transform.Position.Y > 260f, "caixa dinâmica caiu sob gravidade");

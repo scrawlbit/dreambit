@@ -140,7 +140,12 @@ namespace DreamBit.Engine.Tests.Demo
             foreach (var (name, start, count, fps, loop) in Clips)
                 anim.AddClip(SpriteClip.Range(name, start, count, fps, loop));
             anim.Play("idle");
+            // Evento no frame do golpe (dentro do clipe attack) que ativa a hitbox.
+            anim.SetEvents(new[] { new AnimationFrameEvent(135, "hit") });
             hero.AddComponent(anim);
+
+            // Hitbox de ataque (time 0), ativada pelo evento "hit" do clipe de ataque.
+            hero.AddComponent(new Hitbox { Team = 0, Damage = 20f, Width = 150f, Height = 170f, Offset = new Vector2(80, 0), ActivateOn = "hit" });
 
             hero.AddComponent(new SpriteAnimatorController
             {
@@ -182,6 +187,10 @@ namespace DreamBit.Engine.Tests.Demo
                 SourceRect = new Rectangle(3575, 348, 236, 239), Color = new Color(180, 220, 255)
             });
             enemy.AddComponent(new NavChaser { TargetTag = "player", Speed = 150f, RepathInterval = 0.4f });
+            // Combate: vida + área que recebe golpes (time 1) + piscar ao levar dano.
+            enemy.AddComponent(new Health { Max = 60f, InvulnTime = 0.25f, DestroyOnDeath = true, SendOnDeath = "enemy_down" });
+            enemy.AddComponent(new Hurtbox { Team = 1, Width = 120f, Height = 120f });
+            enemy.AddComponent(new SpriteFlash { FlashColor = new Color(255, 90, 90), Duration = 0.12f });
             scene.Add(enemy);
         }
 

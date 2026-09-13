@@ -96,6 +96,16 @@ namespace DreamBit.Engine.Components
                 return;
             }
 
+            var topDown = Owner.Components.OfType<TopDownController>().FirstOrDefault();
+            if (topDown != null)
+            {
+                grounded = true; // top-down não tem pulo
+                velocityX = topDown.CurrentVelocity.X;
+                moving = topDown.IsMoving;
+                _lastPos = Owner.Transform.WorldPosition;
+                return;
+            }
+
             var body = Owner.Components.OfType<Rigidbody2D>().FirstOrDefault();
             if (body != null)
             {

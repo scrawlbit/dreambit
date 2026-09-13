@@ -44,6 +44,9 @@ namespace DreamBit.Engine.Components
         /// <summary>Espelha o sprite na horizontal (para virar o personagem ao mudar de direção).</summary>
         public bool FlipX { get => _flipX; set => Set(ref _flipX, value); }
 
+        /// <summary>Cor multiplicada no desenho (branco = sem efeito). Usada pelo <see cref="SpriteFlash"/>.</summary>
+        public Color Tint { get; set; } = Color.White;
+
         /// <summary>Clipes nomeados (andar/pular/bater). Vazio = toca a folha inteira como hoje.</summary>
         public IReadOnlyList<SpriteClip> Clips => _clips;
 
@@ -252,7 +255,7 @@ namespace DreamBit.Engine.Components
                 drawSize = new Vector2(_size.Y * source.Width / source.Height, _size.Y);
 
             var effects = _flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            drawing.DrawFrame(Owner.Transform.WorldMatrix, drawSize, Color.White, texture, source, effects);
+            drawing.DrawFrame(Owner.Transform.WorldMatrix, drawSize, Tint, texture, source, effects);
         }
     }
 }

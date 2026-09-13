@@ -119,17 +119,35 @@ namespace DreamBit.Engine.Elements
 
         public void ClearPendingSceneLoad() => PendingSceneLoad = null;
 
+        // Remoção adiada: componentes pedem destruição durante o Update; aplicamos ao final,
+        // fora da iteração (evita mutar a coleção enquanto percorre).
+        private readonly System.Collections.Generic.List<GameObject> _pendingDestroy = new();
+
+        /// <summary>Agenda a remoção de um objeto ao final do frame (seguro durante o Update).</summary>
+        public void Destroy(GameObject gameObject)
+        {
+            if (gameObject != null && !_pendingDestroy.Contains(gameObject))
+                _pendingDestroy.Add(gameObject);
+        }
+
         public void Update(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Timing.Scheduler.Tick(dt);
 
-            foreach (var gameObject in _objects)
+            foreach (var gameObject in _objects.ToArray())
                 gameObject.Update(gameTime);
 
             _physics?.Step(dt); // avança a física e sincroniza os Transforms dos corpos
 
             DispatchMessages();
+
+            if (_pendingDestroy.Count > 0)
+            {
+                foreach (var obj in _pendingDestroy)
+                    Remove(obj);
+                _pendingDestroy.Clear();
+            }
         }
 
         private void DispatchMessages()

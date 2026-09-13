@@ -150,6 +150,17 @@ namespace DreamBit.Engine.Input
             return MathHelper.Clamp(v, -1f, 1f);
         }
 
+        /// <summary>Eixo vertical em [-1,1] (MoveDown - MoveUp), coordenada de tela (baixo positivo).
+        /// Para movimento top-down. O thumbstick para cima também aponta para cima.</summary>
+        public static float Vertical()
+        {
+            float v = (IsDown("MoveDown") ? 1f : 0f) - (IsDown("MoveUp") ? 1f : 0f);
+            float stick = -_padNow.ThumbSticks.Left.Y; // stick p/ cima = -Y na tela
+            if (System.Math.Abs(stick) > 0.2f)
+                v = stick;
+            return MathHelper.Clamp(v, -1f, 1f);
+        }
+
         private static bool IsDown(string action, KeyboardState kb, GamePadState pad, HashSet<string> forced)
         {
             if (forced.Contains(action))

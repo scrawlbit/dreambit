@@ -1344,6 +1344,21 @@ namespace DreamBit.Studio.ViewModels
                     case AmbientLight al:
                         clone.AddComponent(new AmbientLight { Color = al.Color });
                         break;
+                    case TopDownController td:
+                        clone.AddComponent(new TopDownController { MoveSpeed = td.MoveSpeed, UseKeyboard = td.UseKeyboard, HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight });
+                        break;
+                    case Health hp:
+                        clone.AddComponent(new Health { Max = hp.Max, InvulnTime = hp.InvulnTime, SendOnHit = hp.SendOnHit, SendOnDeath = hp.SendOnDeath, DestroyOnDeath = hp.DestroyOnDeath });
+                        break;
+                    case Hurtbox hb:
+                        clone.AddComponent(new Hurtbox { Width = hb.Width, Height = hb.Height, Offset = hb.Offset, Team = hb.Team });
+                        break;
+                    case Hitbox hx:
+                        clone.AddComponent(new Hitbox { Width = hx.Width, Height = hx.Height, Offset = hx.Offset, Team = hx.Team, Damage = hx.Damage, ActiveTime = hx.ActiveTime, ActivateOn = hx.ActivateOn });
+                        break;
+                    case SpriteFlash sf:
+                        clone.AddComponent(new SpriteFlash { FlashColor = sf.FlashColor, Duration = sf.Duration });
+                        break;
                     case NavChaser nc:
                         clone.AddComponent(new NavChaser
                         {

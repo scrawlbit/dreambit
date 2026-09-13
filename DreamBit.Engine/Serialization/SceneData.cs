@@ -76,7 +76,56 @@ namespace DreamBit.Engine.Serialization
         public List<AudioListenerData> AudioListeners { get; set; } = new();
         public List<Light2DData> Lights { get; set; } = new();
         public List<AmbientLightData> AmbientLights { get; set; } = new();
+        public List<TopDownData> TopDowns { get; set; } = new();
+        public List<HealthData> Healths { get; set; } = new();
+        public List<HurtboxData> Hurtboxes { get; set; } = new();
+        public List<HitboxData> Hitboxes { get; set; } = new();
+        public List<SpriteFlashData> SpriteFlashes { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
+    }
+
+    public sealed class TopDownData
+    {
+        public float MoveSpeed { get; set; } = 200f;
+        public bool UseKeyboard { get; set; } = true;
+        public float HalfWidth { get; set; } = 16f;
+        public float HalfHeight { get; set; } = 16f;
+    }
+
+    public sealed class HealthData
+    {
+        public float Max { get; set; } = 100f;
+        public float InvulnTime { get; set; } = 0.2f;
+        public string SendOnHit { get; set; } = "";
+        public string SendOnDeath { get; set; } = "death";
+        public bool DestroyOnDeath { get; set; }
+    }
+
+    public sealed class HurtboxData
+    {
+        public float Width { get; set; } = 48f;
+        public float Height { get; set; } = 48f;
+        public float OffsetX { get; set; }
+        public float OffsetY { get; set; }
+        public int Team { get; set; }
+    }
+
+    public sealed class HitboxData
+    {
+        public float Width { get; set; } = 60f;
+        public float Height { get; set; } = 60f;
+        public float OffsetX { get; set; }
+        public float OffsetY { get; set; }
+        public int Team { get; set; }
+        public float Damage { get; set; } = 25f;
+        public float ActiveTime { get; set; } = 0.15f;
+        public string ActivateOn { get; set; } = "";
+    }
+
+    public sealed class SpriteFlashData
+    {
+        public byte R { get; set; } = 255; public byte G { get; set; } = 255; public byte B { get; set; } = 255;
+        public float Duration { get; set; } = 0.1f;
     }
 
     public sealed class Light2DData

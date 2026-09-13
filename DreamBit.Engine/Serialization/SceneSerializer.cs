@@ -416,6 +416,34 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is AmbientLight amb)
                     data.AmbientLights.Add(new AmbientLightData { R = amb.Color.R, G = amb.Color.G, B = amb.Color.B });
+                else if (component is TopDownController td)
+                    data.TopDowns.Add(new TopDownData
+                    {
+                        MoveSpeed = td.MoveSpeed, UseKeyboard = td.UseKeyboard,
+                        HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight
+                    });
+                else if (component is Health hp)
+                    data.Healths.Add(new HealthData
+                    {
+                        Max = hp.Max, InvulnTime = hp.InvulnTime, SendOnHit = hp.SendOnHit,
+                        SendOnDeath = hp.SendOnDeath, DestroyOnDeath = hp.DestroyOnDeath
+                    });
+                else if (component is Hurtbox hb)
+                    data.Hurtboxes.Add(new HurtboxData
+                    {
+                        Width = hb.Width, Height = hb.Height, OffsetX = hb.Offset.X, OffsetY = hb.Offset.Y, Team = hb.Team
+                    });
+                else if (component is Hitbox hx)
+                    data.Hitboxes.Add(new HitboxData
+                    {
+                        Width = hx.Width, Height = hx.Height, OffsetX = hx.Offset.X, OffsetY = hx.Offset.Y,
+                        Team = hx.Team, Damage = hx.Damage, ActiveTime = hx.ActiveTime, ActivateOn = hx.ActivateOn
+                    });
+                else if (component is SpriteFlash sf)
+                    data.SpriteFlashes.Add(new SpriteFlashData
+                    {
+                        R = sf.FlashColor.R, G = sf.FlashColor.G, B = sf.FlashColor.B, Duration = sf.Duration
+                    });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -642,6 +670,36 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var amb in data.AmbientLights)
                 obj.AddComponent(new AmbientLight { Color = new Color(amb.R, amb.G, amb.B) });
+
+            foreach (var td in data.TopDowns)
+                obj.AddComponent(new TopDownController
+                {
+                    MoveSpeed = td.MoveSpeed, UseKeyboard = td.UseKeyboard,
+                    HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight
+                });
+
+            foreach (var hp in data.Healths)
+                obj.AddComponent(new Health
+                {
+                    Max = hp.Max, InvulnTime = hp.InvulnTime, SendOnHit = hp.SendOnHit,
+                    SendOnDeath = hp.SendOnDeath, DestroyOnDeath = hp.DestroyOnDeath
+                });
+
+            foreach (var hb in data.Hurtboxes)
+                obj.AddComponent(new Hurtbox
+                {
+                    Width = hb.Width, Height = hb.Height, Offset = new Vector2(hb.OffsetX, hb.OffsetY), Team = hb.Team
+                });
+
+            foreach (var hx in data.Hitboxes)
+                obj.AddComponent(new Hitbox
+                {
+                    Width = hx.Width, Height = hx.Height, Offset = new Vector2(hx.OffsetX, hx.OffsetY),
+                    Team = hx.Team, Damage = hx.Damage, ActiveTime = hx.ActiveTime, ActivateOn = hx.ActivateOn
+                });
+
+            foreach (var sf in data.SpriteFlashes)
+                obj.AddComponent(new SpriteFlash { FlashColor = new Color(sf.R, sf.G, sf.B), Duration = sf.Duration });
 
             foreach (var chaser in data.NavChasers)
                 obj.AddComponent(new NavChaser

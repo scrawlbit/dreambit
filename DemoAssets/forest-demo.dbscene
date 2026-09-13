@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "3c17c87f-e4da-4360-b054-a11bd1c5c696",
+      "Id": "d66b585d-22fe-4a50-92e9-e438878b18f5",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -76,10 +76,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "a2cf898a-fa2d-4913-a3ba-5435f2fbf536",
+      "Id": "a0711d90-e086-4005-a36c-87d22b5206b1",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -153,10 +158,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "b261430a-160f-4f2c-bbdc-8ef16e7bbcc5",
+      "Id": "a0a13288-49b9-4108-8192-0d54829aa643",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -399,10 +409,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "4c32f514-4704-499e-b33f-9a2aa7c9800e",
+      "Id": "3abb0838-c4b2-47d4-a67a-8d4a53d60d4f",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -471,10 +486,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "5c6031d9-44bc-4471-ac5e-5ca684edbd23",
+      "Id": "db79ff9b-9644-4db4-b6ae-e9b2a9429a6d",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -543,10 +563,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "728e3ba6-e2d3-44fc-b7b3-62342d9050cf",
+      "Id": "f5b7b1ea-0193-46f1-8d9d-0024a4624193",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -615,10 +640,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "22739d0b-8802-4db2-bc99-0ada562d10a8",
+      "Id": "36818f8d-dd9d-4ec7-b23e-d90595e4c717",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -687,10 +717,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "2f7c2e6b-53c7-44d3-a62e-63a8e0d0f301",
+      "Id": "4889a44d-64c8-4738-8812-2baf1949d3df",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1346,7 +1381,12 @@
           "ChromaG": 0,
           "ChromaB": 255,
           "ChromaTolerance": 30,
-          "Events": [],
+          "Events": [
+            {
+              "Frame": 135,
+              "Name": "hit"
+            }
+          ],
           "FlipX": false,
           "Clips": [
             {
@@ -1516,10 +1556,26 @@
         }
       ],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [
+        {
+          "Width": 150,
+          "Height": 170,
+          "OffsetX": 80,
+          "OffsetY": 0,
+          "Team": 0,
+          "Damage": 20,
+          "ActiveTime": 0.15,
+          "ActivateOn": "hit"
+        }
+      ],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "3ef1af8f-7afe-423e-a655-715376a6dda5",
+      "Id": "a45cb5e2-78ef-4776-8326-0d04701ce937",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1581,10 +1637,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "416293ef-bdfc-4043-b4bf-58949992cfad",
+      "Id": "d93fb289-f0c9-41fd-a89a-aa37c158e5da",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1661,10 +1722,38 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [
+        {
+          "Max": 60,
+          "InvulnTime": 0.25,
+          "SendOnHit": "",
+          "SendOnDeath": "enemy_down",
+          "DestroyOnDeath": true
+        }
+      ],
+      "Hurtboxes": [
+        {
+          "Width": 120,
+          "Height": 120,
+          "OffsetX": 0,
+          "OffsetY": 0,
+          "Team": 1
+        }
+      ],
+      "Hitboxes": [],
+      "SpriteFlashes": [
+        {
+          "R": 255,
+          "G": 90,
+          "B": 90,
+          "Duration": 0.12
+        }
+      ],
       "Children": []
     },
     {
-      "Id": "0151b618-9219-4902-b1ee-ff78e48e5dcb",
+      "Id": "34a26b08-744b-4fe8-9458-f80c8cb3bea4",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1778,10 +1867,15 @@
         }
       ],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "f0c03f4c-8158-4bd2-a180-e055e1933941",
+      "Id": "c4c76de0-876a-4d4c-845a-ccd68e228b06",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -1844,10 +1938,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "fa4ff99e-cbbd-4514-968c-90e66db834c4",
+      "Id": "653ec115-02f7-4e8f-9982-9cf397a7d5e4",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -1929,10 +2028,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "35e42a73-e0a9-4218-8c81-0ced4652abdb",
+      "Id": "ec908435-7a5e-4b35-bda1-b42951576e71",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -2014,10 +2118,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "118e3d4c-8a36-4608-87df-40c923eaac8f",
+      "Id": "bcee4dd2-28d6-4662-9631-259a27673b38",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2099,10 +2208,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "31d4262d-e8dd-4a3b-969e-90f4b02c78a1",
+      "Id": "7ee15ac6-1e10-48c5-8404-430c78319f72",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2171,10 +2285,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "471d5a8d-69f1-4f42-8bf3-0db1a7362438",
+      "Id": "7cea6824-01c3-4031-a9b8-53f23648f5f5",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2234,10 +2353,15 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "4bd63b8d-fd0a-466b-bf85-ad063502f1dc",
+      "Id": "f6d3256b-8a7e-45d7-b7a4-346721a68d59",
       "Name": "Ambiente",
       "Tag": "",
       "SortOrder": 0,
@@ -2292,10 +2416,15 @@
           "B": 116
         }
       ],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "d690a2df-544d-43f0-834d-adf842135c7c",
+      "Id": "686b583f-172f-4c86-bf23-6a5de6553377",
       "Name": "LuzTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2352,10 +2481,15 @@
         }
       ],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": []
     },
     {
-      "Id": "66e7992d-b2ce-4f5b-957c-ed698e72e638",
+      "Id": "3fed275c-7552-4dc2-8599-6279c682c4d5",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2404,9 +2538,14 @@
       "AudioListeners": [],
       "Lights": [],
       "AmbientLights": [],
+      "TopDowns": [],
+      "Healths": [],
+      "Hurtboxes": [],
+      "Hitboxes": [],
+      "SpriteFlashes": [],
       "Children": [
         {
-          "Id": "6c0bc6bf-96de-4111-85bc-04b76033fded",
+          "Id": "7fddd0b6-36ce-4a0a-b6d9-aa21b8ddbde2",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2473,10 +2612,15 @@
           "AudioListeners": [],
           "Lights": [],
           "AmbientLights": [],
+          "TopDowns": [],
+          "Healths": [],
+          "Hurtboxes": [],
+          "Hitboxes": [],
+          "SpriteFlashes": [],
           "Children": []
         },
         {
-          "Id": "3c409871-173d-4b84-a794-cecbd52b8a4d",
+          "Id": "8aa9c0e7-aaa7-4f0e-b9fa-22977670262e",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2541,10 +2685,15 @@
           "AudioListeners": [],
           "Lights": [],
           "AmbientLights": [],
+          "TopDowns": [],
+          "Healths": [],
+          "Hurtboxes": [],
+          "Hitboxes": [],
+          "SpriteFlashes": [],
           "Children": []
         },
         {
-          "Id": "f4e00304-89d6-4e02-b2ab-c671bec3afa1",
+          "Id": "24cfc981-417f-4b2e-b4e3-a827ddb0f887",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,
@@ -2616,6 +2765,11 @@
           "AudioListeners": [],
           "Lights": [],
           "AmbientLights": [],
+          "TopDowns": [],
+          "Healths": [],
+          "Hurtboxes": [],
+          "Hitboxes": [],
+          "SpriteFlashes": [],
           "Children": []
         }
       ]
