@@ -1081,6 +1081,91 @@ namespace DreamBit.Studio.ViewModels
 
         private static int Clamp(int value) => value < 0 ? 0 : value > 255 ? 255 : value;
 
+        // ---- Sprite Animator Controller ----
+        private SpriteAnimatorController? SAC => _target?.Components.OfType<SpriteAnimatorController>().FirstOrDefault();
+        public bool HasSpriteAnimCtrl => SAC != null;
+        public string SacIdleClip { get => SAC?.IdleClip ?? "idle"; set { var c = SAC; if (c != null) c.IdleClip = value; } }
+        public string SacWalkClip { get => SAC?.WalkClip ?? "walk"; set { var c = SAC; if (c != null) c.WalkClip = value; } }
+        public string SacJumpClip { get => SAC?.JumpClip ?? "jump"; set { var c = SAC; if (c != null) c.JumpClip = value; } }
+        public string SacAttackClip { get => SAC?.AttackClip ?? "attack"; set { var c = SAC; if (c != null) c.AttackClip = value; } }
+        public string SacAttackAction { get => SAC?.AttackAction ?? "Action"; set { var c = SAC; if (c != null) c.AttackAction = value; } }
+        public bool SacFlipByVelocity { get => SAC?.FlipByVelocity ?? true; set { var c = SAC; if (c != null) c.FlipByVelocity = value; } }
+        public bool SacArtFacesRight { get => SAC?.ArtFacesRight ?? true; set { var c = SAC; if (c != null) c.ArtFacesRight = value; } }
+
+        // ---- Nav Chaser ----
+        private NavChaser? Chaser => _target?.Components.OfType<NavChaser>().FirstOrDefault();
+        public bool HasNavChaser => Chaser != null;
+        public string ChaserTargetTag { get => Chaser?.TargetTag ?? "player"; set { var c = Chaser; if (c != null) c.TargetTag = value; } }
+        public float ChaserSpeed { get => Chaser?.Speed ?? 120f; set { var c = Chaser; if (c != null) c.Speed = value; } }
+        public float ChaserRepath { get => Chaser?.RepathInterval ?? 0.4f; set { var c = Chaser; if (c != null) c.RepathInterval = value; } }
+        public float ChaserArrive { get => Chaser?.ArriveRadius ?? 10f; set { var c = Chaser; if (c != null) c.ArriveRadius = value; } }
+        public bool ChaserDiagonal { get => Chaser?.AllowDiagonal ?? true; set { var c = Chaser; if (c != null) c.AllowDiagonal = value; } }
+
+        // ---- Audio Listener ----
+        public bool HasAudioListener => _target?.Components.OfType<AudioListener>().Any() ?? false;
+
+        // ---- Light 2D ----
+        private Light2D? Light => _target?.Components.OfType<Light2D>().FirstOrDefault();
+        public bool HasLight => Light != null;
+        public float LightRadius { get => Light?.Radius ?? 200f; set { var c = Light; if (c != null) c.Radius = value; } }
+        public float LightIntensity { get => Light?.Intensity ?? 1f; set { var c = Light; if (c != null) c.Intensity = value; } }
+        public int LightR { get => Light?.Color.R ?? 255; set { var c = Light; if (c != null) c.Color = new Microsoft.Xna.Framework.Color((byte)value, c.Color.G, c.Color.B); } }
+        public int LightG { get => Light?.Color.G ?? 240; set { var c = Light; if (c != null) c.Color = new Microsoft.Xna.Framework.Color(c.Color.R, (byte)value, c.Color.B); } }
+        public int LightB { get => Light?.Color.B ?? 210; set { var c = Light; if (c != null) c.Color = new Microsoft.Xna.Framework.Color(c.Color.R, c.Color.G, (byte)value); } }
+
+        // ---- Ambient Light ----
+        private AmbientLight? Ambient => _target?.Components.OfType<AmbientLight>().FirstOrDefault();
+        public bool HasAmbient => Ambient != null;
+        public int AmbientR { get => Ambient?.Color.R ?? 40; set { var c = Ambient; if (c != null) c.Color = new Microsoft.Xna.Framework.Color((byte)value, c.Color.G, c.Color.B); } }
+        public int AmbientG { get => Ambient?.Color.G ?? 44; set { var c = Ambient; if (c != null) c.Color = new Microsoft.Xna.Framework.Color(c.Color.R, (byte)value, c.Color.B); } }
+        public int AmbientB { get => Ambient?.Color.B ?? 60; set { var c = Ambient; if (c != null) c.Color = new Microsoft.Xna.Framework.Color(c.Color.R, c.Color.G, (byte)value); } }
+
+        // ---- Top-Down Controller ----
+        private TopDownController? TopDown => _target?.Components.OfType<TopDownController>().FirstOrDefault();
+        public bool HasTopDown => TopDown != null;
+        public float TopDownSpeed { get => TopDown?.MoveSpeed ?? 200f; set { var c = TopDown; if (c != null) c.MoveSpeed = value; } }
+        public float TopDownHalfWidth { get => TopDown?.HalfWidth ?? 16f; set { var c = TopDown; if (c != null) c.HalfWidth = value; } }
+        public float TopDownHalfHeight { get => TopDown?.HalfHeight ?? 16f; set { var c = TopDown; if (c != null) c.HalfHeight = value; } }
+        public bool TopDownUseKeyboard { get => TopDown?.UseKeyboard ?? true; set { var c = TopDown; if (c != null) c.UseKeyboard = value; } }
+
+        // ---- Health ----
+        private Health? HealthC => _target?.Components.OfType<Health>().FirstOrDefault();
+        public bool HasHealth => HealthC != null;
+        public float HealthMax { get => HealthC?.Max ?? 100f; set { var c = HealthC; if (c != null) c.Max = value; } }
+        public float HealthInvuln { get => HealthC?.InvulnTime ?? 0.2f; set { var c = HealthC; if (c != null) c.InvulnTime = value; } }
+        public string HealthSendOnHit { get => HealthC?.SendOnHit ?? ""; set { var c = HealthC; if (c != null) c.SendOnHit = value; } }
+        public string HealthSendOnDeath { get => HealthC?.SendOnDeath ?? "death"; set { var c = HealthC; if (c != null) c.SendOnDeath = value; } }
+        public bool HealthDestroyOnDeath { get => HealthC?.DestroyOnDeath ?? false; set { var c = HealthC; if (c != null) c.DestroyOnDeath = value; } }
+
+        // ---- Hurtbox ----
+        private Hurtbox? Hurt => _target?.Components.OfType<Hurtbox>().FirstOrDefault();
+        public bool HasHurtbox => Hurt != null;
+        public float HurtWidth { get => Hurt?.Width ?? 48f; set { var c = Hurt; if (c != null) c.Width = value; } }
+        public float HurtHeight { get => Hurt?.Height ?? 48f; set { var c = Hurt; if (c != null) c.Height = value; } }
+        public float HurtOffsetX { get => Hurt?.Offset.X ?? 0f; set { var c = Hurt; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(value, c.Offset.Y); } }
+        public float HurtOffsetY { get => Hurt?.Offset.Y ?? 0f; set { var c = Hurt; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(c.Offset.X, value); } }
+        public int HurtTeam { get => Hurt?.Team ?? 0; set { var c = Hurt; if (c != null) c.Team = value; } }
+
+        // ---- Hitbox ----
+        private Hitbox? Hit => _target?.Components.OfType<Hitbox>().FirstOrDefault();
+        public bool HasHitbox => Hit != null;
+        public float HitWidth { get => Hit?.Width ?? 60f; set { var c = Hit; if (c != null) c.Width = value; } }
+        public float HitHeight { get => Hit?.Height ?? 60f; set { var c = Hit; if (c != null) c.Height = value; } }
+        public float HitOffsetX { get => Hit?.Offset.X ?? 0f; set { var c = Hit; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(value, c.Offset.Y); } }
+        public float HitOffsetY { get => Hit?.Offset.Y ?? 0f; set { var c = Hit; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(c.Offset.X, value); } }
+        public int HitTeam { get => Hit?.Team ?? 0; set { var c = Hit; if (c != null) c.Team = value; } }
+        public float HitDamage { get => Hit?.Damage ?? 25f; set { var c = Hit; if (c != null) c.Damage = value; } }
+        public float HitActiveTime { get => Hit?.ActiveTime ?? 0.15f; set { var c = Hit; if (c != null) c.ActiveTime = value; } }
+        public string HitActivateOn { get => Hit?.ActivateOn ?? ""; set { var c = Hit; if (c != null) c.ActivateOn = value; } }
+
+        // ---- Sprite Flash ----
+        private SpriteFlash? Flash => _target?.Components.OfType<SpriteFlash>().FirstOrDefault();
+        public bool HasSpriteFlash => Flash != null;
+        public float FlashDuration { get => Flash?.Duration ?? 0.1f; set { var c = Flash; if (c != null) c.Duration = value; } }
+        public int FlashR { get => Flash?.FlashColor.R ?? 255; set { var c = Flash; if (c != null) c.FlashColor = new Microsoft.Xna.Framework.Color((byte)value, c.FlashColor.G, c.FlashColor.B); } }
+        public int FlashG { get => Flash?.FlashColor.G ?? 255; set { var c = Flash; if (c != null) c.FlashColor = new Microsoft.Xna.Framework.Color(c.FlashColor.R, (byte)value, c.FlashColor.B); } }
+        public int FlashB { get => Flash?.FlashColor.B ?? 255; set { var c = Flash; if (c != null) c.FlashColor = new Microsoft.Xna.Framework.Color(c.FlashColor.R, c.FlashColor.G, (byte)value); } }
+
         private void RaiseAll()
         {
             OnPropertyChanged(nameof(HasTarget));
@@ -1287,6 +1372,39 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SkeletonEventsText));
             OnPropertyChanged(nameof(SkeletonClipNames));
             OnPropertyChanged(nameof(SkeletonCurrentClip));
+
+            OnPropertyChanged(nameof(HasSpriteAnimCtrl));
+            OnPropertyChanged(nameof(SacIdleClip)); OnPropertyChanged(nameof(SacWalkClip));
+            OnPropertyChanged(nameof(SacJumpClip)); OnPropertyChanged(nameof(SacAttackClip));
+            OnPropertyChanged(nameof(SacAttackAction)); OnPropertyChanged(nameof(SacFlipByVelocity));
+            OnPropertyChanged(nameof(SacArtFacesRight));
+            OnPropertyChanged(nameof(HasNavChaser));
+            OnPropertyChanged(nameof(ChaserTargetTag)); OnPropertyChanged(nameof(ChaserSpeed));
+            OnPropertyChanged(nameof(ChaserRepath)); OnPropertyChanged(nameof(ChaserArrive));
+            OnPropertyChanged(nameof(ChaserDiagonal));
+            OnPropertyChanged(nameof(HasAudioListener));
+            OnPropertyChanged(nameof(HasLight));
+            OnPropertyChanged(nameof(LightRadius)); OnPropertyChanged(nameof(LightIntensity));
+            OnPropertyChanged(nameof(LightR)); OnPropertyChanged(nameof(LightG)); OnPropertyChanged(nameof(LightB));
+            OnPropertyChanged(nameof(HasAmbient));
+            OnPropertyChanged(nameof(AmbientR)); OnPropertyChanged(nameof(AmbientG)); OnPropertyChanged(nameof(AmbientB));
+            OnPropertyChanged(nameof(HasTopDown));
+            OnPropertyChanged(nameof(TopDownSpeed)); OnPropertyChanged(nameof(TopDownHalfWidth));
+            OnPropertyChanged(nameof(TopDownHalfHeight)); OnPropertyChanged(nameof(TopDownUseKeyboard));
+            OnPropertyChanged(nameof(HasHealth));
+            OnPropertyChanged(nameof(HealthMax)); OnPropertyChanged(nameof(HealthInvuln));
+            OnPropertyChanged(nameof(HealthSendOnHit)); OnPropertyChanged(nameof(HealthSendOnDeath));
+            OnPropertyChanged(nameof(HealthDestroyOnDeath));
+            OnPropertyChanged(nameof(HasHurtbox));
+            OnPropertyChanged(nameof(HurtWidth)); OnPropertyChanged(nameof(HurtHeight));
+            OnPropertyChanged(nameof(HurtOffsetX)); OnPropertyChanged(nameof(HurtOffsetY)); OnPropertyChanged(nameof(HurtTeam));
+            OnPropertyChanged(nameof(HasHitbox));
+            OnPropertyChanged(nameof(HitWidth)); OnPropertyChanged(nameof(HitHeight));
+            OnPropertyChanged(nameof(HitOffsetX)); OnPropertyChanged(nameof(HitOffsetY)); OnPropertyChanged(nameof(HitTeam));
+            OnPropertyChanged(nameof(HitDamage)); OnPropertyChanged(nameof(HitActiveTime)); OnPropertyChanged(nameof(HitActivateOn));
+            OnPropertyChanged(nameof(HasSpriteFlash));
+            OnPropertyChanged(nameof(FlashDuration));
+            OnPropertyChanged(nameof(FlashR)); OnPropertyChanged(nameof(FlashG)); OnPropertyChanged(nameof(FlashB));
         }
     }
 }

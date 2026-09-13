@@ -624,6 +624,16 @@ namespace DreamBit.Studio.Avalonia
                 "Timer" => _editor.AddTimer,
                 "Rigidbody 2D" => _editor.AddRigidbody,
                 "Property Animator" => _editor.AddPropertyAnimator,
+                "Sprite Animator Controller" => _editor.AddSpriteAnimatorController,
+                "Nav Chaser" => _editor.AddNavChaser,
+                "Audio Listener" => _editor.AddAudioListener,
+                "Light 2D" => _editor.AddLight,
+                "Ambient Light" => _editor.AddAmbientLight,
+                "Top-Down Controller" => _editor.AddTopDown,
+                "Health" => _editor.AddHealth,
+                "Hurtbox" => _editor.AddHurtbox,
+                "Hitbox" => _editor.AddHitbox,
+                "Sprite Flash" => _editor.AddSpriteFlash,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -675,6 +685,16 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveTimer(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTimer);
         private void OnRemoveRigidbody(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRigidbody);
         private void OnRemovePropertyAnimator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemovePropertyAnimator);
+        private void OnRemoveSpriteAnimatorController(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveSpriteAnimatorController);
+        private void OnRemoveNavChaser(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveNavChaser);
+        private void OnRemoveAudioListener(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAudioListener);
+        private void OnRemoveLight(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveLight);
+        private void OnRemoveAmbientLight(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveAmbientLight);
+        private void OnRemoveTopDown(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTopDown);
+        private void OnRemoveHealth(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveHealth);
+        private void OnRemoveHurtbox(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveHurtbox);
+        private void OnRemoveHitbox(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveHitbox);
+        private void OnRemoveSpriteFlash(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveSpriteFlash);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

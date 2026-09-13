@@ -355,6 +355,16 @@
                             <ComboBoxItem>Timer</ComboBoxItem>
                             <ComboBoxItem>Rigidbody 2D</ComboBoxItem>
                             <ComboBoxItem>Property Animator</ComboBoxItem>
+                            <ComboBoxItem>Sprite Animator Controller</ComboBoxItem>
+                            <ComboBoxItem>Nav Chaser</ComboBoxItem>
+                            <ComboBoxItem>Audio Listener</ComboBoxItem>
+                            <ComboBoxItem>Light 2D</ComboBoxItem>
+                            <ComboBoxItem>Ambient Light</ComboBoxItem>
+                            <ComboBoxItem>Top-Down Controller</ComboBoxItem>
+                            <ComboBoxItem>Health</ComboBoxItem>
+                            <ComboBoxItem>Hurtbox</ComboBoxItem>
+                            <ComboBoxItem>Hitbox</ComboBoxItem>
+                            <ComboBoxItem>Sprite Flash</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -832,6 +842,182 @@
                                     </StackPanel>
                                 </Grid>
                                 <TextBlock Classes="field" Text="Física real (gravidade/colisão/impulso). Alternativa ao Platformer Controller." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Sprite Animator Controller -->
+                        <Border Classes="component" IsVisible="{Binding HasSpriteAnimCtrl}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Sprite Animator Controller" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSpriteAnimatorController" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Clipe parado" /><TextBox Text="{Binding SacIdleClip, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Clipe andar" /><TextBox Text="{Binding SacWalkClip, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Clipe pular" /><TextBox Text="{Binding SacJumpClip, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Clipe atacar" /><TextBox Text="{Binding SacAttackClip, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Ação de ataque" /><TextBox Text="{Binding SacAttackAction, Mode=TwoWay}" />
+                                <CheckBox Content="Virar pela velocidade" IsChecked="{Binding SacFlipByVelocity, Mode=TwoWay}" Margin="0,4,0,0" />
+                                <CheckBox Content="Arte olha para a direita" IsChecked="{Binding SacArtFacesRight, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Nav Chaser -->
+                        <Border Classes="component" IsVisible="{Binding HasNavChaser}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Nav Chaser" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveNavChaser" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Tag do alvo" /><TextBox Text="{Binding ChaserTargetTag, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Velocidade" /><TextBox Text="{Binding ChaserSpeed, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Recalcular (s)" /><TextBox Text="{Binding ChaserRepath, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="Raio chegada" /><TextBox Text="{Binding ChaserArrive, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <CheckBox Content="Permitir diagonal" IsChecked="{Binding ChaserDiagonal, Mode=TwoWay}" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Audio Listener -->
+                        <Border Classes="component" IsVisible="{Binding HasAudioListener}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Audio Listener" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAudioListener" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Ouvinte do áudio espacial (posição = deste objeto). Um por cena." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Light 2D -->
+                        <Border Classes="component" IsVisible="{Binding HasLight}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Light 2D" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveLight" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Raio" /><TextBox Text="{Binding LightRadius, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Intensidade" /><TextBox Text="{Binding LightIntensity, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding LightR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="G" /><TextBox Text="{Binding LightG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="B" /><TextBox Text="{Binding LightB, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Ambient Light -->
+                        <Border Classes="component" IsVisible="{Binding HasAmbient}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Ambient Light" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAmbientLight" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding AmbientR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="G" /><TextBox Text="{Binding AmbientG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="B" /><TextBox Text="{Binding AmbientB, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Escuridão de fundo (multiplica a cena onde não há luz)." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Top-Down Controller -->
+                        <Border Classes="component" IsVisible="{Binding HasTopDown}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Top-Down Controller" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTopDown" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Velocidade" /><TextBox Text="{Binding TopDownSpeed, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Meia-largura" /><TextBox Text="{Binding TopDownHalfWidth, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Meia-altura" /><TextBox Text="{Binding TopDownHalfHeight, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <CheckBox Content="Controlar por teclado" IsChecked="{Binding TopDownUseKeyboard, Mode=TwoWay}" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Health -->
+                        <Border Classes="component" IsVisible="{Binding HasHealth}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Health" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveHealth" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Vida máxima" /><TextBox Text="{Binding HealthMax, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Invuln (s)" /><TextBox Text="{Binding HealthInvuln, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Mensagem ao ferir" /><TextBox Text="{Binding HealthSendOnHit, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Mensagem ao morrer" /><TextBox Text="{Binding HealthSendOnDeath, Mode=TwoWay}" />
+                                <CheckBox Content="Destruir ao morrer" IsChecked="{Binding HealthDestroyOnDeath, Mode=TwoWay}" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Hurtbox -->
+                        <Border Classes="component" IsVisible="{Binding HasHurtbox}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Hurtbox (recebe golpes)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveHurtbox" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Largura" /><TextBox Text="{Binding HurtWidth, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Altura" /><TextBox Text="{Binding HurtHeight, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="Time" /><TextBox Text="{Binding HurtTeam, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Offset X" /><TextBox Text="{Binding HurtOffsetX, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Offset Y" /><TextBox Text="{Binding HurtOffsetY, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Hitbox -->
+                        <Border Classes="component" IsVisible="{Binding HasHitbox}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Hitbox (dá golpes)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveHitbox" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Largura" /><TextBox Text="{Binding HitWidth, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Altura" /><TextBox Text="{Binding HitHeight, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="Time" /><TextBox Text="{Binding HitTeam, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Offset X" /><TextBox Text="{Binding HitOffsetX, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Offset Y" /><TextBox Text="{Binding HitOffsetY, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Dano" /><TextBox Text="{Binding HitDamage, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Duração ativa (s)" /><TextBox Text="{Binding HitActiveTime, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Ativar na mensagem/evento" /><TextBox Text="{Binding HitActivateOn, Mode=TwoWay}" Watermark="ex.: hit" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Sprite Flash -->
+                        <Border Classes="component" IsVisible="{Binding HasSpriteFlash}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Sprite Flash" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSpriteFlash" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Duração (s)" /><TextBox Text="{Binding FlashDuration, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding FlashR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="G" /><TextBox Text="{Binding FlashG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="B" /><TextBox Text="{Binding FlashB, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
                             </StackPanel>
                         </Border>
 

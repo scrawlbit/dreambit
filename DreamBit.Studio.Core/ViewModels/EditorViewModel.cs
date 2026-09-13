@@ -1076,6 +1076,27 @@ namespace DreamBit.Studio.ViewModels
         public void AddUiScrollView() => AddSingle(() => new UiScrollView(), "Adicionar UI Scroll View");
         public void RemoveUiScrollView() => RemoveSingle<UiScrollView>();
 
+        public void AddSpriteAnimatorController() => AddSingle(() => new SpriteAnimatorController(), "Adicionar Sprite Animator Controller");
+        public void RemoveSpriteAnimatorController() => RemoveSingle<SpriteAnimatorController>();
+        public void AddNavChaser() => AddSingle(() => new NavChaser(), "Adicionar Nav Chaser");
+        public void RemoveNavChaser() => RemoveSingle<NavChaser>();
+        public void AddAudioListener() => AddSingle(() => new AudioListener(), "Adicionar Audio Listener");
+        public void RemoveAudioListener() => RemoveSingle<AudioListener>();
+        public void AddLight() => AddSingle(() => new Light2D(), "Adicionar Light 2D");
+        public void RemoveLight() => RemoveSingle<Light2D>();
+        public void AddAmbientLight() => AddSingle(() => new AmbientLight(), "Adicionar Ambient Light");
+        public void RemoveAmbientLight() => RemoveSingle<AmbientLight>();
+        public void AddTopDown() => AddSingle(() => new TopDownController(), "Adicionar Top-Down Controller");
+        public void RemoveTopDown() => RemoveSingle<TopDownController>();
+        public void AddHealth() => AddSingle(() => new Health(), "Adicionar Health");
+        public void RemoveHealth() => RemoveSingle<Health>();
+        public void AddHurtbox() => AddSingle(() => new Hurtbox(), "Adicionar Hurtbox");
+        public void RemoveHurtbox() => RemoveSingle<Hurtbox>();
+        public void AddHitbox() => AddSingle(() => new Hitbox(), "Adicionar Hitbox");
+        public void RemoveHitbox() => RemoveSingle<Hitbox>();
+        public void AddSpriteFlash() => AddSingle(() => new SpriteFlash(), "Adicionar Sprite Flash");
+        public void RemoveSpriteFlash() => RemoveSingle<SpriteFlash>();
+
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
             var obj = SelectedObject;
