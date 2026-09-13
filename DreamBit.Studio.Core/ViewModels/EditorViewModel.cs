@@ -822,6 +822,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(collider);
         }
 
+        public void AddTween()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<TweenComponent>().Any())
+                return;
+
+            var tween = new TweenComponent();
+            History.Do(new EditorAction("Adicionar Tween",
+                doAction: () => obj.AddComponent(tween),
+                undoAction: () => obj.RemoveComponent(tween)));
+        }
+
+        public void RemoveTween()
+        {
+            var tween = SelectedObject?.Components.OfType<TweenComponent>().FirstOrDefault();
+            if (tween != null)
+                RemoveComponent(tween);
+        }
+
         public void AddText()
         {
             var obj = SelectedObject;
@@ -955,6 +974,13 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case TextRenderer tr:
                         clone.AddComponent(new TextRenderer { Text = tr.Text, Color = tr.Color, PixelSize = tr.PixelSize, ScreenSpace = tr.ScreenSpace });
+                        break;
+                    case TweenComponent tw:
+                        clone.AddComponent(new TweenComponent
+                        {
+                            Channel = tw.Channel, From = tw.From, To = tw.To, Duration = tw.Duration,
+                            Easing = tw.Easing, Loop = tw.Loop, PlayOnStart = tw.PlayOnStart
+                        });
                         break;
                     case CameraComponent cam:
                         clone.AddComponent(new CameraComponent

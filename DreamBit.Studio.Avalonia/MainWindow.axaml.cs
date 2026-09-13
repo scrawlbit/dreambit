@@ -487,6 +487,7 @@ namespace DreamBit.Studio.Avalonia
                 "Mensagem" => _editor.AddMessageListener,
                 "Follow" => _editor.AddFollow,
                 "Rotator" => _editor.AddRotator,
+                "Tween" => _editor.AddTween,
                 "Bone" => _editor.AddBone,
                 "Skeleton" => _editor.AddSkeleton,
                 "Script" => _editor.AddScript,
@@ -525,6 +526,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveMessageListener(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveMessageListener);
         private void OnRemoveCamera(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveCamera);
         private void OnRemoveText(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveText);
+        private void OnRemoveTween(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveTween);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

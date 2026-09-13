@@ -316,6 +316,14 @@ namespace DreamBit.Engine.Serialization
                         TargetTag = exit.TargetTag,
                         TargetScene = exit.TargetScene
                     });
+                else if (component is TweenComponent tween)
+                    data.Tweens.Add(new TweenData
+                    {
+                        Channel = (int)tween.Channel,
+                        From = tween.From, To = tween.To, Duration = tween.Duration,
+                        Easing = (int)tween.Easing, Loop = (int)tween.Loop,
+                        PlayOnStart = tween.PlayOnStart
+                    });
                 else if (component is TextRenderer text)
                     data.Texts.Add(new TextData
                     {
@@ -520,6 +528,15 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(exit.Width, exit.Height),
                     TargetTag = exit.TargetTag,
                     TargetScene = exit.TargetScene
+                });
+
+            foreach (var tween in data.Tweens)
+                obj.AddComponent(new TweenComponent
+                {
+                    Channel = (TweenChannel)tween.Channel,
+                    From = tween.From, To = tween.To, Duration = tween.Duration,
+                    Easing = (Scrawlbit.EasingMode)tween.Easing, Loop = (TweenLoop)tween.Loop,
+                    PlayOnStart = tween.PlayOnStart
                 });
 
             foreach (var text in data.Texts)

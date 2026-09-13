@@ -338,6 +338,21 @@ namespace DreamBit.Studio.ViewModels
             set { var t = Trigger; if (t != null) t.SendOnEnter = value; }
         }
 
+        // ---- Componente TweenComponent ----
+
+        private TweenComponent? Tween => _target?.Components.OfType<TweenComponent>().FirstOrDefault();
+        public bool HasTween => Tween != null;
+
+        public TweenChannel TweenChannel { get => Tween?.Channel ?? DreamBit.Engine.Components.TweenChannel.PositionY; set { var t = Tween; if (t != null) t.Channel = value; } }
+        public System.Collections.Generic.IReadOnlyList<TweenChannel> TweenChannels { get; } = Scrawlbit.EnumHelper.Values<TweenChannel>();
+        public TweenLoop TweenLoop { get => Tween?.Loop ?? DreamBit.Engine.Components.TweenLoop.PingPong; set { var t = Tween; if (t != null) t.Loop = value; } }
+        public System.Collections.Generic.IReadOnlyList<TweenLoop> TweenLoops { get; } = Scrawlbit.EnumHelper.Values<TweenLoop>();
+        public Scrawlbit.EasingMode TweenEasing { get => Tween?.Easing ?? Scrawlbit.EasingMode.InOut; set { var t = Tween; if (t != null) t.Easing = value; } }
+        public float TweenFrom { get => Tween?.From ?? 0f; set { var t = Tween; if (t != null) t.From = value; } }
+        public float TweenTo { get => Tween?.To ?? 0f; set { var t = Tween; if (t != null) t.To = value; } }
+        public float TweenDuration { get => Tween?.Duration ?? 1f; set { var t = Tween; if (t != null) t.Duration = value; } }
+        public bool TweenPlayOnStart { get => Tween?.PlayOnStart ?? true; set { var t = Tween; if (t != null) t.PlayOnStart = value; } }
+
         // ---- Componente TextRenderer ----
 
         private TextRenderer? Text => _target?.Components.OfType<TextRenderer>().FirstOrDefault();
@@ -711,6 +726,14 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasListener));
             OnPropertyChanged(nameof(ListenerMessage));
             OnPropertyChanged(nameof(ListenerReaction));
+            OnPropertyChanged(nameof(HasTween));
+            OnPropertyChanged(nameof(TweenChannel));
+            OnPropertyChanged(nameof(TweenLoop));
+            OnPropertyChanged(nameof(TweenEasing));
+            OnPropertyChanged(nameof(TweenFrom));
+            OnPropertyChanged(nameof(TweenTo));
+            OnPropertyChanged(nameof(TweenDuration));
+            OnPropertyChanged(nameof(TweenPlayOnStart));
             OnPropertyChanged(nameof(HasText));
             OnPropertyChanged(nameof(TextValue));
             OnPropertyChanged(nameof(TextPixelSize));

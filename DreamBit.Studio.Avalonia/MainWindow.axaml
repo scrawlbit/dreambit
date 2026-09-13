@@ -320,6 +320,7 @@
                             <ComboBoxItem>Mensagem</ComboBoxItem>
                             <ComboBoxItem>Follow</ComboBoxItem>
                             <ComboBoxItem>Rotator</ComboBoxItem>
+                            <ComboBoxItem>Tween</ComboBoxItem>
                             <ComboBoxItem>Bone</ComboBoxItem>
                             <ComboBoxItem>Skeleton</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
@@ -558,6 +559,29 @@
                                 <CheckBox Content="Some ao tocar (coletável)" IsChecked="{Binding TriggerDestroyOnEnter, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="Enviar mensagem ao tocar (vazio = nenhuma)" />
                                 <TextBox Text="{Binding TriggerSendOnEnter, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Tween -->
+                        <Border Classes="component" IsVisible="{Binding HasTween}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Tween" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTween" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Canal" />
+                                <ComboBox ItemsSource="{Binding TweenChannels}" SelectedItem="{Binding TweenChannel, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="De" /><TextBox Text="{Binding TweenFrom, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Até" /><TextBox Text="{Binding TweenTo, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="Duração" /><TextBox Text="{Binding TweenDuration, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Easing" /><ComboBox ItemsSource="{Binding EasingModes}" SelectedItem="{Binding TweenEasing, Mode=TwoWay}" HorizontalAlignment="Stretch" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Repetição" /><ComboBox ItemsSource="{Binding TweenLoops}" SelectedItem="{Binding TweenLoop, Mode=TwoWay}" HorizontalAlignment="Stretch" /></StackPanel>
+                                </Grid>
+                                <CheckBox Content="Tocar ao iniciar" IsChecked="{Binding TweenPlayOnStart, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <TextBlock Classes="field" Text="Anima o transform (rotação em graus). Ping-pong vai e volta." />
                             </StackPanel>
                         </Border>
 

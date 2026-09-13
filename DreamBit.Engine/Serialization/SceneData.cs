@@ -54,6 +54,7 @@ namespace DreamBit.Engine.Serialization
         public List<SceneExitData> SceneExits { get; set; } = new();
         public List<CameraData> Cameras { get; set; } = new();
         public List<TextData> Texts { get; set; } = new();
+        public List<TweenData> Tweens { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -132,6 +133,17 @@ namespace DreamBit.Engine.Serialization
         public float Height { get; set; } = 96f;
         public string TargetTag { get; set; } = "Player";
         public string TargetScene { get; set; } = "";
+    }
+
+    public sealed class TweenData
+    {
+        public int Channel { get; set; } = 1; // TweenChannel.PositionY
+        public float From { get; set; }
+        public float To { get; set; } = 100f;
+        public float Duration { get; set; } = 1f;
+        public int Easing { get; set; } = 3; // InOut
+        public int Loop { get; set; } = 2; // PingPong
+        public bool PlayOnStart { get; set; } = true;
     }
 
     public sealed class TextData
