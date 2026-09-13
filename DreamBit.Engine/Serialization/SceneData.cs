@@ -47,6 +47,7 @@ namespace DreamBit.Engine.Serialization
         public List<TriggerData> Triggers { get; set; } = new();
         public List<ScriptData> Scripts { get; set; } = new();
         public List<BoneData> Bones { get; set; } = new();
+        public List<SkeletonData> Skeletons { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -157,6 +158,29 @@ namespace DreamBit.Engine.Serialization
         public float RestRotation { get; set; }
         public float RestScaleX { get; set; } = 1f;
         public float RestScaleY { get; set; } = 1f;
+    }
+
+    public sealed class SkeletonData
+    {
+        public float Duration { get; set; } = 1f;
+        public bool Loop { get; set; } = true;
+        public List<PoseKeyframeData> Keyframes { get; set; } = new();
+    }
+
+    public sealed class PoseKeyframeData
+    {
+        public float Time { get; set; }
+        public List<BonePoseData> Bones { get; set; } = new();
+    }
+
+    public sealed class BonePoseData
+    {
+        public string Bone { get; set; } = "";
+        public float Px { get; set; }
+        public float Py { get; set; }
+        public float Rot { get; set; }
+        public float Sx { get; set; } = 1f;
+        public float Sy { get; set; } = 1f;
     }
 
     public sealed class RotatorData

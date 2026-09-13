@@ -252,6 +252,23 @@ namespace DreamBit.Engine.Serialization
                         RestScaleX = bone.RestScale.X,
                         RestScaleY = bone.RestScale.Y
                     });
+                else if (component is SkeletonAnimator skeleton)
+                    data.Skeletons.Add(new SkeletonData
+                    {
+                        Duration = skeleton.Duration,
+                        Loop = skeleton.Loop,
+                        Keyframes = skeleton.Keyframes.Select(k => new PoseKeyframeData
+                        {
+                            Time = k.Time,
+                            Bones = k.Bones.Select(b => new BonePoseData
+                            {
+                                Bone = b.Key,
+                                Px = b.Value.Position.X, Py = b.Value.Position.Y,
+                                Rot = b.Value.Rotation,
+                                Sx = b.Value.Scale.X, Sy = b.Value.Scale.Y
+                            }).ToList()
+                        }).ToList()
+                    });
                 else if (component is PlatformerController platformer)
                     data.Platformers.Add(new PlatformerData
                     {
@@ -374,6 +391,20 @@ namespace DreamBit.Engine.Serialization
                     RestScale = new Vector2(bone.RestScaleX, bone.RestScaleY),
                     HasRestPose = bone.HasRestPose
                 });
+
+            foreach (var skel in data.Skeletons)
+            {
+                var animator = new SkeletonAnimator { Duration = skel.Duration, Loop = skel.Loop };
+                foreach (var kf in skel.Keyframes)
+                {
+                    var bones = new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>();
+                    foreach (var b in kf.Bones)
+                        bones[b.Bone] = new DreamBit.Engine.Animation.BonePose(
+                            new Vector2(b.Px, b.Py), b.Rot, new Vector2(b.Sx, b.Sy));
+                    animator.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(kf.Time, bones));
+                }
+                obj.AddComponent(animator);
+            }
 
             foreach (var platformer in data.Platformers)
                 obj.AddComponent(new PlatformerController

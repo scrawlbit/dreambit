@@ -803,6 +803,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(bone);
         }
 
+        public void AddSkeleton()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<SkeletonAnimator>().Any())
+                return;
+
+            var skeleton = new SkeletonAnimator();
+            History.Do(new EditorAction("Adicionar Skeleton Animator",
+                doAction: () => obj.AddComponent(skeleton),
+                undoAction: () => obj.RemoveComponent(skeleton)));
+        }
+
+        public void RemoveSkeleton()
+        {
+            var skeleton = SelectedObject?.Components.OfType<SkeletonAnimator>().FirstOrDefault();
+            if (skeleton != null)
+                RemoveComponent(skeleton);
+        }
+
         /// <summary>Duplica os objetos selecionados (com seus componentes) — reversível.</summary>
         public void DuplicateSelected()
         {
@@ -884,6 +903,13 @@ namespace DreamBit.Studio.ViewModels
                             RestRotation = bone.RestRotation, RestScale = bone.RestScale,
                             HasRestPose = bone.HasRestPose
                         });
+                        break;
+                    case SkeletonAnimator skel:
+                        var skelClone = new SkeletonAnimator { Duration = skel.Duration, Loop = skel.Loop };
+                        foreach (var kf in skel.Keyframes)
+                            skelClone.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(
+                                kf.Time, new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>(kf.Bones)));
+                        clone.AddComponent(skelClone);
                         break;
                 }
             }
