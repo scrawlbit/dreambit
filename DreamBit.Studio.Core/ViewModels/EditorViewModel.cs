@@ -822,6 +822,25 @@ namespace DreamBit.Studio.ViewModels
                 RemoveComponent(collider);
         }
 
+        public void AddCamera()
+        {
+            var obj = SelectedObject;
+            if (obj == null || obj.Components.OfType<CameraComponent>().Any())
+                return;
+
+            var camera = new CameraComponent();
+            History.Do(new EditorAction("Adicionar Camera",
+                doAction: () => obj.AddComponent(camera),
+                undoAction: () => obj.RemoveComponent(camera)));
+        }
+
+        public void RemoveCamera()
+        {
+            var camera = SelectedObject?.Components.OfType<CameraComponent>().FirstOrDefault();
+            if (camera != null)
+                RemoveComponent(camera);
+        }
+
         public void AddMessageListener()
         {
             var obj = SelectedObject;
@@ -914,6 +933,14 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case SceneExit se:
                         clone.AddComponent(new SceneExit { Size = se.Size, TargetTag = se.TargetTag, TargetScene = se.TargetScene });
+                        break;
+                    case CameraComponent cam:
+                        clone.AddComponent(new CameraComponent
+                        {
+                            TargetTag = cam.TargetTag, DeadzoneWidth = cam.DeadzoneWidth, DeadzoneHeight = cam.DeadzoneHeight,
+                            SmoothTime = cam.SmoothTime, Zoom = cam.Zoom,
+                            UseBounds = cam.UseBounds, BoundsMin = cam.BoundsMin, BoundsMax = cam.BoundsMax
+                        });
                         break;
                     case AudioSource au:
                         clone.AddComponent(new AudioSource

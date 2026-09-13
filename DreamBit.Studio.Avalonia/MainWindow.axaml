@@ -307,6 +307,7 @@
                             <Button Content="Partículas" Click="OnAddParticles" Margin="0,0,4,4" />
                             <Button Content="Trigger" Click="OnAddTrigger" Margin="0,0,4,4" />
                             <Button Content="Mensagem" Click="OnAddMessageListener" Margin="0,0,4,4" />
+                            <Button Content="Câmera" Click="OnAddCamera" Margin="0,0,4,4" />
                             <Button Content="Follow" Click="OnAddFollow" Margin="0,0,4,4" />
                             <Button Content="Rotator" Click="OnAddRotator" Margin="0,0,4,4" />
                             <Button Content="Bone" Click="OnAddBone" Margin="0,0,4,4" />
@@ -547,6 +548,40 @@
                                 <CheckBox Content="Some ao tocar (coletável)" IsChecked="{Binding TriggerDestroyOnEnter, Mode=TwoWay}" Margin="0,6,0,0" />
                                 <TextBlock Classes="field" Text="Enviar mensagem ao tocar (vazio = nenhuma)" />
                                 <TextBox Text="{Binding TriggerSendOnEnter, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Camera -->
+                        <Border Classes="component" IsVisible="{Binding HasCamera}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Câmera" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveCamera" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Seguir a tag" />
+                                <TextBox Text="{Binding CameraTargetTag, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Deadzone L" />
+                                        <TextBox Text="{Binding CameraDeadzoneWidth, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Deadzone A" />
+                                        <TextBox Text="{Binding CameraDeadzoneHeight, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Suavização (s)" />
+                                        <TextBox Text="{Binding CameraSmoothTime, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Zoom" />
+                                        <TextBox Text="{Binding CameraZoom, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
                             </StackPanel>
                         </Border>
 

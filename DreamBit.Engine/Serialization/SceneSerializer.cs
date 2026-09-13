@@ -315,6 +315,18 @@ namespace DreamBit.Engine.Serialization
                         TargetTag = exit.TargetTag,
                         TargetScene = exit.TargetScene
                     });
+                else if (component is CameraComponent cam)
+                    data.Cameras.Add(new CameraData
+                    {
+                        TargetTag = cam.TargetTag,
+                        DeadzoneWidth = cam.DeadzoneWidth,
+                        DeadzoneHeight = cam.DeadzoneHeight,
+                        SmoothTime = cam.SmoothTime,
+                        Zoom = cam.Zoom,
+                        UseBounds = cam.UseBounds,
+                        BoundsMinX = cam.BoundsMin.X, BoundsMinY = cam.BoundsMin.Y,
+                        BoundsMaxX = cam.BoundsMax.X, BoundsMaxY = cam.BoundsMax.Y
+                    });
             }
 
             foreach (var child in obj.Children)
@@ -499,6 +511,19 @@ namespace DreamBit.Engine.Serialization
                     Size = new Vector2(exit.Width, exit.Height),
                     TargetTag = exit.TargetTag,
                     TargetScene = exit.TargetScene
+                });
+
+            foreach (var cam in data.Cameras)
+                obj.AddComponent(new CameraComponent
+                {
+                    TargetTag = cam.TargetTag,
+                    DeadzoneWidth = cam.DeadzoneWidth,
+                    DeadzoneHeight = cam.DeadzoneHeight,
+                    SmoothTime = cam.SmoothTime,
+                    Zoom = cam.Zoom,
+                    UseBounds = cam.UseBounds,
+                    BoundsMin = new Vector2(cam.BoundsMinX, cam.BoundsMinY),
+                    BoundsMax = new Vector2(cam.BoundsMaxX, cam.BoundsMaxY)
                 });
 
             foreach (var childData in data.Children)

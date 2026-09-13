@@ -331,6 +331,42 @@ namespace DreamBit.Studio.ViewModels
             set { var t = Trigger; if (t != null) t.SendOnEnter = value; }
         }
 
+        // ---- Componente CameraComponent ----
+
+        private CameraComponent? Camera => _target?.Components.OfType<CameraComponent>().FirstOrDefault();
+        public bool HasCamera => Camera != null;
+
+        public string CameraTargetTag
+        {
+            get => Camera?.TargetTag ?? string.Empty;
+            set { var c = Camera; if (c != null) c.TargetTag = value; }
+        }
+        public float CameraDeadzoneWidth
+        {
+            get => Camera?.DeadzoneWidth ?? 0f;
+            set { var c = Camera; if (c != null) c.DeadzoneWidth = value; }
+        }
+        public float CameraDeadzoneHeight
+        {
+            get => Camera?.DeadzoneHeight ?? 0f;
+            set { var c = Camera; if (c != null) c.DeadzoneHeight = value; }
+        }
+        public float CameraSmoothTime
+        {
+            get => Camera?.SmoothTime ?? 0f;
+            set { var c = Camera; if (c != null) c.SmoothTime = value; }
+        }
+        public float CameraZoom
+        {
+            get => Camera?.Zoom ?? 1f;
+            set { var c = Camera; if (c != null) c.Zoom = value; }
+        }
+        public bool CameraUseBounds
+        {
+            get => Camera?.UseBounds ?? false;
+            set { var c = Camera; if (c != null) c.UseBounds = value; }
+        }
+
         // ---- Componente MessageListener (barramento de eventos) ----
 
         private MessageListener? Listener => _target?.Components.OfType<MessageListener>().FirstOrDefault();
@@ -643,6 +679,13 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasListener));
             OnPropertyChanged(nameof(ListenerMessage));
             OnPropertyChanged(nameof(ListenerReaction));
+            OnPropertyChanged(nameof(HasCamera));
+            OnPropertyChanged(nameof(CameraTargetTag));
+            OnPropertyChanged(nameof(CameraDeadzoneWidth));
+            OnPropertyChanged(nameof(CameraDeadzoneHeight));
+            OnPropertyChanged(nameof(CameraSmoothTime));
+            OnPropertyChanged(nameof(CameraZoom));
+            OnPropertyChanged(nameof(CameraUseBounds));
             OnPropertyChanged(nameof(HasFollow));
             OnPropertyChanged(nameof(FollowTargetObject));
             OnPropertyChanged(nameof(FollowSpeed));

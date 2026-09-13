@@ -55,10 +55,17 @@ namespace DreamBit.Player
             if (_scene.PendingSceneLoad is { } next)
                 LoadNextScene(next);
 
-            // Câmera segue o personagem (primeiro objeto com PlatformerController).
-            var target = FindPlayer(_scene.Objects);
-            if (target != null)
-                _camera.Position = target.Transform.WorldPosition;
+            // Câmera: usa um CameraComponent da cena, se houver; senão segue o Platformer.
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var camera = FindCamera(_scene.Objects);
+            if (camera != null)
+                camera.DriveCamera(_camera, dt, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            else
+            {
+                var target = FindPlayer(_scene.Objects);
+                if (target != null)
+                    _camera.Position = target.Transform.WorldPosition;
+            }
 
             base.Update(gameTime);
         }
@@ -75,6 +82,21 @@ namespace DreamBit.Player
             _scene = SceneSerializer.Load(path);
             _scene.StartPlay();
             Window.Title = "DreamBit Player — " + Path.GetFileNameWithoutExtension(path);
+        }
+
+        private static CameraComponent? FindCamera(System.Collections.Generic.IEnumerable<GameObject> objects)
+        {
+            foreach (var obj in objects)
+            {
+                foreach (var component in obj.Components)
+                    if (component is CameraComponent cam)
+                        return cam;
+
+                var nested = FindCamera(obj.Children);
+                if (nested != null)
+                    return nested;
+            }
+            return null;
         }
 
         private static GameObject? FindPlayer(System.Collections.Generic.IEnumerable<GameObject> objects)
