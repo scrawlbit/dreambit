@@ -297,6 +297,8 @@
                         </Grid>
                         <CheckBox Content="Fixo na tela (HUD) — não anda com a câmera"
                                   IsChecked="{Binding ScreenSpace, Mode=TwoWay}" Margin="0,2,0,0" />
+                        <CheckBox Content="🔒 Bloquear movimentação (evita arrastar sem querer)"
+                                  IsChecked="{Binding Locked, Mode=TwoWay}" Margin="0,2,0,0" />
                         <Grid ColumnDefinitions="*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Posição X" />
@@ -329,13 +331,13 @@
                             <ComboBoxItem>Sprite</ComboBoxItem>
                             <ComboBoxItem>Animator</ComboBoxItem>
                             <ComboBoxItem>Platformer</ComboBoxItem>
-                            <ComboBoxItem>Colisor</ComboBoxItem>
-                            <ComboBoxItem>Câmera</ComboBoxItem>
-                            <ComboBoxItem>Texto</ComboBoxItem>
-                            <ComboBoxItem>Áudio</ComboBoxItem>
-                            <ComboBoxItem>Partículas</ComboBoxItem>
+                            <ComboBoxItem>Collider</ComboBoxItem>
+                            <ComboBoxItem>Camera</ComboBoxItem>
+                            <ComboBoxItem>Text</ComboBoxItem>
+                            <ComboBoxItem>Audio</ComboBoxItem>
+                            <ComboBoxItem>Particles</ComboBoxItem>
                             <ComboBoxItem>Trigger</ComboBoxItem>
-                            <ComboBoxItem>Mensagem</ComboBoxItem>
+                            <ComboBoxItem>Message</ComboBoxItem>
                             <ComboBoxItem>Follow</ComboBoxItem>
                             <ComboBoxItem>Rotator</ComboBoxItem>
                             <ComboBoxItem>Tween</ComboBoxItem>
@@ -371,7 +373,7 @@
                             <ComboBoxItem>State Machine</ComboBoxItem>
                             <ComboBoxItem>Screen Fade</ComboBoxItem>
                             <ComboBoxItem>Post Process</ComboBoxItem>
-                            <ComboBoxItem>Música em Camadas</ComboBoxItem>
+                            <ComboBoxItem>Layered Music</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -566,7 +568,7 @@
                         <Border Classes="component" IsVisible="{Binding HasAudio}">
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock Classes="section" Text="Áudio" />
+                                    <TextBlock Classes="section" Text="Audio" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAudio" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Som (.wav)" />
@@ -592,7 +594,7 @@
                         <Border Classes="component" IsVisible="{Binding HasParticles}">
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock Classes="section" Text="Partículas" />
+                                    <TextBlock Classes="section" Text="Particles" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveParticles" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
@@ -715,7 +717,7 @@
                         <Border Classes="component" IsVisible="{Binding HasText}">
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock Classes="section" Text="Texto" />
+                                    <TextBlock Classes="section" Text="Text" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveText" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Conteúdo" />
@@ -744,7 +746,7 @@
                         <Border Classes="component" IsVisible="{Binding HasCamera}">
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock Classes="section" Text="Câmera" />
+                                    <TextBlock Classes="section" Text="Camera" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveCamera" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Seguir a tag" />
@@ -1463,11 +1465,13 @@
                                     <TextBlock Classes="section" Text="Script (C#)" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveScript" />
                                 </Grid>
-                                <TextBox Text="{Binding ScriptSource, Mode=TwoWay}" AcceptsReturn="True"
-                                         FontFamily="Consolas,monospace" Height="140" TextWrapping="NoWrap" />
-                                <TextBlock Classes="field" Text="Arquivo .cs externo (opcional, hot-reload)" />
-                                <TextBox Text="{Binding ScriptSourcePath, Mode=TwoWay}" Watermark="ex.: scripts/Player.cs" />
-                                <Button Content="Compilar" Click="OnCompileScript" Margin="0,4,0,0" />
+                                <TextBlock Classes="field" Text="Arquivo .cs (edite na IDE — hot-reload no play)" />
+                                <TextBox Text="{Binding ScriptSourcePath, Mode=TwoWay}" IsReadOnly="True"
+                                         FontFamily="Consolas,monospace" Watermark="(nenhum arquivo)" />
+                                <Grid ColumnDefinitions="*,6,Auto" Margin="0,4,0,0">
+                                    <Button Grid.Column="0" Content="Abrir na IDE" Click="OnOpenScriptInIde" HorizontalAlignment="Stretch" />
+                                    <Button Grid.Column="2" Content="Compilar" Click="OnCompileScript" />
+                                </Grid>
                                 <TextBlock Text="{Binding ScriptError}" Foreground="#E06C6C" TextWrapping="Wrap"
                                            IsVisible="{Binding ScriptError, Converter={x:Static local:NonEmptyConverter.Instance}}"
                                            Margin="0,4,0,0" />
@@ -1526,7 +1530,7 @@
                         <Border Classes="component" IsVisible="{Binding HasLayeredMusic}">
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock Classes="section" Text="Música em Camadas" />
+                                    <TextBlock Classes="section" Text="Layered Music" />
                                     <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveLayeredMusic" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Faixa base (.wav em loop)" />

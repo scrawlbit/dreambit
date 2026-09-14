@@ -865,6 +865,17 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => obj.RemoveComponent(script)));
         }
 
+        /// <summary>Adiciona um ScriptComponent já configurado (ex.: com SourcePath de um arquivo real).</summary>
+        public void AddScriptComponent(ScriptComponent script)
+        {
+            var obj = SelectedObject;
+            if (obj == null || script == null || obj.Components.OfType<ScriptComponent>().Any())
+                return;
+            History.Do(new EditorAction("Adicionar Script",
+                doAction: () => obj.AddComponent(script),
+                undoAction: () => obj.RemoveComponent(script)));
+        }
+
         public void RemoveScript()
         {
             var script = SelectedObject?.Components.OfType<ScriptComponent>().FirstOrDefault();

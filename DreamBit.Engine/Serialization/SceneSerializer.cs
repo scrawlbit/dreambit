@@ -269,6 +269,7 @@ namespace DreamBit.Engine.Serialization
                 RenderLayer = obj.RenderLayer,
                 ScreenSpace = obj.ScreenSpace,
                 IsVisible = obj.IsVisible,
+                Locked = obj.Locked,
                 PositionX = t.Position.X,
                 PositionY = t.Position.Y,
                 Rotation = t.Rotation,
@@ -674,7 +675,7 @@ namespace DreamBit.Engine.Serialization
 
         private static GameObject FromData(GameObjectData data)
         {
-            var obj = new GameObject(data.Name) { Id = data.Id, Tag = data.Tag, SortOrder = data.SortOrder, RenderLayer = data.RenderLayer, ScreenSpace = data.ScreenSpace, IsVisible = data.IsVisible };
+            var obj = new GameObject(data.Name) { Id = data.Id, Tag = data.Tag, SortOrder = data.SortOrder, RenderLayer = data.RenderLayer, ScreenSpace = data.ScreenSpace, IsVisible = data.IsVisible, Locked = data.Locked };
             obj.Transform.Position = new Vector2(data.PositionX, data.PositionY);
             obj.Transform.Rotation = data.Rotation;
             obj.Transform.Scale = new Vector2(data.ScaleX, data.ScaleY);

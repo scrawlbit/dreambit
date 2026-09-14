@@ -84,6 +84,9 @@ namespace DreamBit.Studio.Editing
                 if (!hit.IsSelected)
                     _editor.SelectSingle(hit);
 
+                if (hit.Locked)
+                    return; // travado: seleciona (para poder destravar no inspetor) mas não arrasta
+
                 BeginGroupOp(Vector2.Zero);
                 _movingGroup = true;
                 _dragAnchor = world;
@@ -197,7 +200,8 @@ namespace DreamBit.Studio.Editing
 
         private void BeginGroupOp(Vector2 center)
         {
-            _groupObjects = _editor.SelectedObjects.ToArray();
+            // Objetos travados não são movidos/escalados/rotacionados (evita arrastar sem querer).
+            _groupObjects = _editor.SelectedObjects.Where(o => !o.Locked).ToArray();
             _groupBefore = _groupObjects.Select(EditorViewModel.Capture).ToArray();
             _groupCenter = center;
         }

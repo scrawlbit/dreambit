@@ -62,7 +62,7 @@ namespace DreamBit.Engine.Components
         private SoundEffectInstance? _baseInstance;
         private readonly List<MusicLayer> _layers = new();
 
-        public override string DisplayName => "Música em Camadas";
+        public override string DisplayName => "Layered Music";
 
         /// <summary>Faixa base (.wav em loop) que toca o tempo todo.</summary>
         public string? BaseTrackPath { get => _baseTrackPath; set => Set(ref _baseTrackPath, value); }

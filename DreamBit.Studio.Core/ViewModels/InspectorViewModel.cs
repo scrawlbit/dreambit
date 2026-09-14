@@ -73,6 +73,13 @@ namespace DreamBit.Studio.ViewModels
             set { if (_target != null) { _target.ScreenSpace = value; OnPropertyChanged(); } }
         }
 
+        /// <summary>Trava a movimentação do objeto na cena (evita arrastar sem querer).</summary>
+        public bool Locked
+        {
+            get => _target?.Locked ?? false;
+            set { if (_target != null) { _target.Locked = value; OnPropertyChanged(); } }
+        }
+
         public float PositionX
         {
             get => _target?.Transform.Position.X ?? 0f;
@@ -1358,6 +1365,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SortOrder));
             OnPropertyChanged(nameof(RenderLayer));
             OnPropertyChanged(nameof(ScreenSpace));
+            OnPropertyChanged(nameof(Locked));
             OnPropertyChanged(nameof(PositionX));
             OnPropertyChanged(nameof(PositionY));
             OnPropertyChanged(nameof(RotationDegrees));

@@ -36,6 +36,7 @@ namespace DreamBit.Engine.Serialization
         public int RenderLayer { get; set; }
         public bool ScreenSpace { get; set; }
         public bool IsVisible { get; set; } = true;
+        public bool Locked { get; set; }
         public float PositionX { get; set; }
         public float PositionY { get; set; }
         public float Rotation { get; set; }

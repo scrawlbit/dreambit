@@ -615,23 +615,32 @@ namespace DreamBit.Studio.Avalonia
 
         // ---- adicionar componentes ----
 
-        private void OnAddComponentSelected(object? sender, SelectionChangedEventArgs e)
+        private async void OnAddComponentSelected(object? sender, SelectionChangedEventArgs e)
         {
             if (sender is not ComboBox box || box.SelectedItem is not ComboBoxItem item)
                 return;
 
-            System.Action? add = (item.Content as string) switch
+            var label = item.Content as string;
+            box.SelectedItem = null; // volta ao placeholder (re-entra com null e sai)
+
+            if (label == "Script")
+            {
+                await AddScriptWithFileAsync();
+                return;
+            }
+
+            System.Action? add = label switch
             {
                 "Sprite" => _editor.AddSprite,
                 "Animator" => _editor.AddAnimator,
                 "Platformer" => _editor.AddPlatformer,
-                "Colisor" => _editor.AddCollider,
-                "Câmera" => _editor.AddCamera,
-                "Texto" => _editor.AddText,
-                "Áudio" => _editor.AddAudio,
-                "Partículas" => _editor.AddParticles,
+                "Collider" => _editor.AddCollider,
+                "Camera" => _editor.AddCamera,
+                "Text" => _editor.AddText,
+                "Audio" => _editor.AddAudio,
+                "Particles" => _editor.AddParticles,
                 "Trigger" => _editor.AddTrigger,
-                "Mensagem" => _editor.AddMessageListener,
+                "Message" => _editor.AddMessageListener,
                 "Follow" => _editor.AddFollow,
                 "Rotator" => _editor.AddRotator,
                 "Tween" => _editor.AddTween,
@@ -667,12 +676,10 @@ namespace DreamBit.Studio.Avalonia
                 "State Machine" => _editor.AddStateMachine,
                 "Screen Fade" => _editor.AddScreenFade,
                 "Post Process" => _editor.AddPostProcess,
-                "Música em Camadas" => _editor.AddLayeredMusic,
-                "Script" => _editor.AddScript,
+                "Layered Music" => _editor.AddLayeredMusic,
                 _ => null
             };
 
-            box.SelectedItem = null; // volta ao placeholder (re-entra com null e sai)
             if (add != null)
                 AddComponent(add);
         }
@@ -690,7 +697,80 @@ namespace DreamBit.Studio.Avalonia
         private void OnAddRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddRotator);
         private void OnAddBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddBone);
         private void OnAddSkeleton(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddSkeleton);
-        private void OnAddScript(object? sender, RoutedEventArgs e) => AddComponent(_editor.AddScript);
+        private async void OnAddScript(object? sender, RoutedEventArgs e) => await AddScriptWithFileAsync();
+
+        private void OnOpenScriptInIde(object? sender, RoutedEventArgs e)
+        {
+            var path = _editor.SelectedObject?.Components
+                .OfType<DreamBit.Engine.Components.ScriptComponent>().FirstOrDefault()?.SourcePath;
+            if (!string.IsNullOrWhiteSpace(path))
+                _ = OpenFileInIdeAsync(path!);
+        }
+
+        /// <summary>Fluxo de adicionar Script: pede pasta+nome, cria o arquivo .cs real, aponta o
+        /// componente pra ele (sem texto no inspetor) e abre na IDE (solução + arquivo).</summary>
+        private async System.Threading.Tasks.Task AddScriptWithFileAsync()
+        {
+            var obj = _editor.SelectedObject;
+            if (obj == null || obj.Components.OfType<DreamBit.Engine.Components.ScriptComponent>().Any())
+                return;
+
+            var path = await PickSaveFileAsync("Novo script C#", "MeuScript", "cs", "C# script");
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+            if (!path.EndsWith(".cs", System.StringComparison.OrdinalIgnoreCase))
+                path += ".cs";
+
+            try
+            {
+                if (!System.IO.File.Exists(path))
+                {
+                    var className = DreamBit.Studio.IdeLauncher.SanitizeClassName(System.IO.Path.GetFileNameWithoutExtension(path));
+                    System.IO.File.WriteAllText(path, DreamBit.Studio.IdeLauncher.ScriptTemplate(className));
+                }
+            }
+            catch
+            {
+                return; // falhou ao criar o arquivo: não adiciona o componente
+            }
+
+            var script = new DreamBit.Engine.Components.ScriptComponent { SourcePath = path };
+            _editor.AddScriptComponent(script);
+            _editor.Inspector.Refresh();
+            InvalidateScene();
+
+            await OpenFileInIdeAsync(path);
+        }
+
+        /// <summary>Abre um arquivo na IDE preferida (detecta e guarda a escolha na 1ª vez).</summary>
+        private async System.Threading.Tasks.Task OpenFileInIdeAsync(string file)
+        {
+            var prefs = DreamBit.Studio.EditorPreferences.Load();
+            var editor = prefs.ScriptEditorPath;
+            if (string.IsNullOrEmpty(editor) || !System.IO.File.Exists(editor))
+            {
+                editor = DreamBit.Studio.IdeLauncher.AutoDetect() ?? await PickOpenExeAsync();
+                if (string.IsNullOrEmpty(editor))
+                {
+                    try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(file) { UseShellExecute = true }); }
+                    catch { /* sem programa: silencioso */ }
+                    return;
+                }
+                prefs.ScriptEditorPath = editor;
+                prefs.Save();
+            }
+            DreamBit.Studio.IdeLauncher.Open(editor, file);
+        }
+
+        private async System.Threading.Tasks.Task<string?> PickOpenExeAsync()
+        {
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Escolha o programa (IDE) para abrir scripts (Rider, Visual Studio, VS Code)",
+                AllowMultiple = false
+            });
+            return files.FirstOrDefault()?.TryGetLocalPath();
+        }
 
         // ---- remover componentes ----
 

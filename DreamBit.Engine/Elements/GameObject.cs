@@ -106,6 +106,15 @@ namespace DreamBit.Engine.Elements
             get => _isVisible;
             set => Set(ref _isVisible, value);
         }
+
+        private bool _locked;
+        /// <summary>Trava a movimentação deste objeto na cena (não arrasta/move por engano). Só edição.</summary>
+        public bool Locked
+        {
+            get => _locked;
+            set => Set(ref _locked, value);
+        }
+
         public bool IsSelected
         {
             get => _isSelected;

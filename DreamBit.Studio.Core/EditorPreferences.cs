@@ -16,6 +16,10 @@ namespace DreamBit.Studio
         /// <summary>Pasta raiz da engine/repositório (contém DreamBit.Player). Null = auto.</summary>
         public string? EnginePath { get; set; }
 
+        /// <summary>Programa (IDE) usado para abrir scripts .cs — ex.: Rider, Visual Studio, VS Code.
+        /// Null = detecta na primeira vez e guarda a escolha.</summary>
+        public string? ScriptEditorPath { get; set; }
+
         /// <summary>Atalhos: ação → gesto (ex.: "Group" → "Ctrl+G"). Falhas caem no default.</summary>
         public Dictionary<string, string> Shortcuts { get; set; } = new();
 
