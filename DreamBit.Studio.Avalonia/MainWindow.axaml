@@ -93,6 +93,12 @@
                 <MenuItem Header="Zoom 100%" Click="OnZoom100" />
                 <MenuItem Header="Focar seleção" Click="OnFocusSelection" InputGesture="F" />
             </MenuItem>
+            <MenuItem Header="_Janela">
+                <MenuItem x:Name="MenuHierarchy" Header="Hierarquia" ToggleType="CheckBox" IsChecked="True" Click="OnToggleHierarchyPanel" />
+                <MenuItem x:Name="MenuAssets" Header="Assets" ToggleType="CheckBox" IsChecked="True" Click="OnToggleAssetsPanel" />
+                <MenuItem x:Name="MenuInspector" Header="Inspetor" ToggleType="CheckBox" IsChecked="True" Click="OnToggleInspectorPanel" />
+                <MenuItem x:Name="MenuConsole" Header="Console" ToggleType="CheckBox" IsChecked="True" Click="OnToggleConsolePanel" />
+            </MenuItem>
         </Menu>
 
         <!-- Toolbar enxuta (ícones Material) para as ações frequentes -->
@@ -162,7 +168,7 @@
         </Border>
 
         <!-- Console (dock inferior) -->
-        <Border DockPanel.Dock="Bottom" Background="#171A20" Height="150">
+        <Border x:Name="ConsolePanel" DockPanel.Dock="Bottom" Background="#171A20" Height="150">
             <DockPanel DataContext="{Binding Log}">
                 <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Background="#20242D">
                     <TextBlock Text="CONSOLE" Foreground="#8A93A6" Margin="10,6" VerticalAlignment="Center" />
@@ -172,6 +178,8 @@
                             <TextBlock Text="{Binding ErrorCount, StringFormat='{}{0} erro(s)'}" Foreground="#F1B0B0" FontSize="11" />
                         </Border>
                         <Button Content="Limpar" Command="{Binding ClearCommand}" VerticalAlignment="Center" />
+                        <Button Classes="remove" Click="OnCloseConsole" VerticalAlignment="Center"
+                                Margin="6,0,0,0" ToolTip.Tip="Fechar (reabre em Janela)" />
                     </StackPanel>
                 </Grid>
                 <ScrollViewer x:Name="ConsoleScroll">
@@ -216,9 +224,9 @@
             </DockPanel>
         </Border>
 
-        <Grid ColumnDefinitions="230,4,*,4,290">
+        <Grid x:Name="MainGrid" ColumnDefinitions="230,4,*,4,290">
             <!-- Coluna esquerda: cenas + hierarquia + assets -->
-            <Grid Grid.Column="0" RowDefinitions="110,4,*,4,200" Background="#252932">
+            <Grid x:Name="LeftGrid" Grid.Column="0" RowDefinitions="110,4,*,4,200" Background="#252932">
                 <DockPanel Grid.Row="0">
                     <TextBlock DockPanel.Dock="Top" Text="CENAS (duplo clique abre)" Foreground="#8A93A6" Margin="10,8" />
                     <ListBox x:Name="ScenesList" Background="Transparent" Margin="4"
@@ -231,10 +239,14 @@
                     </ListBox>
                 </DockPanel>
 
-                <GridSplitter Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
+                <GridSplitter x:Name="HierarchySplitter" Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
 
-                <DockPanel Grid.Row="2">
-                    <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA (Ctrl/Shift p/ vários · Ctrl+G agrupa)" Foreground="#8A93A6" Margin="10,8" />
+                <DockPanel x:Name="HierarchyPanel" Grid.Row="2">
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
+                        <TextBlock Text="HIERARQUIA (Ctrl/Shift p/ vários · Ctrl+G agrupa)" Foreground="#8A93A6" Margin="10,8" />
+                        <Button Grid.Column="1" Classes="remove" Click="OnCloseHierarchyPanel" Margin="0,0,6,0"
+                                VerticalAlignment="Center" ToolTip.Tip="Fechar (reabre em Janela)" />
+                    </Grid>
                     <TreeView x:Name="HierarchyList" Background="Transparent" Margin="4"
                               ItemsSource="{Binding Scene.Objects}"
                               SelectionMode="Multiple"
@@ -247,10 +259,14 @@
                     </TreeView>
                 </DockPanel>
 
-                <GridSplitter Grid.Row="3" Background="#11141A" ResizeDirection="Rows" />
+                <GridSplitter x:Name="AssetsSplitter" Grid.Row="3" Background="#11141A" ResizeDirection="Rows" />
 
-                <DockPanel Grid.Row="4">
-                    <TextBlock DockPanel.Dock="Top" Text="ASSETS (duplo clique aplica)" Foreground="#8A93A6" Margin="10,8" />
+                <DockPanel x:Name="AssetsPanel" Grid.Row="4">
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
+                        <TextBlock Text="ASSETS (duplo clique aplica)" Foreground="#8A93A6" Margin="10,8" />
+                        <Button Grid.Column="1" Classes="remove" Click="OnCloseAssetsPanel" Margin="0,0,6,0"
+                                VerticalAlignment="Center" ToolTip.Tip="Fechar (reabre em Janela)" />
+                    </Grid>
                     <ListBox x:Name="AssetsList" Background="Transparent" Margin="4"
                              ItemsSource="{Binding Project.Assets}"
                              DoubleTapped="OnAssetActivated">
@@ -294,17 +310,19 @@
                 <local:SceneView x:Name="Scene" />
             </DockPanel>
 
-            <GridSplitter Grid.Column="3" Background="#11141A" />
+            <GridSplitter x:Name="InspectorSplitter" Grid.Column="3" Background="#11141A" />
 
             <!-- Inspetor -->
-            <DockPanel Grid.Column="4" Background="#252932">
-                <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="10,6">
+            <DockPanel x:Name="InspectorPanel" Grid.Column="4" Background="#252932">
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto,Auto" Margin="10,6">
                     <TextBlock Text="INSPETOR" Foreground="#8A93A6" VerticalAlignment="Center" />
                     <ToggleButton Grid.Column="1" Classes="lock" ToolTip.Tip="Bloquear movimentação"
                                   IsChecked="{Binding Inspector.Locked, Mode=TwoWay}"
                                   IsVisible="{Binding Inspector.HasTarget}">
                         <PathIcon Width="15" Height="15" Data="{StaticResource IconLock}" />
                     </ToggleButton>
+                    <Button Grid.Column="2" Classes="remove" Click="OnCloseInspectorPanel"
+                            VerticalAlignment="Center" Margin="6,0,0,0" ToolTip.Tip="Fechar (reabre em Janela)" />
                 </Grid>
                 <ScrollViewer>
                     <StackPanel Margin="10,4" DataContext="{Binding Inspector}" Spacing="2"

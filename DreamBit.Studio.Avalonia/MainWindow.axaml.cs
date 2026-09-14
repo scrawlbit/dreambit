@@ -566,6 +566,76 @@ namespace DreamBit.Studio.Avalonia
         /// <summary>Recarrega o keymap das preferências (após editar/importar).</summary>
         public void ReloadKeymap() => _keymap = DreamBit.Studio.EditorPreferences.Load();
 
+        // ---- painéis fecháveis (menu Janela) ----
+        private void SetPanelChecked(string menu, bool value)
+        {
+            var m = this.FindControl<MenuItem>(menu);
+            if (m != null) m.IsChecked = value;
+        }
+
+        private void SetConsolePanel(bool show)
+        {
+            var p = this.FindControl<Border>("ConsolePanel");
+            if (p != null) p.IsVisible = show;
+            SetPanelChecked("MenuConsole", show);
+        }
+
+        private void SetInspectorPanel(bool show)
+        {
+            var p = this.FindControl<DockPanel>("InspectorPanel");
+            var split = this.FindControl<GridSplitter>("InspectorSplitter");
+            var grid = this.FindControl<Grid>("MainGrid");
+            if (p != null) p.IsVisible = show;
+            if (split != null) split.IsVisible = show;
+            if (grid != null)
+            {
+                grid.ColumnDefinitions[4].Width = new global::Avalonia.Controls.GridLength(show ? 290 : 0);
+                grid.ColumnDefinitions[3].Width = new global::Avalonia.Controls.GridLength(show ? 4 : 0);
+            }
+            SetPanelChecked("MenuInspector", show);
+        }
+
+        private void SetHierarchyPanel(bool show)
+        {
+            var p = this.FindControl<DockPanel>("HierarchyPanel");
+            var split = this.FindControl<GridSplitter>("HierarchySplitter");
+            var grid = this.FindControl<Grid>("LeftGrid");
+            if (p != null) p.IsVisible = show;
+            if (split != null) split.IsVisible = show;
+            if (grid != null)
+            {
+                grid.RowDefinitions[2].Height = show ? global::Avalonia.Controls.GridLength.Star : new global::Avalonia.Controls.GridLength(0);
+                grid.RowDefinitions[1].Height = new global::Avalonia.Controls.GridLength(show ? 4 : 0);
+            }
+            SetPanelChecked("MenuHierarchy", show);
+        }
+
+        private void SetAssetsPanel(bool show)
+        {
+            var p = this.FindControl<DockPanel>("AssetsPanel");
+            var split = this.FindControl<GridSplitter>("AssetsSplitter");
+            var grid = this.FindControl<Grid>("LeftGrid");
+            if (p != null) p.IsVisible = show;
+            if (split != null) split.IsVisible = show;
+            if (grid != null)
+            {
+                grid.RowDefinitions[4].Height = new global::Avalonia.Controls.GridLength(show ? 200 : 0);
+                grid.RowDefinitions[3].Height = new global::Avalonia.Controls.GridLength(show ? 4 : 0);
+            }
+            SetPanelChecked("MenuAssets", show);
+        }
+
+        private bool PanelVisible(string name) => this.FindControl<Control>(name)?.IsVisible ?? true;
+
+        private void OnToggleConsolePanel(object? sender, RoutedEventArgs e) => SetConsolePanel(!PanelVisible("ConsolePanel"));
+        private void OnCloseConsole(object? sender, RoutedEventArgs e) => SetConsolePanel(false);
+        private void OnToggleInspectorPanel(object? sender, RoutedEventArgs e) => SetInspectorPanel(!PanelVisible("InspectorPanel"));
+        private void OnCloseInspectorPanel(object? sender, RoutedEventArgs e) => SetInspectorPanel(false);
+        private void OnToggleHierarchyPanel(object? sender, RoutedEventArgs e) => SetHierarchyPanel(!PanelVisible("HierarchyPanel"));
+        private void OnCloseHierarchyPanel(object? sender, RoutedEventArgs e) => SetHierarchyPanel(false);
+        private void OnToggleAssetsPanel(object? sender, RoutedEventArgs e) => SetAssetsPanel(!PanelVisible("AssetsPanel"));
+        private void OnCloseAssetsPanel(object? sender, RoutedEventArgs e) => SetAssetsPanel(false);
+
         private void RebuildHierarchy() => SyncHierarchySelection();
 
         private void OnApplyPrefab(object? sender, RoutedEventArgs e) => _editor.ApplyToPrefab();
