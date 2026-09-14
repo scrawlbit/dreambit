@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
@@ -903,6 +904,69 @@ namespace DreamBit.Studio.ViewModels
         public System.Collections.Generic.IReadOnlyList<string> AudioBuses { get; } =
             new[] { DreamBit.Engine.Audio.AudioMixer.Master, DreamBit.Engine.Audio.AudioMixer.Music, DreamBit.Engine.Audio.AudioMixer.Sfx };
 
+        // ---- Componente LayeredMusic (música adaptativa em camadas) ----
+
+        private LayeredMusic? Music => _target?.Components.OfType<LayeredMusic>().FirstOrDefault();
+        public bool HasLayeredMusic => Music != null;
+
+        public string MusicBasePath
+        {
+            get => Music?.BaseTrackPath ?? string.Empty;
+            set { var m = Music; if (m != null) { m.BaseTrackPath = string.IsNullOrWhiteSpace(value) ? null : value; OnPropertyChanged(); } }
+        }
+        public float MusicBaseVolume
+        {
+            get => Music?.BaseVolume ?? 1f;
+            set { var m = Music; if (m != null) m.BaseVolume = value; }
+        }
+        public string MusicBus
+        {
+            get => Music?.Bus ?? DreamBit.Engine.Audio.AudioMixer.Music;
+            set { var m = Music; if (m != null) m.Bus = value; }
+        }
+
+        /// <summary>Linhas editáveis das camadas do <see cref="LayeredMusic"/> selecionado.</summary>
+        public ObservableCollection<MusicLayerRow> MusicLayers { get; } = new();
+        private LayeredMusic? _musicRowsFor;
+
+        private void SyncMusicLayers()
+        {
+            var m = Music;
+            bool structureChanged = !ReferenceEquals(_musicRowsFor, m)
+                || (m != null && m.Layers.Count != MusicLayers.Count)
+                || (m == null && MusicLayers.Count != 0);
+            if (!structureChanged)
+                return;
+
+            _musicRowsFor = m;
+            MusicLayers.Clear();
+            if (m != null)
+                foreach (var layer in m.Layers)
+                    MusicLayers.Add(new MusicLayerRow(layer));
+        }
+
+        public void AddMusicLayer()
+        {
+            var m = Music;
+            if (m == null)
+                return;
+            m.AddLayer(new MusicLayer { Tag = "Inimigo", MinCount = 1, OnlyOnScreen = true, FadeTime = 1.5f, MaxVolume = 1f });
+            _musicRowsFor = null; // força reconstrução
+            SyncMusicLayers();
+            OnPropertyChanged(nameof(MusicLayers));
+        }
+
+        public void RemoveMusicLayer(MusicLayerRow row)
+        {
+            var m = Music;
+            if (m == null || row == null)
+                return;
+            m.RemoveLayer(row.Layer);
+            _musicRowsFor = null;
+            SyncMusicLayers();
+            OnPropertyChanged(nameof(MusicLayers));
+        }
+
         // ---- Componente TilemapRenderer ----
 
         private TilemapRenderer? Tilemap => _target?.Components.OfType<TilemapRenderer>().FirstOrDefault();
@@ -1543,6 +1607,60 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasScreenFade)); OnPropertyChanged(nameof(FadeR)); OnPropertyChanged(nameof(FadeG)); OnPropertyChanged(nameof(FadeB)); OnPropertyChanged(nameof(FadeAlpha)); OnPropertyChanged(nameof(FadeFlashOn)); OnPropertyChanged(nameof(FadeFlashDuration));
             OnPropertyChanged(nameof(HasStateMachine)); OnPropertyChanged(nameof(FsmDefaultState)); OnPropertyChanged(nameof(FsmBlendTime)); OnPropertyChanged(nameof(FsmStatesText)); OnPropertyChanged(nameof(FsmTransitionsText));
             OnPropertyChanged(nameof(TilemapOrientation));
+            SyncMusicLayers();
+            OnPropertyChanged(nameof(HasLayeredMusic));
+            OnPropertyChanged(nameof(MusicBasePath));
+            OnPropertyChanged(nameof(MusicBaseVolume));
+            OnPropertyChanged(nameof(MusicBus));
+            OnPropertyChanged(nameof(MusicLayers));
+        }
+    }
+
+    /// <summary>Linha editável de uma camada de <see cref="LayeredMusic"/> no Inspetor.</summary>
+    public sealed class MusicLayerRow : NotificationObject
+    {
+        internal MusicLayer Layer { get; }
+        public MusicLayerRow(MusicLayer layer) => Layer = layer;
+
+        public string TrackPath
+        {
+            get => Layer.TrackPath ?? string.Empty;
+            set { Layer.TrackPath = string.IsNullOrWhiteSpace(value) ? null : value; OnPropertyChanged(); }
+        }
+        public string LayerTag
+        {
+            get => Layer.Tag;
+            set { Layer.Tag = value ?? string.Empty; OnPropertyChanged(); }
+        }
+        public int MinCount
+        {
+            get => Layer.MinCount;
+            set { Layer.MinCount = value; OnPropertyChanged(); }
+        }
+        public bool OnlyOnScreen
+        {
+            get => Layer.OnlyOnScreen;
+            set { Layer.OnlyOnScreen = value; OnPropertyChanged(); }
+        }
+        public string RiseMessage
+        {
+            get => Layer.RiseMessage;
+            set { Layer.RiseMessage = value ?? string.Empty; OnPropertyChanged(); }
+        }
+        public string FallMessage
+        {
+            get => Layer.FallMessage;
+            set { Layer.FallMessage = value ?? string.Empty; OnPropertyChanged(); }
+        }
+        public float FadeTime
+        {
+            get => Layer.FadeTime;
+            set { Layer.FadeTime = value; OnPropertyChanged(); }
+        }
+        public float MaxVolume
+        {
+            get => Layer.MaxVolume;
+            set { Layer.MaxVolume = value; OnPropertyChanged(); }
         }
     }
 }

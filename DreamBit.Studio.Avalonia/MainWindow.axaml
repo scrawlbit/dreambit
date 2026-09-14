@@ -371,6 +371,7 @@
                             <ComboBoxItem>State Machine</ComboBoxItem>
                             <ComboBoxItem>Screen Fade</ComboBoxItem>
                             <ComboBoxItem>Post Process</ComboBoxItem>
+                            <ComboBoxItem>Música em Camadas</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -1518,6 +1519,78 @@
                                     <StackPanel Grid.Column="4"><TextBox Text="{Binding PostB, Mode=TwoWay}" /></StackPanel>
                                 </Grid>
                                 <TextBlock Classes="field" Text="Shader compilado (MGCB). Roda no Player." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Música em Camadas (adaptativa) -->
+                        <Border Classes="component" IsVisible="{Binding HasLayeredMusic}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Música em Camadas" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveLayeredMusic" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Faixa base (.wav em loop)" />
+                                <TextBox Text="{Binding MusicBasePath, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Volume da base" />
+                                        <TextBox Text="{Binding MusicBaseVolume, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="field" Text="Bus (mixer)" />
+                                        <ComboBox ItemsSource="{Binding AudioBuses}" HorizontalAlignment="Stretch"
+                                                  SelectedItem="{Binding MusicBus, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Camadas (sobem/descem conforme o jogo)" Margin="0,8,0,0" />
+                                <ItemsControl ItemsSource="{Binding MusicLayers}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="4" Padding="6" Margin="0,0,0,6">
+                                                <StackPanel>
+                                                    <Grid ColumnDefinitions="*,Auto">
+                                                        <TextBlock Classes="field" Text="Stem (.wav em loop)" />
+                                                        <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveMusicLayer" />
+                                                    </Grid>
+                                                    <TextBox Text="{Binding TrackPath, Mode=TwoWay}" />
+                                                    <Grid ColumnDefinitions="*,6,*" Margin="0,4,0,0">
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Classes="field" Text="Tag de gatilho (ex.: Inimigo)" />
+                                                            <TextBox Text="{Binding LayerTag, Mode=TwoWay}" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2">
+                                                            <TextBlock Classes="field" Text="Qtd. mínima" />
+                                                            <TextBox Text="{Binding MinCount, Mode=TwoWay}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                    <CheckBox Content="Só contar quem está na câmera" IsChecked="{Binding OnlyOnScreen, Mode=TwoWay}" Margin="0,4,0,0" />
+                                                    <Grid ColumnDefinitions="*,6,*" Margin="0,4,0,0">
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Classes="field" Text="Fade (s)" />
+                                                            <TextBox Text="{Binding FadeTime, Mode=TwoWay}" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2">
+                                                            <TextBlock Classes="field" Text="Volume máx." />
+                                                            <TextBox Text="{Binding MaxVolume, Mode=TwoWay}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                    <Grid ColumnDefinitions="*,6,*" Margin="0,4,0,0">
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Classes="field" Text="Ligar por evento (msg)" />
+                                                            <TextBox Text="{Binding RiseMessage, Mode=TwoWay}" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2">
+                                                            <TextBlock Classes="field" Text="Desligar por evento (msg)" />
+                                                            <TextBox Text="{Binding FallMessage, Mode=TwoWay}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Content="+ Adicionar camada" Click="OnAddMusicLayer" HorizontalAlignment="Left" />
+                                <TextBlock Classes="field" Text="Dica: use a tag por 'inimigos na tela', ou msg para eventos (chefe, alarme)." Margin="0,4,0,0" />
                             </StackPanel>
                         </Border>
 

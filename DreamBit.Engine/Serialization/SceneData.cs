@@ -90,6 +90,7 @@ namespace DreamBit.Engine.Serialization
         public List<AnimStateMachineData> StateMachines { get; set; } = new();
         public List<ScreenFadeData> ScreenFades { get; set; } = new();
         public List<PostProcessData> PostProcesses { get; set; } = new();
+        public List<LayeredMusicData> LayeredMusics { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -100,6 +101,26 @@ namespace DreamBit.Engine.Serialization
     public sealed class ScreenFadeData { public byte R { get; set; } public byte G { get; set; } public byte B { get; set; } public float Alpha { get; set; } public string FlashOnMessage { get; set; } = ""; public float FlashDuration { get; set; } = 0.25f; }
 
     public sealed class PostProcessData { public float Saturation { get; set; } = 1f; public byte R { get; set; } = 255; public byte G { get; set; } = 255; public byte B { get; set; } = 255; }
+
+    public sealed class LayeredMusicData
+    {
+        public string? BaseTrackPath { get; set; }
+        public float BaseVolume { get; set; } = 1f;
+        public string Bus { get; set; } = "Music";
+        public List<MusicLayerData> Layers { get; set; } = new();
+    }
+
+    public sealed class MusicLayerData
+    {
+        public string? TrackPath { get; set; }
+        public string Tag { get; set; } = "";
+        public int MinCount { get; set; } = 1;
+        public bool OnlyOnScreen { get; set; } = true;
+        public string RiseMessage { get; set; } = "";
+        public string FallMessage { get; set; } = "";
+        public float FadeTime { get; set; } = 1.5f;
+        public float MaxVolume { get; set; } = 1f;
+    }
 
     public sealed class AnimStateData { public string Name { get; set; } = ""; public string Clip { get; set; } = ""; public float X { get; set; } public float Y { get; set; } }
     public sealed class AnimTransData { public string From { get; set; } = ""; public string To { get; set; } = ""; public string Parameter { get; set; } = ""; public int Condition { get; set; } }

@@ -494,6 +494,24 @@ namespace DreamBit.Engine.Serialization
                     data.PrefabInstances.Add(new PrefabInstanceData { PrefabPath = prefab.PrefabPath });
                 else if (component is PostProcess post)
                     data.PostProcesses.Add(new PostProcessData { Saturation = post.Saturation, R = post.Tint.R, G = post.Tint.G, B = post.Tint.B });
+                else if (component is LayeredMusic music)
+                    data.LayeredMusics.Add(new LayeredMusicData
+                    {
+                        BaseTrackPath = music.BaseTrackPath,
+                        BaseVolume = music.BaseVolume,
+                        Bus = music.Bus,
+                        Layers = music.Layers.Select(l => new MusicLayerData
+                        {
+                            TrackPath = l.TrackPath,
+                            Tag = l.Tag,
+                            MinCount = l.MinCount,
+                            OnlyOnScreen = l.OnlyOnScreen,
+                            RiseMessage = l.RiseMessage,
+                            FallMessage = l.FallMessage,
+                            FadeTime = l.FadeTime,
+                            MaxVolume = l.MaxVolume
+                        }).ToList()
+                    });
                 else if (component is ScreenFade fade)
                     data.ScreenFades.Add(new ScreenFadeData { R = fade.Color.R, G = fade.Color.G, B = fade.Color.B, Alpha = fade.Alpha, FlashOnMessage = fade.FlashOnMessage, FlashDuration = fade.FlashDuration });
                 else if (component is AnimationStateMachine fsm)
@@ -784,6 +802,29 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var pp in data.PostProcesses)
                 obj.AddComponent(new PostProcess { Saturation = pp.Saturation, Tint = new Color(pp.R, pp.G, pp.B) });
+
+            foreach (var music in data.LayeredMusics)
+            {
+                var comp = new LayeredMusic
+                {
+                    BaseTrackPath = music.BaseTrackPath,
+                    BaseVolume = music.BaseVolume,
+                    Bus = music.Bus
+                };
+                foreach (var l in music.Layers)
+                    comp.AddLayer(new MusicLayer
+                    {
+                        TrackPath = l.TrackPath,
+                        Tag = l.Tag,
+                        MinCount = l.MinCount,
+                        OnlyOnScreen = l.OnlyOnScreen,
+                        RiseMessage = l.RiseMessage,
+                        FallMessage = l.FallMessage,
+                        FadeTime = l.FadeTime,
+                        MaxVolume = l.MaxVolume
+                    });
+                obj.AddComponent(comp);
+            }
 
             foreach (var f in data.ScreenFades)
                 obj.AddComponent(new ScreenFade { Color = new Color(f.R, f.G, f.B), Alpha = f.Alpha, FlashOnMessage = f.FlashOnMessage, FlashDuration = f.FlashDuration });

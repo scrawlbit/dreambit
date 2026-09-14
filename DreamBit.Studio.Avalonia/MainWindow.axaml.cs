@@ -667,6 +667,7 @@ namespace DreamBit.Studio.Avalonia
                 "State Machine" => _editor.AddStateMachine,
                 "Screen Fade" => _editor.AddScreenFade,
                 "Post Process" => _editor.AddPostProcess,
+                "Música em Camadas" => _editor.AddLayeredMusic,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -741,6 +742,13 @@ namespace DreamBit.Studio.Avalonia
         }
         private void OnRemoveScreenFade(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveScreenFade);
         private void OnRemovePostProcess(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemovePostProcess);
+        private void OnRemoveLayeredMusic(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveLayeredMusic);
+        private void OnAddMusicLayer(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.AddMusicLayer);
+        private void OnRemoveMusicLayer(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Control c && c.DataContext is DreamBit.Studio.ViewModels.MusicLayerRow row)
+                AddComponent(() => _editor.Inspector.RemoveMusicLayer(row));
+        }
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

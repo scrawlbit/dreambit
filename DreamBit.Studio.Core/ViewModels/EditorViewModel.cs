@@ -1243,6 +1243,13 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveScreenFade() => RemoveSingle<ScreenFade>();
         public void AddPostProcess() => AddSingle(() => new PostProcess(), "Adicionar Post Process");
         public void RemovePostProcess() => RemoveSingle<PostProcess>();
+        public void AddLayeredMusic() => AddSingle(() =>
+        {
+            var music = new LayeredMusic();
+            music.AddLayer(new MusicLayer { Tag = "Inimigo", MinCount = 1, OnlyOnScreen = true, FadeTime = 1.5f, MaxVolume = 1f });
+            return music;
+        }, "Adicionar Música em Camadas");
+        public void RemoveLayeredMusic() => RemoveSingle<LayeredMusic>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
