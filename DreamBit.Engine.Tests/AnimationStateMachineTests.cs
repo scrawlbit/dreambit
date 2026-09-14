@@ -2,12 +2,11 @@ using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class AnimationStateMachineTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
@@ -32,25 +31,25 @@ namespace DreamBit.Engine.Tests
             return (scene, fsm, anim);
         }
 
-        [TestMethod]
+        [Fact]
         public void TransicaoPorBool_TrocaEstadoEClipe()
         {
             var (scene, fsm, anim) = Build();
             scene.StartPlay();
-            Assert.AreEqual("idle", fsm.CurrentState);
-            Assert.AreEqual("idle", anim.CurrentClip);
+            Assert.Equal("idle", fsm.CurrentState);
+            Assert.Equal("idle", anim.CurrentClip);
 
             fsm.SetBool("moving", true);
             scene.Update(Frame);
-            Assert.AreEqual("walk", fsm.CurrentState);
-            Assert.AreEqual("walk", anim.CurrentClip);
+            Assert.Equal("walk", fsm.CurrentState);
+            Assert.Equal("walk", anim.CurrentClip);
 
             fsm.SetBool("moving", false);
             scene.Update(Frame);
-            Assert.AreEqual("idle", fsm.CurrentState);
+            Assert.Equal("idle", fsm.CurrentState);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_StateMachine()
         {
             var scene = new Scene();
@@ -65,13 +64,13 @@ namespace DreamBit.Engine.Tests
             var e = DreamBit.Engine.Serialization.SceneSerializer
                 .LoadFromString(DreamBit.Engine.Serialization.SceneSerializer.SaveToString(scene)).Objects.First();
             var lf = e.Components.OfType<AnimationStateMachine>().Single();
-            Assert.AreEqual("idle", lf.DefaultState);
-            Assert.AreEqual(2, lf.States.Count);
-            Assert.AreEqual(2, lf.Transitions.Count);
-            Assert.AreEqual(AnimCondition.Trigger, lf.Transitions.First(t => t.Parameter == "go").Condition);
+            Assert.Equal("idle", lf.DefaultState);
+            Assert.Equal(2, lf.States.Count);
+            Assert.Equal(2, lf.Transitions.Count);
+            Assert.Equal(AnimCondition.Trigger, lf.Transitions.First(t => t.Parameter == "go").Condition);
         }
 
-        [TestMethod]
+        [Fact]
         public void GatilhoDeQualquerEstado_VaiParaAttackEConsome()
         {
             var (scene, fsm, anim) = Build();
@@ -81,12 +80,12 @@ namespace DreamBit.Engine.Tests
 
             fsm.SetTrigger("hit");
             scene.Update(Frame); // -> attack (de qualquer estado)
-            Assert.AreEqual("attack", fsm.CurrentState);
-            Assert.AreEqual("attack", anim.CurrentClip);
+            Assert.Equal("attack", fsm.CurrentState);
+            Assert.Equal("attack", anim.CurrentClip);
 
             // gatilho consumido: não volta a disparar sozinho
             scene.Update(Frame);
-            Assert.AreEqual("attack", fsm.CurrentState);
+            Assert.Equal("attack", fsm.CurrentState);
         }
     }
 }

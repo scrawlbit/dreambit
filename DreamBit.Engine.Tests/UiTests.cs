@@ -4,34 +4,33 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class UiTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void Anchor_ResolveCantosDaTela()
         {
             var a = new UiAnchor();
 
             a.Anchor = AnchorPoint.TopLeft;
-            Assert.AreEqual(new Vector2(0, 0), a.Resolve(800, 600));
+            Assert.Equal(new Vector2(0, 0), a.Resolve(800, 600));
 
             a.Anchor = AnchorPoint.Center;
-            Assert.AreEqual(new Vector2(400, 300), a.Resolve(800, 600));
+            Assert.Equal(new Vector2(400, 300), a.Resolve(800, 600));
 
             a.Anchor = AnchorPoint.BottomRight;
             a.OffsetX = -10; a.OffsetY = -10;
-            Assert.AreEqual(new Vector2(790, 590), a.Resolve(800, 600));
+            Assert.Equal(new Vector2(790, 590), a.Resolve(800, 600));
         }
 
-        [TestMethod]
+        [Fact]
         public void Anchor_PosicionaObjetoHudNoPlay()
         {
             Screen.Set(1000, 500);
@@ -43,10 +42,10 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             scene.Update(Frame);
 
-            Assert.AreEqual(new Vector2(980, 12), hud.Transform.Position);
+            Assert.Equal(new Vector2(980, 12), hud.Transform.Position);
         }
 
-        [TestMethod]
+        [Fact]
         public void Button_CliqueDentroDisparaMensagem()
         {
             Screen.Set(800, 600);
@@ -65,19 +64,19 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
             GameInput.SetPointer(new Vector2(10, 10), false);
             scene.Update(Frame);
-            Assert.IsNull(received);
+            Assert.Null(received);
 
             // pressiona e solta dentro do botão => dispara
             GameInput.SetPointer(new Vector2(400, 300), true);
             scene.Update(Frame);
             GameInput.SetPointer(new Vector2(400, 300), false);
             scene.Update(Frame);
-            Assert.AreEqual("start", received);
+            Assert.Equal("start", received);
 
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Button_SoltarForaNaoDispara()
         {
             Screen.Set(800, 600);
@@ -96,11 +95,11 @@ namespace DreamBit.Engine.Tests
             GameInput.SetPointer(new Vector2(50, 50), false);  // solta fora
             scene.Update(Frame);
 
-            Assert.IsFalse(fired);
+            Assert.False(fired);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -114,12 +113,12 @@ namespace DreamBit.Engine.Tests
             var anchor = lo.Components.OfType<UiAnchor>().Single();
             var button = lo.Components.OfType<UiButton>().Single();
 
-            Assert.AreEqual(AnchorPoint.BottomCenter, anchor.Anchor);
-            Assert.AreEqual(5f, anchor.OffsetX);
-            Assert.AreEqual(-7f, anchor.OffsetY);
-            Assert.AreEqual(200f, button.Width);
-            Assert.AreEqual("menu", button.SendOnClick);
-            Assert.AreEqual(new Color(10, 20, 30), button.Normal);
+            Assert.Equal(AnchorPoint.BottomCenter, anchor.Anchor);
+            Assert.Equal(5f, anchor.OffsetX);
+            Assert.Equal(-7f, anchor.OffsetY);
+            Assert.Equal(200f, button.Width);
+            Assert.Equal("menu", button.SendOnClick);
+            Assert.Equal(new Color(10, 20, 30), button.Normal);
         }
     }
 }

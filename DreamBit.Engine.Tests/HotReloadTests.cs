@@ -1,32 +1,31 @@
 using DreamBit.Engine.Audio;
 using DreamBit.Engine.Project;
 using DreamBit.Engine.Rendering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class HotReloadTests
     {
-        [TestMethod]
+        [Fact]
         public void IsAssetFile_ReconheceImagensTilemapsESons()
         {
-            Assert.IsTrue(ProjectWatcher.IsAssetFile("hero.png"));
-            Assert.IsTrue(ProjectWatcher.IsAssetFile(@"C:\jogo\assets\Dungeon1.TMX")); // maiúsculas
-            Assert.IsTrue(ProjectWatcher.IsAssetFile("tiles.tsx"));
-            Assert.IsTrue(ProjectWatcher.IsAssetFile("jump.wav"));
+            Assert.True(ProjectWatcher.IsAssetFile("hero.png"));
+            Assert.True(ProjectWatcher.IsAssetFile(@"C:\jogo\assets\Dungeon1.TMX")); // maiúsculas
+            Assert.True(ProjectWatcher.IsAssetFile("tiles.tsx"));
+            Assert.True(ProjectWatcher.IsAssetFile("jump.wav"));
         }
 
-        [TestMethod]
+        [Fact]
         public void IsAssetFile_IgnoraOutrosArquivos()
         {
-            Assert.IsFalse(ProjectWatcher.IsAssetFile("cena.dbscene"));
-            Assert.IsFalse(ProjectWatcher.IsAssetFile("readme.txt"));
-            Assert.IsFalse(ProjectWatcher.IsAssetFile("musica.mp3")); // só WAV
-            Assert.IsFalse(ProjectWatcher.IsAssetFile(""));
+            Assert.False(ProjectWatcher.IsAssetFile("cena.dbscene"));
+            Assert.False(ProjectWatcher.IsAssetFile("readme.txt"));
+            Assert.False(ProjectWatcher.IsAssetFile("musica.mp3")); // só WAV
+            Assert.False(ProjectWatcher.IsAssetFile(""));
         }
 
-        [TestMethod]
+        [Fact]
         public void TextureCache_InvalidateEGetSemDevice_NaoLancam()
         {
             // Sem GraphicsDevice não dá para carregar textura de verdade, mas as chamadas
@@ -34,16 +33,16 @@ namespace DreamBit.Engine.Tests
             TextureCache.Invalidate(null);
             TextureCache.Invalidate("nao-existe.png");
             TextureCache.Invalidate(@"C:\qualquer\caminho.png");
-            Assert.IsNull(TextureCache.Get(null!, null));
+            Assert.Null(TextureCache.Get(null!, null));
         }
 
-        [TestMethod]
+        [Fact]
         public void SoundCache_InvalidateSemArquivo_NaoLanca()
         {
             SoundCache.Invalidate(null);
             SoundCache.Invalidate("inexistente.wav");
-            Assert.IsNull(SoundCache.Get(null));
-            Assert.IsNull(SoundCache.Get("inexistente.wav")); // arquivo invalido -> null
+            Assert.Null(SoundCache.Get(null));
+            Assert.Null(SoundCache.Get("inexistente.wav")); // arquivo invalido -> null
         }
     }
 }

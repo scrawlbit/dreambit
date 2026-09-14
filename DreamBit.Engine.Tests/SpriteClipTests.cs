@@ -3,13 +3,12 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SpriteClipTests
     {
         private static GameTime Frame(double s) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(s));
@@ -17,20 +16,20 @@ namespace DreamBit.Engine.Tests
         private static SpriteAnimator GridAnimator(int frameCount)
             => new SpriteAnimator { FrameWidth = 32, FrameHeight = 32, FrameCount = frameCount, Fps = 8f };
 
-        [TestMethod]
+        [Fact]
         public void Clipe_ComLoop_RepeteSoOsFramesDoClipe()
         {
             var a = GridAnimator(10);
             a.AddClip(new SpriteClip("walk", new[] { 3, 4, 5 }, fps: 10f, loop: true));
             a.Play("walk");
-            Assert.AreEqual(0, a.CurrentFrame);
+            Assert.Equal(0, a.CurrentFrame);
 
-            a.Advance(0.1); Assert.AreEqual(1, a.CurrentFrame);
-            a.Advance(0.1); Assert.AreEqual(2, a.CurrentFrame);
-            a.Advance(0.1); Assert.AreEqual(0, a.CurrentFrame, "volta ao início do clipe (3 frames)");
+            a.Advance(0.1); Assert.Equal(1, a.CurrentFrame);
+            a.Advance(0.1); Assert.Equal(2, a.CurrentFrame);
+            a.Advance(0.1); Assert.Equal(0, a.CurrentFrame);
         }
 
-        [TestMethod]
+        [Fact]
         public void Clipe_SemLoop_DisparaTerminouUmaVezESeguraNoUltimo()
         {
             var a = GridAnimator(10);
@@ -41,13 +40,13 @@ namespace DreamBit.Engine.Tests
 
             for (int i = 0; i < 10; i++) a.Advance(0.1);
 
-            Assert.AreEqual(2, a.CurrentFrame, "segura no último frame do clipe");
-            Assert.AreEqual(1, done, "dispara 'terminou' exatamente uma vez");
-            Assert.AreEqual("attack", last);
-            Assert.IsTrue(a.CurrentClipFinished);
+            Assert.Equal(2, a.CurrentFrame);
+            Assert.Equal(1, done);
+            Assert.Equal("attack", last);
+            Assert.True(a.CurrentClipFinished);
         }
 
-        [TestMethod]
+        [Fact]
         public void Play_TrocaDeClipe_Reinicia()
         {
             var a = GridAnimator(10);
@@ -55,11 +54,11 @@ namespace DreamBit.Engine.Tests
             a.AddClip(new SpriteClip("attack", new[] { 5, 6 }, 10f, false));
             a.Play("walk");
             a.Advance(0.1); a.Advance(0.1);
-            Assert.AreEqual(2, a.CurrentFrame);
+            Assert.Equal(2, a.CurrentFrame);
 
             a.Play("attack");
-            Assert.AreEqual(0, a.CurrentFrame, "reinicia ao trocar de clipe");
-            Assert.AreEqual("attack", a.CurrentClip);
+            Assert.Equal(0, a.CurrentFrame);
+            Assert.Equal("attack", a.CurrentClip);
         }
 
         private static (Scene, SpriteAnimator, SpriteAnimatorController, GameObject) BuildHero()
@@ -78,7 +77,7 @@ namespace DreamBit.Engine.Tests
             return (scene, anim, ctrl, o);
         }
 
-        [TestMethod]
+        [Fact]
         public void Controlador_EscolheClipePorMovimento_EViraSprite()
         {
             var (scene, anim, _, o) = BuildHero();
@@ -86,26 +85,26 @@ namespace DreamBit.Engine.Tests
 
             // Parado -> idle
             scene.Update(Frame(0.016));
-            Assert.AreEqual("idle", anim.CurrentClip);
+            Assert.Equal("idle", anim.CurrentClip);
 
             // Move para a direita -> walk, sem flip (arte olha para a direita)
             o.Transform.Position += new Vector2(10, 0);
             scene.Update(Frame(0.016));
-            Assert.AreEqual("walk", anim.CurrentClip);
-            Assert.IsFalse(anim.FlipX);
+            Assert.Equal("walk", anim.CurrentClip);
+            Assert.False(anim.FlipX);
 
             // Move para a esquerda -> flip
             o.Transform.Position += new Vector2(-10, 0);
             scene.Update(Frame(0.016));
-            Assert.IsTrue(anim.FlipX, "vira ao andar para a esquerda");
+            Assert.True(anim.FlipX, "vira ao andar para a esquerda");
 
             // Sobe rápido (no ar) -> jump
             o.Transform.Position += new Vector2(0, -40);
             scene.Update(Frame(0.016));
-            Assert.AreEqual("jump", anim.CurrentClip);
+            Assert.Equal("jump", anim.CurrentClip);
         }
 
-        [TestMethod]
+        [Fact]
         public void Controlador_Ataque_TocaUmaVezEVoltaAoIdle()
         {
             var (scene, anim, ctrl, _) = BuildHero();
@@ -115,8 +114,8 @@ namespace DreamBit.Engine.Tests
             GameInput.Update();
             GameInput.HoldAction("Action");
             scene.Update(Frame(0.05));
-            Assert.IsTrue(ctrl.IsAttacking);
-            Assert.AreEqual("attack", anim.CurrentClip);
+            Assert.True(ctrl.IsAttacking);
+            Assert.Equal("attack", anim.CurrentClip);
 
             // Frames seguintes sem segurar: o ataque termina e volta ao idle.
             for (int i = 0; i < 20; i++)
@@ -124,11 +123,11 @@ namespace DreamBit.Engine.Tests
                 GameInput.Update();
                 scene.Update(Frame(0.05));
             }
-            Assert.IsFalse(ctrl.IsAttacking);
-            Assert.AreEqual("idle", anim.CurrentClip);
+            Assert.False(ctrl.IsAttacking);
+            Assert.Equal("idle", anim.CurrentClip);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_ClipesFlipEControlador()
         {
             var scene = new Scene();
@@ -144,15 +143,15 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var la = loaded.Objects.First().Components.OfType<SpriteAnimator>().Single();
-            Assert.AreEqual(2, la.Clips.Count);
-            Assert.AreEqual("walk", la.CurrentClip);
-            Assert.IsTrue(la.FlipX);
+            Assert.Equal(2, la.Clips.Count);
+            Assert.Equal("walk", la.CurrentClip);
+            Assert.True(la.FlipX);
             CollectionAssert.AreEqual(new[] { 1, 2, 3 }, la.Clips.First(c => c.Name == "walk").Frames);
-            Assert.IsFalse(la.Clips.First(c => c.Name == "attack").Loop);
+            Assert.False(la.Clips.First(c => c.Name == "attack").Loop);
 
             var lc = loaded.Objects.First().Components.OfType<SpriteAnimatorController>().Single();
-            Assert.AreEqual("attack", lc.AttackClip);
-            Assert.IsFalse(lc.ArtFacesRight);
+            Assert.Equal("attack", lc.AttackClip);
+            Assert.False(lc.ArtFacesRight);
         }
     }
 }

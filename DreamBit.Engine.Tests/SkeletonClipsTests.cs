@@ -2,12 +2,11 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SkeletonClipsTests
     {
         private static (GameObject root, GameObject bone, SkeletonAnimator anim) MakeRig()
@@ -21,15 +20,15 @@ namespace DreamBit.Engine.Tests
             return (root, bone, anim);
         }
 
-        [TestMethod]
+        [Fact]
         public void ComecaComUmClipeDefault()
         {
             var (_, _, anim) = MakeRig();
-            Assert.AreEqual(1, anim.Clips.Count);
-            Assert.AreEqual("default", anim.CurrentClipName);
+            Assert.Single(anim.Clips);
+            Assert.Equal("default", anim.CurrentClipName);
         }
 
-        [TestMethod]
+        [Fact]
         public void KeyframesSaoPorClipe()
         {
             var (_, bone, anim) = MakeRig();
@@ -38,42 +37,42 @@ namespace DreamBit.Engine.Tests
             anim.CurrentClip.Name = "idle";
             bone.Transform.Position = new Vector2(0, 0); anim.CaptureKeyframe(0f);
             anim.CaptureKeyframe(1f);
-            Assert.AreEqual(2, anim.KeyframeCount);
+            Assert.Equal(2, anim.KeyframeCount);
 
             // novo clipe "walk": vazio, independente
             anim.AddClip("walk");
-            Assert.AreEqual("walk", anim.CurrentClipName);
-            Assert.AreEqual(0, anim.KeyframeCount);
+            Assert.Equal("walk", anim.CurrentClipName);
+            Assert.Equal(0, anim.KeyframeCount);
 
             anim.CaptureKeyframe(0.5f);
-            Assert.AreEqual(1, anim.KeyframeCount);
+            Assert.Equal(1, anim.KeyframeCount);
 
             // volta para idle: continua com 2
             anim.CurrentClipName = "idle";
-            Assert.AreEqual(2, anim.KeyframeCount);
+            Assert.Equal(2, anim.KeyframeCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void NaoRemoveOUltimoClipe()
         {
             var (_, _, anim) = MakeRig();
-            Assert.IsFalse(anim.RemoveClip("default"), "não remove o único clipe");
+            Assert.False(anim.RemoveClip("default"), "não remove o único clipe");
             anim.AddClip("walk");
-            Assert.IsTrue(anim.RemoveClip("walk"));
-            Assert.AreEqual(1, anim.Clips.Count);
+            Assert.True(anim.RemoveClip("walk"));
+            Assert.Single(anim.Clips);
         }
 
-        [TestMethod]
+        [Fact]
         public void Play_TrocaOClipeAtivo()
         {
             var (_, bone, anim) = MakeRig();
             anim.AddClip("walk");
             anim.CurrentClipName = "default";
             anim.Play("walk");
-            Assert.AreEqual("walk", anim.CurrentClipName);
+            Assert.Equal("walk", anim.CurrentClipName);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaClipesEAtivo()
         {
             var scene = new Scene();
@@ -95,15 +94,15 @@ namespace DreamBit.Engine.Tests
             var a = loaded.Objects.First().Components.OfType<SkeletonAnimator>().Single();
 
             CollectionAssert.AreEquivalent(new[] { "idle", "walk" }, a.ClipNames.ToArray());
-            Assert.AreEqual("idle", a.CurrentClipName);
-            Assert.AreEqual(2, a.KeyframeCount); // idle tem 2
+            Assert.Equal("idle", a.CurrentClipName);
+            Assert.Equal(2, a.KeyframeCount); // idle tem 2
 
             a.CurrentClipName = "walk";
-            Assert.IsFalse(a.Loop);
-            Assert.AreEqual(1, a.KeyframeCount);
+            Assert.False(a.Loop);
+            Assert.Equal(1, a.KeyframeCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_LeFormatoLegadoComoDefault()
         {
             // JSON no formato antigo (single-clip): Clips vazio, campos diretos.
@@ -113,9 +112,9 @@ namespace DreamBit.Engine.Tests
 
             var scene = SceneSerializer.LoadFromString(json);
             var a = scene.Objects.First().Components.OfType<SkeletonAnimator>().Single();
-            Assert.AreEqual(1, a.Clips.Count);
-            Assert.AreEqual("default", a.CurrentClipName);
-            Assert.AreEqual(3f, a.Duration, 0.001f);
+            Assert.Single(a.Clips);
+            Assert.Equal("default", a.CurrentClipName);
+            Assert.Equal(3f, a.Duration, 0.001f);
         }
     }
 }

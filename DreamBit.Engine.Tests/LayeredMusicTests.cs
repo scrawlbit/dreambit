@@ -3,12 +3,11 @@ using DreamBit.Engine.Audio;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class LayeredMusicTests
     {
         private static GameTime Frame(double s) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(s));
@@ -20,7 +19,7 @@ namespace DreamBit.Engine.Tests
             Screen.CameraZoom = 1f;
         }
 
-        [TestMethod]
+        [Fact]
         public void CameraVision_ContaSoQuemEstaNaTela()
         {
             CameraAtOrigin();
@@ -32,13 +31,13 @@ namespace DreamBit.Engine.Tests
             scene.Add(dentro);
             scene.Add(fora);
 
-            Assert.AreEqual(1, CameraVision.CountOnScreen(scene, "Inimigo"), "só o de dentro do quadro conta");
+            Assert.Equal(1, CameraVision.CountOnScreen(scene, "Inimigo"));
 
             fora.Transform.Position = new Vector2(300, 0); // agora ambos na tela
-            Assert.AreEqual(2, CameraVision.CountOnScreen(scene, "Inimigo"));
+            Assert.Equal(2, CameraVision.CountOnScreen(scene, "Inimigo"));
         }
 
-        [TestMethod]
+        [Fact]
         public void Bateria_SobeComInimigoNaTela_DesceQuandoSai()
         {
             AudioMixer.Reset();
@@ -57,17 +56,17 @@ namespace DreamBit.Engine.Tests
             scene.Add(music);
 
             scene.StartPlay();
-            Assert.AreEqual(0f, drums.Current, 0.001f, "começa silenciosa");
+            Assert.Equal(0f, drums.Current, 0.001f);
 
             for (int i = 0; i < 40; i++) scene.Update(Frame(0.033)); // ~1.3s com inimigo na tela
-            Assert.IsTrue(drums.Current > 0.9f, $"bateria sobe com inimigo na tela (Current={drums.Current:0.00})");
+            Assert.True(drums.Current > 0.9f, $"bateria sobe com inimigo na tela (Current={drums.Current:0.00})");
 
             enemy.Transform.Position = new Vector2(5000, 0); // sai do quadro
             for (int i = 0; i < 40; i++) scene.Update(Frame(0.033));
-            Assert.IsTrue(drums.Current < 0.1f, $"bateria desce quando o inimigo sai (Current={drums.Current:0.00})");
+            Assert.True(drums.Current < 0.1f, $"bateria desce quando o inimigo sai (Current={drums.Current:0.00})");
         }
 
-        [TestMethod]
+        [Fact]
         public void CamadaPorEvento_LigaEDesligaPorMensagem()
         {
             AudioMixer.Reset();
@@ -84,11 +83,11 @@ namespace DreamBit.Engine.Tests
 
             scene.Send("chefe");
             for (int i = 0; i < 30; i++) scene.Update(Frame(0.033)); // ~1s
-            Assert.IsTrue(tensao.Current > 0.9f, $"liga por mensagem (Current={tensao.Current:0.00})");
+            Assert.True(tensao.Current > 0.9f, $"liga por mensagem (Current={tensao.Current:0.00})");
 
             scene.Send("calmo");
             for (int i = 0; i < 30; i++) scene.Update(Frame(0.033));
-            Assert.IsTrue(tensao.Current < 0.1f, $"desliga por mensagem (Current={tensao.Current:0.00})");
+            Assert.True(tensao.Current < 0.1f, $"desliga por mensagem (Current={tensao.Current:0.00})");
         }
     }
 }

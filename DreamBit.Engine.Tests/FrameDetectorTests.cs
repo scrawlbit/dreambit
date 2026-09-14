@@ -1,15 +1,13 @@
-using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class FrameDetectorTests
     {
         // Constrói uma máscara e "pinta" retângulos opacos.
@@ -23,7 +21,7 @@ namespace DreamBit.Engine.Tests
             return m;
         }
 
-        [TestMethod]
+        [Fact]
         public void DetectaTresFramesDeTamanhosDiferentes()
         {
             int w = 100, h = 40;
@@ -35,14 +33,14 @@ namespace DreamBit.Engine.Tests
 
             var frames = FrameDetector.Detect(mask, w, h);
 
-            Assert.AreEqual(3, frames.Count);
+            Assert.Equal(3, frames.Count);
             // ordem de leitura (esquerda->direita, já que estão na mesma faixa)
-            Assert.AreEqual(new Rectangle(2, 5, 10, 20), frames[0]);
-            Assert.AreEqual(new Rectangle(30, 2, 20, 30), frames[1]);
-            Assert.AreEqual(new Rectangle(70, 10, 15, 15), frames[2]);
+            Assert.Equal(new Rectangle(2, 5, 10, 20), frames[0]);
+            Assert.Equal(new Rectangle(30, 2, 20, 30), frames[1]);
+            Assert.Equal(new Rectangle(70, 10, 15, 15), frames[2]);
         }
 
-        [TestMethod]
+        [Fact]
         public void OrdemDeLeituraPorFaixas()
         {
             int w = 60, h = 60;
@@ -54,14 +52,14 @@ namespace DreamBit.Engine.Tests
                 new Rectangle(40, 40, 10, 10)); // BR
 
             var frames = FrameDetector.Detect(mask, w, h);
-            Assert.AreEqual(4, frames.Count);
-            Assert.AreEqual(new Rectangle(5, 5, 10, 10), frames[0]);
-            Assert.AreEqual(new Rectangle(40, 5, 10, 10), frames[1]);
-            Assert.AreEqual(new Rectangle(5, 40, 10, 10), frames[2]);
-            Assert.AreEqual(new Rectangle(40, 40, 10, 10), frames[3]);
+            Assert.Equal(4, frames.Count);
+            Assert.Equal(new Rectangle(5, 5, 10, 10), frames[0]);
+            Assert.Equal(new Rectangle(40, 5, 10, 10), frames[1]);
+            Assert.Equal(new Rectangle(5, 40, 10, 10), frames[2]);
+            Assert.Equal(new Rectangle(40, 40, 10, 10), frames[3]);
         }
 
-        [TestMethod]
+        [Fact]
         public void RuidoAbaixoDoMinimoEhIgnorado()
         {
             int w = 30, h = 30;
@@ -70,10 +68,10 @@ namespace DreamBit.Engine.Tests
                 new Rectangle(25, 25, 1, 1)); // 1 pixel de ruído
 
             var frames = FrameDetector.Detect(mask, w, h, minPixels: 16);
-            Assert.AreEqual(1, frames.Count);
+            Assert.Single(frames);
         }
 
-        [TestMethod]
+        [Fact]
         public void PixelsDiagonaisContamComoUmaRegiao()
         {
             int w = 10, h = 10;
@@ -81,11 +79,11 @@ namespace DreamBit.Engine.Tests
                 new Rectangle(1, 1, 3, 3),
                 new Rectangle(4, 4, 3, 3)); // encosta na diagonal => 8-conexo une
             var frames = FrameDetector.Detect(mask, w, h, minPixels: 1);
-            Assert.AreEqual(1, frames.Count);
-            Assert.AreEqual(new Rectangle(1, 1, 6, 6), frames[0]);
+            Assert.Single(frames);
+            Assert.Equal(new Rectangle(1, 1, 6, 6), frames[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Animator_UsaFramesExplicitos()
         {
             var anim = new SpriteAnimator { Fps = 10f, Loop = true };
@@ -94,15 +92,15 @@ namespace DreamBit.Engine.Tests
                 new Rectangle(0, 0, 10, 20),
                 new Rectangle(10, 0, 30, 40),
             });
-            Assert.AreEqual(2, anim.EffectiveFrameCount);
+            Assert.Equal(2, anim.EffectiveFrameCount);
 
             anim.Advance(0.1); // 1 frame a 10 fps
-            Assert.AreEqual(1, anim.CurrentFrame);
+            Assert.Equal(1, anim.CurrentFrame);
             anim.Advance(0.1); // volta ao 0 (loop, 2 frames)
-            Assert.AreEqual(0, anim.CurrentFrame);
+            Assert.Equal(0, anim.CurrentFrame);
         }
 
-        [TestMethod]
+        [Fact]
         public void Animator_Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -114,9 +112,9 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var a = loaded.Objects.First().Components.OfType<SpriteAnimator>().Single();
-            Assert.AreEqual(2, a.Frames.Count);
-            Assert.AreEqual(new Rectangle(1, 2, 3, 4), a.Frames[0]);
-            Assert.AreEqual(new Rectangle(5, 6, 7, 8), a.Frames[1]);
+            Assert.Equal(2, a.Frames.Count);
+            Assert.Equal(new Rectangle(1, 2, 3, 4), a.Frames[0]);
+            Assert.Equal(new Rectangle(5, 6, 7, 8), a.Frames[1]);
         }
     }
 }

@@ -4,17 +4,16 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
 using DreamBit.Engine.Timing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TimingTests
     {
         private static GameTime Frame(float dt) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(dt));
 
-        [TestMethod]
+        [Fact]
         public void Timer_DisparaMensagemAoEsgotar()
         {
             var scene = new Scene();
@@ -29,10 +28,10 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 30; i++) // 30 * 0.05 = 1.5s
                 scene.Update(Frame(0.05f));
 
-            Assert.AreEqual(1, count, "one-shot dispara uma única vez");
+            Assert.Equal(1, count);
         }
 
-        [TestMethod]
+        [Fact]
         public void Timer_RepeteQuandoConfigurado()
         {
             var scene = new Scene();
@@ -47,10 +46,10 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 40; i++) // 2.0s => ~4 disparos (0.5s cada)
                 scene.Update(Frame(0.05f));
 
-            Assert.AreEqual(4, count);
+            Assert.Equal(4, count);
         }
 
-        [TestMethod]
+        [Fact]
         public void Timer_StartOnReiniciaPelaMensagem()
         {
             var scene = new Scene();
@@ -63,15 +62,15 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
 
             for (int i = 0; i < 20; i++) scene.Update(Frame(0.05f)); // não iniciou => nada
-            Assert.AreEqual(0, fechou);
+            Assert.Equal(0, fechou);
 
             scene.Send("abrir");
             scene.Update(Frame(0f)); // despacha a mensagem => timer inicia
             for (int i = 0; i < 30; i++) scene.Update(Frame(0.05f));
-            Assert.AreEqual(1, fechou);
+            Assert.Equal(1, fechou);
         }
 
-        [TestMethod]
+        [Fact]
         public void Scheduler_AfterEEvery()
         {
             Scheduler.Clear();
@@ -82,12 +81,12 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 40; i++) // 2.0s
                 Scheduler.Tick(0.05f);
 
-            Assert.AreEqual(1, after);
-            Assert.AreEqual(4, every);
+            Assert.Equal(1, after);
+            Assert.Equal(4, every);
             Scheduler.Clear();
         }
 
-        [TestMethod]
+        [Fact]
         public void Scheduler_CancelImpedeDisparo()
         {
             Scheduler.Clear();
@@ -96,21 +95,21 @@ namespace DreamBit.Engine.Tests
             Scheduler.Tick(0.1f);
             Scheduler.Cancel(handle);
             for (int i = 0; i < 10; i++) Scheduler.Tick(0.1f);
-            Assert.IsFalse(fired);
+            Assert.False(fired);
         }
 
-        [TestMethod]
+        [Fact]
         public void StartPlay_LimpaScheduler()
         {
             Scheduler.Clear();
             Scheduler.After(1f, () => { });
-            Assert.AreEqual(1, Scheduler.Count);
+            Assert.Equal(1, Scheduler.Count);
 
             new Scene().StartPlay();
-            Assert.AreEqual(0, Scheduler.Count, "StartPlay limpa agendamentos antigos");
+            Assert.Equal(0, Scheduler.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void Timer_Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -120,11 +119,11 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var t = loaded.Objects.First().Components.OfType<TimerComponent>().Single();
-            Assert.AreEqual(2.5f, t.Duration, 0.001f);
-            Assert.IsTrue(t.Repeat);
-            Assert.IsFalse(t.AutoStart);
-            Assert.AreEqual("tick", t.SendOnElapsed);
-            Assert.AreEqual("go", t.StartOn);
+            Assert.Equal(2.5f, t.Duration, 0.001f);
+            Assert.True(t.Repeat);
+            Assert.False(t.AutoStart);
+            Assert.Equal("tick", t.SendOnElapsed);
+            Assert.Equal("go", t.StartOn);
         }
     }
 }

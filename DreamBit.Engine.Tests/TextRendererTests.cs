@@ -3,30 +3,29 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TextRendererTests
     {
-        [TestMethod]
+        [Fact]
         public void PixelFont_MedeLargura()
         {
-            Assert.AreEqual(0, PixelFont.MeasureWidth(""));
-            Assert.AreEqual(3, PixelFont.MeasureWidth("A"));      // 3 largura
-            Assert.AreEqual(7, PixelFont.MeasureWidth("AB"));     // 3 + 1 + 3
-            Assert.AreEqual(5, PixelFont.Glyph('A').Length);       // 5 linhas
+            Assert.Equal(0, PixelFont.MeasureWidth(""));
+            Assert.Equal(3, PixelFont.MeasureWidth("A"));      // 3 largura
+            Assert.Equal(7, PixelFont.MeasureWidth("AB"));     // 3 + 1 + 3
+            Assert.Equal(5, PixelFont.Glyph('A').Length);       // 5 linhas
         }
 
-        [TestMethod]
+        [Fact]
         public void PixelFont_DesconhecidoViraEspaco()
         {
             CollectionAssert.AreEqual(PixelFont.Glyph(' '), PixelFont.Glyph('❤'));
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -36,10 +35,10 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var t = loaded.Objects.First().Components.OfType<TextRenderer>().Single();
-            Assert.AreEqual("SCORE: 100", t.Text);
-            Assert.AreEqual(6, t.PixelSize);
-            Assert.IsTrue(t.ScreenSpace);
-            Assert.AreEqual((byte)200, t.Color.R);
+            Assert.Equal("SCORE: 100", t.Text);
+            Assert.Equal(6, t.PixelSize);
+            Assert.True(t.ScreenSpace);
+            Assert.Equal((byte)200, t.Color.R);
         }
     }
 }

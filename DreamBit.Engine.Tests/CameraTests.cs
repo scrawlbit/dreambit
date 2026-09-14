@@ -1,24 +1,23 @@
 using DreamBit.Engine.Rendering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class CameraTests
     {
-        [TestMethod]
+        [Fact]
         public void CentroDoViewport_MapeiaParaPosicaoDaCamera()
         {
             var camera = new Camera2D { Position = new Vector2(50, 20) };
 
             var world = camera.ScreenToWorld(new Vector2(400, 300), 800, 600);
 
-            Assert.AreEqual(50f, world.X, 0.01f);
-            Assert.AreEqual(20f, world.Y, 0.01f);
+            Assert.Equal(50f, world.X, 0.01f);
+            Assert.Equal(20f, world.Y, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void ZoomAt_MantemOPontoSobOCursor()
         {
             var camera = new Camera2D();
@@ -28,18 +27,18 @@ namespace DreamBit.Engine.Tests
             camera.ZoomAt(screen, 2f, 800, 600);
             var after = camera.ScreenToWorld(screen, 800, 600);
 
-            Assert.AreEqual(before.X, after.X, 0.01f);
-            Assert.AreEqual(before.Y, after.Y, 0.01f);
+            Assert.Equal(before.X, after.X, 0.01f);
+            Assert.Equal(before.Y, after.Y, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zoom_LimitadoAoIntervalo()
         {
             var camera = new Camera2D { Zoom = 999f };
-            Assert.AreEqual(10f, camera.Zoom, 0.001f);
+            Assert.Equal(10f, camera.Zoom, 0.001f);
 
             camera.Zoom = 0.0001f;
-            Assert.AreEqual(0.1f, camera.Zoom, 0.001f);
+            Assert.Equal(0.1f, camera.Zoom, 0.001f);
         }
     }
 }

@@ -2,12 +2,11 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SkeletonAnimatorTests
     {
         // Cria um rig: raiz com SkeletonAnimator + um osso filho chamado "Braço".
@@ -24,7 +23,7 @@ namespace DreamBit.Engine.Tests
             return (root, bone, anim);
         }
 
-        [TestMethod]
+        [Fact]
         public void CapturaKeyframes_DasPosesAtuais()
         {
             var (_, bone, anim) = MakeRig();
@@ -35,10 +34,10 @@ namespace DreamBit.Engine.Tests
             bone.Transform.Rotation = 2f;
             anim.CaptureKeyframe(1f);
 
-            Assert.AreEqual(2, anim.KeyframeCount);
+            Assert.Equal(2, anim.KeyframeCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sample_InterpolaAPoseNoMeio()
         {
             var (_, bone, anim) = MakeRig();
@@ -49,10 +48,10 @@ namespace DreamBit.Engine.Tests
             anim.CaptureKeyframe(1f);
 
             anim.Sample(0.5f);
-            Assert.AreEqual(1f, bone.Transform.Rotation, 0.001f, "meio do caminho entre 0 e 2");
+            Assert.Equal(1f, bone.Transform.Rotation, 0.001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetTime_ForaDosLimites_UsaPrimeiroOuUltimo()
         {
             var (_, bone, anim) = MakeRig();
@@ -62,13 +61,13 @@ namespace DreamBit.Engine.Tests
             anim.CaptureKeyframe(1f);
 
             anim.SetTime(0f);
-            Assert.AreEqual(0f, bone.Transform.Position.X, 0.01f);
+            Assert.Equal(0f, bone.Transform.Position.X, 0.01f);
 
             anim.SetTime(1f);
-            Assert.AreEqual(100f, bone.Transform.Position.X, 0.01f);
+            Assert.Equal(100f, bone.Transform.Position.X, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Play_AvancaEAplicaAPose()
         {
             var scene = new Scene();
@@ -81,25 +80,25 @@ namespace DreamBit.Engine.Tests
             scene.Add(root);
 
             scene.StartPlay();
-            Assert.AreEqual(0f, bone.Transform.Rotation, 0.001f, "play começa amostrando t=0");
+            Assert.Equal(0f, bone.Transform.Rotation, 0.001f);
 
             scene.Update(new GameTime(System.TimeSpan.Zero, System.TimeSpan.FromSeconds(0.5)));
-            Assert.AreEqual(0.5f, bone.Transform.Rotation, 0.001f);
+            Assert.Equal(0.5f, bone.Transform.Rotation, 0.001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveKeyframe_PorProximidade()
         {
             var (_, _, anim) = MakeRig();
             anim.CaptureKeyframe(0f);
             anim.CaptureKeyframe(0.5f);
-            Assert.AreEqual(2, anim.KeyframeCount);
+            Assert.Equal(2, anim.KeyframeCount);
 
-            Assert.IsTrue(anim.RemoveKeyframeNear(0.49f));
-            Assert.AreEqual(1, anim.KeyframeCount);
+            Assert.True(anim.RemoveKeyframeNear(0.49f));
+            Assert.Equal(1, anim.KeyframeCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaClipeEKeyframes()
         {
             var scene = new Scene();
@@ -115,13 +114,13 @@ namespace DreamBit.Engine.Tests
 
             var rootLoaded = loaded.Objects.First();
             var animLoaded = rootLoaded.Components.OfType<SkeletonAnimator>().Single();
-            Assert.AreEqual(2f, animLoaded.Duration, 0.001f);
-            Assert.AreEqual(2, animLoaded.KeyframeCount);
+            Assert.Equal(2f, animLoaded.Duration, 0.001f);
+            Assert.Equal(2, animLoaded.KeyframeCount);
 
             // A pose do osso "Braço" no último keyframe deve ter rotação 1.5.
             var last = animLoaded.Keyframes.Last();
-            Assert.IsTrue(last.Bones.ContainsKey("Braço"));
-            Assert.AreEqual(1.5f, last.Bones["Braço"].Rotation, 0.001f);
+            Assert.True(last.Bones.ContainsKey("Braço"));
+            Assert.Equal(1.5f, last.Bones["Braço"].Rotation, 0.001f);
         }
     }
 }

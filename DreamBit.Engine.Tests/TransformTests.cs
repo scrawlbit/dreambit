@@ -1,13 +1,12 @@
 using DreamBit.Engine.Elements;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TransformTests
     {
-        [TestMethod]
+        [Fact]
         public void WorldPosition_SemPai_IgualAPosicaoLocal()
         {
             var t = new Transform { Position = new Vector2(30, 40) };
@@ -15,7 +14,7 @@ namespace DreamBit.Engine.Tests
             AssertClose(new Vector2(30, 40), t.WorldPosition);
         }
 
-        [TestMethod]
+        [Fact]
         public void WorldPosition_ComPai_ComposicaoHierarquica()
         {
             var parent = new GameObject("pai");
@@ -28,7 +27,7 @@ namespace DreamBit.Engine.Tests
             AssertClose(new Vector2(110, 5), child.Transform.WorldPosition);
         }
 
-        [TestMethod]
+        [Fact]
         public void WorldPosition_PaiRotacionado90Graus_RotacionaOFilho()
         {
             var parent = new GameObject("pai");
@@ -42,16 +41,16 @@ namespace DreamBit.Engine.Tests
             AssertClose(new Vector2(0, 10), child.Transform.WorldPosition, 0.001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Rotation_Normaliza_ParaIntervaloPositivo()
         {
             var t = new Transform { Rotation = -MathHelper.PiOver2 };
 
-            Assert.IsTrue(t.Rotation > 0f);
-            Assert.AreEqual(MathHelper.TwoPi - MathHelper.PiOver2, t.Rotation, 0.001f);
+            Assert.True(t.Rotation > 0f);
+            Assert.Equal(MathHelper.TwoPi - MathHelper.PiOver2, t.Rotation, 0.001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Changed_Dispara_AoAlterarPosicao()
         {
             var t = new Transform();
@@ -60,13 +59,13 @@ namespace DreamBit.Engine.Tests
 
             t.Position = new Vector2(1, 1);
 
-            Assert.IsTrue(changes >= 1);
+            Assert.True(changes >= 1);
         }
 
         private static void AssertClose(Vector2 expected, Vector2 actual, float tol = 0.01f)
         {
-            Assert.AreEqual(expected.X, actual.X, tol, "X");
-            Assert.AreEqual(expected.Y, actual.Y, tol, "Y");
+            Assert.Equal(expected.X, actual.X, tol);
+            Assert.Equal(expected.Y, actual.Y, tol);
         }
     }
 }

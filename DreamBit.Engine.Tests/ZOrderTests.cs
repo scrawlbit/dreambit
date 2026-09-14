@@ -1,14 +1,13 @@
 using System.Linq;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ZOrderTests
     {
-        [TestMethod]
+        [Fact]
         public void OrdenaPorSortOrder_EstavelNosEmpates()
         {
             var scene = new Scene();
@@ -22,7 +21,7 @@ namespace DreamBit.Engine.Tests
             CollectionAssert.AreEqual(new[] { "B", "C", "D", "A" }, order);
         }
 
-        [TestMethod]
+        [Fact]
         public void SubarvoreInvisivel_NaoEntra()
         {
             var scene = new Scene();
@@ -36,13 +35,13 @@ namespace DreamBit.Engine.Tests
             CollectionAssert.AreEqual(new[] { "Outro" }, names);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaSortOrder()
         {
             var scene = new Scene();
             scene.Add(new GameObject("X") { SortOrder = 42 });
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
-            Assert.AreEqual(42, loaded.Objects.First().SortOrder);
+            Assert.Equal(42, loaded.Objects.First().SortOrder);
         }
     }
 }

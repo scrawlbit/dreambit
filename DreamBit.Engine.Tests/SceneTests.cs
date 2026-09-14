@@ -3,15 +3,14 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SceneTests
     {
-        [TestMethod]
+        [Fact]
         public void AddChild_AtualizaPaiEHierarquia()
         {
             var parent = new GameObject("pai");
@@ -19,11 +18,11 @@ namespace DreamBit.Engine.Tests
 
             parent.AddChild(child);
 
-            Assert.AreSame(parent, child.Parent);
-            Assert.IsTrue(parent.Children.Contains(child));
+            Assert.Same(parent, child.Parent);
+            Assert.Contains(child, parent.Children);
         }
 
-        [TestMethod]
+        [Fact]
         public void Reparent_RemoveDoPaiAnterior()
         {
             var a = new GameObject("a");
@@ -33,21 +32,21 @@ namespace DreamBit.Engine.Tests
             a.AddChild(child);
             b.AddChild(child);
 
-            Assert.IsFalse(a.Children.Contains(child));
-            Assert.IsTrue(b.Children.Contains(child));
-            Assert.AreSame(b, child.Parent);
+            Assert.DoesNotContain(child, a.Children);
+            Assert.Contains(child, b.Children);
+            Assert.Same(b, child.Parent);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddComponent_DefineOwner()
         {
             var obj = new GameObject("obj");
             var sprite = obj.AddComponent(new SpriteRenderer());
 
-            Assert.AreSame(obj, sprite.Owner);
+            Assert.Same(obj, sprite.Owner);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaEstrutura_E_Valores()
         {
             var scene = new Scene { Name = "Teste" };
@@ -68,23 +67,23 @@ namespace DreamBit.Engine.Tests
                 SceneSerializer.Save(scene, path);
                 var loaded = SceneSerializer.Load(path);
 
-                Assert.AreEqual("Teste", loaded.Name);
-                Assert.AreEqual(1, loaded.Objects.Count);
+                Assert.Equal("Teste", loaded.Name);
+                Assert.Single(loaded.Objects);
 
                 var loadedRoot = loaded.Objects[0];
-                Assert.AreEqual("Raiz", loadedRoot.Name);
-                Assert.AreEqual(12f, loadedRoot.Transform.Position.X, 0.01f);
-                Assert.AreEqual(0.5f, loadedRoot.Transform.Rotation, 0.01f);
+                Assert.Equal("Raiz", loadedRoot.Name);
+                Assert.Equal(12f, loadedRoot.Transform.Position.X, 0.01f);
+                Assert.Equal(0.5f, loadedRoot.Transform.Rotation, 0.01f);
 
                 var sprite = loadedRoot.Components.OfType<SpriteRenderer>().Single();
-                Assert.AreEqual(64f, sprite.Size.X, 0.01f);
-                Assert.AreEqual((byte)20, sprite.Color.G);
+                Assert.Equal(64f, sprite.Size.X, 0.01f);
+                Assert.Equal((byte)20, sprite.Color.G);
 
                 var rotator = loadedRoot.Components.OfType<RotatorBehavior>().Single();
-                Assert.AreEqual(2.5f, rotator.Speed, 0.01f);
+                Assert.Equal(2.5f, rotator.Speed, 0.01f);
 
-                Assert.AreEqual(1, loadedRoot.Children.Count);
-                Assert.AreEqual("Filho", loadedRoot.Children[0].Name);
+                Assert.Single(loadedRoot.Children);
+                Assert.Equal("Filho", loadedRoot.Children[0].Name);
             }
             finally
             {

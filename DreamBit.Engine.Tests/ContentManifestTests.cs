@@ -1,12 +1,11 @@
 using DreamBit.Engine.Project;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ContentManifestTests
     {
-        [TestMethod]
+        [Fact]
         public void Generate_IncluiCabecalhoEUmBuildPorAsset()
         {
             var text = ContentManifest.Generate(new[] { "sprites/hero.png", "tiles\\grass.png" }, "DesktopGL");
@@ -17,13 +16,13 @@ namespace DreamBit.Engine.Tests
             StringAssert.Contains(text, "/importer:TextureImporter");
         }
 
-        [TestMethod]
+        [Fact]
         public void Generate_SemAssets_AindaTemCabecalho()
         {
             var text = ContentManifest.Generate(new string[0]);
 
             StringAssert.Contains(text, "Global Properties");
-            Assert.IsFalse(text.Contains("/build:"));
+            Assert.DoesNotContain("/build:", text);
         }
     }
 }

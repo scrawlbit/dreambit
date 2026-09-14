@@ -1,14 +1,13 @@
 using System.Linq;
 using System.Xml.Linq;
 using DreamBit.Engine.Tilemap;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TmxImporterTests
     {
-        [TestMethod]
+        [Fact]
         public void Parse_MapaFinito_LeTilesetsELayers()
         {
             const string xml = @"<map tilewidth='16' tileheight='16'>
@@ -22,10 +21,10 @@ namespace DreamBit.Engine.Tests
 
             var map = TmxImporter.Parse(XDocument.Parse(xml));
 
-            Assert.AreEqual(16, map.TileWidth);
-            Assert.AreEqual(1, map.Tilesets.Count);
-            Assert.AreEqual(4, map.Tilesets[0].Columns);
-            Assert.AreEqual("ts.png", map.Tilesets[0].ImageSource);
+            Assert.Equal(16, map.TileWidth);
+            Assert.Single(map.Tilesets);
+            Assert.Equal(4, map.Tilesets[0].Columns);
+            Assert.Equal("ts.png", map.Tilesets[0].ImageSource);
 
             var tiles = map.Layers.Single().Tiles;
             CollectionAssert.AreEquivalent(
@@ -33,7 +32,7 @@ namespace DreamBit.Engine.Tests
                 tiles.ToList());
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_MapaInfinito_JuntaOsChunks()
         {
             const string xml = @"<map tilewidth='16' tileheight='16' infinite='1'>
@@ -54,15 +53,15 @@ namespace DreamBit.Engine.Tests
                 tiles.ToList());
         }
 
-        [TestMethod]
+        [Fact]
         public void TilesetForGid_EscolheAFaixaCorreta()
         {
             var map = new Tilemap.Tilemap();
             map.Tilesets.Add(new Tileset { FirstGid = 1, Columns = 2 });
             map.Tilesets.Add(new Tileset { FirstGid = 100, Columns = 2 });
 
-            Assert.AreEqual(1, map.TilesetForGid(50)!.FirstGid);
-            Assert.AreEqual(100, map.TilesetForGid(150)!.FirstGid);
+            Assert.Equal(1, map.TilesetForGid(50)!.FirstGid);
+            Assert.Equal(100, map.TilesetForGid(150)!.FirstGid);
         }
     }
 }

@@ -4,47 +4,46 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Physics;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SolidPhysicsTests
     {
         private static SolidPhysics.Box Box(float cx, float cy, float w, float h)
             => new(new Vector2(cx - w / 2, cy - h / 2), new Vector2(cx + w / 2, cy + h / 2));
 
-        [TestMethod]
+        [Fact]
         public void ResolveX_ParaNaParede()
         {
             var solids = new[] { Box(100, 0, 40, 200) }; // parede em x=80..120
             // Jogador (meia-largura 20) indo de x=0 para x=90 — deve parar em 80-20=60.
             float x = SolidPhysics.ResolveX(solids, 0, 90, 0, 20, 20);
-            Assert.AreEqual(60f, x, 0.01f);
+            Assert.Equal(60f, x, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void ResolveY_PousaNoTopo()
         {
             var solids = new[] { Box(0, 100, 200, 40) }; // chão em y=80..120
             var (y, grounded, ceiling) = SolidPhysics.ResolveY(solids, 0, 0, 90, 20, 20); // caindo
-            Assert.AreEqual(60f, y, 0.01f); // 80 - 20
-            Assert.IsTrue(grounded);
-            Assert.IsFalse(ceiling);
+            Assert.Equal(60f, y, 0.01f); // 80 - 20
+            Assert.True(grounded);
+            Assert.False(ceiling);
         }
 
-        [TestMethod]
+        [Fact]
         public void ResolveY_BateNoTeto()
         {
             var solids = new[] { Box(0, -100, 200, 40) }; // teto em y=-120..-80
             var (y, grounded, ceiling) = SolidPhysics.ResolveY(solids, 0, 0, -90, 20, 20); // subindo
-            Assert.AreEqual(-60f, y, 0.01f); // -80 + 20
-            Assert.IsTrue(ceiling);
-            Assert.IsFalse(grounded);
+            Assert.Equal(-60f, y, 0.01f); // -80 + 20
+            Assert.True(ceiling);
+            Assert.False(grounded);
         }
 
-        [TestMethod]
+        [Fact]
         public void Platformer_PousaNoColisorSolido()
         {
             var scene = new Scene();
@@ -64,10 +63,10 @@ namespace DreamBit.Engine.Tests
                 scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / 60)));
 
             // topo do chao = 200-20=180; pés do player = y+24 => y ~ 156.
-            Assert.AreEqual(156f, player.Transform.Position.Y, 2f, "player deve pousar sobre o colisor sólido");
+            Assert.Equal(156f, player.Transform.Position.Y, 2f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaColisorEHalfWidth()
         {
             var scene = new Scene();
@@ -79,9 +78,9 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var lo = loaded.Objects.First();
             var box = lo.Components.OfType<BoxCollider>().Single();
-            Assert.AreEqual(new Vector2(80, 30), box.Size);
-            Assert.AreEqual(new Vector2(5, -3), box.Offset);
-            Assert.AreEqual(18f, lo.Components.OfType<PlatformerController>().Single().HalfWidth, 0.01f);
+            Assert.Equal(new Vector2(80, 30), box.Size);
+            Assert.Equal(new Vector2(5, -3), box.Offset);
+            Assert.Equal(18f, lo.Components.OfType<PlatformerController>().Single().HalfWidth, 0.01f);
         }
     }
 }

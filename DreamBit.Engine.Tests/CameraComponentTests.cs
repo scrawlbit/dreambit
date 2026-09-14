@@ -3,12 +3,11 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class CameraComponentTests
     {
         private static (Scene scene, GameObject player, CameraComponent cam) Make()
@@ -23,7 +22,7 @@ namespace DreamBit.Engine.Tests
             return (scene, player, cam);
         }
 
-        [TestMethod]
+        [Fact]
         public void Deadzone_NaoMoveDentro_MoveFora()
         {
             var (_, player, cam) = Make();
@@ -32,14 +31,14 @@ namespace DreamBit.Engine.Tests
 
             player.Transform.Position = new Vector2(30, 0); // dentro da deadzone (±50)
             cam.DriveCamera(camera, 0.016f, 800, 600);
-            Assert.AreEqual(0f, camera.Position.X, 0.01f, "dentro da deadzone: não move");
+            Assert.Equal(0f, camera.Position.X, 0.01f);
 
             player.Transform.Position = new Vector2(200, 0); // fora
             cam.DriveCamera(camera, 0.016f, 800, 600);
-            Assert.AreEqual(150f, camera.Position.X, 0.01f, "fora: alvo - meia-deadzone (200-50)");
+            Assert.Equal(150f, camera.Position.X, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Bounds_MantemAVistaDentro()
         {
             var (_, player, cam) = Make();
@@ -53,10 +52,10 @@ namespace DreamBit.Engine.Tests
             cam.DriveCamera(camera, 1f, 800, 600); // meia-vista = 400
 
             // clamp: max 500 - 400 = 100
-            Assert.AreEqual(100f, camera.Position.X, 0.5f);
+            Assert.Equal(100f, camera.Position.X, 0.5f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -71,10 +70,10 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var cam = loaded.Objects.First().Components.OfType<CameraComponent>().Single();
-            Assert.AreEqual("Hero", cam.TargetTag);
-            Assert.AreEqual(1.5f, cam.Zoom, 0.001f);
-            Assert.IsTrue(cam.UseBounds);
-            Assert.AreEqual(new Vector2(100, 50), cam.BoundsMax);
+            Assert.Equal("Hero", cam.TargetTag);
+            Assert.Equal(1.5f, cam.Zoom, 0.001f);
+            Assert.True(cam.UseBounds);
+            Assert.Equal(new Vector2(100, 50), cam.BoundsMax);
         }
     }
 }

@@ -1,17 +1,15 @@
-using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ParticleTests
     {
-        [TestMethod]
+        [Fact]
         public void Burst_EmiteVariasDeUmaVez()
         {
             var scene = new Scene();
@@ -20,13 +18,13 @@ namespace DreamBit.Engine.Tests
             o.AddComponent(pe);
             scene.Add(o);
             scene.StartPlay();
-            Assert.AreEqual(20, pe.ActiveParticles, "burst emite tudo no início");
+            Assert.Equal(20, pe.ActiveParticles);
 
             pe.Burst(5);
-            Assert.AreEqual(25, pe.ActiveParticles);
+            Assert.Equal(25, pe.ActiveParticles);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_ParticulasRicas()
         {
             var scene = new Scene();
@@ -38,10 +36,10 @@ namespace DreamBit.Engine.Tests
             scene.Add(o);
             var pe = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene)).Objects.First()
                 .Components.OfType<ParticleEmitter>().Single();
-            Assert.AreEqual(new Color(10, 20, 30), pe.EndColor);
-            Assert.AreEqual(2f, pe.EndSize);
-            Assert.AreEqual(12, pe.BurstCount);
-            Assert.IsTrue(pe.EmitOnStart);
+            Assert.Equal(new Color(10, 20, 30), pe.EndColor);
+            Assert.Equal(2f, pe.EndSize);
+            Assert.Equal(12, pe.BurstCount);
+            Assert.True(pe.EmitOnStart);
         }
     }
 }

@@ -1,26 +1,25 @@
 using System.Linq;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ScreenSpaceTests
     {
-        [TestMethod]
+        [Fact]
         public void FilhoHerdaScreenSpaceDoAncestral()
         {
             var painel = new GameObject("HUD") { ScreenSpace = true };
             var icone = new GameObject("Vida");
             painel.AddChild(icone);
 
-            Assert.IsTrue(painel.EffectiveScreenSpace);
-            Assert.IsTrue(icone.EffectiveScreenSpace, "filho de objeto HUD também é HUD");
-            Assert.IsFalse(icone.ScreenSpace, "o flag próprio do filho continua false");
+            Assert.True(painel.EffectiveScreenSpace);
+            Assert.True(icone.EffectiveScreenSpace, "filho de objeto HUD também é HUD");
+            Assert.False(icone.ScreenSpace, "o flag próprio do filho continua false");
         }
 
-        [TestMethod]
+        [Fact]
         public void PasseDeMundoEDeTelaSeparamOsObjetos()
         {
             var scene = new Scene();
@@ -37,7 +36,7 @@ namespace DreamBit.Engine.Tests
             CollectionAssert.Contains(hudIds, hud);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -45,8 +44,8 @@ namespace DreamBit.Engine.Tests
             scene.Add(new GameObject("Mundo"));
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
-            Assert.IsTrue(loaded.Objects.First(o => o.Name == "HUD").ScreenSpace);
-            Assert.IsFalse(loaded.Objects.First(o => o.Name == "Mundo").ScreenSpace);
+            Assert.True(loaded.Objects.First(o => o.Name == "HUD").ScreenSpace);
+            Assert.False(loaded.Objects.First(o => o.Name == "Mundo").ScreenSpace);
         }
     }
 }

@@ -2,17 +2,16 @@ using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class Rigidbody2DTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / 60.0));
 
-        [TestMethod]
+        [Fact]
         public void CorpoDinamicoCaiPelaGravidade()
         {
             var scene = new Scene();
@@ -26,11 +25,10 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 60; i++)
                 scene.Update(Frame); // ~1s
 
-            Assert.IsTrue(caixa.Transform.Position.Y > y0 + 50f,
-                $"a caixa deveria cair (y0={y0}, y={caixa.Transform.Position.Y})");
+            Assert.True(caixa.Transform.Position.Y > y0 + 50f, $"a caixa deveria cair (y0={y0}, y={caixa.Transform.Position.Y})");
         }
 
-        [TestMethod]
+        [Fact]
         public void DinamicoPousaSobreEstatico()
         {
             var scene = new Scene();
@@ -50,11 +48,10 @@ namespace DreamBit.Engine.Tests
                 scene.Update(Frame);
 
             // topo do chão em y=300-20=280; centro da caixa deve parar ~ 280-16 = 264.
-            Assert.AreEqual(264f, caixa.Transform.Position.Y, 6f,
-                $"a caixa deveria assentar sobre o chão (y={caixa.Transform.Position.Y})");
+            Assert.Equal(264f, caixa.Transform.Position.Y, 6f);
         }
 
-        [TestMethod]
+        [Fact]
         public void ImpulsoAlteraVelocidade()
         {
             var scene = new Scene();
@@ -67,10 +64,10 @@ namespace DreamBit.Engine.Tests
             rb.ApplyImpulse(new Vector2(500, 0));
             scene.Update(Frame);
 
-            Assert.IsTrue(rb.LinearVelocity.X > 10f, $"impulso deveria dar velocidade em X (vx={rb.LinearVelocity.X})");
+            Assert.True(rb.LinearVelocity.X > 10f, $"impulso deveria dar velocidade em X (vx={rb.LinearVelocity.X})");
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -85,15 +82,15 @@ namespace DreamBit.Engine.Tests
             var loaded = DreamBit.Engine.Serialization.SceneSerializer.LoadFromString(
                 DreamBit.Engine.Serialization.SceneSerializer.SaveToString(scene));
             var rb = loaded.Objects.First().Components.OfType<Rigidbody2D>().Single();
-            Assert.AreEqual(RigidbodyKind.Kinematic, rb.Kind);
-            Assert.AreEqual(ColliderShape.Circle, rb.Shape);
-            Assert.AreEqual(15f, rb.Radius);
-            Assert.AreEqual(2f, rb.Density);
-            Assert.AreEqual(0.8f, rb.Restitution, 0.001f);
-            Assert.IsTrue(rb.FixedRotation);
+            Assert.Equal(RigidbodyKind.Kinematic, rb.Kind);
+            Assert.Equal(ColliderShape.Circle, rb.Shape);
+            Assert.Equal(15f, rb.Radius);
+            Assert.Equal(2f, rb.Density);
+            Assert.Equal(0.8f, rb.Restitution, 0.001f);
+            Assert.True(rb.FixedRotation);
         }
 
-        [TestMethod]
+        [Fact]
         public void StaticNaoCai()
         {
             var scene = new Scene();
@@ -106,7 +103,7 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 60; i++)
                 scene.Update(Frame);
 
-            Assert.AreEqual(20f, plataforma.Transform.Position.Y, 0.5f, "corpo estático não se move");
+            Assert.Equal(20f, plataforma.Transform.Position.Y, 0.5f);
         }
     }
 }

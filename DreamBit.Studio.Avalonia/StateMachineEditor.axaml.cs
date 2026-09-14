@@ -17,7 +17,7 @@ namespace DreamBit.Studio.Avalonia
     /// </summary>
     public partial class StateMachineEditor : Window
     {
-        private readonly AnimationStateMachine _fsm;
+        private readonly AnimationStateMachine _fsm = null!; // sempre criado via ctor com fsm; o ctor sem-arg é só para o carregador XAML
         private Canvas _canvas = null!;
 
         private const double NodeW = 150, NodeH = 54;

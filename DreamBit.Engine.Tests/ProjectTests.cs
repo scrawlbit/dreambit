@@ -1,41 +1,39 @@
+using System;
 using System.IO;
 using System.Linq;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Project;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
-    public class ProjectTests
+    public class ProjectTests : IDisposable
     {
         private string _folder = null!;
 
-        [TestInitialize]
-        public void Setup()
+        public ProjectTests()
         {
             _folder = Path.Combine(Path.GetTempPath(), "dreambit_proj_" + System.Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(_folder);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        public void Dispose()
         {
             if (Directory.Exists(_folder))
                 Directory.Delete(_folder, true);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateOrOpen_GravaOArquivoDeProjeto()
         {
             var project = GameProject.CreateOrOpen(_folder, "MeuJogo");
 
-            Assert.IsTrue(File.Exists(project.ProjectFilePath));
-            Assert.AreEqual("MeuJogo", project.Name);
+            Assert.True(File.Exists(project.ProjectFilePath));
+            Assert.Equal("MeuJogo", project.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void EnumerateScenes_ListaOsArquivosDbscene()
         {
             var project = GameProject.CreateOrOpen(_folder, "Jogo");
@@ -47,14 +45,14 @@ namespace DreamBit.Engine.Tests
             CollectionAssert.AreEquivalent(new[] { "Fase1.dbscene", "Fase2.dbscene" }, scenes);
         }
 
-        [TestMethod]
+        [Fact]
         public void Load_PreservaONome()
         {
             var created = GameProject.CreateOrOpen(_folder, "Projeto X");
             var loaded = GameProject.Load(created.ProjectFilePath);
 
-            Assert.AreEqual("Projeto X", loaded.Name);
-            Assert.AreEqual(_folder, loaded.Folder);
+            Assert.Equal("Projeto X", loaded.Name);
+            Assert.Equal(_folder, loaded.Folder);
         }
     }
 }

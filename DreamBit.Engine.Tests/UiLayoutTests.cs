@@ -2,15 +2,13 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class UiLayoutTests
     {
-        [TestMethod]
+        [Fact]
         public void EmpilhaFilhosNaVertical()
         {
             var menu = new GameObject("Menu");
@@ -27,13 +25,13 @@ namespace DreamBit.Engine.Tests
 
             var ys = menu.Children.Select(c => c.Transform.Position.Y).ToArray();
             // 3 itens de 40 + 2 espaços de 10 = 140; centralizado => -70..70; centros: -50, 0, 50
-            Assert.AreEqual(-50f, ys[0], 0.01f);
-            Assert.AreEqual(0f, ys[1], 0.01f);
-            Assert.AreEqual(50f, ys[2], 0.01f);
-            Assert.IsTrue(menu.Children.All(c => c.Transform.Position.X == 0f));
+            Assert.Equal(-50f, ys[0], 0.01f);
+            Assert.Equal(0f, ys[1], 0.01f);
+            Assert.Equal(50f, ys[2], 0.01f);
+            Assert.True(menu.Children.All(c => c.Transform.Position.X == 0f));
         }
 
-        [TestMethod]
+        [Fact]
         public void HorizontalUsaLargura()
         {
             var bar = new GameObject("Bar");
@@ -44,11 +42,11 @@ namespace DreamBit.Engine.Tests
 
             bar.Components.OfType<UiLayout>().Single().Arrange();
 
-            Assert.AreEqual(-30f, a.Transform.Position.X, 0.01f);
-            Assert.AreEqual(30f, b.Transform.Position.X, 0.01f);
+            Assert.Equal(-30f, a.Transform.Position.X, 0.01f);
+            Assert.Equal(30f, b.Transform.Position.X, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -58,8 +56,8 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var l = loaded.Objects.First().Components.OfType<UiLayout>().Single();
-            Assert.AreEqual(LayoutDirection.Horizontal, l.Direction);
-            Assert.AreEqual(7f, l.Spacing, 0.001f);
+            Assert.Equal(LayoutDirection.Horizontal, l.Direction);
+            Assert.Equal(7f, l.Spacing, 0.001f);
         }
     }
 }

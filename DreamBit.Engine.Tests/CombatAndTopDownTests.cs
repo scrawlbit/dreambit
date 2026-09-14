@@ -3,20 +3,19 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class CombatAndTopDownTests
     {
         private static GameTime Frame(double s = 0.016) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(s));
 
         // ---------- Vida ----------
 
-        [TestMethod]
+        [Fact]
         public void Health_Dano_Invuln_Morte_Destroy()
         {
             var scene = new Scene();
@@ -28,16 +27,16 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
 
             hp.Damage(30);
-            Assert.AreEqual(70f, hp.Current, 0.001f);
+            Assert.Equal(70f, hp.Current, 0.001f);
             hp.Damage(30); // dentro da invulnerabilidade -> ignorado
-            Assert.AreEqual(70f, hp.Current, 0.001f, "i-frames bloqueiam dano seguido");
+            Assert.Equal(70f, hp.Current, 0.001f);
 
             for (int i = 0; i < 20; i++) scene.Update(Frame()); // passa a invuln
             hp.Damage(80);
-            Assert.IsTrue(hp.IsDead);
+            Assert.True(hp.IsDead);
             scene.Update(Frame()); // processa mensagem + destroy adiado
-            Assert.AreEqual("morreu", msg);
-            Assert.IsFalse(scene.Objects.Contains(o), "DestroyOnDeath remove o objeto");
+            Assert.Equal("morreu", msg);
+            Assert.False(scene.Objects.Contains(o), "DestroyOnDeath remove o objeto");
         }
 
         // ---------- Hitbox x Hurtbox ----------
@@ -63,33 +62,33 @@ namespace DreamBit.Engine.Tests
             return (scene, hp);
         }
 
-        [TestMethod]
+        [Fact]
         public void Hitbox_FereTimeDiferente_UmaVezPorAtivacao()
         {
             var (scene, hp) = BuildDuel(0, 1, out var hitbox);
             hitbox.Activate();
             scene.Update(Frame());
-            Assert.AreEqual(75f, hp.Current, 0.001f, "acerta uma vez");
+            Assert.Equal(75f, hp.Current, 0.001f);
             scene.Update(Frame());
-            Assert.AreEqual(75f, hp.Current, 0.001f, "não acerta de novo na mesma ativação");
+            Assert.Equal(75f, hp.Current, 0.001f);
 
             hitbox.Activate(); // nova ativação (invuln do alvo = 0)
             scene.Update(Frame());
-            Assert.AreEqual(50f, hp.Current, 0.001f, "nova ativação acerta de novo");
+            Assert.Equal(50f, hp.Current, 0.001f);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Hitbox_NaoFereOMesmoTime()
         {
             var (scene, hp) = BuildDuel(1, 1, out var hitbox);
             hitbox.Activate();
             scene.Update(Frame());
-            Assert.AreEqual(100f, hp.Current, 0.001f, "mesmo time não recebe dano");
+            Assert.Equal(100f, hp.Current, 0.001f);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Hitbox_AtivaPorMensagem()
         {
             var scene = new Scene();
@@ -108,12 +107,12 @@ namespace DreamBit.Engine.Tests
             scene.Send("golpe");
             scene.Update(Frame()); // frame 1: despacha a mensagem no fim (ativa a hitbox)
             scene.Update(Frame()); // frame 2: hitbox ativa varre e acerta
-            Assert.AreEqual(60f, hp.Current, 0.001f, "mensagem ativou a hitbox");
+            Assert.Equal(60f, hp.Current, 0.001f);
         }
 
         // ---------- SpriteFlash ----------
 
-        [TestMethod]
+        [Fact]
         public void SpriteFlash_PiscaAoLevarDano()
         {
             var scene = new Scene();
@@ -127,19 +126,19 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
 
             scene.Update(Frame());
-            Assert.AreEqual(Color.White, anim.Tint, "sem dano: sem flash");
+            Assert.Equal(Color.White, anim.Tint);
 
             hp.Damage(10);
             scene.Update(Frame());
-            Assert.AreEqual(Color.Red, anim.Tint, "pisca ao levar dano");
+            Assert.Equal(Color.Red, anim.Tint);
 
             for (int i = 0; i < 20; i++) scene.Update(Frame());
-            Assert.AreEqual(Color.White, anim.Tint, "volta ao normal após o flash");
+            Assert.Equal(Color.White, anim.Tint);
         }
 
         // ---------- TopDownController ----------
 
-        [TestMethod]
+        [Fact]
         public void TopDown_MoveEColideComSolido()
         {
             var scene = new Scene();
@@ -157,12 +156,12 @@ namespace DreamBit.Engine.Tests
             GameInput.SetPointer(new Vector2(-1, -1), false);
 
             for (int i = 0; i < 120; i++) { GameInput.Update(); GameInput.HoldAction("MoveRight"); scene.Update(Frame()); }
-            Assert.IsTrue(o.Transform.Position.X > 120f, "andou para a direita");
-            Assert.IsTrue(o.Transform.Position.X <= 231f, "parou na parede sólida (x=" + o.Transform.Position.X + ")");
+            Assert.True(o.Transform.Position.X > 120f, "andou para a direita");
+            Assert.True(o.Transform.Position.X <= 231f, "parou na parede sólida (x=" + o.Transform.Position.X + ")");
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void TopDown_ComAnimator_MoveVerticalUsaWalkNaoJump()
         {
             var scene = new Scene();
@@ -179,13 +178,13 @@ namespace DreamBit.Engine.Tests
             GameInput.SetPointer(new Vector2(-1, -1), false);
 
             for (int i = 0; i < 4; i++) { GameInput.Update(); GameInput.HoldAction("MoveDown"); scene.Update(Frame()); }
-            Assert.AreEqual("walk", anim.CurrentClip, "movimento vertical top-down usa walk, não jump");
+            Assert.Equal("walk", anim.CurrentClip);
             GameInput.ClearPointerOverride();
         }
 
         // ---------- Serialização ----------
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_CombateETopDown()
         {
             var scene = new Scene();
@@ -198,12 +197,12 @@ namespace DreamBit.Engine.Tests
             scene.Add(o);
 
             var e = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene)).Objects.First();
-            Assert.AreEqual(175f, e.Components.OfType<TopDownController>().Single().MoveSpeed);
-            Assert.AreEqual(60f, e.Components.OfType<Health>().Single().Max);
-            Assert.IsTrue(e.Components.OfType<Health>().Single().DestroyOnDeath);
-            Assert.AreEqual(2, e.Components.OfType<Hurtbox>().Single().Team);
-            Assert.AreEqual("atk", e.Components.OfType<Hitbox>().Single().ActivateOn);
-            Assert.AreEqual(Color.Red, e.Components.OfType<SpriteFlash>().Single().FlashColor);
+            Assert.Equal(175f, e.Components.OfType<TopDownController>().Single().MoveSpeed);
+            Assert.Equal(60f, e.Components.OfType<Health>().Single().Max);
+            Assert.True(e.Components.OfType<Health>().Single().DestroyOnDeath);
+            Assert.Equal(2, e.Components.OfType<Hurtbox>().Single().Team);
+            Assert.Equal("atk", e.Components.OfType<Hitbox>().Single().ActivateOn);
+            Assert.Equal(Color.Red, e.Components.OfType<SpriteFlash>().Single().FlashColor);
         }
     }
 }

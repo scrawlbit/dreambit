@@ -2,12 +2,11 @@ using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class PhysicsRaycastTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / 60.0));
@@ -20,7 +19,7 @@ namespace DreamBit.Engine.Tests
             return w;
         }
 
-        [TestMethod]
+        [Fact]
         public void RaycastAcertaOCorpo()
         {
             var scene = new Scene();
@@ -30,12 +29,12 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame); // inicializa o mundo/corpos
 
             var hit = scene.Physics.Raycast(new Vector2(0, 0), new Vector2(400, 0));
-            Assert.IsNotNull(hit, "o raio deveria atingir o muro");
-            Assert.AreSame(wall.Components.OfType<Rigidbody2D>().Single(), hit!.Value.Body);
-            Assert.IsTrue(hit.Value.Point.X > 150 && hit.Value.Point.X < 200, $"impacto perto da face esquerda (x={hit.Value.Point.X})");
+            Assert.NotNull(hit);
+            Assert.Same(wall.Components.OfType<Rigidbody2D>().Single(), hit!.Value.Body);
+            Assert.True(hit.Value.Point.X > 150 && hit.Value.Point.X < 200, $"impacto perto da face esquerda (x={hit.Value.Point.X})");
         }
 
-        [TestMethod]
+        [Fact]
         public void RaycastSemAlvoRetornaNull()
         {
             var scene = new Scene();
@@ -44,10 +43,10 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
 
             var hit = scene.Physics.Raycast(new Vector2(0, 0), new Vector2(400, 0));
-            Assert.IsNull(hit);
+            Assert.Null(hit);
         }
 
-        [TestMethod]
+        [Fact]
         public void RaycastPegaOMaisProximo()
         {
             var scene = new Scene();
@@ -59,11 +58,11 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
 
             var hit = scene.Physics.Raycast(new Vector2(0, 0), new Vector2(400, 0));
-            Assert.IsNotNull(hit);
-            Assert.AreSame(perto.Components.OfType<Rigidbody2D>().Single(), hit!.Value.Body, "o mais próximo");
+            Assert.NotNull(hit);
+            Assert.Same(perto.Components.OfType<Rigidbody2D>().Single(), hit!.Value.Body);
         }
 
-        [TestMethod]
+        [Fact]
         public void CamadasDeColisaoNaoInteragem()
         {
             var scene = new Scene();
@@ -83,7 +82,7 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             for (int i = 0; i < 120; i++) scene.Update(Frame);
 
-            Assert.IsTrue(caixa.Transform.Position.Y > 250f, "a caixa atravessa o chão (camadas não interagem)");
+            Assert.True(caixa.Transform.Position.Y > 250f, "a caixa atravessa o chão (camadas não interagem)");
         }
     }
 }

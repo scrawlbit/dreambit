@@ -3,12 +3,11 @@ using System.IO;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ScriptHotReloadTests
     {
         private static GameTime Frame(float dt) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(dt));
@@ -21,7 +20,7 @@ namespace DreamBit.Engine.Tests
             "  }\n" +
             "}\n";
 
-        [TestMethod]
+        [Fact]
         public void CarregaDeArquivoExterno()
         {
             var path = Path.Combine(Path.GetTempPath(), "hot_" + Guid.NewGuid().ToString("N") + ".cs");
@@ -35,12 +34,12 @@ namespace DreamBit.Engine.Tests
 
                 scene.StartPlay();
                 scene.Update(Frame(1f)); // move 100
-                Assert.AreEqual(100f, obj.Transform.Position.X, 0.5f);
+                Assert.Equal(100f, obj.Transform.Position.X, 0.5f);
             }
             finally { if (File.Exists(path)) File.Delete(path); }
         }
 
-        [TestMethod]
+        [Fact]
         public void RecarregaQuandoOArquivoMuda()
         {
             var path = Path.Combine(Path.GetTempPath(), "hot_" + Guid.NewGuid().ToString("N") + ".cs");
@@ -65,13 +64,12 @@ namespace DreamBit.Engine.Tests
                 scene.Update(Frame(1f));   // agora v=1000 => +1000
                 float afterReload = obj.Transform.Position.X;
 
-                Assert.IsTrue(afterReload - afterFirst > 900f,
-                    $"após recarregar deveria mover ~1000 (moveu {afterReload - afterFirst})");
+                Assert.True(afterReload - afterFirst > 900f, $"após recarregar deveria mover ~1000 (moveu {afterReload - afterFirst})");
             }
             finally { if (File.Exists(path)) File.Delete(path); }
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -82,7 +80,7 @@ namespace DreamBit.Engine.Tests
             var loaded = DreamBit.Engine.Serialization.SceneSerializer.LoadFromString(
                 DreamBit.Engine.Serialization.SceneSerializer.SaveToString(scene));
             var s = loaded.Objects.First().Components.OfType<ScriptComponent>().Single();
-            Assert.AreEqual("scripts/Player.cs", s.SourcePath);
+            Assert.Equal("scripts/Player.cs", s.SourcePath);
         }
     }
 }

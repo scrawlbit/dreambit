@@ -2,28 +2,26 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using DreamBit.Engine.Tilemap;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TileLayerTests
     {
-        [TestMethod]
+        [Fact]
         public void AddLayer_NomeiaEAcumula()
         {
             var map = new Tilemap.Tilemap();
             var a = map.AddLayer();
             var b = map.AddLayer("Colisão");
 
-            Assert.AreEqual(2, map.Layers.Count);
-            Assert.AreEqual("Camada 1", a.Name);
-            Assert.AreEqual("Colisão", b.Name);
-            Assert.IsTrue(a.Visible);
+            Assert.Equal(2, map.Layers.Count);
+            Assert.Equal("Camada 1", a.Name);
+            Assert.Equal("Colisão", b.Name);
+            Assert.True(a.Visible);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaCamadasEVisibilidade()
         {
             var scene = new Scene();
@@ -37,15 +35,15 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var lmap = loaded.Objects.First().Components.OfType<TilemapRenderer>().Single().Map!;
 
-            Assert.AreEqual(2, lmap.Layers.Count);
-            Assert.AreEqual("Fundo", lmap.Layers[0].Name);
-            Assert.IsTrue(lmap.Layers[0].Visible);
-            Assert.AreEqual("Frente", lmap.Layers[1].Name);
-            Assert.IsFalse(lmap.Layers[1].Visible, "visibilidade da camada sobrevive");
-            Assert.AreEqual(2, lmap.Layers[1].GetTile(1, 1));
+            Assert.Equal(2, lmap.Layers.Count);
+            Assert.Equal("Fundo", lmap.Layers[0].Name);
+            Assert.True(lmap.Layers[0].Visible);
+            Assert.Equal("Frente", lmap.Layers[1].Name);
+            Assert.False(lmap.Layers[1].Visible, "visibilidade da camada sobrevive");
+            Assert.Equal(2, lmap.Layers[1].GetTile(1, 1));
         }
 
-        [TestMethod]
+        [Fact]
         public void CamadaInvisivelNaoContaColisao_MasVisivelSim()
         {
             // A colisão (Solid) independe da visibilidade: usa as células, não o desenho.
@@ -57,7 +55,7 @@ namespace DreamBit.Engine.Tests
             obj.AddComponent(new TilemapRenderer { Map = map, Solid = true, SolidLayer = "Solido" });
 
             var boxes = obj.Components.OfType<TilemapRenderer>().Single().SolidBoxes().ToList();
-            Assert.AreEqual(1, boxes.Count);
+            Assert.Single(boxes);
         }
     }
 }

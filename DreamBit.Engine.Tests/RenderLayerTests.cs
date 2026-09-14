@@ -4,17 +4,16 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class RenderLayerTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void CamadaOrdenaAntesDoZOrder()
         {
             var scene = new Scene();
@@ -29,7 +28,7 @@ namespace DreamBit.Engine.Tests
             CollectionAssert.AreEqual(new[] { "Fundo", "Meio", "Frente" }, order);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parallax_RolaMaisDevagarQueACamera()
         {
             var scene = new Scene();
@@ -43,11 +42,11 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
 
             // X: base(0) + cam.X * (1 - 0.25) = 300 ; Y: fator 1 => sem deslocamento
-            Assert.AreEqual(300f, bg.Transform.Position.X, 0.01f);
-            Assert.AreEqual(0f, bg.Transform.Position.Y, 0.01f);
+            Assert.Equal(300f, bg.Transform.Position.X, 0.01f);
+            Assert.Equal(0f, bg.Transform.Position.Y, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parallax_FatorZeroAcompanhaACamera()
         {
             var scene = new Scene();
@@ -60,10 +59,10 @@ namespace DreamBit.Engine.Tests
             Screen.CameraPosition = new Vector2(500, 300);
             scene.Update(Frame);
 
-            Assert.AreEqual(new Vector2(510, 320), bg.Transform.Position);
+            Assert.Equal(new Vector2(510, 320), bg.Transform.Position);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -73,10 +72,10 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var lo = loaded.Objects.First();
-            Assert.AreEqual(-50, lo.RenderLayer);
+            Assert.Equal(-50, lo.RenderLayer);
             var px = lo.Components.OfType<ParallaxLayer>().Single();
-            Assert.AreEqual(0.3f, px.FactorX, 0.001f);
-            Assert.AreEqual(0.7f, px.FactorY, 0.001f);
+            Assert.Equal(0.3f, px.FactorX, 0.001f);
+            Assert.Equal(0.7f, px.FactorY, 0.001f);
         }
     }
 }

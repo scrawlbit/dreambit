@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using DreamBit.Engine.Animation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class StateMachineTests
     {
-        [TestMethod]
+        [Fact]
         public void TransicaoPorCondicao()
         {
             bool correr = false;
@@ -19,18 +18,18 @@ namespace DreamBit.Engine.Tests
 
             sm.Start("idle");
             sm.Update(0.016f);
-            Assert.AreEqual("idle", sm.Current);
+            Assert.Equal("idle", sm.Current);
 
             correr = true;
             sm.Update(0.016f);
-            Assert.AreEqual("run", sm.Current);
+            Assert.Equal("run", sm.Current);
 
             correr = false;
             sm.Update(0.016f);
-            Assert.AreEqual("idle", sm.Current);
+            Assert.Equal("idle", sm.Current);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyTransitionTemPrioridade()
         {
             bool morrer = false;
@@ -42,10 +41,10 @@ namespace DreamBit.Engine.Tests
             sm.Start("idle");
             morrer = true;
             sm.Update(0.016f);
-            Assert.AreEqual("dead", sm.Current, "any transition vence a específica");
+            Assert.Equal("dead", sm.Current);
         }
 
-        [TestMethod]
+        [Fact]
         public void CallbacksEnterUpdateExit()
         {
             var log = new List<string>();
@@ -63,7 +62,7 @@ namespace DreamBit.Engine.Tests
             CollectionAssert.AreEqual(new[] { "enter-a", "exit-a", "enter-b" }, log);
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangedDispara()
         {
             string? de = null, para = null;
@@ -72,8 +71,8 @@ namespace DreamBit.Engine.Tests
 
             sm.Start("x");
             sm.Go("y");
-            Assert.AreEqual("x", de);
-            Assert.AreEqual("y", para);
+            Assert.Equal("x", de);
+            Assert.Equal("y", para);
         }
     }
 }

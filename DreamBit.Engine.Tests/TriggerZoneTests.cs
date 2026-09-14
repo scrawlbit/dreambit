@@ -3,15 +3,14 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TriggerZoneTests
     {
-        [TestMethod]
+        [Fact]
         public void Coleta_QuandoOPersonagemSobrepoe()
         {
             var scene = new Scene();
@@ -30,10 +29,10 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016)));
 
-            Assert.IsFalse(pickup.IsVisible, "a moeda deve sumir ao ser coletada");
+            Assert.False(pickup.IsVisible, "a moeda deve sumir ao ser coletada");
         }
 
-        [TestMethod]
+        [Fact]
         public void NaoColeta_QuandoLonge()
         {
             var scene = new Scene();
@@ -51,12 +50,12 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016)));
 
-            Assert.IsTrue(pickup.IsVisible);
+            Assert.True(pickup.IsVisible);
         }
 
         private static GameTime Frame => new(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void FiltraPorTag_SoDisparaComATagAlvo()
         {
             var scene = new Scene();
@@ -78,10 +77,10 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             scene.Update(Frame);
 
-            Assert.IsFalse(entrou, "inimigo não deve disparar uma zona de tag Player");
+            Assert.False(entrou, "inimigo não deve disparar uma zona de tag Player");
         }
 
-        [TestMethod]
+        [Fact]
         public void DisparaPorTag_MesmoSemPlatformerController()
         {
             var scene = new Scene();
@@ -101,10 +100,10 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             scene.Update(Frame);
 
-            Assert.AreSame(hero, quem, "objeto com a tag deve disparar, mesmo sem controller");
+            Assert.Same(hero, quem);
         }
 
-        [TestMethod]
+        [Fact]
         public void EnterEExit_DisparamAoEntrarEAoSair()
         {
             var scene = new Scene();
@@ -126,22 +125,22 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
 
             scene.Update(Frame);                        // longe: nada
-            Assert.AreEqual(0, enters);
+            Assert.Equal(0, enters);
 
             player.Transform.Position = new Vector2(0, 0); // entra
             scene.Update(Frame);
-            Assert.AreEqual(1, enters);
-            Assert.AreEqual(0, exits);
+            Assert.Equal(1, enters);
+            Assert.Equal(0, exits);
 
             scene.Update(Frame);                        // continua dentro: não re-dispara enter
-            Assert.AreEqual(1, enters);
+            Assert.Equal(1, enters);
 
             player.Transform.Position = new Vector2(200, 0); // sai
             scene.Update(Frame);
-            Assert.AreEqual(1, exits);
+            Assert.Equal(1, exits);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaTagETrigger()
         {
             var scene = new Scene();
@@ -152,10 +151,10 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
 
             var restored = loaded.Objects.First();
-            Assert.AreEqual("Enemy", restored.Tag);
+            Assert.Equal("Enemy", restored.Tag);
             var trigger = restored.Components.OfType<TriggerZone>().Single();
-            Assert.AreEqual("Enemy", trigger.TargetTag);
-            Assert.IsFalse(trigger.DestroyOnEnter);
+            Assert.Equal("Enemy", trigger.TargetTag);
+            Assert.False(trigger.DestroyOnEnter);
         }
     }
 }

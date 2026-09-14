@@ -11,7 +11,7 @@ using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Saving;
 using DreamBit.Engine.Serialization;
 using DreamBit.Engine.Timing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
@@ -22,7 +22,6 @@ namespace DreamBit.Engine.Tests
     /// faz round-trip de serialização e roda o laço de play, verificando que tudo interage sem
     /// quebrar e com os resultados esperados.
     /// </summary>
-    [TestClass]
     public class SmokeTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
@@ -97,7 +96,7 @@ namespace DreamBit.Engine.Tests
             return scene;
         }
 
-        [TestMethod]
+        [Fact]
         public void CenaCompleta_RoundTrip_Play_Interacoes()
         {
             Screen.Set(800, 600);
@@ -115,8 +114,8 @@ namespace DreamBit.Engine.Tests
 
             GameObject Find(string name) => scene.VisibleInDrawOrder().First(o => o.Name == name);
             var heroi = scene.VisibleInDrawOrder().First(o => o.Tag == "Player");
-            Assert.IsTrue(heroi.Components.OfType<SpriteAnimator>().Single().Frames.Count == 2, "frames explícitos sobrevivem");
-            Assert.IsTrue(scene.VisibleInDrawOrder().Any(o => o.Components.OfType<UiButton>().Any()), "botão sobrevive");
+            Assert.True(heroi.Components.OfType<SpriteAnimator>().Single().Frames.Count == 2, "frames explícitos sobrevivem");
+            Assert.True(scene.VisibleInDrawOrder().Any(o => o.Components.OfType<UiButton>().Any()), "botão sobrevive");
 
             // 2) Sistemas de runtime (APIs para scripts).
             SaveGame.SetInt("fase", 1);
@@ -151,21 +150,21 @@ namespace DreamBit.Engine.Tests
 
             // 4) Verificações de interação.
             var platform = heroi.Components.OfType<PlatformerController>().Single();
-            Assert.IsTrue(platform.Grounded, "herói pousou sobre o tilemap sólido");
-            Assert.AreNotEqual(0f, camera.Position.Y, "câmera seguiu o herói (caiu no Y)");
-            Assert.IsTrue(ticks >= 3, $"timer repetiu (ticks={ticks})");
-            Assert.AreEqual(1, agendado, "callback agendado disparou uma vez");
-            Assert.AreEqual("run", sm.Current, "máquina de estados transicionou");
+            Assert.True(platform.Grounded, "herói pousou sobre o tilemap sólido");
+            Assert.NotEqual(0f, camera.Position.Y);
+            Assert.True(ticks >= 3, $"timer repetiu (ticks={ticks})");
+            Assert.Equal(1, agendado);
+            Assert.Equal("run", sm.Current);
 
             var fundo = Find("Fundo");
-            Assert.IsTrue(fundo.Components.OfType<ParallaxLayer>().Any());
-            Assert.AreNotEqual(0f, fundo.Transform.Position.Y, "parallax deslocou o fundo conforme a câmera (Y)");
+            Assert.True(fundo.Components.OfType<ParallaxLayer>().Any());
+            Assert.NotEqual(0f, fundo.Transform.Position.Y);
 
             var titulo = scene.VisibleInDrawOrder().First(o => o.Name == "Titulo");
-            Assert.AreEqual("JOGAR", titulo.Components.OfType<TextRenderer>().Single().DisplayText, "texto localizado");
+            Assert.Equal("JOGAR", titulo.Components.OfType<TextRenderer>().Single().DisplayText);
 
             var caixa = scene.VisibleInDrawOrder().First(o => o.Name == "Caixa");
-            Assert.IsTrue(caixa.Transform.Position.Y > -60f + 10f, "corpo rígido caiu pela física");
+            Assert.True(caixa.Transform.Position.Y > -60f + 10f, "corpo rígido caiu pela física");
 
             // 5) Clica no botão (posição de tela calculada) e confirma a mensagem.
             var botao = scene.VisibleInDrawOrder().First(o => o.Name == "Botao").Components.OfType<UiButton>().Single();
@@ -173,12 +172,12 @@ namespace DreamBit.Engine.Tests
             var centro = new Vector2(r.X + r.Width / 2f, r.Y + r.Height / 2f);
             GameInput.SetPointer(centro, true);  scene.Update(Frame); // pressiona
             GameInput.SetPointer(centro, false); scene.Update(Frame); // solta => clique
-            Assert.IsTrue(startRecebido, "clique no botão disparou a mensagem 'start'");
+            Assert.True(startRecebido, "clique no botão disparou a mensagem 'start'");
 
             // 6) Object pool.
             var b = pool.Get();
-            Assert.AreEqual(1, pool.ActiveCount);
-            Assert.IsTrue(pool.Return(b));
+            Assert.Equal(1, pool.ActiveCount);
+            Assert.True(pool.Return(b));
 
             GameInput.ClearPointerOverride();
         }

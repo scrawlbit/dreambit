@@ -6,13 +6,12 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class UiNavigationTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
@@ -27,7 +26,7 @@ namespace DreamBit.Engine.Tests
             return b;
         }
 
-        [TestMethod]
+        [Fact]
         public void PickNext_VaiParaODeBaixo()
         {
             var scene = new Scene();
@@ -37,11 +36,11 @@ namespace DreamBit.Engine.Tests
 
             var list = new List<IUiFocusable> { top, mid, bottom };
             var next = UiNavigator.PickNext(list, top, 0, 1);
-            Assert.AreSame(mid, next, "desce para o vizinho mais próximo");
-            Assert.IsNull(UiNavigator.PickNext(list, bottom, 0, 1), "nada abaixo do último");
+            Assert.Same(mid, next);
+            Assert.Null(UiNavigator.PickNext(list, bottom, 0, 1));
         }
 
-        [TestMethod]
+        [Fact]
         public void Slider_NudgeAjustaValorEBus()
         {
             AudioMixer.Reset();
@@ -52,16 +51,16 @@ namespace DreamBit.Engine.Tests
             scene.Add(o);
             var slider = o.Components.OfType<UiSlider>().Single();
             scene.StartPlay();
-            Assert.AreEqual(0.5f, slider.Value, 0.001f, "inicia refletindo o bus");
+            Assert.Equal(0.5f, slider.Value, 0.001f);
 
             slider.Nudge(1);
-            Assert.AreEqual(0.55f, slider.Value, 0.001f);
-            Assert.AreEqual(0.55f, AudioMixer.GetVolume(AudioMixer.Music), 0.001f);
+            Assert.Equal(0.55f, slider.Value, 0.001f);
+            Assert.Equal(0.55f, AudioMixer.GetVolume(AudioMixer.Music), 0.001f);
             slider.Nudge(-1);
-            Assert.AreEqual(0.5f, slider.Value, 0.001f);
+            Assert.Equal(0.5f, slider.Value, 0.001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Navigator_AutoFocaOPrimeiro()
         {
             Screen.Set(800, 600);
@@ -77,11 +76,11 @@ namespace DreamBit.Engine.Tests
             GameInput.SetPointer(new Vector2(-1, -1), false);
             scene.Update(Frame);
 
-            Assert.IsTrue(UiFocus.Has(first), "foca o primeiro controle automaticamente");
+            Assert.True(UiFocus.Has(first), "foca o primeiro controle automaticamente");
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Activate_DisparaOControleFocado()
         {
             var scene = new Scene();
@@ -94,11 +93,11 @@ namespace DreamBit.Engine.Tests
             b.Activate();
             GameInput.SetPointer(new Vector2(-1, -1), false);
             scene.Update(Frame); // despacha a mensagem enfileirada
-            Assert.AreEqual("go", got);
+            Assert.Equal("go", got);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Navigator_Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -107,7 +106,7 @@ namespace DreamBit.Engine.Tests
             scene.Add(o);
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
-            Assert.IsFalse(loaded.Objects.First().Components.OfType<UiNavigator>().Single().AutoFocusFirst);
+            Assert.False(loaded.Objects.First().Components.OfType<UiNavigator>().Single().AutoFocusFirst);
         }
     }
 }

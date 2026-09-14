@@ -4,13 +4,12 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class UiTextFieldTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
@@ -19,6 +18,11 @@ namespace DreamBit.Engine.Tests
         {
             Screen.Set(800, 600);
             UiFocus.Clear();
+            // Zera o estado do ponteiro (dois frames "solto") para a borda do clique ser detectada,
+            // independentemente do que um teste anterior deixou no override de input.
+            GameInput.SetPointer(new Vector2(-1, -1), false);
+            GameInput.SetPointer(new Vector2(-1, -1), false);
+            GameInput.PumpText(); // descarta texto digitado que tenha sobrado de outro teste
             var scene = new Scene();
             var obj = new GameObject("Campo") { ScreenSpace = true };
             obj.Transform.Position = new Vector2(400, 300);
@@ -36,7 +40,7 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
         }
 
-        [TestMethod]
+        [Fact]
         public void ClicarFocaEDigitar()
         {
             var (scene, field, _) = Build();
@@ -45,14 +49,14 @@ namespace DreamBit.Engine.Tests
             // clica dentro => foca
             GameInput.SetPointer(new Vector2(400, 300), true); scene.Update(Frame);
             GameInput.SetPointer(new Vector2(400, 300), false); scene.Update(Frame);
-            Assert.IsTrue(field.IsFocused);
+            Assert.True(field.IsFocused);
 
             Type(scene, "Aria", new Vector2(400, 300));
-            Assert.AreEqual("Aria", field.Text);
+            Assert.Equal("Aria", field.Text);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void BackspaceApaga()
         {
             var (scene, field, _) = Build();
@@ -60,13 +64,13 @@ namespace DreamBit.Engine.Tests
             UiFocus.Set(field);
 
             Type(scene, "abc", new Vector2(400, 300));
-            Assert.AreEqual("abc", field.Text);
+            Assert.Equal("abc", field.Text);
             Type(scene, "\b", new Vector2(400, 300));
-            Assert.AreEqual("ab", field.Text);
+            Assert.Equal("ab", field.Text);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void EnterConfirmaEDisparaEDesfoca()
         {
             var (scene, field, _) = Build();
@@ -76,13 +80,13 @@ namespace DreamBit.Engine.Tests
             UiFocus.Set(field);
 
             Type(scene, "oi\r", new Vector2(400, 300));
-            Assert.AreEqual("oi", field.Text);
-            Assert.IsTrue(ok, "Enter dispara a mensagem");
-            Assert.IsFalse(field.IsFocused, "perde o foco ao confirmar");
+            Assert.Equal("oi", field.Text);
+            Assert.True(ok, "Enter dispara a mensagem");
+            Assert.False(field.IsFocused, "perde o foco ao confirmar");
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void RespeitaMaxLength()
         {
             var (scene, field, _) = Build(); // MaxLength = 10
@@ -90,22 +94,22 @@ namespace DreamBit.Engine.Tests
             UiFocus.Set(field);
 
             Type(scene, "0123456789ABC", new Vector2(400, 300));
-            Assert.AreEqual(10, field.Text.Length);
+            Assert.Equal(10, field.Text.Length);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void SoODoFocoRecebe()
         {
             var (scene, field, _) = Build();
             scene.StartPlay();
             // sem foco: digitar não muda nada
             Type(scene, "xyz", new Vector2(10, 10));
-            Assert.AreEqual(string.Empty, field.Text);
+            Assert.Equal(string.Empty, field.Text);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -115,10 +119,10 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var f = loaded.Objects.First().Components.OfType<UiTextField>().Single();
-            Assert.AreEqual("oi", f.Text);
-            Assert.AreEqual("nome", f.Placeholder);
-            Assert.AreEqual(20, f.MaxLength);
-            Assert.AreEqual("go", f.SendOnSubmit);
+            Assert.Equal("oi", f.Text);
+            Assert.Equal("nome", f.Placeholder);
+            Assert.Equal(20, f.MaxLength);
+            Assert.Equal("go", f.SendOnSubmit);
         }
     }
 }

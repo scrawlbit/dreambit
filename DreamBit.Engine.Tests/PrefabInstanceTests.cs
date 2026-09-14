@@ -2,14 +2,13 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class PrefabInstanceTests
     {
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_PrefabInstance()
         {
             var scene = new Scene();
@@ -19,7 +18,7 @@ namespace DreamBit.Engine.Tests
 
             var e = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene)).Objects.First();
             var pi = e.Components.OfType<PrefabInstance>().Single();
-            Assert.AreEqual("prefabs/inimigo.dbprefab", pi.PrefabPath);
+            Assert.Equal("prefabs/inimigo.dbprefab", pi.PrefabPath);
         }
     }
 }

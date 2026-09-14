@@ -4,15 +4,14 @@ using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class CameraShakeTests
     {
-        [TestMethod]
+        [Fact]
         public void Shake_DeslocaEDecai()
         {
             var cam = new CameraComponent { TargetTag = "", SmoothTime = 0f };
@@ -22,15 +21,15 @@ namespace DreamBit.Engine.Tests
 
             var camera = new Camera2D { Position = new Vector2(500, 500) };
             cam.Shake(0.5f, 20f);
-            Assert.IsTrue(cam.IsShaking);
+            Assert.True(cam.IsShaking);
             cam.DriveCamera(camera, 0.016f, 800, 600);
-            Assert.AreNotEqual(500f, camera.Position.X + camera.Position.Y - 500f, "houve deslocamento pelo tremor");
+            Assert.NotEqual(500f, camera.Position.X + camera.Position.Y - 500f);
 
             for (int i = 0; i < 40; i++) cam.DriveCamera(camera, 0.016f, 800, 600);
-            Assert.IsFalse(cam.IsShaking, "o tremor termina");
+            Assert.False(cam.IsShaking, "o tremor termina");
         }
 
-        [TestMethod]
+        [Fact]
         public void ShakeOnMessage_DisparaPeloBarramento()
         {
             var scene = new Scene();
@@ -42,10 +41,10 @@ namespace DreamBit.Engine.Tests
 
             scene.Send("boom");
             scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016)));
-            Assert.IsTrue(cam.IsShaking, "a mensagem dispara o tremor");
+            Assert.True(cam.IsShaking, "a mensagem dispara o tremor");
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_Camera()
         {
             var scene = new Scene();
@@ -54,9 +53,9 @@ namespace DreamBit.Engine.Tests
             scene.Add(o);
             var e = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene)).Objects.First();
             var cam = e.Components.OfType<CameraComponent>().Single();
-            Assert.AreEqual(5, cam.Priority);
-            Assert.AreEqual("hit", cam.ShakeOnMessage);
-            Assert.AreEqual(18f, cam.ShakeMessageMagnitude);
+            Assert.Equal(5, cam.Priority);
+            Assert.Equal("hit", cam.ShakeOnMessage);
+            Assert.Equal(18f, cam.ShakeMessageMagnitude);
         }
     }
 }

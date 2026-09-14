@@ -3,17 +3,16 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class AnimationEventTests
     {
         private static SpriteAnimator MakeAnimator(int frames, float fps, bool loop)
             => new() { FrameCount = frames, Fps = fps, Loop = loop };
 
-        [TestMethod]
+        [Fact]
         public void Dispara_AoEntrarNoFrame()
         {
             var anim = MakeAnimator(4, 10f, loop: false); // 0.1s por frame
@@ -23,14 +22,14 @@ namespace DreamBit.Engine.Tests
             anim.AnimationEvent += disparados.Add;
 
             anim.Advance(0.05); // frame 0 ainda
-            Assert.AreEqual(0, disparados.Count);
+            Assert.Empty(disparados);
             anim.Advance(0.10); // -> frame 1
             anim.Advance(0.10); // -> frame 2 (dispara)
-            Assert.AreEqual(1, disparados.Count);
-            Assert.AreEqual("hit", disparados[0]);
+            Assert.Single(disparados);
+            Assert.Equal("hit", disparados[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void NaoLoop_NaoDisparaOUltimoFrameDuasVezes()
         {
             var anim = MakeAnimator(3, 10f, loop: false);
@@ -43,10 +42,10 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 10; i++)
                 anim.Advance(0.10);
 
-            Assert.AreEqual(1, count, "o último frame só deve disparar uma vez em animação sem loop");
+            Assert.Equal(1, count);
         }
 
-        [TestMethod]
+        [Fact]
         public void Loop_RedisparaACadaVolta()
         {
             var anim = MakeAnimator(2, 10f, loop: true);
@@ -59,10 +58,10 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 4; i++)
                 anim.Advance(0.10); // frames: 1,0(volta),1,0(volta)
 
-            Assert.AreEqual(2, count);
+            Assert.Equal(2, count);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaEventos()
         {
             var scene = new Scene();
@@ -76,10 +75,10 @@ namespace DreamBit.Engine.Tests
 
             var restored = loaded.Objects.First().Components.OfType<SpriteAnimator>().Single();
             var events = restored.Events.OrderBy(e => e.Frame).ToList();
-            Assert.AreEqual(2, events.Count);
-            Assert.AreEqual(0, events[0].Frame);
-            Assert.AreEqual("passo", events[0].Name);
-            Assert.AreEqual(3, events[1].Frame);
+            Assert.Equal(2, events.Count);
+            Assert.Equal(0, events[0].Frame);
+            Assert.Equal("passo", events[0].Name);
+            Assert.Equal(3, events[1].Frame);
         }
     }
 }

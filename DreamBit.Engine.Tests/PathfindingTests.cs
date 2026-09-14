@@ -2,25 +2,24 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class PathfindingTests
     {
-        [TestMethod]
+        [Fact]
         public void CaminhoRetoSemObstaculos()
         {
             var blocked = new bool[5, 1];
             var path = Pathfinding.FindPath(blocked, new Point(0, 0), new Point(4, 0));
-            Assert.AreEqual(5, path.Count);
-            Assert.AreEqual(new Point(0, 0), path[0]);
-            Assert.AreEqual(new Point(4, 0), path[^1]);
+            Assert.Equal(5, path.Count);
+            Assert.Equal(new Point(0, 0), path[0]);
+            Assert.Equal(new Point(4, 0), path[^1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void DesviaDeParede()
         {
             // Parede vertical em x=1 nas linhas 0..2, deixando passagem em y=3.
@@ -28,12 +27,12 @@ namespace DreamBit.Engine.Tests
             blocked[1, 0] = true; blocked[1, 1] = true; blocked[1, 2] = true;
 
             var path = Pathfinding.FindPath(blocked, new Point(0, 0), new Point(2, 0));
-            Assert.IsTrue(path.Count > 0, "deve achar caminho contornando");
-            Assert.IsFalse(path.Any(p => blocked[p.X, p.Y]), "não passa por células bloqueadas");
-            Assert.AreEqual(new Point(2, 0), path[^1]);
+            Assert.True(path.Count > 0, "deve achar caminho contornando");
+            Assert.False(path.Any(p => blocked[p.X, p.Y]), "não passa por células bloqueadas");
+            Assert.Equal(new Point(2, 0), path[^1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void SemCaminhoRetornaVazio()
         {
             // Objetivo cercado.
@@ -43,20 +42,20 @@ namespace DreamBit.Engine.Tests
             blocked = new bool[3, 3];
             blocked[1, 0] = true; blocked[0, 1] = true; blocked[1, 1] = true;
             var path = Pathfinding.FindPath(blocked, new Point(0, 0), new Point(2, 2));
-            Assert.AreEqual(0, path.Count, "início cercado => sem caminho");
+            Assert.Empty(path);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiagonalNaoCortaQuina()
         {
             // Bloqueios em (1,0) e (0,1): a diagonal (0,0)->(1,1) não pode cortar a quina.
             var blocked = new bool[2, 2];
             blocked[1, 0] = true; blocked[0, 1] = true;
             var path = Pathfinding.FindPath(blocked, new Point(0, 0), new Point(1, 1), allowDiagonal: true);
-            Assert.AreEqual(0, path.Count, "sem passagem sem cortar quina");
+            Assert.Empty(path);
         }
 
-        [TestMethod]
+        [Fact]
         public void NavGrid_DoTilemapAchaCaminhoNoMundo()
         {
             var obj = new GameObject("Mapa");
@@ -68,14 +67,14 @@ namespace DreamBit.Engine.Tests
             obj.AddComponent(new TilemapRenderer { Map = map, Solid = true, SolidLayer = "Solido" });
 
             var grid = NavGrid.FromTilemap(obj.Components.OfType<TilemapRenderer>().Single(), margin: 2);
-            Assert.IsNotNull(grid);
+            Assert.NotNull(grid);
 
             var start = new Vector2(0 * 32 + 16, 0 * 32 + 16);   // célula (0,0)
             var goal = new Vector2(2 * 32 + 16, 0 * 32 + 16);    // célula (2,0), do outro lado
             var path = grid!.FindPath(start, goal);
 
-            Assert.IsTrue(path.Count > 0, "achou caminho no mundo");
-            Assert.AreEqual(goal, path[^1], "termina no alvo (centro da célula)");
+            Assert.True(path.Count > 0, "achou caminho no mundo");
+            Assert.Equal(goal, path[^1]);
         }
     }
 }

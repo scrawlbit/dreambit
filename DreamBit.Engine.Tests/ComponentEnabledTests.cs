@@ -1,13 +1,11 @@
 using System;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using DreamBit.Engine.Rendering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ComponentEnabledTests
     {
         /// <summary>Componente de teste que conta os Updates recebidos.</summary>
@@ -20,7 +18,7 @@ namespace DreamBit.Engine.Tests
 
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void ComponenteDesligado_NaoRecebeUpdate()
         {
             var scene = new Scene();
@@ -31,19 +29,19 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
 
             scene.Update(Frame);
-            Assert.AreEqual(1, counter.Ticks);
+            Assert.Equal(1, counter.Ticks);
 
             counter.Enabled = false;
             scene.Update(Frame);
             scene.Update(Frame);
-            Assert.AreEqual(1, counter.Ticks, "desligado não recebe Update");
+            Assert.Equal(1, counter.Ticks);
 
             counter.Enabled = true;
             scene.Update(Frame);
-            Assert.AreEqual(2, counter.Ticks, "religado volta a receber Update");
+            Assert.Equal(2, counter.Ticks);
         }
 
-        [TestMethod]
+        [Fact]
         public void DesligarPlatformer_SuspendeGravidade()
         {
             // Caso "fase de voo": desligar o PlatformerController congela a queda.
@@ -56,12 +54,12 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
 
             for (int i = 0; i < 5; i++) scene.Update(Frame);
-            Assert.IsTrue(o.Transform.Position.Y > 0f, "cai com gravidade ligada");
+            Assert.True(o.Transform.Position.Y > 0f, "cai com gravidade ligada");
 
             plat.Enabled = false;
             float frozen = o.Transform.Position.Y;
             for (int i = 0; i < 10; i++) scene.Update(Frame);
-            Assert.AreEqual(frozen, o.Transform.Position.Y, 0.001f, "sem gravidade quando desligado (voo)");
+            Assert.Equal(frozen, o.Transform.Position.Y, 0.001f);
         }
     }
 }

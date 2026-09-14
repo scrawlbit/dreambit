@@ -3,17 +3,16 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ScreenFadeTests
     {
         private static GameTime Frame(double s) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(s));
 
-        [TestMethod]
+        [Fact]
         public void FadeOut_EscureceAoLongoDoTempo()
         {
             var scene = new Scene();
@@ -25,12 +24,12 @@ namespace DreamBit.Engine.Tests
 
             fade.FadeOut(0.5f);
             for (int i = 0; i < 8; i++) scene.Update(Frame(0.033));
-            Assert.IsTrue(fade.Alpha > 0.3f && fade.Alpha < 1f, $"escurecendo (alpha={fade.Alpha:0.00})");
+            Assert.True(fade.Alpha > 0.3f && fade.Alpha < 1f, $"escurecendo (alpha={fade.Alpha:0.00})");
             for (int i = 0; i < 10; i++) scene.Update(Frame(0.033));
-            Assert.AreEqual(1f, fade.Alpha, 0.01f, "tela totalmente coberta");
+            Assert.Equal(1f, fade.Alpha, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void FlashPorMensagem_SobeEDecai()
         {
             var scene = new Scene();
@@ -42,12 +41,12 @@ namespace DreamBit.Engine.Tests
 
             scene.Send("hit");
             scene.Update(Frame(0.016)); // despacha a mensagem -> Flash
-            Assert.IsTrue(fade.Alpha > 0.5f, "flash sobe");
+            Assert.True(fade.Alpha > 0.5f, "flash sobe");
             for (int i = 0; i < 20; i++) scene.Update(Frame(0.033));
-            Assert.AreEqual(0f, fade.Alpha, 0.02f, "flash decai a zero");
+            Assert.Equal(0f, fade.Alpha, 0.02f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_ScreenFade()
         {
             var scene = new Scene();
@@ -56,9 +55,9 @@ namespace DreamBit.Engine.Tests
             scene.Add(o);
             var f = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene)).Objects.First()
                 .Components.OfType<ScreenFade>().Single();
-            Assert.AreEqual(new Color(20, 30, 40), f.Color);
-            Assert.AreEqual("boom", f.FlashOnMessage);
-            Assert.AreEqual(0.4f, f.FlashDuration);
+            Assert.Equal(new Color(20, 30, 40), f.Color);
+            Assert.Equal("boom", f.FlashOnMessage);
+            Assert.Equal(0.4f, f.FlashDuration);
         }
     }
 }

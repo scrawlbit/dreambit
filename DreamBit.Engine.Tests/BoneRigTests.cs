@@ -1,17 +1,15 @@
-using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class BoneRigTests
     {
-        [TestMethod]
+        [Fact]
         public void CapturaEResetaPoseDeDescanso()
         {
             var obj = new GameObject("Braço");
@@ -28,11 +26,11 @@ namespace DreamBit.Engine.Tests
 
             bone.ResetToRestPose();
 
-            Assert.AreEqual(new Vector2(10, 20), obj.Transform.Position);
-            Assert.AreEqual(0.5f, obj.Transform.Rotation, 0.0001f);
+            Assert.Equal(new Vector2(10, 20), obj.Transform.Position);
+            Assert.Equal(0.5f, obj.Transform.Rotation, 0.0001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void SemPoseCapturada_ResetNaoFazNada()
         {
             var obj = new GameObject();
@@ -42,11 +40,11 @@ namespace DreamBit.Engine.Tests
 
             bone.ResetToRestPose();
 
-            Assert.AreEqual(new Vector2(5, 5), obj.Transform.Position);
-            Assert.IsFalse(bone.HasRestPose);
+            Assert.Equal(new Vector2(5, 5), obj.Transform.Position);
+            Assert.False(bone.HasRestPose);
         }
 
-        [TestMethod]
+        [Fact]
         public void Hierarquia_RotacionarOssoPaiMoveAPontaDoFilho()
         {
             // Rig: pai na origem, filho a 40 de distância. Girar o pai 90° move a ponta do filho.
@@ -64,14 +62,14 @@ namespace DreamBit.Engine.Tests
 
             var tipDepois = childBone.WorldTip;
 
-            Assert.AreEqual(80f, tipAntes.X, 0.01f);
-            Assert.AreEqual(0f, tipAntes.Y, 0.01f);
+            Assert.Equal(80f, tipAntes.X, 0.01f);
+            Assert.Equal(0f, tipAntes.Y, 0.01f);
             // Após girar 90°, a ponta que estava em +X vai para +Y.
-            Assert.AreEqual(0f, tipDepois.X, 0.01f);
-            Assert.AreEqual(80f, tipDepois.Y, 0.01f);
+            Assert.Equal(0f, tipDepois.X, 0.01f);
+            Assert.Equal(80f, tipDepois.Y, 0.01f);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaOssoEPose()
         {
             var scene = new Scene();
@@ -85,9 +83,9 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
 
             var restored = loaded.Objects.First().Components.OfType<Bone>().Single();
-            Assert.AreEqual(55f, restored.Length, 0.001f);
-            Assert.IsTrue(restored.HasRestPose);
-            Assert.AreEqual(new Vector2(7, 3), restored.RestPosition);
+            Assert.Equal(55f, restored.Length, 0.001f);
+            Assert.True(restored.HasRestPose);
+            Assert.Equal(new Vector2(7, 3), restored.RestPosition);
         }
     }
 }

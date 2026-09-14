@@ -5,18 +5,17 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class UiControlsTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void Slider_ArrastarDefineValorELigaAoBus()
         {
             AudioMixer.Reset();
@@ -34,12 +33,12 @@ namespace DreamBit.Engine.Tests
             GameInput.SetPointer(new Vector2(350, 300), true); scene.Update(Frame); // arrasta p/ 0.25
             GameInput.SetPointer(new Vector2(350, 300), false); scene.Update(Frame);
 
-            Assert.AreEqual(0.25f, slider.Value, 0.02f);
-            Assert.AreEqual(0.25f, AudioMixer.GetVolume(AudioMixer.Music), 0.02f, "liga direto ao bus");
+            Assert.Equal(0.25f, slider.Value, 0.02f);
+            Assert.Equal(0.25f, AudioMixer.GetVolume(AudioMixer.Music), 0.02f);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Toggle_CliqueAlternaEDispara()
         {
             Screen.Set(800, 600);
@@ -54,15 +53,15 @@ namespace DreamBit.Engine.Tests
             scene.MessageSent += m => { if (m.Name == "mudou") mudou++; };
             scene.StartPlay();
 
-            Assert.IsFalse(toggle.IsOn);
+            Assert.False(toggle.IsOn);
             GameInput.SetPointer(new Vector2(100, 100), true); scene.Update(Frame);
             GameInput.SetPointer(new Vector2(100, 100), false); scene.Update(Frame);
-            Assert.IsTrue(toggle.IsOn, "liga ao clicar");
-            Assert.AreEqual(1, mudou);
+            Assert.True(toggle.IsOn, "liga ao clicar");
+            Assert.Equal(1, mudou);
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void ProgressBar_FillProporcionalAoValor()
         {
             var obj = new GameObject("Vida") { ScreenSpace = true };
@@ -70,12 +69,12 @@ namespace DreamBit.Engine.Tests
             obj.AddComponent(new UiProgressBar { Width = 100, Height = 10, Value = 0.5f });
             var bar = obj.Components.OfType<UiProgressBar>().Single();
 
-            Assert.AreEqual(50, bar.FillRect().Width);
+            Assert.Equal(50, bar.FillRect().Width);
             bar.Value = 0.25f;
-            Assert.AreEqual(25, bar.FillRect().Width);
+            Assert.Equal(25, bar.FillRect().Width);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -89,11 +88,11 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var s = loaded.Objects.First(o => o.Name == "UI").Components.OfType<UiSlider>().Single();
-            Assert.AreEqual(0.3f, s.Value, 0.001f);
-            Assert.AreEqual("SFX", s.BusTarget);
+            Assert.Equal(0.3f, s.Value, 0.001f);
+            Assert.Equal("SFX", s.BusTarget);
             var o2 = loaded.Objects.First(o => o.Name == "UI2");
-            Assert.IsTrue(o2.Components.OfType<UiToggle>().Single().IsOn);
-            Assert.AreEqual(0.6f, o2.Components.OfType<UiProgressBar>().Single().Value, 0.001f);
+            Assert.True(o2.Components.OfType<UiToggle>().Single().IsOn);
+            Assert.Equal(0.6f, o2.Components.OfType<UiProgressBar>().Single().Value, 0.001f);
         }
     }
 }

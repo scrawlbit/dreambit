@@ -5,7 +5,7 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
 using DreamBit.Engine.Tests.Demo;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
@@ -14,7 +14,6 @@ namespace DreamBit.Engine.Tests
     /// Testa o rig de bones (cutout) do inimigo Fuse: hierarquia de ossos com partes, e os clipes
     /// de pose idle/walk/attack/jump animando de fato. Grava fuse-enemy.dbscene ao final.
     /// </summary>
-    [TestClass]
     public class FuseRigSmokeTests
     {
         private static GameTime Frame(double s = 0.033) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(s));
@@ -22,11 +21,11 @@ namespace DreamBit.Engine.Tests
         private static bool AssetsPresent()
             => File.Exists(Path.Combine(ForestDemo.AssetsDir, "fuse-parts.json"));
 
-        [TestMethod]
+        [Fact]
         public void RigFuse_Clipes_AnimamEExercitamTudo()
         {
             if (!AssetsPresent())
-                Assert.Inconclusive("DemoAssets/fuse-parts.json ausente.");
+                return; // asset de terceiros ausente (gitignored): pula o smoke test
 
             var scene = new Scene();
             var fuse = FuseRig.Build(scene, new Vector2(0, 0));
@@ -34,7 +33,7 @@ namespace DreamBit.Engine.Tests
 
             // Estrutura do rig.
             var bones = anim.RigBones();
-            Assert.AreEqual(11, bones.Count, "11 ossos no rig");
+            Assert.Equal(11, bones.Count);
             CollectionAssert.Contains(anim.ClipNames.ToList(), "walk");
             CollectionAssert.Contains(anim.ClipNames.ToList(), "attack");
 
@@ -46,25 +45,25 @@ namespace DreamBit.Engine.Tests
             float legAt0 = bones["legFront"].Transform.Rotation;
             for (int i = 0; i < 6; i++) scene.Update(Frame());
             float legLater = bones["legFront"].Transform.Rotation;
-            Assert.AreNotEqual(legAt0, legLater, 0.001f, "a perna anima no clipe walk");
+            Assert.NotEqual(legAt0, legLater);
 
             // attack: sem loop, dispara o evento "hit" no impacto e termina.
             string? msg = null; scene.MessageSent += m => { if (m.Name == "hit") msg = m.Name; };
             anim.Play("attack");
             for (int i = 0; i < 20; i++) scene.Update(Frame()); // 0.66s > 0.5s
-            Assert.AreEqual("hit", msg, "clipe de ataque dispara o evento de golpe no frame");
+            Assert.Equal("hit", msg);
 
             // idle: sela num clipe que repete.
             anim.Play("idle");
             for (int i = 0; i < 10; i++) scene.Update(Frame());
-            Assert.AreEqual("idle", anim.CurrentClipName);
+            Assert.Equal("idle", anim.CurrentClipName);
 
             // Serialização round-trip preserva ossos e clipes.
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var lroot = loaded.Objects.First();
             var lanim = FindSkeleton(lroot);
-            Assert.IsNotNull(lanim);
-            Assert.AreEqual(11, lanim!.RigBones().Count);
+            Assert.NotNull(lanim);
+            Assert.Equal(11, lanim!.RigBones().Count);
             CollectionAssert.Contains(lanim.ClipNames.ToList(), "attack");
 
             // Grava a cena jogável tocando "walk".

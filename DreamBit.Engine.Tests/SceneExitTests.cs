@@ -3,17 +3,16 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SceneExitTests
     {
         private static GameTime Frame => new(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void Player_NaSaida_SolicitaProximaFase()
         {
             var scene = new Scene();
@@ -30,14 +29,14 @@ namespace DreamBit.Engine.Tests
 
             scene.StartPlay();
             scene.Update(Frame);
-            Assert.IsNull(scene.PendingSceneLoad, "longe: nada");
+            Assert.Null(scene.PendingSceneLoad);
 
             player.Transform.Position = new Vector2(0, 0); // entra na saída
             scene.Update(Frame);
-            Assert.AreEqual("level2.dbscene", scene.PendingSceneLoad, "na saída: pede a próxima fase");
+            Assert.Equal("level2.dbscene", scene.PendingSceneLoad);
         }
 
-        [TestMethod]
+        [Fact]
         public void SceneExit_RoundTrip()
         {
             var scene = new Scene();
@@ -47,8 +46,8 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var exit = loaded.Objects.First().Components.OfType<SceneExit>().Single();
-            Assert.AreEqual("game.dbscene", exit.TargetScene);
-            Assert.AreEqual(new Vector2(70, 220), exit.Size);
+            Assert.Equal("game.dbscene", exit.TargetScene);
+            Assert.Equal(new Vector2(70, 220), exit.Size);
         }
     }
 }

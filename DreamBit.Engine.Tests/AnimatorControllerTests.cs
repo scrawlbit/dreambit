@@ -3,15 +3,14 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class AnimatorControllerTests
     {
-        [TestMethod]
+        [Fact]
         public void EscolheOClipePeloEstado()
         {
             var scene = new Scene();
@@ -41,15 +40,15 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             for (int i = 0; i < 30; i++) // deixa pousar
                 scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016)));
-            Assert.AreEqual("idle", skel.CurrentClipName, "parado no chão => idle");
+            Assert.Equal("idle", skel.CurrentClipName);
 
             // Passa a se mover: HorizontalSpeed != 0
             hero.Components.OfType<PlatformerController>().First().HorizontalSpeed = 100f;
             scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016)));
-            Assert.AreEqual("walk", skel.CurrentClipName, "andando => walk");
+            Assert.Equal("walk", skel.CurrentClipName);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -59,9 +58,9 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var c = loaded.Objects.First().Components.OfType<AnimatorController>().Single();
-            Assert.AreEqual("parado", c.IdleClip);
-            Assert.AreEqual("correr", c.WalkClip);
-            Assert.AreEqual("pulo", c.JumpClip);
+            Assert.Equal("parado", c.IdleClip);
+            Assert.Equal("correr", c.WalkClip);
+            Assert.Equal("pulo", c.JumpClip);
         }
     }
 }

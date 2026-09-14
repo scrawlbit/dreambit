@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using DreamBit.Engine.Messaging;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SkeletonEasingEventsTests
     {
         private static (GameObject root, GameObject bone, SkeletonAnimator anim) MakeRig()
@@ -24,7 +22,7 @@ namespace DreamBit.Engine.Tests
             return (root, bone, anim);
         }
 
-        [TestMethod]
+        [Fact]
         public void Easing_InOut_NaoEhLinearNoMeio()
         {
             // Usa posição (interpola sem wrap de ângulo) para comparar as curvas.
@@ -40,11 +38,11 @@ namespace DreamBit.Engine.Tests
             anim.Sample(0.25f);
             float eased = bone.Transform.Position.X;
 
-            Assert.AreEqual(25f, linear, 0.01f);           // 0.25 * 100
-            Assert.AreEqual(15.625f, eased, 0.01f);        // smoothstep(0.25) * 100
+            Assert.Equal(25f, linear, 0.01f);           // 0.25 * 100
+            Assert.Equal(15.625f, eased, 0.01f);        // smoothstep(0.25) * 100
         }
 
-        [TestMethod]
+        [Fact]
         public void Eventos_DisparamNoTempoEForwardamAoBarramento()
         {
             var scene = new Scene();
@@ -67,11 +65,11 @@ namespace DreamBit.Engine.Tests
             for (int i = 0; i < 40; i++) // ~0.64s, cruza 0.5
                 scene.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016)));
 
-            Assert.AreEqual(1, recebidas.Count(x => x == "passo"), "evento dispara uma vez ao cruzar 0.5");
-            Assert.IsFalse(flag.IsVisible, "o evento chegou ao barramento e o listener reagiu");
+            Assert.Equal(1, recebidas.Count(x => x == "passo"));
+            Assert.False(flag.IsVisible, "o evento chegou ao barramento e o listener reagiu");
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaEasingEEventos()
         {
             var scene = new Scene();
@@ -84,9 +82,9 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var a = loaded.Objects.First().Components.OfType<SkeletonAnimator>().Single();
-            Assert.AreEqual(Scrawlbit.EasingMode.Out, a.Easing);
-            Assert.AreEqual(2, a.Events.Count());
-            Assert.AreEqual("a", a.Events.OrderBy(e => e.Time).First().Name);
+            Assert.Equal(Scrawlbit.EasingMode.Out, a.Easing);
+            Assert.Equal(2, a.Events.Count());
+            Assert.Equal("a", a.Events.OrderBy(e => e.Time).First().Name);
         }
     }
 }

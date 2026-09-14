@@ -3,14 +3,13 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SpriteTextureTests
     {
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaOCaminhoDaTextura()
         {
             var scene = new Scene();
@@ -25,7 +24,7 @@ namespace DreamBit.Engine.Tests
                 var loaded = SceneSerializer.Load(path);
 
                 var sprite = loaded.Objects[0].Components.OfType<SpriteRenderer>().Single();
-                Assert.AreEqual(@"C:\assets\hero.png", sprite.TexturePath);
+                Assert.Equal(@"C:\assets\hero.png", sprite.TexturePath);
             }
             finally
             {

@@ -2,19 +2,17 @@ using System;
 using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
-using DreamBit.Engine.Messaging;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class MessagingTests
     {
         private static GameTime Frame => new(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
 
-        [TestMethod]
+        [Fact]
         public void Send_EntregaAosListenersNoUpdate()
         {
             var scene = new Scene();
@@ -24,13 +22,13 @@ namespace DreamBit.Engine.Tests
             scene.Add(porta);
 
             scene.Send("abrir");
-            Assert.IsTrue(porta.IsVisible, "ainda não despachou");
+            Assert.True(porta.IsVisible, "ainda não despachou");
 
             scene.Update(Frame);
-            Assert.IsFalse(porta.IsVisible, "listener reagiu escondendo o dono");
+            Assert.False(porta.IsVisible, "listener reagiu escondendo o dono");
         }
 
-        [TestMethod]
+        [Fact]
         public void Listener_IgnoraMensagemDiferente()
         {
             var scene = new Scene();
@@ -42,10 +40,10 @@ namespace DreamBit.Engine.Tests
             scene.Send("outra");
             scene.Update(Frame);
 
-            Assert.AreEqual(1, scene.Objects.Count, "mensagem diferente não deve reagir");
+            Assert.Single(scene.Objects);
         }
 
-        [TestMethod]
+        [Fact]
         public void TriggerZone_EnviaMensagemAoTocar()
         {
             var scene = new Scene();
@@ -65,10 +63,10 @@ namespace DreamBit.Engine.Tests
             scene.StartPlay();
             scene.Update(Frame); // trigger detecta e envia; despacha no mesmo Update
 
-            Assert.IsFalse(porta.IsVisible, "tocar o botão abriu a porta pela mensagem");
+            Assert.False(porta.IsVisible, "tocar o botão abriu a porta pela mensagem");
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaListenerETriggerSend()
         {
             var scene = new Scene();
@@ -80,9 +78,9 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var lo = loaded.Objects.First();
             var listener = lo.Components.OfType<MessageListener>().Single();
-            Assert.AreEqual("ping", listener.Message);
-            Assert.AreEqual(MessageReaction.ToggleVisible, listener.Reaction);
-            Assert.AreEqual("ping", lo.Components.OfType<TriggerZone>().Single().SendOnEnter);
+            Assert.Equal("ping", listener.Message);
+            Assert.Equal(MessageReaction.ToggleVisible, listener.Reaction);
+            Assert.Equal("ping", lo.Components.OfType<TriggerZone>().Single().SendOnEnter);
         }
     }
 }

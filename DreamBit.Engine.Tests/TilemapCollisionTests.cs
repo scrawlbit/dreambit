@@ -3,12 +3,11 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class TilemapCollisionTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
@@ -25,7 +24,7 @@ namespace DreamBit.Engine.Tests
             return obj;
         }
 
-        [TestMethod]
+        [Fact]
         public void SolidBoxes_UmaCaixaPorCelula()
         {
             var ground = SolidGround();
@@ -33,23 +32,23 @@ namespace DreamBit.Engine.Tests
             var tilemap = ground.Components.OfType<TilemapRenderer>().Single();
 
             var boxes = tilemap.SolidBoxes().ToList();
-            Assert.AreEqual(7, boxes.Count);
+            Assert.Equal(7, boxes.Count);
 
             // célula x=0 => mundo [0,0]..[32,32]
             var cell0 = boxes.First(b => Math.Abs(b.Min.X) < 0.01f);
-            Assert.AreEqual(new Vector2(0, 0), cell0.Min);
-            Assert.AreEqual(new Vector2(32, 32), cell0.Max);
+            Assert.Equal(new Vector2(0, 0), cell0.Min);
+            Assert.Equal(new Vector2(32, 32), cell0.Max);
         }
 
-        [TestMethod]
+        [Fact]
         public void SolidFalse_SemCaixas()
         {
             var ground = SolidGround();
             ground.Components.OfType<TilemapRenderer>().Single().Solid = false;
-            Assert.AreEqual(0, ground.Components.OfType<TilemapRenderer>().Single().SolidBoxes().Count());
+            Assert.Empty(ground.Components.OfType<TilemapRenderer>().Single().SolidBoxes());
         }
 
-        [TestMethod]
+        [Fact]
         public void Platformer_PousaSobreOsTiles()
         {
             var scene = new Scene();
@@ -67,10 +66,10 @@ namespace DreamBit.Engine.Tests
                 scene.Update(Frame);
 
             // pés (y + HalfHeight) devem parar na superfície (topo do tile em y=0).
-            Assert.AreEqual(-10f, hero.Transform.Position.Y, 1.5f, "personagem pousa sobre os tiles sólidos");
+            Assert.Equal(-10f, hero.Transform.Position.Y, 1.5f);
         }
 
-        [TestMethod]
+        [Fact]
         public void CamadaSolidaRestringe()
         {
             var obj = new GameObject("Mapa");
@@ -84,11 +83,11 @@ namespace DreamBit.Engine.Tests
             obj.AddComponent(new TilemapRenderer { Map = map, Solid = true, SolidLayer = "Colisao" });
 
             var boxes = obj.Components.OfType<TilemapRenderer>().Single().SolidBoxes().ToList();
-            Assert.AreEqual(1, boxes.Count, "só a camada Colisao conta");
-            Assert.AreEqual(new Vector2(80, 80), boxes[0].Min);
+            Assert.Single(boxes);
+            Assert.Equal(new Vector2(80, 80), boxes[0].Min);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -100,8 +99,8 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var t = loaded.Objects.First().Components.OfType<TilemapRenderer>().Single();
-            Assert.IsTrue(t.Solid);
-            Assert.AreEqual("Pintura", t.SolidLayer);
+            Assert.True(t.Solid);
+            Assert.Equal("Pintura", t.SolidLayer);
         }
     }
 }

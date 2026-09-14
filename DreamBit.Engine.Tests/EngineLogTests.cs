@@ -3,18 +3,16 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Diagnostics;
 using DreamBit.Engine.Elements;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class EngineLogTests
     {
-        [TestInitialize]
-        public void Setup() => EngineLog.Clear();
+        public EngineLogTests() => EngineLog.Clear();
 
-        [TestMethod]
+        [Fact]
         public void Write_RegistraEntradaComNivel_EDisparaEvento()
         {
             var recebidas = new List<LogEntry>();
@@ -28,19 +26,19 @@ namespace DreamBit.Engine.Tests
             }
             finally { EngineLog.Logged -= Handler; }
 
-            Assert.AreEqual(3, recebidas.Count);
-            Assert.AreEqual(LogLevel.Info, recebidas[0].Level);
-            Assert.AreEqual(LogLevel.Warning, recebidas[1].Level);
-            Assert.AreEqual(LogLevel.Error, recebidas[2].Level);
-            Assert.AreEqual("falhou", recebidas[2].Message);
+            Assert.Equal(3, recebidas.Count);
+            Assert.Equal(LogLevel.Info, recebidas[0].Level);
+            Assert.Equal(LogLevel.Warning, recebidas[1].Level);
+            Assert.Equal(LogLevel.Error, recebidas[2].Level);
+            Assert.Equal("falhou", recebidas[2].Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Clear_EsvaziaBuffer_EDisparaCleared()
         {
             EngineLog.Info("a");
             EngineLog.Info("b");
-            Assert.AreEqual(2, EngineLog.Entries.Count);
+            Assert.Equal(2, EngineLog.Entries.Count);
 
             bool cleared = false;
             void Handler() => cleared = true;
@@ -48,22 +46,22 @@ namespace DreamBit.Engine.Tests
             try { EngineLog.Clear(); }
             finally { EngineLog.Cleared -= Handler; }
 
-            Assert.AreEqual(0, EngineLog.Entries.Count);
-            Assert.IsTrue(cleared);
+            Assert.Empty(EngineLog.Entries);
+            Assert.True(cleared);
         }
 
-        [TestMethod]
+        [Fact]
         public void Buffer_LimitaEmQuinhentasEntradas()
         {
             for (int i = 0; i < 600; i++)
                 EngineLog.Info($"m{i}");
 
-            Assert.AreEqual(500, EngineLog.Entries.Count);
+            Assert.Equal(500, EngineLog.Entries.Count);
             // As mais antigas saem; a última permanece.
-            Assert.AreEqual("m599", EngineLog.Entries.Last().Message);
+            Assert.Equal("m599", EngineLog.Entries.Last().Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void ScriptComponent_ErroDeCompilacao_VaiParaOConsole()
         {
             var obj = new GameObject("Herói");
@@ -72,11 +70,10 @@ namespace DreamBit.Engine.Tests
 
             script.Compile();
 
-            Assert.IsTrue(EngineLog.Entries.Any(e => e.Level == LogLevel.Error && e.Message.Contains("Herói")),
-                "erro de compilação do script deveria ter sido logado com o nome do objeto");
+            Assert.True(EngineLog.Entries.Any(e => e.Level == LogLevel.Error && e.Message.Contains("Herói")), "erro de compilação do script deveria ter sido logado com o nome do objeto");
         }
 
-        [TestMethod]
+        [Fact]
         public void ScriptComponent_ExcecaoEmRuntime_LogaUmaVez()
         {
             var scene = new Scene();
@@ -99,7 +96,7 @@ namespace DreamBit.Engine.Tests
                 scene.Update(gt);
 
             int erros = EngineLog.Entries.Count(e => e.Level == LogLevel.Error && e.Message.Contains("boom"));
-            Assert.AreEqual(1, erros);
+            Assert.Equal(1, erros);
         }
     }
 }

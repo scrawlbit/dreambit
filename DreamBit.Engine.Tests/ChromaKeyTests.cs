@@ -3,12 +3,11 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class ChromaKeyTests
     {
         // Imagem 4x4: borda magenta, miolo azul.
@@ -23,35 +22,35 @@ namespace DreamBit.Engine.Tests
             return px;
         }
 
-        [TestMethod]
+        [Fact]
         public void DetectaCorDeFundoNaBorda()
         {
             var bg = ChromaKey.DetectBackground(Sample(), 4, 4);
-            Assert.AreEqual(new Color(255, 0, 255), bg, "a borda é magenta");
+            Assert.Equal(new Color(255, 0, 255), bg);
         }
 
-        [TestMethod]
+        [Fact]
         public void ApplyTornaTransparenteACorChave()
         {
             var px = Sample();
             int removed = ChromaKey.Apply(px, new Color(255, 0, 255), 0);
 
-            Assert.AreEqual(12, removed, "12 pixels de borda");
-            Assert.AreEqual(0, px[0].A, "canto vira transparente");
-            Assert.AreEqual(255, px[5].A, "miolo azul intacto");
+            Assert.Equal(12, removed);
+            Assert.Equal(0, px[0].A);
+            Assert.Equal(255, px[5].A);
         }
 
-        [TestMethod]
+        [Fact]
         public void ToleranciaPegaTonsProximos()
         {
             var px = new[] { new Color(250, 5, 250), new Color(0, 0, 255) };
             int removed = ChromaKey.Apply(px, new Color(255, 0, 255), 20); // dif = 5+5+5 = 15 <= 20
-            Assert.AreEqual(1, removed);
-            Assert.AreEqual(0, px[0].A);
-            Assert.AreEqual(255, px[1].A);
+            Assert.Equal(1, removed);
+            Assert.Equal(0, px[0].A);
+            Assert.Equal(255, px[1].A);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sprite_Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -66,13 +65,13 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var s = loaded.Objects.First().Components.OfType<SpriteRenderer>().Single();
-            Assert.IsTrue(s.ChromaKeyEnabled);
-            Assert.IsFalse(s.ChromaAuto);
-            Assert.AreEqual(new Color(10, 200, 30), s.ChromaColor);
-            Assert.AreEqual(45, s.ChromaTolerance);
+            Assert.True(s.ChromaKeyEnabled);
+            Assert.False(s.ChromaAuto);
+            Assert.Equal(new Color(10, 200, 30), s.ChromaColor);
+            Assert.Equal(45, s.ChromaTolerance);
         }
 
-        [TestMethod]
+        [Fact]
         public void Animator_Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -82,9 +81,9 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var a = loaded.Objects.First().Components.OfType<SpriteAnimator>().Single();
-            Assert.IsTrue(a.ChromaKeyEnabled);
-            Assert.IsTrue(a.ChromaAuto);
-            Assert.AreEqual(12, a.ChromaTolerance);
+            Assert.True(a.ChromaKeyEnabled);
+            Assert.True(a.ChromaAuto);
+            Assert.Equal(12, a.ChromaTolerance);
         }
     }
 }

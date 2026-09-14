@@ -2,25 +2,24 @@ using System.Linq;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class SpriteSourceRectTests
     {
-        [TestMethod]
+        [Fact]
         public void SourceRect_LarguraOuAlturaZero_ViraNull()
         {
             var sprite = new SpriteRenderer { SourceRect = new Rectangle(0, 0, 0, 10) };
-            Assert.IsNull(sprite.SourceRect, "recorte sem área deve ser tratado como null");
+            Assert.Null(sprite.SourceRect);
 
             sprite.SourceRect = new Rectangle(4, 8, 16, 24);
-            Assert.AreEqual(new Rectangle(4, 8, 16, 24), sprite.SourceRect);
+            Assert.Equal(new Rectangle(4, 8, 16, 24), sprite.SourceRect);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_PreservaSourceRect()
         {
             var scene = new Scene();
@@ -36,10 +35,10 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
 
             var sprite = loaded.Objects.First().Components.OfType<SpriteRenderer>().Single();
-            Assert.AreEqual(new Rectangle(100, 40, 64, 48), sprite.SourceRect);
+            Assert.Equal(new Rectangle(100, 40, 64, 48), sprite.SourceRect);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_SemRecorte_ContinuaNull()
         {
             var scene = new Scene();
@@ -50,7 +49,7 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
 
             var sprite = loaded.Objects.First().Components.OfType<SpriteRenderer>().Single();
-            Assert.IsNull(sprite.SourceRect);
+            Assert.Null(sprite.SourceRect);
         }
     }
 }

@@ -5,27 +5,23 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
+using Xunit;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
-    public class SceneAssetResolverTests
+    public class SceneAssetResolverTests : IDisposable
     {
         private string _root = "";
 
-        [TestInitialize]
-        public void Setup()
+        public SceneAssetResolverTests()
         {
             _root = Path.Combine(Path.GetTempPath(), "dbscene_" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(Path.Combine(_root, "art"));
         }
 
-        [TestCleanup]
-        public void Cleanup() { try { Directory.Delete(_root, true); } catch { } }
+        public void Dispose() { try { Directory.Delete(_root, true); } catch { } }
 
-        [TestMethod]
+        [Fact]
         public void CenaResolveAssetMovido_PeloGuid()
         {
             var asset = Path.Combine(_root, "art", "hero.png");
@@ -52,10 +48,10 @@ namespace DreamBit.Engine.Tests
             // Ao carregar, o caminho quebrado é reescrito para a nova localização.
             var loaded = SceneSerializer.LoadWithAssets(scenePath, db, _root);
             var sprite = loaded.Objects.First().Components.OfType<SpriteRenderer>().Single();
-            Assert.AreEqual("sprites/personagem.png", sprite.TexturePath);
+            Assert.Equal("sprites/personagem.png", sprite.TexturePath);
         }
 
-        [TestMethod]
+        [Fact]
         public void CaminhoValido_NaoEAlterado()
         {
             var asset = Path.Combine(_root, "art", "ok.png");
@@ -69,7 +65,7 @@ namespace DreamBit.Engine.Tests
             var scenePath = Path.Combine(_root, "f.dbscene");
             SceneSerializer.SaveWithAssets(scene, scenePath, db, _root);
             var loaded = SceneSerializer.LoadWithAssets(scenePath, db, _root);
-            Assert.AreEqual("art/ok.png", loaded.Objects.First().Components.OfType<SpriteRenderer>().Single().TexturePath);
+            Assert.Equal("art/ok.png", loaded.Objects.First().Components.OfType<SpriteRenderer>().Single().TexturePath);
         }
     }
 }

@@ -4,13 +4,12 @@ using DreamBit.Engine.Audio;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class DemoSystemsTests
     {
         private static GameTime Frame(double s) => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(s));
@@ -23,7 +22,7 @@ namespace DreamBit.Engine.Tests
             return p;
         }
 
-        [TestMethod]
+        [Fact]
         public void NavChaser_SemTilemap_PersegueEmLinhaReta()
         {
             var scene = new Scene();
@@ -37,12 +36,11 @@ namespace DreamBit.Engine.Tests
             GameInput.SetPointer(new Vector2(-1, -1), false);
             for (int i = 0; i < 60; i++) scene.Update(Frame(0.05));
 
-            Assert.IsTrue(enemy.Transform.Position.X > 350f,
-                $"o inimigo se aproximou do alvo (x={enemy.Transform.Position.X})");
+            Assert.True(enemy.Transform.Position.X > 350f, $"o inimigo se aproximou do alvo (x={enemy.Transform.Position.X})");
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void NavChaser_ComParede_DesviaPeloVaoUsandoAStar()
         {
             var scene = new Scene();
@@ -71,31 +69,30 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame(0.05)); // primeiro repath
 
             var chaser = enemy.Components.OfType<NavChaser>().Single();
-            Assert.IsTrue(chaser.CurrentPath.Count > 1, "achou um caminho com desvio (A*)");
+            Assert.True(chaser.CurrentPath.Count > 1, "achou um caminho com desvio (A*)");
 
             for (int i = 0; i < 200; i++) scene.Update(Frame(0.05));
-            Assert.IsTrue(enemy.Transform.Position.X > 6 * 32,
-                $"cruzou a parede interna pelo vão (x={enemy.Transform.Position.X})");
+            Assert.True(enemy.Transform.Position.X > 6 * 32, $"cruzou a parede interna pelo vão (x={enemy.Transform.Position.X})");
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void AudioEspacial_AtenuaEPanoramica()
         {
             var listener = new Vector2(100, 100);
             var (atNear, panNear) = AudioSpatial.Compute(listener, listener, 500f);
-            Assert.AreEqual(1f, atNear, 0.001f, "no ouvinte: volume cheio");
-            Assert.AreEqual(0f, panNear, 0.001f, "no ouvinte: centralizado");
+            Assert.Equal(1f, atNear, 0.001f);
+            Assert.Equal(0f, panNear, 0.001f);
 
             var (atRight, panRight) = AudioSpatial.Compute(new Vector2(350, 100), listener, 500f);
-            Assert.IsTrue(panRight > 0f, "fonte à direita: pan positivo");
-            Assert.IsTrue(atRight > 0f && atRight < 1f, "atenua com a distância");
+            Assert.True(panRight > 0f, "fonte à direita: pan positivo");
+            Assert.True(atRight > 0f && atRight < 1f, "atenua com a distância");
 
             var (atFar, _) = AudioSpatial.Compute(new Vector2(1000, 100), listener, 500f);
-            Assert.AreEqual(0f, atFar, 0.001f, "além do alcance: silêncio");
+            Assert.Equal(0f, atFar, 0.001f);
         }
 
-        [TestMethod]
+        [Fact]
         public void AudioListener_DefineposicaoNoPlay()
         {
             AudioListener.Clear();
@@ -105,10 +102,10 @@ namespace DreamBit.Engine.Tests
             o.AddComponent(new AudioListener());
             scene.Add(o);
             scene.StartPlay();
-            Assert.AreEqual(new Vector2(42, 24), AudioListener.Position);
+            Assert.Equal(new Vector2(42, 24), AudioListener.Position);
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip_NavChaser_Listener_AudioEspacial()
         {
             var scene = new Scene();
@@ -121,13 +118,13 @@ namespace DreamBit.Engine.Tests
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var e = loaded.Objects.First();
             var chaser = e.Components.OfType<NavChaser>().Single();
-            Assert.AreEqual("hero", chaser.TargetTag);
-            Assert.AreEqual(175f, chaser.Speed);
-            Assert.IsFalse(chaser.AllowDiagonal);
-            Assert.AreEqual(1, e.Components.OfType<AudioListener>().Count());
+            Assert.Equal("hero", chaser.TargetTag);
+            Assert.Equal(175f, chaser.Speed);
+            Assert.False(chaser.AllowDiagonal);
+            Assert.Single(e.Components.OfType<AudioListener>());
             var audio = e.Components.OfType<AudioSource>().Single();
-            Assert.IsTrue(audio.Spatial);
-            Assert.AreEqual(320f, audio.MaxDistance);
+            Assert.True(audio.Spatial);
+            Assert.Equal(320f, audio.MaxDistance);
         }
     }
 }

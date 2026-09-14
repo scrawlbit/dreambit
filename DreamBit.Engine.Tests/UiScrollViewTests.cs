@@ -4,13 +4,12 @@ using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
 using DreamBit.Engine.Rendering;
 using DreamBit.Engine.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Xna.Framework;
 using GameInput = DreamBit.Engine.Input.Input;
 
 namespace DreamBit.Engine.Tests
 {
-    [TestClass]
     public class UiScrollViewTests
     {
         private static GameTime Frame => new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.016));
@@ -33,7 +32,7 @@ namespace DreamBit.Engine.Tests
             return (scene, panel.Components.OfType<UiScrollView>().Single());
         }
 
-        [TestMethod]
+        [Fact]
         public void CullaItensForaDaViewport()
         {
             var (scene, _) = BuildList(6);
@@ -43,10 +42,10 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
 
             int visiveis = panel.Children.Count(c => c.IsVisible);
-            Assert.IsTrue(visiveis >= 1 && visiveis < 6, $"só parte da lista visível (visíveis={visiveis})");
+            Assert.True(visiveis >= 1 && visiveis < 6, $"só parte da lista visível (visíveis={visiveis})");
         }
 
-        [TestMethod]
+        [Fact]
         public void RolarMostraItensDeBaixo()
         {
             var (scene, scroll) = BuildList(6);
@@ -61,12 +60,12 @@ namespace DreamBit.Engine.Tests
             scene.Update(Frame);
 
             bool ultimoDepois = panel.Children.Last().IsVisible;
-            Assert.IsFalse(ultimoAntes, "último não aparece no topo");
-            Assert.IsTrue(ultimoDepois, "aparece após rolar até o fim");
+            Assert.False(ultimoAntes, "último não aparece no topo");
+            Assert.True(ultimoDepois, "aparece após rolar até o fim");
             GameInput.ClearPointerOverride();
         }
 
-        [TestMethod]
+        [Fact]
         public void Serializacao_RoundTrip()
         {
             var scene = new Scene();
@@ -76,10 +75,10 @@ namespace DreamBit.Engine.Tests
 
             var loaded = SceneSerializer.LoadFromString(SceneSerializer.SaveToString(scene));
             var s = loaded.Objects.First().Components.OfType<UiScrollView>().Single();
-            Assert.AreEqual(300f, s.Width);
-            Assert.AreEqual(200f, s.Height);
-            Assert.AreEqual(12f, s.Spacing);
-            Assert.AreEqual(30f, s.ScrollSpeed);
+            Assert.Equal(300f, s.Width);
+            Assert.Equal(200f, s.Height);
+            Assert.Equal(12f, s.Spacing);
+            Assert.Equal(30f, s.ScrollSpeed);
         }
     }
 }
