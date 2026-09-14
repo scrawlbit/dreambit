@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "89a28a43-43bb-4329-9e73-048c27d46338",
+      "Id": "73a5486e-151b-4db6-af15-18ff9abe44c9",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1234,9 +1234,10 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": [
         {
-          "Id": "91395e66-b038-4d56-ab79-cea966eefd60",
+          "Id": "19dbfd9c-bf1c-47a4-b3f7-be6d73b647d5",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1302,9 +1303,10 @@
           "SpriteFlashes": [],
           "Joints": [],
           "ShadowCasters": [],
+          "YSorts": [],
           "Children": [
             {
-              "Id": "1c65c583-3dd1-4452-ba86-cddf889e1976",
+              "Id": "02e28885-5eee-44d7-9b60-9e3fee541a78",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1370,9 +1372,10 @@
               "SpriteFlashes": [],
               "Joints": [],
               "ShadowCasters": [],
+              "YSorts": [],
               "Children": [
                 {
-                  "Id": "032282ec-73d0-4e93-a38e-b102be54fcb0",
+                  "Id": "576dbece-c81d-4a49-9431-02910565e344",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1438,9 +1441,10 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": [
                     {
-                      "Id": "71c7ad16-9352-42cc-bff9-d3205418c8fe",
+                      "Id": "e93d7069-a872-4fd5-8334-04e5ac350b80",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1516,12 +1520,13 @@
                       "SpriteFlashes": [],
                       "Joints": [],
                       "ShadowCasters": [],
+                      "YSorts": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "e1c16b60-c996-41d5-889c-109f2e44688f",
+                  "Id": "1f2a3caa-b58c-455e-b270-3c770c32c1fd",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1587,9 +1592,10 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": [
                     {
-                      "Id": "c9abcb2e-bc38-414b-a785-be9d8b9d85ed",
+                      "Id": "174073bd-d075-43ed-bae9-6e0436acca13",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1655,9 +1661,10 @@
                       "SpriteFlashes": [],
                       "Joints": [],
                       "ShadowCasters": [],
+                      "YSorts": [],
                       "Children": [
                         {
-                          "Id": "e2ddcaf0-fb57-4aea-abab-c41c808b6027",
+                          "Id": "3c1e6d66-43d4-4bb3-b803-19bbb8fe847d",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1733,12 +1740,13 @@
                           "SpriteFlashes": [],
                           "Joints": [],
                           "ShadowCasters": [],
+                          "YSorts": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "1c83070e-f01c-48d7-969c-71efbbd3f82e",
+                      "Id": "4ae365f1-0239-4f77-a3c1-87d523fe44c4",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1814,12 +1822,13 @@
                       "SpriteFlashes": [],
                       "Joints": [],
                       "ShadowCasters": [],
+                      "YSorts": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "95b0be49-7588-4b21-8362-86dedcb66996",
+                  "Id": "f1e5ccfd-182b-47b7-bbbd-91557ebb044f",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1885,9 +1894,10 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": [
                     {
-                      "Id": "d596831d-14ef-409b-ab95-9c472599ad39",
+                      "Id": "86e0f4f3-203f-4528-956a-b588e84b65aa",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1953,9 +1963,10 @@
                       "SpriteFlashes": [],
                       "Joints": [],
                       "ShadowCasters": [],
+                      "YSorts": [],
                       "Children": [
                         {
-                          "Id": "ac05dbe7-eab3-4388-b60d-4d90e6169204",
+                          "Id": "f246dd87-041a-4ad6-8cab-0faccc361335",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2021,9 +2032,10 @@
                           "SpriteFlashes": [],
                           "Joints": [],
                           "ShadowCasters": [],
+                          "YSorts": [],
                           "Children": [
                             {
-                              "Id": "2cf64761-02ab-4a37-bb8b-1f640cb2ad62",
+                              "Id": "fab642ca-8e6b-4494-b30e-1f5d873a8c38",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2099,12 +2111,13 @@
                               "SpriteFlashes": [],
                               "Joints": [],
                               "ShadowCasters": [],
+                              "YSorts": [],
                               "Children": []
                             }
                           ]
                         },
                         {
-                          "Id": "890d4d31-c7d9-4bce-8e01-c72e453a6d86",
+                          "Id": "fac59347-4782-46c5-9037-7c17fe79396e",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2180,12 +2193,13 @@
                           "SpriteFlashes": [],
                           "Joints": [],
                           "ShadowCasters": [],
+                          "YSorts": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "2bd53cbb-e023-444c-ae90-0693a6b0dcfc",
+                      "Id": "e45e7ef8-a5ab-4bdd-82b3-1af72096306c",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2261,12 +2275,13 @@
                       "SpriteFlashes": [],
                       "Joints": [],
                       "ShadowCasters": [],
+                      "YSorts": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "e6b44971-77af-4665-94c4-f4698fade822",
+                  "Id": "2b9ebd74-c12f-462f-bea7-768a02022265",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2342,12 +2357,13 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "2923e658-8f54-48eb-9b58-fb7058d300a9",
+              "Id": "a45c8a9e-4ae5-4cbb-8c4b-85e96889a6e1",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2413,9 +2429,10 @@
               "SpriteFlashes": [],
               "Joints": [],
               "ShadowCasters": [],
+              "YSorts": [],
               "Children": [
                 {
-                  "Id": "d26a102a-c587-4480-b14b-21f1107a0a86",
+                  "Id": "cdc6ab6c-7b6e-4c77-a1ba-b20588d55770",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2491,12 +2508,13 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "44888c4b-a970-490b-b1eb-995c6d85674a",
+              "Id": "292343a8-bbea-41df-8f0a-657bfaa3085b",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2562,9 +2580,10 @@
               "SpriteFlashes": [],
               "Joints": [],
               "ShadowCasters": [],
+              "YSorts": [],
               "Children": [
                 {
-                  "Id": "96f3e46a-853d-43a0-900f-14ce16b84fd2",
+                  "Id": "fa42d507-c215-4d16-87b7-4933eac19237",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2640,12 +2659,13 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "81c556a3-2bed-402a-9681-8cd9e9fbaa5c",
+              "Id": "cb071015-5feb-4f59-abc9-7dcf0e0eb7b1",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2711,9 +2731,10 @@
               "SpriteFlashes": [],
               "Joints": [],
               "ShadowCasters": [],
+              "YSorts": [],
               "Children": [
                 {
-                  "Id": "ea2caf1b-e4d5-4465-9e5d-5b2aed14fb99",
+                  "Id": "b0607557-0e30-491d-9ffb-540719b43a4a",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2789,6 +2810,7 @@
                   "SpriteFlashes": [],
                   "Joints": [],
                   "ShadowCasters": [],
+                  "YSorts": [],
                   "Children": []
                 }
               ]

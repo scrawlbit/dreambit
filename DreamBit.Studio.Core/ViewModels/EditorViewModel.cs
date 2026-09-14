@@ -1100,6 +1100,8 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveJoint() => RemoveSingle<Joint2D>();
         public void AddShadowCaster() => AddSingle(() => new ShadowCaster(), "Adicionar Shadow Caster");
         public void RemoveShadowCaster() => RemoveSingle<ShadowCaster>();
+        public void AddYSort() => AddSingle(() => new YSort(), "Adicionar Y Sort");
+        public void RemoveYSort() => RemoveSingle<YSort>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1249,7 +1251,7 @@ namespace DreamBit.Studio.ViewModels
                         });
                         break;
                     case TilemapRenderer t:
-                        clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath, Solid = t.Solid, SolidLayer = t.SolidLayer });
+                        clone.AddComponent(new TilemapRenderer { TmxPath = t.TmxPath, Solid = t.Solid, SolidLayer = t.SolidLayer, Orientation = t.Orientation });
                         break;
                     case PlatformerController p:
                         clone.AddComponent(new PlatformerController
@@ -1389,6 +1391,9 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case ShadowCaster shc:
                         clone.AddComponent(new ShadowCaster { Width = shc.Width, Height = shc.Height, Offset = shc.Offset });
+                        break;
+                    case YSort yst:
+                        clone.AddComponent(new YSort { Offset = yst.Offset });
                         break;
                     case NavChaser nc:
                         clone.AddComponent(new NavChaser

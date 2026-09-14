@@ -1188,6 +1188,19 @@ namespace DreamBit.Studio.ViewModels
         public float ShadowOffsetX { get => Shadow?.Offset.X ?? 0f; set { var c = Shadow; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(value, c.Offset.Y); } }
         public float ShadowOffsetY { get => Shadow?.Offset.Y ?? 0f; set { var c = Shadow; if (c != null) c.Offset = new Microsoft.Xna.Framework.Vector2(c.Offset.X, value); } }
 
+        // ---- Y Sort ----
+        private YSort? YSortC => _target?.Components.OfType<YSort>().FirstOrDefault();
+        public bool HasYSort => YSortC != null;
+        public float YSortOffset { get => YSortC?.Offset ?? 0f; set { var c = YSortC; if (c != null) c.Offset = value; } }
+
+        // ---- Tilemap orientação (isométrico) ----
+        public System.Collections.Generic.IReadOnlyList<TileOrientation> TileOrientations { get; } = Scrawlbit.EnumHelper.Values<TileOrientation>();
+        public TileOrientation TilemapOrientation
+        {
+            get => _target?.Components.OfType<TilemapRenderer>().FirstOrDefault()?.Orientation ?? TileOrientation.Orthogonal;
+            set { var c = _target?.Components.OfType<TilemapRenderer>().FirstOrDefault(); if (c != null) c.Orientation = value; }
+        }
+
         private void RaiseAll()
         {
             OnPropertyChanged(nameof(HasTarget));
@@ -1435,6 +1448,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasShadowCaster));
             OnPropertyChanged(nameof(ShadowWidth)); OnPropertyChanged(nameof(ShadowHeight));
             OnPropertyChanged(nameof(ShadowOffsetX)); OnPropertyChanged(nameof(ShadowOffsetY));
+            OnPropertyChanged(nameof(HasYSort)); OnPropertyChanged(nameof(YSortOffset));
+            OnPropertyChanged(nameof(TilemapOrientation));
         }
     }
 }

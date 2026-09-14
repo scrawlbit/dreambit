@@ -139,7 +139,7 @@ namespace DreamBit.Engine.Serialization
 
         private static TilemapData ToData(TilemapRenderer tilemap)
         {
-            var data = new TilemapData { TmxPath = tilemap.TmxPath, Edited = tilemap.Edited, Solid = tilemap.Solid, SolidLayer = tilemap.SolidLayer };
+            var data = new TilemapData { TmxPath = tilemap.TmxPath, Edited = tilemap.Edited, Solid = tilemap.Solid, SolidLayer = tilemap.SolidLayer, Orientation = (int)tilemap.Orientation };
             var map = tilemap.Map;
 
             // Serializa o mapa inline quando pintado (ou quando não veio de .tmx).
@@ -186,7 +186,7 @@ namespace DreamBit.Engine.Serialization
 
         private static TilemapRenderer FromData(TilemapData data)
         {
-            var tilemap = new TilemapRenderer { TmxPath = data.TmxPath, Edited = data.Edited, Solid = data.Solid, SolidLayer = data.SolidLayer };
+            var tilemap = new TilemapRenderer { TmxPath = data.TmxPath, Edited = data.Edited, Solid = data.Solid, SolidLayer = data.SolidLayer, Orientation = (TileOrientation)data.Orientation };
 
             if (data.Tilesets.Count > 0 || data.Layers.Count > 0)
             {
@@ -456,6 +456,8 @@ namespace DreamBit.Engine.Serialization
                     {
                         Width = shadow.Width, Height = shadow.Height, OffsetX = shadow.Offset.X, OffsetY = shadow.Offset.Y
                     });
+                else if (component is YSort ysort)
+                    data.YSorts.Add(new YSortData { Offset = ysort.Offset });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -726,6 +728,9 @@ namespace DreamBit.Engine.Serialization
                 {
                     Width = s.Width, Height = s.Height, Offset = new Vector2(s.OffsetX, s.OffsetY)
                 });
+
+            foreach (var ys in data.YSorts)
+                obj.AddComponent(new YSort { Offset = ys.Offset });
 
             foreach (var chaser in data.NavChasers)
                 obj.AddComponent(new NavChaser

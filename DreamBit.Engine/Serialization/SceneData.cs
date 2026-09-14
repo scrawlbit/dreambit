@@ -83,8 +83,11 @@ namespace DreamBit.Engine.Serialization
         public List<SpriteFlashData> SpriteFlashes { get; set; } = new();
         public List<JointData> Joints { get; set; } = new();
         public List<ShadowCasterData> ShadowCasters { get; set; } = new();
+        public List<YSortData> YSorts { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
+
+    public sealed class YSortData { public float Offset { get; set; } }
 
     public sealed class JointData
     {
@@ -427,6 +430,7 @@ namespace DreamBit.Engine.Serialization
         public bool Edited { get; set; }
         public bool Solid { get; set; }
         public string SolidLayer { get; set; } = "";
+        public int Orientation { get; set; }
         public int TileWidth { get; set; } = 16;
         public int TileHeight { get; set; } = 16;
         public List<TilesetData> Tilesets { get; set; } = new();

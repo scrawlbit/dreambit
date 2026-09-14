@@ -12,6 +12,9 @@ namespace DreamBit.Engine.Components
     /// vir de um .tmx do Tiled ou ser pintado no editor. Resolve as imagens dos tilesets
     /// (TextureCache).
     /// </summary>
+    /// <summary>Orientação do mapa: ortogonal (grade reta) ou isométrico (losango 2:1).</summary>
+    public enum TileOrientation { Orthogonal, Isometric }
+
     public sealed class TilemapRenderer : SceneComponent
     {
         private string? _tmxPath;
@@ -19,8 +22,22 @@ namespace DreamBit.Engine.Components
         private bool _solid;
         private string _solidLayer = string.Empty;
         private double _animMs;
+        private TileOrientation _orientation = TileOrientation.Orthogonal;
 
         public override string DisplayName => "Tilemap";
+
+        /// <summary>Ortogonal ou isométrico. No isométrico, a célula (x,y) vira um losango.</summary>
+        public TileOrientation Orientation { get => _orientation; set => Set(ref _orientation, value); }
+
+        /// <summary>Centro (local) da célula (x,y), respeitando a orientação.</summary>
+        public Vector2 CellToLocalCenter(int x, int y)
+        {
+            var map = Map;
+            int tw = map?.TileWidth ?? 16, th = map?.TileHeight ?? 16;
+            if (_orientation == TileOrientation.Isometric)
+                return new Vector2((x - y) * (tw / 2f), (x + y) * (th / 2f));
+            return new Vector2(x * tw + tw / 2f, y * th + th / 2f);
+        }
 
         /// <summary>Se true, os tiles pintados bloqueiam o PlatformerController (colisão sólida
         /// por célula). Combine com <see cref="SolidLayer"/> para restringir a uma camada.</summary>
@@ -61,6 +78,11 @@ namespace DreamBit.Engine.Components
             int th = map?.TileHeight ?? 16;
 
             var local = Vector2.Transform(world, Matrix.Invert(Owner.Transform.WorldMatrix));
+            if (_orientation == TileOrientation.Isometric)
+            {
+                float fx = local.X / (tw / 2f), fy = local.Y / (th / 2f);
+                return ((int)Math.Floor((fx + fy) / 2f), (int)Math.Floor((fy - fx) / 2f));
+            }
             return ((int)Math.Floor(local.X / tw), (int)Math.Floor(local.Y / th));
         }
 
@@ -144,9 +166,7 @@ namespace DreamBit.Engine.Components
                     var source = new Rectangle(col * tileset.TileWidth, row * tileset.TileHeight,
                         tileset.TileWidth, tileset.TileHeight);
 
-                    var localPos = new Vector2(
-                        x * map.TileWidth + map.TileWidth / 2f,
-                        y * map.TileHeight + map.TileHeight / 2f);
+                    var localPos = CellToLocalCenter(x, y);
                     var tileWorld = Matrix.CreateTranslation(localPos.X, localPos.Y, 0f) * world;
 
                     drawing.DrawFrame(tileWorld, new Vector2(tileset.TileWidth, tileset.TileHeight),

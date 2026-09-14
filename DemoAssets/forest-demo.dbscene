@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "1e87addd-b15e-44d3-a314-3e82fc1161a4",
+      "Id": "85892792-1eb9-49fb-9626-346b491df600",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -83,10 +83,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "8231132b-3e18-44b1-acdc-d6b63166fd1e",
+      "Id": "d89aa909-f7be-4bd1-a63b-2c547376e2da",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -167,10 +168,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "90796d75-f826-4bf9-9d39-1293bb4c2585",
+      "Id": "f390fbed-d325-40d2-94f6-609ea86309a9",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -190,6 +192,7 @@
           "Edited": true,
           "Solid": true,
           "SolidLayer": "",
+          "Orientation": 0,
           "TileWidth": 96,
           "TileHeight": 96,
           "Tilesets": [
@@ -420,10 +423,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "9d304b53-e677-4138-8775-54c9d12d0515",
+      "Id": "570e4ff3-0a41-45f2-8fd3-7cfb504cab6c",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -499,10 +503,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "52198b48-e9f9-4006-ba6a-b8b87303e600",
+      "Id": "4e7c558d-a7f4-4f90-ba2a-4650c360dc9a",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -578,10 +583,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "e92487d6-92c3-487f-a4ab-3f66631fdefb",
+      "Id": "ee2b3b45-29b4-4323-89e4-46bb6fb7724a",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -657,10 +663,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "a0f2cf61-4a01-4532-90b3-5dd25f48c713",
+      "Id": "eef96045-a87d-4e79-a1da-865bcbc848f4",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -736,10 +743,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "bcad0539-5c0d-4642-8a6f-5aadd49565cf",
+      "Id": "e99b92cb-aa24-48f2-9810-f00611fc27d4",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1589,10 +1597,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "8c6ef4a2-3c7a-48dd-a544-4b64175587c9",
+      "Id": "63d07e61-9c29-4516-81ad-4df902b3fb4e",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1661,10 +1670,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "4bba9a92-bf16-473c-b14e-a9a250e18108",
+      "Id": "b0b4424f-810d-4be7-9981-d686e4ead3af",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1771,10 +1781,11 @@
       ],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "41455999-0553-470b-b461-0d546da92ee6",
+      "Id": "a5519d12-0532-4619-850e-3e3967c32557",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1895,10 +1906,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "d4d86834-297b-48e9-a44a-fe4c255269dd",
+      "Id": "7c1ea5cf-633a-4f36-b57b-1b2f0a1d1e4d",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -1968,10 +1980,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "d0d84123-d3d0-4182-a744-c0bf999943b1",
+      "Id": "910b9d19-b78b-4c67-b238-ae9f337f3680",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -2060,10 +2073,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "3ba3381e-a73d-41c4-92d8-947afba8773a",
+      "Id": "3d99912b-7fe6-4397-9ac2-f60b5410a19c",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -2152,10 +2166,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "ca03e49f-08b2-406a-a1fb-9a894441ff4b",
+      "Id": "ed4efc1c-3377-4b17-8f85-bc5b10d6e67b",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2244,10 +2259,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "2e39195f-bf86-4a65-a450-f03c6cebad30",
+      "Id": "7973d833-60cf-4704-b261-0cd96ad4a8ee",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2323,10 +2339,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "32501d8d-2dd0-4c1b-827d-b814241ab58d",
+      "Id": "fabb9a71-30ca-41bd-b76f-93b150402d11",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2393,10 +2410,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "37c642e5-0f9d-49cc-b3f0-e21e48665532",
+      "Id": "6206f8cc-8cb5-415b-b4dd-93fc1c64fd1d",
       "Name": "Ambiente",
       "Tag": "",
       "SortOrder": 0,
@@ -2458,10 +2476,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "5b010b5c-4e44-4dc2-8b72-313153dc8fda",
+      "Id": "3ea7268b-e201-4ac7-bd62-f49ddfbba1bd",
       "Name": "LuzTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2525,10 +2544,11 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "7d505447-e6d1-432f-9242-429a150edf9a",
+      "Id": "77a7ffbf-7717-41fb-9aec-060e844b9671",
       "Name": "SombraArvore",
       "Tag": "",
       "SortOrder": 0,
@@ -2591,10 +2611,11 @@
           "OffsetY": 0
         }
       ],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "13af27fb-abcf-456e-a9f6-e7ab6877e48f",
+      "Id": "a5ea63e6-bf38-4cfe-aeaa-dadb5039c748",
       "Name": "SombraRocha",
       "Tag": "",
       "SortOrder": 0,
@@ -2657,10 +2678,11 @@
           "OffsetY": 0
         }
       ],
+      "YSorts": [],
       "Children": []
     },
     {
-      "Id": "7f8ba754-ba52-484d-85d7-aabadd3e468d",
+      "Id": "b4b66215-817f-44df-b067-f970fdbfa9b2",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2716,9 +2738,10 @@
       "SpriteFlashes": [],
       "Joints": [],
       "ShadowCasters": [],
+      "YSorts": [],
       "Children": [
         {
-          "Id": "6588c531-58b3-4a6a-811e-84d66ce03ef4",
+          "Id": "b4d3f213-097c-4bc2-8706-bc9d703015d3",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2792,10 +2815,11 @@
           "SpriteFlashes": [],
           "Joints": [],
           "ShadowCasters": [],
+          "YSorts": [],
           "Children": []
         },
         {
-          "Id": "39667057-8e7f-492a-a257-772e37f6fdf3",
+          "Id": "cf18f900-9eb1-445c-a32e-370390319581",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2867,10 +2891,11 @@
           "SpriteFlashes": [],
           "Joints": [],
           "ShadowCasters": [],
+          "YSorts": [],
           "Children": []
         },
         {
-          "Id": "5ba11c14-77e2-4436-80da-c379bf26e39e",
+          "Id": "c1054d74-708f-414b-bef3-c95d6caf6978",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,
@@ -2949,6 +2974,7 @@
           "SpriteFlashes": [],
           "Joints": [],
           "ShadowCasters": [],
+          "YSorts": [],
           "Children": []
         }
       ]

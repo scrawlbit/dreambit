@@ -636,6 +636,7 @@ namespace DreamBit.Studio.Avalonia
                 "Sprite Flash" => _editor.AddSpriteFlash,
                 "Joint 2D" => _editor.AddJoint,
                 "Shadow Caster" => _editor.AddShadowCaster,
+                "Y Sort" => _editor.AddYSort,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -699,6 +700,7 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveSpriteFlash(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveSpriteFlash);
         private void OnRemoveJoint(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveJoint);
         private void OnRemoveShadowCaster(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveShadowCaster);
+        private void OnRemoveYSort(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveYSort);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

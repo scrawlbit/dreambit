@@ -367,6 +367,7 @@
                             <ComboBoxItem>Sprite Flash</ComboBoxItem>
                             <ComboBoxItem>Joint 2D</ComboBoxItem>
                             <ComboBoxItem>Shadow Caster</ComboBoxItem>
+                            <ComboBoxItem>Y Sort</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -1454,6 +1455,8 @@
                         <Border Classes="component" IsVisible="{Binding HasTilemap}">
                             <StackPanel>
                                 <TextBlock Classes="section" Text="Tilemap" />
+                                <TextBlock Classes="field" Text="Orientação" />
+                                <ComboBox ItemsSource="{Binding TileOrientations}" HorizontalAlignment="Stretch" SelectedItem="{Binding TilemapOrientation, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Origem (.tmx)" />
                                 <TextBox Text="{Binding TilemapPath}" IsReadOnly="True" />
                                 <CheckBox Content="Tiles são sólidos (colisão do platformer)"
@@ -1461,6 +1464,18 @@
                                 <TextBlock Classes="field" Text="Camada sólida (vazio = todas)" />
                                 <TextBox Text="{Binding TilemapSolidLayer, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Pinte com a ferramenta de pincel na barra de ferramentas." />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Y Sort -->
+                        <Border Classes="component" IsVisible="{Binding HasYSort}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Y Sort" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveYSort" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Offset do pivô (pés)" /><TextBox Text="{Binding YSortOffset, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Desenha por Y de mundo (profundidade top-down)." />
                             </StackPanel>
                         </Border>
 
