@@ -72,6 +72,32 @@ namespace DreamBit.Engine.Elements
         /// <summary>Posição absoluta em coordenadas de mundo.</summary>
         public Vector2 WorldPosition => Vector2.Transform(Vector2.Zero, WorldMatrix);
 
+        /// <summary>Rotação absoluta (soma da cadeia de pais).</summary>
+        public float WorldRotation => _rotation + (_parent?.WorldRotation ?? 0f);
+
+        /// <summary>Escala absoluta (produto da cadeia de pais).</summary>
+        public Vector2 WorldScale => _parent == null ? _scale : _scale * _parent.WorldScale;
+
+        /// <summary>Define o transform local para que o objeto fique nesta pose de mundo,
+        /// respeitando o pai atual. Usado ao reparentar sem mover o objeto na tela.</summary>
+        public void SetWorld(Vector2 worldPosition, float worldRotation, Vector2 worldScale)
+        {
+            if (_parent == null)
+            {
+                Position = worldPosition;
+                Rotation = worldRotation;
+                Scale = worldScale;
+                return;
+            }
+
+            Position = Vector2.Transform(worldPosition, Matrix.Invert(_parent.WorldMatrix));
+            Rotation = worldRotation - _parent.WorldRotation;
+            var ps = _parent.WorldScale;
+            Scale = new Vector2(
+                ps.X != 0f ? worldScale.X / ps.X : worldScale.X,
+                ps.Y != 0f ? worldScale.Y / ps.Y : worldScale.Y);
+        }
+
         private void OnParentChanged() => RaiseChanged();
 
         private void RaiseChanged()

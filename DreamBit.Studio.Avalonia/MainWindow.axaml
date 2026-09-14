@@ -210,17 +210,17 @@
                 <GridSplitter Grid.Row="1" Background="#11141A" ResizeDirection="Rows" />
 
                 <DockPanel Grid.Row="2">
-                    <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA (Ctrl/Shift p/ vários)" Foreground="#8A93A6" Margin="10,8" />
-                    <ListBox x:Name="HierarchyList" Background="Transparent" Margin="4"
-                             ItemsSource="{Binding Scene.Objects}"
-                             SelectionMode="Multiple"
-                             SelectionChanged="OnHierarchySelectionChanged">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
+                    <TextBlock DockPanel.Dock="Top" Text="HIERARQUIA (Ctrl/Shift p/ vários · Ctrl+G agrupa)" Foreground="#8A93A6" Margin="10,8" />
+                    <TreeView x:Name="HierarchyList" Background="Transparent" Margin="4"
+                              ItemsSource="{Binding Scene.Objects}"
+                              SelectionMode="Multiple"
+                              SelectionChanged="OnHierarchySelectionChanged">
+                        <TreeView.ItemTemplate>
+                            <TreeDataTemplate ItemsSource="{Binding Children}">
                                 <TextBlock Text="{Binding Name}" Foreground="#D6DBE6" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                            </TreeDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
                 </DockPanel>
 
                 <GridSplitter Grid.Row="3" Background="#11141A" ResizeDirection="Rows" />

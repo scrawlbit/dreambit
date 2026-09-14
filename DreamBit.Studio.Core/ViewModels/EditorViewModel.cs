@@ -370,6 +370,116 @@ namespace DreamBit.Studio.ViewModels
             return obj;
         }
 
+        /// <summary>Agrupa os objetos de topo selecionados sob um novo objeto "Grupo"
+        /// (mantendo a posição de mundo). Ctrl+G.</summary>
+        public void GroupSelected()
+        {
+            var sel = _selectedObjects.Where(o => Scene.Objects.Contains(o)).ToList();
+            if (sel.Count == 0)
+                return;
+
+            var group = new GameObject("Grupo");
+            var center = Vector2.Zero;
+            foreach (var o in sel) center += o.Transform.WorldPosition;
+            group.Transform.Position = center / sel.Count;
+
+            var worlds = sel.Select(o => (o.Transform.WorldPosition, o.Transform.WorldRotation, o.Transform.WorldScale)).ToList();
+
+            History.Do(new EditorAction("Agrupar",
+                doAction: () =>
+                {
+                    Scene.Add(group);
+                    for (int i = 0; i < sel.Count; i++)
+                    {
+                        Scene.Remove(sel[i]);
+                        group.AddChild(sel[i]);
+                        sel[i].Transform.SetWorld(worlds[i].Item1, worlds[i].Item2, worlds[i].Item3);
+                    }
+                    SelectSingle(group);
+                },
+                undoAction: () =>
+                {
+                    for (int i = 0; i < sel.Count; i++)
+                    {
+                        group.RemoveChild(sel[i]);
+                        Scene.Add(sel[i]);
+                        sel[i].Transform.SetWorld(worlds[i].Item1, worlds[i].Item2, worlds[i].Item3);
+                    }
+                    Scene.Remove(group);
+                    SetSelection(sel);
+                }));
+        }
+
+        /// <summary>Desagrupa o objeto selecionado: sobe os filhos para o pai/cena e remove o
+        /// grupo (mantendo a posição de mundo). Ctrl+Shift+G.</summary>
+        public void UngroupSelected()
+        {
+            var group = SelectedObject;
+            if (group == null || group.Children.Count == 0)
+                return;
+
+            var kids = group.Children.ToList();
+            var parent = group.Parent; // null = cena
+            var worlds = kids.Select(k => (k.Transform.WorldPosition, k.Transform.WorldRotation, k.Transform.WorldScale)).ToList();
+
+            void Detach(GameObject k, int i)
+            {
+                group.RemoveChild(k);
+                if (parent == null) Scene.Add(k); else parent.AddChild(k);
+                k.Transform.SetWorld(worlds[i].Item1, worlds[i].Item2, worlds[i].Item3);
+            }
+
+            History.Do(new EditorAction("Desagrupar",
+                doAction: () =>
+                {
+                    for (int i = 0; i < kids.Count; i++) Detach(kids[i], i);
+                    if (parent == null) Scene.Remove(group); else parent.RemoveChild(group);
+                    SetSelection(kids);
+                },
+                undoAction: () =>
+                {
+                    if (parent == null) Scene.Add(group); else parent.AddChild(group);
+                    for (int i = 0; i < kids.Count; i++)
+                    {
+                        if (parent == null) Scene.Remove(kids[i]); else parent.RemoveChild(kids[i]);
+                        group.AddChild(kids[i]);
+                        kids[i].Transform.SetWorld(worlds[i].Item1, worlds[i].Item2, worlds[i].Item3);
+                    }
+                    SelectSingle(group);
+                }));
+        }
+
+        /// <summary>Reparenta o objeto informado para <paramref name="newParent"/> (ou cena, se null),
+        /// mantendo a posição de mundo. Para arrastar-e-soltar na hierarquia. Ignora ciclos.</summary>
+        public void ReparentKeepingWorld(GameObject obj, GameObject? newParent)
+        {
+            if (obj == null || obj == newParent || IsAncestor(obj, newParent))
+                return;
+            var oldParent = obj.Parent;
+            if (oldParent == newParent)
+                return;
+
+            var w = (obj.Transform.WorldPosition, obj.Transform.WorldRotation, obj.Transform.WorldScale);
+
+            void Move(GameObject? to)
+            {
+                if (obj.Parent == null) Scene.Remove(obj); else obj.Parent.RemoveChild(obj);
+                if (to == null) Scene.Add(obj); else to.AddChild(obj);
+                obj.Transform.SetWorld(w.Item1, w.Item2, w.Item3);
+            }
+
+            History.Do(new EditorAction("Reparentar",
+                doAction: () => { Move(newParent); SelectSingle(obj); },
+                undoAction: () => { Move(oldParent); SelectSingle(obj); }));
+        }
+
+        private static bool IsAncestor(GameObject possibleAncestor, GameObject? node)
+        {
+            for (var p = node; p != null; p = p.Parent)
+                if (p == possibleAncestor) return true;
+            return false;
+        }
+
         public void DeleteSelected()
         {
             if (_selectedObjects.Count > 0)

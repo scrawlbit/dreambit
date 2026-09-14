@@ -23,6 +23,7 @@ namespace DreamBit.Studio.Avalonia
     public partial class MainWindow : Window
     {
         private readonly EditorViewModel _editor = new();
+        private DreamBit.Studio.EditorPreferences _keymap = DreamBit.Studio.EditorPreferences.Load();
         private readonly DispatcherTimer _timer;
         private DateTime _lastTick = DateTime.UtcNow;
 
@@ -305,18 +306,17 @@ namespace DreamBit.Studio.Avalonia
             if (_syncingHierarchy)
                 return;
 
-            var list = this.FindControl<ListBox>("HierarchyList");
-            if (list == null)
+            var list = this.FindControl<TreeView>("HierarchyList");
+            if (list?.SelectedItems == null)
                 return;
 
-            var selected = list.SelectedItems?.Cast<DreamBit.Engine.Elements.GameObject>().ToList()
-                           ?? new List<DreamBit.Engine.Elements.GameObject>();
+            var selected = list.SelectedItems.Cast<DreamBit.Engine.Elements.GameObject>().ToList();
             _editor.SetSelection(selected);
         }
 
         private void SyncHierarchySelection()
         {
-            var list = this.FindControl<ListBox>("HierarchyList");
+            var list = this.FindControl<TreeView>("HierarchyList");
             if (list?.SelectedItems == null)
                 return;
 
@@ -510,30 +510,53 @@ namespace DreamBit.Studio.Avalonia
 
         private void OnKeyDown(object? sender, KeyEventArgs e)
         {
-            bool ctrl = e.KeyModifiers.HasFlag(KeyModifiers.Control);
             bool inText = FocusManager?.GetFocusedElement() is TextBox;
 
-            if (_editor.IsLedgeTool && e.Key == Key.Escape) { _editor.CancelLedge(); InvalidateScene(); }
-            else if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return)) { _editor.FinishLedge(); InvalidateScene(); }
-            else if (e.Key == Key.Delete && !inText)
-            {
-                if (_editor.DeleteObjectCommand.CanExecute(null)) _editor.DeleteObjectCommand.Execute(null);
-                else _editor.DeleteLastLedge();
-            }
-            else if (ctrl && e.Key == Key.S) OnSaveScene(this, e);
-            else if (ctrl && e.Key == Key.Z && _editor.UndoCommand.CanExecute(null)) _editor.UndoCommand.Execute(null);
-            else if (ctrl && e.Key == Key.Y && _editor.RedoCommand.CanExecute(null)) _editor.RedoCommand.Execute(null);
-            else if (ctrl && e.Key == Key.D) _editor.DuplicateSelected();
-            else if (ctrl && e.Key == Key.C && !inText) _editor.CopySelected();
-            else if (ctrl && e.Key == Key.V && !inText) _editor.Paste();
-            else if (ctrl && (e.Key == Key.D0 || e.Key == Key.NumPad0)) _editor.Camera.Zoom = 1f;
-            else if (e.Key == Key.F && !inText) _editor.Camera.Position = _editor.SelectionCenter();
-            else if (!inText && TryNudge(e.Key)) { }
-            else return;
+            // Ferramenta de ledge tem prioridade (Esc/Enter).
+            if (_editor.IsLedgeTool && e.Key == Key.Escape) { _editor.CancelLedge(); e.Handled = true; InvalidateScene(); return; }
+            if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return)) { _editor.FinishLedge(); e.Handled = true; InvalidateScene(); return; }
 
-            e.Handled = true;
-            InvalidateScene();
+            // Atalhos configuráveis: casa o gesto pressionado com a ação do keymap.
+            var gesture = Gestures.Format(e.KeyModifiers, e.Key);
+            var action = _keymap.ActionFor(gesture);
+            if (action != null && DispatchShortcut(action, inText))
+            {
+                e.Handled = true;
+                InvalidateScene();
+                return;
+            }
+
+            if (!inText && TryNudge(e.Key)) { e.Handled = true; InvalidateScene(); }
         }
+
+        /// <summary>Executa a ação de atalho pelo nome. Retorna false se não se aplica agora.</summary>
+        private bool DispatchShortcut(string action, bool inText)
+        {
+            switch (action)
+            {
+                case "Delete" when !inText:
+                    if (_editor.DeleteObjectCommand.CanExecute(null)) _editor.DeleteObjectCommand.Execute(null);
+                    else _editor.DeleteLastLedge();
+                    return true;
+                case "Save": OnSaveScene(this, new RoutedEventArgs()); return true;
+                case "Undo" when _editor.UndoCommand.CanExecute(null): _editor.UndoCommand.Execute(null); return true;
+                case "Redo" when _editor.RedoCommand.CanExecute(null): _editor.RedoCommand.Execute(null); return true;
+                case "Duplicate": _editor.DuplicateSelected(); return true;
+                case "Copy" when !inText: _editor.CopySelected(); return true;
+                case "Paste" when !inText: _editor.Paste(); return true;
+                case "Group" when !inText: _editor.GroupSelected(); RebuildHierarchy(); return true;
+                case "Ungroup" when !inText: _editor.UngroupSelected(); RebuildHierarchy(); return true;
+                case "Play": OnPlayToggle(this, new RoutedEventArgs()); return true;
+                case "ZoomReset": _editor.Camera.Zoom = 1f; return true;
+                case "FocusSelection" when !inText: _editor.Camera.Position = _editor.SelectionCenter(); return true;
+                default: return false;
+            }
+        }
+
+        /// <summary>Recarrega o keymap das preferências (após editar/importar).</summary>
+        public void ReloadKeymap() => _keymap = DreamBit.Studio.EditorPreferences.Load();
+
+        private void RebuildHierarchy() => SyncHierarchySelection();
 
         private bool TryNudge(Key key)
         {
