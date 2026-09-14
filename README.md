@@ -1,48 +1,117 @@
 # DreamBit
 
-This project was an effort of study and passion to XNA/Monogame.
-We stopped working on it due the little to no free time a few years ago.
-Altough it's in really initial stage, we learned a lot from game development, archtecture and programming with .Net
+Engine e editor de jogos 2D **standalone em .NET 8**, com MonoGame. Nasceu como uma
+extensão do Visual Studio (VSIX, .NET Framework) e foi migrado para uma solução
+independente, multiplataforma e testada.
 
-We hope it can serve as a code reference or that maybe one day we can continue the development, or maybe even helps the community in any ideas for MonoGame engines.
+> O código do VSIX antigo (projetos `Old.*`, `Scrawlbit.*`, `DreamBit.Extension`, etc.)
+> foi removido após a migração — o histórico continua no Git.
 
----
-DreamBit is an engine developped as a VSIX extension.
-The goal is to create windows and menus to interact with the game project inside the Visual Studio, without the need of an external application.
+## Projetos
 
-It uses the game loop to create a canvas (within a WPF window) and render it inside the Visual Studio with other windows to create game scenes.
-There's also support in the Solution Explorer with menus to add Fonts, Scenes and Scripts to the content project. It also iddentify the files added to the content project and automatic includes them to the pipeline.
+| Projeto | O que é |
+|---|---|
+| **DreamBit.Engine** | Modelo e runtime da engine (cena, objetos, componentes, física de ledges, tilemap, áudio, scripting, animação). Multi-target `net8.0-windows;net8.0`. |
+| **DreamBit.Studio.Avalonia** | **O editor** — cross-platform (Windows/macOS/Linux, Rider). Canvas com texturas, tilemap, ledges, carimbo de atlas, timeline de rig, console. |
+| **DreamBit.Studio.Core** | ViewModels e lógica de editor (sem dependência de UI): ViewModels, `SceneInputController`, exportador/launcher/content-builder. |
+| **DreamBit.Player** | Runtime do jogo (DesktopGL), roda um `.dbscene` (com transição entre fases). Cross-platform. |
+| **Scrawlbit** | Helpers genéricos compartilhados (engine + jogo + scripts): `Mathf`, `Easing`, coleções, comparadores. |
+| **DreamBit.Engine.Tests** | Testes do motor (MSTest). |
 
-### Overview
-![Alt text](Images/overview.png?raw=true "Overview")
+## Funcionalidades da engine
 
-### Extension and windows
-![Alt text](Images/extension.png?raw=true "Extension and windows")
+- Cena com hierarquia de `Transform` pai→filho, **z-order** e serialização JSON.
+- Componentes: `SpriteRenderer` (**recorte de atlas**), `SpriteAnimator` (sprite sheet com
+  **eventos por frame**), `TilemapRenderer` (Tiled `.tmx`), `PlatformerController`,
+  `BoxCollider` (**colisão sólida AABB**), ledges one-way, `TriggerZone` (filtro por **tag**,
+  enter/exit, envio de mensagem), `MessageListener`, `AudioSource`, `ParticleEmitter`,
+  `FollowTarget`, `RotatorBehavior`, `ScriptComponent` (C# em runtime via Roslyn),
+  `Bone` + `SkeletonAnimator` (**rig cutout**: keyframes de pose, **clipes nomeados**,
+  easing, eventos), `AnimatorController` (estados idle/walk/jump), `TweenComponent`,
+  `CameraComponent` (follow/deadzone/bounds/zoom), `TextRenderer` (fonte pixel, mundo ou
+  **HUD**), `SceneExit` (**transição de fase**), `UiAnchor` + `UiButton` (**UI clicável**),
+  `ParallaxLayer` (**parallax**), `TimerComponent`.
+- **Sistema de UI**: âncoras, botões, layout, **slider** (liga a bus de áudio), **toggle**,
+  **barra de progresso**, **campo de texto**, **scroll** e **navegação por foco**
+  (teclado/gamepad) — para menus, opções e HUD; mais **camadas de render**, **colisão de
+  tilemap** e **localização** (`Localizer`).
+- **Animação de sprite por clipes** (`SpriteClip` + `SpriteAnimator`): várias animações
+  nomeadas (andar/pular/bater/parado) na mesma folha, com FPS/loop por clipe, evento de fim,
+  **flip** e `SpriteAnimatorController` (escolhe o clipe pelo estado e dispara o ataque).
+- **Física 2D** com corpos rígidos (`Rigidbody2D` sobre Aether.Physics2D): gravidade,
+  colisão com rotação, impulsos, **raycast** e **camadas de colisão** — alternativa ao
+  `PlatformerController`.
+- **IA de perseguição** (`NavChaser`): segue a tag alvo por pathfinding A* (ou linha reta).
+- **Áudio espacial** (`AudioListener` + `AudioSource.Spatial`): atenuação e pan por distância.
+- **Luzes 2D** (`Light2D` + `AmbientLight`): lightmap por render target que ilumina sprites e
+  tilemap (sem shader). **Tiles animados** e **autotiling** (`Autotile`) no tilemap.
+- **Ligar/desligar componente** (`SceneComponent.Enabled`) em runtime — ex.: desligar a
+  gravidade numa fase de voo sem remover o componente.
+- **Combate**: `Health`, `Hurtbox`/`Hitbox` (dano por time, ativado por evento de frame) e
+  `SpriteFlash`; **movimento top-down** (`TopDownController`, 8 direções com colisão) para
+  jogos de cima com tile.
+- **Joints** (`Joint2D`: distância/dobradiça/solda) e **sombras nas luzes** (`ShadowCaster`
+  bloqueia as `Light2D`). Todos os componentes são adicionáveis pelo dropdown do editor.
+- **Blending de animação** (crossfade de sprite e rig), **Y-sort** e **tilemap isométrico**,
+  **tremor/prioridade de câmera**, **áudio adaptativo** (ducking + fade/crossfade), **partículas
+  ricas** (burst, cor/tamanho na vida) e **profiler** no overlay F3.
+- **Editor**: aninhar GameObjects (hierarquia em árvore, **Ctrl+G**/**Ctrl+Shift+G**), **atalhos
+  configuráveis** com exportar/importar, **prefabs com overrides**, **referências de asset por
+  GUID** (à prova de renomear), **máquina de estados de animação** com editor visual nó-e-fio, e
+  **shaders 2D** (pós-processamento via MGCB).
+- **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
+  (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
+- Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
+  (**timers/coroutines**), `ObjectPool` (**pooling**), `DataCatalog` (**data-driven**),
+  `StateMachine` (**máquina de estados**).
+- **Hot-reload de script** (arquivo `.cs` externo recompila ao mudar) e **overlay de
+  debug** no Player (F3).
+- **Sprites**: recorte de atlas, autodetecção de frames por transparência e **chroma key**
+  (remover cor de fundo, automático ou por cor).
+- **Editor de tilemap**: novo mapa de um PNG, paleta visual, pintar/apagar com undo,
+  **camadas** (visibilidade/ordem) e colisão sólida por tile.
+- **Barramento de mensagens** (sinais de jogo) ligando tags, triggers, eventos de
+  animação e scripts.
+- **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor); play restaurável;
+  console de logs; export de jogo portátil.
 
-### Solution explorer
-![Alt text](Images/solution-explorer.png?raw=true "Solution Explorer")
+## Fase de demonstração
 
-### Functionalities
-There's a lot of functionalities we already implemented:
-* Select game objects in the Scene Editor,
-* Select game objets in the Scene Hierarchy with mouse range, one by one (Ctrl) or a sequential list (Shift),
-* Move and drag game objects within the Scene Hierarchy,
-* Drag game objects in the Scene Inspect (keep L pressed to not change the view),
-* Move, rotate and scaling game objects in the Scene Editor (with shortcuts to proportional scaling),
-* State control of the scene (Ctrl Z, Ctrl Y),
-* Add or remove components from the Game Object,
-* Creation of game objects with camera,
-* Image Renderer component,
-* Text Renderer component,
-* Project Scripts as components (with the identification of the properties in the c# script as fields in the inspect),
-* Zoom in and out in the Scene Editor (with scroll too)
-* and a lot more...
+`DemoAssets/forest-demo.dbscene` é uma fase completa que exercita quase toda a engine numa
+cena só (herói animado por clipes, tilemap sólido, plataforma, câmera, parallax, decoração
+por atlas, perseguição por pathfinding, física rígida, timeline, trigger de meta, áudio
+espacial e HUD). A arte é de terceiros e não vai no repositório — veja
+[DemoAssets/README.md](DemoAssets/README.md). O `ForestDemoSmokeTests` monta e valida a fase
+inteira sem tela.
 
-### Development
-It uses the MonoGame 3.7 installation version, not the new packages versions.
+Estado detalhado e itens planejados: veja [ROADMAP.md](ROADMAP.md).
 
-There's a zip file with a test project to use with the development.
-It has some files to work with the extension. We would later create visual studio templates for MonoGame projects that has this file organization.
+## Rodar
 
-One last important point is that the libraries named with "Old" is from an old project we created for an external version of the engine.
-These libraries contains the logic for scenes, game objects and other things. There's a version for the engine and one that would be used in the Game Project.
+Editor (Avalonia, cross-platform):
+
+```bash
+dotnet run --project DreamBit.Studio.Avalonia/DreamBit.Studio.Avalonia.csproj -c Debug
+```
+
+Rodar um jogo (uma cena) no runtime:
+
+```bash
+dotnet run --project DreamBit.Player/DreamBit.Player.csproj -c Debug -- caminho/para/fase.dbscene
+```
+
+## Build e testes
+
+```bash
+dotnet build DreamBit.Studio.slnx -c Debug
+dotnet test DreamBit.Engine.Tests/DreamBit.Engine.Tests.csproj -c Debug
+```
+
+## Empacotar para distribuição
+
+`publish.ps1` gera binários self-contained (sem exigir .NET no destino) do editor e do
+Player por RID (win/linux/osx).
+
+## Requisitos
+
+.NET 8 SDK. No Rider (qualquer SO), abra `DreamBit.Studio.slnx`.

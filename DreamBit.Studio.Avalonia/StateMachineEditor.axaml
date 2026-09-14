@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DreamBit.Studio.Avalonia.StateMachineEditor"
+        Title="Máquina de Estados de Animação" Width="820" Height="560" Background="#1A1D24"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#20242D" Padding="8">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="＋ Novo estado" Click="OnAddState" />
+                <Button Content="Definir inicial" Click="OnSetDefault" />
+                <Button Content="Excluir estado" Click="OnDeleteState" />
+                <TextBlock Text="Arraste um nó para mover · botão direito de um nó a outro cria transição · duplo-clique numa seta edita/exclui"
+                           Foreground="#8A93A6" FontSize="11" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="440" />
+            </StackPanel>
+        </Border>
+        <Canvas x:Name="NodeCanvas" Background="#12151B" ClipToBounds="True" />
+    </DockPanel>
+</Window>

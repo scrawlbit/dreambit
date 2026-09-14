@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DreamBit.Studio.Avalonia.AtlasPicker"
+        Title="Atlas — recortar e carimbar" Width="980" Height="740" Background="#1E2128">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                <Button Content="📂 Abrir PNG…" Click="OnOpen" />
+                <Border Width="1" Background="#11141A" Margin="2,2" />
+                <TextBlock x:Name="Info" Text="Arraste um retângulo sobre a imagem"
+                           VerticalAlignment="Center" Foreground="#8A93A6" />
+                <Border Width="1" Background="#11141A" Margin="2,2" />
+                <Button x:Name="UseButton" Content="🧩 Usar como carimbo" Click="OnUseStamp" IsEnabled="False"
+                        ToolTip.Tip="Liga o modo carimbo: clique na cena para posicionar" />
+                <Button x:Name="StampCenterButton" Content="Carimbar no centro" Click="OnStampCenter" IsEnabled="False" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#20242D">
+            <Canvas x:Name="PickCanvas" Background="Transparent"
+                    PointerPressed="OnCanvasPressed" PointerMoved="OnCanvasMoved" PointerReleased="OnCanvasReleased">
+                <Image x:Name="AtlasImage" Stretch="None" Canvas.Left="0" Canvas.Top="0" />
+                <Rectangle x:Name="SelectionRect" Stroke="#39D0FF" StrokeThickness="1.5"
+                           Fill="#3339D0FF" IsVisible="False" />
+            </Canvas>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

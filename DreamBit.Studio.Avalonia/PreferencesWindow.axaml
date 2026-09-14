@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DreamBit.Studio.Avalonia.PreferencesWindow"
+        Title="Preferências" Width="640" Height="620" Background="#1E2128"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="16">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="6" Margin="0,12,0,0">
+            <Button Content="Cancelar" Click="OnCancel" />
+            <Button Content="Salvar" Click="OnSave" />
+        </StackPanel>
+
+        <ScrollViewer>
+            <StackPanel Spacing="8">
+                <TextBlock Text="Localização da engine" FontWeight="SemiBold" Foreground="#D6DBE6" />
+                <TextBlock TextWrapping="Wrap" Foreground="#8A93A6" FontSize="12"
+                           Text="Pasta que contém o DreamBit.Player (raiz do repositório, ou uma pasta publicada). Usada para Rodar e Exportar o jogo. Deixe em branco para detectar automaticamente." />
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox x:Name="PathBox" Grid.Column="0" Watermark="(auto)" />
+                    <Button Grid.Column="1" Content="Localizar…" Click="OnBrowse" Margin="6,0,0,0" />
+                </Grid>
+                <TextBlock x:Name="StatusText" Foreground="#8A93A6" FontSize="12" />
+
+                <Border Height="1" Background="#2A2E38" Margin="0,10" />
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Text="Atalhos de teclado" FontWeight="SemiBold" Foreground="#D6DBE6" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" Content="Restaurar padrões" Click="OnResetShortcuts" />
+                </Grid>
+                <TextBlock TextWrapping="Wrap" Foreground="#8A93A6" FontSize="12"
+                           Text="Clique num campo e pressione a combinação desejada para reatribuir." />
+                <StackPanel x:Name="ShortcutsPanel" Spacing="4" Margin="0,4,0,0" />
+
+                <Border Height="1" Background="#2A2E38" Margin="0,10" />
+
+                <TextBlock Text="Compartilhar preferências e atalhos" FontWeight="SemiBold" Foreground="#D6DBE6" />
+                <TextBlock TextWrapping="Wrap" Foreground="#8A93A6" FontSize="12"
+                           Text="Exporte um arquivo para levar suas preferências e atalhos a outro PC; importe para aplicá-los." />
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <Button Content="Exportar…" Click="OnExport" />
+                    <Button Content="Importar…" Click="OnImport" />
+                </StackPanel>
+                <TextBlock x:Name="ShareStatus" Foreground="#8A93A6" FontSize="12" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

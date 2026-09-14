@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Motor do DreamBit em .NET 8. Porta o *design* do modelo de DreamBit.Game
+    (Scene / GameObject / Transform / GameComponent, bindável) e o conceito de
+    runtime dos projetos Old.* (loop de update, câmera, desenho por SpriteBatch),
+    agora recompilado para net8 + MonoGame 3.8. Ver ROADMAP-STANDALONE-DOTNET8.md §3.
+
+    Usa WindowsDX (mesmo pacote do DreamBit.Studio) para compartilhar o GraphicsDevice
+    com o D3DImage. Para multiplataforma (Fase 8) troca-se por MonoGame.Framework.DesktopGL.
+  -->
+  <PropertyGroup>
+    <!--
+      Multi-target: net8.0-windows (WindowsDX, usado pelo editor via D3DImage) e
+      net8.0 (DesktopGL, cross-platform, usado pelo Player). O código do motor só
+      usa APIs comuns do MonoGame, então compila igual nos dois. (Fase 8 do roadmap.)
+    -->
+    <TargetFrameworks>net8.0-windows;net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>DreamBit.Engine</RootNamespace>
+    <AssemblyName>DreamBit.Engine</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Compilação de scripts C# do usuário em runtime (componente Script). -->
+    <PackageReference Include="Aether.Physics2D" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Helpers genéricos compartilhados (engine + jogo + scripts). -->
+    <ProjectReference Include="..\Scrawlbit\Scrawlbit.csproj" />
+  </ItemGroup>
+
+</Project>

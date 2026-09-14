@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Lógica do editor independente de UI (ViewModels, comandos, input, seleção).
+    Multi-target igual ao motor para casar o pacote MonoGame do consumidor:
+    net8.0-windows (WPF/WindowsDX) e net8.0 (Avalonia/DesktopGL).
+    Sem dependência de WPF — reaproveitável pelo editor WPF e pelo Avalonia.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-windows;net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>DreamBit.Studio</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Engine\DreamBit.Engine.csproj" />
+  </ItemGroup>
+
+</Project>

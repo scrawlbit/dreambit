@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Runtime "jogável" do DreamBit: executavel MonoGame que carrega um arquivo
+    .dbscene e roda a cena (Update + Draw). Separa a execucao da edicao
+    (Fases 3 e 6 do roadmap). Usa o mesmo pacote MonoGame do DreamBit.Engine.
+  -->
+  <PropertyGroup>
+    <!-- DesktopGL = roda em Windows, macOS e Linux (Fase 8 do roadmap). -->
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>DreamBit.Player</RootNamespace>
+    <AssemblyName>DreamBit.Player</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DreamBit.Engine\DreamBit.Engine.csproj" />
+  </ItemGroup>
+
+  <!-- Shaders compilados (MGCB) copiados para Content/ ao lado do executavel. -->
+  <ItemGroup>
+    <Content Include="Content\*.xnb" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

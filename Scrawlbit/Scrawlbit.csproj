@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Scrawlbit — biblioteca de helpers genéricos (sem dependência de UI, MonoGame ou
+    engine), compartilhada entre a engine (DreamBit.Engine), o jogo (DreamBit.Player)
+    e os scripts C# do usuário. Só o núcleo reutilizável do antigo Scrawlbit.Util,
+    modernizado para .NET 8.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+</Project>

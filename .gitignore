@@ -338,3 +338,14 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+# Saida de publish/empacotamento
+/dist/
+
+# Saida de testes
+/TestResults/
+
+# DemoAssets: arte de terceiros (Dust: An Elysian Tail, (c) Humble Hearts) e
+# imagens derivadas — nao redistribuir no repositorio. Metadados e a cena sim.
+/DemoAssets/*.png
+/DemoAssets/*.gif
+/DemoAssets/*.jpg
