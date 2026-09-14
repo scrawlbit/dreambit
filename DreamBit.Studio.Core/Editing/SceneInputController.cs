@@ -221,6 +221,15 @@ namespace DreamBit.Studio.Editing
             return top;
         }
 
+        /// <summary>True se algum ancestral de <paramref name="obj"/> está na seleção.</summary>
+        private static bool HasSelectedAncestor(GameObject obj, System.Collections.Generic.HashSet<GameObject> selected)
+        {
+            for (var p = obj.Parent; p != null; p = p.Parent)
+                if (selected.Contains(p))
+                    return true;
+            return false;
+        }
+
         /// <summary>Centro (média das posições) do que estava selecionado no início do arraste.</summary>
         private Vector2 GroupBeforeCenter()
         {
@@ -234,8 +243,13 @@ namespace DreamBit.Studio.Editing
 
         private void BeginGroupOp(Vector2 center)
         {
-            // Objetos travados não são movidos/escalados/rotacionados (evita arrastar sem querer).
-            _groupObjects = _editor.SelectedObjects.Where(o => !o.Locked).ToArray();
+            // Move só os "topos" da seleção: se um ancestral também está selecionado, o filho já é
+            // movido pela hierarquia — aplicar o delta de novo faria aninhados voarem por profundidade
+            // (o bug de "grupo de grupo" se movendo em velocidades/ordens diferentes). Travados ficam de fora.
+            var selected = new System.Collections.Generic.HashSet<GameObject>(_editor.SelectedObjects);
+            _groupObjects = _editor.SelectedObjects
+                .Where(o => !o.Locked && !HasSelectedAncestor(o, selected))
+                .ToArray();
             _groupBefore = _groupObjects.Select(EditorViewModel.Capture).ToArray();
             _groupCenter = center;
         }
