@@ -77,6 +77,14 @@ MonoGame atualizado.
   (`AudioSource.FadeTo`) para música em camadas.
 - **Partículas ricas**: burst/one-shot (`Burst`/`EmitOnStart`), cor e tamanho ao longo da vida.
 - **Profiler** (`Profiler`): tempos por seção e contadores no overlay de debug (F3).
+- **Hierarquia no editor**: aninhar GameObjects (TreeView com filhos), **Ctrl+G** agrupa e
+  **Ctrl+Shift+G** desagrupa (undo, preservando a pose de mundo); reparent por API.
+- **Atalhos configuráveis** nas Preferências (pressione para reatribuir) e
+  **exportar/importar** preferências+atalhos (JSON) para outros PCs.
+- **Prefabs**: instância rastreada (`PrefabInstance`) com **Aplicar** (salva no arquivo) e
+  **Reverter** (recarrega do arquivo).
+- **Banco de assets por GUID** (`AssetDatabase`): identidade estável via sidecar `.meta`,
+  resolução por ID à prova de renomear/mover (base para referências por ID).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -112,9 +120,9 @@ propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referên
 - **Texto TTF/rich text** (hoje fonte pixel escalável).
 
 ### Sistemas e tooling (grandes)
-- **Referências de asset por ID/GUID** + atlas packer (hoje por caminho de arquivo).
-- **Prefabs aninhados com overrides/variantes**.
-- **Editor visual de animação**: máquina de estados/blend tree e editor de curvas.
+- **Migrar componentes para referências por ID** (o `AssetDatabase`/GUID já existe) + atlas packer.
+- **Prefabs: diff de overrides por-propriedade** (a instância + Aplicar/Reverter já existem).
+- **Editor visual de animação**: máquina de estados/blend tree em nó-e-fio e editor de curvas.
 - **Inspector/profiler remoto** (o profiler local no overlay F3 já existe).
 
 ### Animação

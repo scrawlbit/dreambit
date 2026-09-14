@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "dbf4d099-01d3-4607-b072-a8f6f8067be4",
+      "Id": "70015a3c-ca08-4e44-b701-30cfc3f40dc8",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1238,7 +1238,7 @@
       "PrefabInstances": [],
       "Children": [
         {
-          "Id": "2f0e4734-ac49-4f41-8d9a-37aecce70110",
+          "Id": "c3d2b284-e98e-4603-9c18-fbd4c7d3f198",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1308,7 +1308,7 @@
           "PrefabInstances": [],
           "Children": [
             {
-              "Id": "72923057-6528-44bd-9544-29da83afac4b",
+              "Id": "44f5c032-3a75-4452-ad0f-51f2e7e80a12",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1378,7 +1378,7 @@
               "PrefabInstances": [],
               "Children": [
                 {
-                  "Id": "a9d00578-8922-4fc3-9a47-fdc3d0d261f3",
+                  "Id": "2d4e1cd6-4420-4874-b9a7-c09888e9870a",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1448,7 +1448,7 @@
                   "PrefabInstances": [],
                   "Children": [
                     {
-                      "Id": "8692bb27-aa47-4d06-a19f-c145120a818e",
+                      "Id": "2b45cfac-fa64-43bf-9a0a-ab848f516425",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1531,7 +1531,7 @@
                   ]
                 },
                 {
-                  "Id": "1f4f2aaa-8f60-4a67-9722-635261384e29",
+                  "Id": "9f910ec6-fffc-49b0-ade8-96f146f7fdcc",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1601,7 +1601,7 @@
                   "PrefabInstances": [],
                   "Children": [
                     {
-                      "Id": "7dbad745-ef6d-44b4-bede-73bff84a19e4",
+                      "Id": "12a1c3da-d6d5-48f8-a0c8-871067eccc7f",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1671,7 +1671,7 @@
                       "PrefabInstances": [],
                       "Children": [
                         {
-                          "Id": "7a3f929f-3d9a-40b0-a11e-5e5bb17f0eac",
+                          "Id": "8c0c8922-17d2-4a25-90a1-6e8352ca1f37",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1754,7 +1754,7 @@
                       ]
                     },
                     {
-                      "Id": "75ad8bf9-695c-4520-829e-a60d45d1e16a",
+                      "Id": "f197296a-9d8d-4ff7-be4a-220e6b801709",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1837,7 +1837,7 @@
                   ]
                 },
                 {
-                  "Id": "28aa872e-6018-463a-97ba-cc3e961f19eb",
+                  "Id": "1962e628-f9fd-4479-a88c-4c8c0e5da63d",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1907,7 +1907,7 @@
                   "PrefabInstances": [],
                   "Children": [
                     {
-                      "Id": "bbbe1330-86ad-4ea6-b44c-5bc7451201d7",
+                      "Id": "29352e12-f6b2-4e66-859c-f762a1ee4c75",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1977,7 +1977,7 @@
                       "PrefabInstances": [],
                       "Children": [
                         {
-                          "Id": "b9268c92-c9fc-4f76-836f-2120bc504110",
+                          "Id": "38a9840f-6ffc-444f-8fc6-dbb6b413e7ae",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2047,7 +2047,7 @@
                           "PrefabInstances": [],
                           "Children": [
                             {
-                              "Id": "73089683-3a27-4f15-9b4f-6065a97411fd",
+                              "Id": "34597213-254b-4b8f-a142-5ce2921cf79f",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2130,7 +2130,7 @@
                           ]
                         },
                         {
-                          "Id": "447e1aa5-35a6-4caa-9a43-24451df4ee79",
+                          "Id": "f42b565e-a968-4b51-9cc7-dc21c54996de",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2213,7 +2213,7 @@
                       ]
                     },
                     {
-                      "Id": "2885b64c-0541-4281-8d82-a2f0589987d0",
+                      "Id": "01c6b836-3ae1-4adc-9720-a615d5c32009",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2296,7 +2296,7 @@
                   ]
                 },
                 {
-                  "Id": "cb4986a5-8e66-4633-9d92-0095f493c4c5",
+                  "Id": "3b139e90-e852-4200-bf85-8ede1bae780b",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2379,7 +2379,7 @@
               ]
             },
             {
-              "Id": "e48ed228-b1a5-4cd2-8082-cc7693eb1046",
+              "Id": "66e4443f-85d1-4544-8dc4-6dc65d2e74e1",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2449,7 +2449,7 @@
               "PrefabInstances": [],
               "Children": [
                 {
-                  "Id": "6e1c056c-9b16-416e-8dac-80500a17d668",
+                  "Id": "ed13aa29-0674-447f-a923-1ad18934f43c",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2532,7 +2532,7 @@
               ]
             },
             {
-              "Id": "6ad6408c-f508-4bbc-b3ea-d559bccdd9a5",
+              "Id": "9225d277-22a3-447b-87ca-210bc290fcbb",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2602,7 +2602,7 @@
               "PrefabInstances": [],
               "Children": [
                 {
-                  "Id": "5effdde2-1920-4ffb-9829-a15e18bd6459",
+                  "Id": "2d155f8a-4599-4585-b668-4eca2a7fbc3f",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2685,7 +2685,7 @@
               ]
             },
             {
-              "Id": "f39ec65c-60a3-492b-a2ea-a3814d4a083a",
+              "Id": "55297672-2f48-4294-a8c6-b06c9d85ac4b",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2755,7 +2755,7 @@
               "PrefabInstances": [],
               "Children": [
                 {
-                  "Id": "2102edb0-e7a2-4b9a-9a96-70f51d628e26",
+                  "Id": "b4c67e97-2ddd-4d7f-86a3-fc3f46c4d6de",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,
