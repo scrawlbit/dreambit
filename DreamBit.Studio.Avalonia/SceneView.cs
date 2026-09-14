@@ -88,6 +88,8 @@ namespace DreamBit.Studio.Avalonia
                     }
                 }
 
+                DrawLighting(context, w, h); // iluminação 2D no play (F5): escurece + poças de luz
+
                 DrawLedges(context);
                 DrawColliders(context);
                 DrawSelectionBox(context);
@@ -562,6 +564,52 @@ namespace DreamBit.Studio.Avalonia
                 if (c is SpriteRenderer s)
                     return s.Color;
             return new XnaColor(70, 130, 200);
+        }
+
+        /// <summary>Iluminação 2D aproximada para o play no editor (F5): espelha o lightmap do
+        /// Player (só ativa com ≥1 Light2D). Escurece até o ambiente e soma poças radiais de luz.
+        /// Aproximação por alpha (o multiply exato roda no DreamBit.Player).</summary>
+        private void DrawLighting(DrawingContext ctx, int w, int h)
+        {
+            if (_editor == null || !_editor.IsPlaying)
+                return;
+
+            var amb = new XnaColor(40, 44, 60); // ambiente padrão (igual ao SceneRenderer)
+            var lights = new List<(XnaVector2 Pos, float Radius, XnaColor Color, float Intensity)>();
+            foreach (var obj in _editor.Scene.VisibleInDrawOrder())
+                foreach (var c in obj.Components)
+                {
+                    if (c is Light2D l)
+                        lights.Add((obj.Transform.WorldPosition, l.Radius, l.Color, l.Intensity));
+                    else if (c is AmbientLight a)
+                        amb = a.Color;
+                }
+            if (lights.Count == 0)
+                return; // sem luzes: cena totalmente iluminada (igual ao Player)
+
+            var cam = _editor.Camera.Position;
+            float zoom = Math.Max(0.01f, _editor.Camera.Zoom);
+            double halfW = w / 2.0 / zoom, halfH = h / 2.0 / zoom;
+            var worldRect = new Rect(cam.X - halfW - 64, cam.Y - halfH - 64, 2 * halfW + 128, 2 * halfH + 128);
+
+            // Escurece até o nível do ambiente.
+            float lum = (amb.R + amb.G + amb.B) / 3f / 255f;
+            byte darkA = (byte)(Math.Clamp(1f - lum, 0f, 1f) * 255);
+            if (darkA > 0)
+                ctx.FillRectangle(new SolidColorBrush(Color.FromArgb(darkA, 0, 0, 0)), worldRect);
+
+            // Poças de luz (gradiente radial, somando por alpha).
+            foreach (var (pos, radius, color, intensity) in lights)
+            {
+                if (radius <= 0f)
+                    continue;
+                var col = ToColor(color);
+                byte a = (byte)(Math.Clamp(intensity, 0f, 2f) / 2f * 235f);
+                var brush = new RadialGradientBrush();
+                brush.GradientStops.Add(new GradientStop(Color.FromArgb(a, col.R, col.G, col.B), 0));
+                brush.GradientStops.Add(new GradientStop(Color.FromArgb(0, col.R, col.G, col.B), 1));
+                ctx.DrawEllipse(brush, null, new Point(pos.X, pos.Y), radius, radius);
+            }
         }
 
         private static Color ToColor(XnaColor c) => Color.FromArgb(c.A, c.R, c.G, c.B);
