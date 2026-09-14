@@ -131,7 +131,10 @@ namespace DreamBit.Engine.Tests
             Assert.Contains(reload.VisibleInDrawOrder(), o => o.Components.OfType<NavChaser>().Any());
             Assert.Contains(reload.VisibleInDrawOrder(), o => o.Components.OfType<TilemapRenderer>().Any(t => t.Solid));
 
-            File.WriteAllText(Path.Combine(ForestDemo.AssetsDir, "forest-demo.dbscene"), json);
+            // Grava o .dbscene jogável numa pasta temporária (não suja o repo).
+            var outDir = Path.Combine(Path.GetTempPath(), "dreambit-smoke");
+            Directory.CreateDirectory(outDir);
+            File.WriteAllText(Path.Combine(outDir, "forest-demo.dbscene"), json);
         }
     }
 }

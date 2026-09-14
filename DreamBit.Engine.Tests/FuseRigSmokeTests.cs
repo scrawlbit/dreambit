@@ -66,9 +66,11 @@ namespace DreamBit.Engine.Tests
             Assert.Equal(11, lanim!.RigBones().Count);
             CollectionAssert.Contains(lanim.ClipNames.ToList(), "attack");
 
-            // Grava a cena jogável tocando "walk".
+            // Grava a cena jogável tocando "walk" numa pasta temporária (não suja o repo).
             anim.CurrentClipName = "walk";
-            File.WriteAllText(Path.Combine(ForestDemo.AssetsDir, "fuse-enemy.dbscene"),
+            var outDir = Path.Combine(Path.GetTempPath(), "dreambit-smoke");
+            Directory.CreateDirectory(outDir);
+            File.WriteAllText(Path.Combine(outDir, "fuse-enemy.dbscene"),
                 SceneSerializer.SaveToString(scene));
         }
 
