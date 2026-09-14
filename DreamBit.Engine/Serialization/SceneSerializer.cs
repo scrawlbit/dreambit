@@ -462,6 +462,8 @@ namespace DreamBit.Engine.Serialization
                     data.YSorts.Add(new YSortData { Offset = ysort.Offset });
                 else if (component is PrefabInstance prefab)
                     data.PrefabInstances.Add(new PrefabInstanceData { PrefabPath = prefab.PrefabPath });
+                else if (component is ScreenFade fade)
+                    data.ScreenFades.Add(new ScreenFadeData { R = fade.Color.R, G = fade.Color.G, B = fade.Color.B, Alpha = fade.Alpha, FlashOnMessage = fade.FlashOnMessage, FlashDuration = fade.FlashDuration });
                 else if (component is AnimationStateMachine fsm)
                     data.StateMachines.Add(new AnimStateMachineData
                     {
@@ -747,6 +749,9 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var pi in data.PrefabInstances)
                 obj.AddComponent(new PrefabInstance { PrefabPath = pi.PrefabPath });
+
+            foreach (var f in data.ScreenFades)
+                obj.AddComponent(new ScreenFade { Color = new Color(f.R, f.G, f.B), Alpha = f.Alpha, FlashOnMessage = f.FlashOnMessage, FlashDuration = f.FlashDuration });
 
             foreach (var sm in data.StateMachines)
             {

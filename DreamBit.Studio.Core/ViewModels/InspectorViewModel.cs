@@ -1216,6 +1216,16 @@ namespace DreamBit.Studio.ViewModels
         public bool HasPrefabInstance => PrefabInst != null;
         public string PrefabInstancePath => PrefabInst?.PrefabPath ?? "";
 
+        // ---- Screen Fade ----
+        private ScreenFade? Fade => _target?.Components.OfType<ScreenFade>().FirstOrDefault();
+        public bool HasScreenFade => Fade != null;
+        public int FadeR { get => Fade?.Color.R ?? 0; set { var c = Fade; if (c != null) c.Color = new Color((byte)Clamp(value), c.Color.G, c.Color.B); } }
+        public int FadeG { get => Fade?.Color.G ?? 0; set { var c = Fade; if (c != null) c.Color = new Color(c.Color.R, (byte)Clamp(value), c.Color.B); } }
+        public int FadeB { get => Fade?.Color.B ?? 0; set { var c = Fade; if (c != null) c.Color = new Color(c.Color.R, c.Color.G, (byte)Clamp(value)); } }
+        public float FadeAlpha { get => Fade?.Alpha ?? 0f; set { var c = Fade; if (c != null) c.Alpha = value; } }
+        public string FadeFlashOn { get => Fade?.FlashOnMessage ?? ""; set { var c = Fade; if (c != null) c.FlashOnMessage = value; } }
+        public float FadeFlashDuration { get => Fade?.FlashDuration ?? 0.25f; set { var c = Fade; if (c != null) c.FlashDuration = value; } }
+
         // ---- Animation State Machine ----
         private AnimationStateMachine? Fsm => _target?.Components.OfType<AnimationStateMachine>().FirstOrDefault();
         public bool HasStateMachine => Fsm != null;
@@ -1521,6 +1531,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(ShadowOffsetX)); OnPropertyChanged(nameof(ShadowOffsetY));
             OnPropertyChanged(nameof(HasYSort)); OnPropertyChanged(nameof(YSortOffset));
             OnPropertyChanged(nameof(HasPrefabInstance)); OnPropertyChanged(nameof(PrefabInstancePath));
+            OnPropertyChanged(nameof(HasScreenFade)); OnPropertyChanged(nameof(FadeR)); OnPropertyChanged(nameof(FadeG)); OnPropertyChanged(nameof(FadeB)); OnPropertyChanged(nameof(FadeAlpha)); OnPropertyChanged(nameof(FadeFlashOn)); OnPropertyChanged(nameof(FadeFlashDuration));
             OnPropertyChanged(nameof(HasStateMachine)); OnPropertyChanged(nameof(FsmDefaultState)); OnPropertyChanged(nameof(FsmBlendTime)); OnPropertyChanged(nameof(FsmStatesText)); OnPropertyChanged(nameof(FsmTransitionsText));
             OnPropertyChanged(nameof(TilemapOrientation));
         }

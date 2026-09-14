@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "bc68a973-9d5b-461a-b46d-489a0553c93a",
+      "Id": "b924f8eb-9710-4394-87f8-a73177a0dac5",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1237,9 +1237,10 @@
       "YSorts": [],
       "PrefabInstances": [],
       "StateMachines": [],
+      "ScreenFades": [],
       "Children": [
         {
-          "Id": "6fbcb561-32d0-4139-b44c-b931df358c7e",
+          "Id": "12ee9c66-efa0-45a3-885e-669a29efcb64",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1308,9 +1309,10 @@
           "YSorts": [],
           "PrefabInstances": [],
           "StateMachines": [],
+          "ScreenFades": [],
           "Children": [
             {
-              "Id": "99fd5062-b950-4681-b8f9-bf57c5fddb3a",
+              "Id": "af8d88c9-0cd7-4735-ab14-5e5fde83011d",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1379,9 +1381,10 @@
               "YSorts": [],
               "PrefabInstances": [],
               "StateMachines": [],
+              "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "16de41d3-c357-4d3f-99cf-09c7309b853e",
+                  "Id": "28f18774-6fe3-4c6f-8d6b-dcb3841ef369",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1450,9 +1453,10 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": [
                     {
-                      "Id": "ce586dc6-da69-4be9-a77d-978d7f66db5b",
+                      "Id": "b02f3e3a-09db-4f3b-a2d9-9c9b4324b0cd",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1531,12 +1535,13 @@
                       "YSorts": [],
                       "PrefabInstances": [],
                       "StateMachines": [],
+                      "ScreenFades": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "f5cc29ae-59c8-48e5-9484-babb964a4f89",
+                  "Id": "2ade15c1-5ec4-438d-af1b-604a56aeceda",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1605,9 +1610,10 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": [
                     {
-                      "Id": "23f455bc-368b-42d3-aaf2-b677d75027ae",
+                      "Id": "7d3ed45e-b2b1-4fa7-9886-1e2ac67c791f",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1676,9 +1682,10 @@
                       "YSorts": [],
                       "PrefabInstances": [],
                       "StateMachines": [],
+                      "ScreenFades": [],
                       "Children": [
                         {
-                          "Id": "1c82b019-a294-4daf-b3f8-949e321894b4",
+                          "Id": "f3716f06-9c55-4b6a-a3e4-65f39e5ff862",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1757,12 +1764,13 @@
                           "YSorts": [],
                           "PrefabInstances": [],
                           "StateMachines": [],
+                          "ScreenFades": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "6921bb45-9acd-438f-8d94-6318575a78f5",
+                      "Id": "62158da7-948a-4093-968f-c448d7577540",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1841,12 +1849,13 @@
                       "YSorts": [],
                       "PrefabInstances": [],
                       "StateMachines": [],
+                      "ScreenFades": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "225c28fd-0eed-4b56-887b-06124551dbe1",
+                  "Id": "9aca014b-814b-47d9-9552-97a2eaae9013",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1915,9 +1924,10 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": [
                     {
-                      "Id": "ae6fd7c8-2b40-4c1a-bd60-94767805c137",
+                      "Id": "7b9201b2-a9de-4d0a-8dd7-500f848404de",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1986,9 +1996,10 @@
                       "YSorts": [],
                       "PrefabInstances": [],
                       "StateMachines": [],
+                      "ScreenFades": [],
                       "Children": [
                         {
-                          "Id": "fa6d0fd1-0f99-459d-8e2b-75835e6f5e05",
+                          "Id": "bc81bda3-1c02-4bf4-b7b3-8034ea17f9ba",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2057,9 +2068,10 @@
                           "YSorts": [],
                           "PrefabInstances": [],
                           "StateMachines": [],
+                          "ScreenFades": [],
                           "Children": [
                             {
-                              "Id": "a8eeaa5b-7eaf-4339-a35c-5a92d0ed67f5",
+                              "Id": "ca86faaf-4036-46fb-9e25-8afa96646359",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2138,12 +2150,13 @@
                               "YSorts": [],
                               "PrefabInstances": [],
                               "StateMachines": [],
+                              "ScreenFades": [],
                               "Children": []
                             }
                           ]
                         },
                         {
-                          "Id": "ab42aacd-ac47-4d3d-9185-2d0c04ea13dc",
+                          "Id": "0b1d8dd0-a368-4ef9-86ab-9597f57d3027",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2222,12 +2235,13 @@
                           "YSorts": [],
                           "PrefabInstances": [],
                           "StateMachines": [],
+                          "ScreenFades": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "bf6ef46e-82e2-4b58-abb2-9f30a9f4780c",
+                      "Id": "05fb066a-3e9d-4147-a799-a2b3217e7910",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2306,12 +2320,13 @@
                       "YSorts": [],
                       "PrefabInstances": [],
                       "StateMachines": [],
+                      "ScreenFades": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "88f6dd43-8e29-465d-9ec3-8522a2caaabf",
+                  "Id": "5bd825fb-b7d7-4ea0-bd66-6c936f325a26",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2390,12 +2405,13 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "d5023bf9-9653-4555-a04b-6da5bf12fd0b",
+              "Id": "72fce837-dd5f-4ff1-8c24-cf8de24b2745",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2464,9 +2480,10 @@
               "YSorts": [],
               "PrefabInstances": [],
               "StateMachines": [],
+              "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "36ab2c56-91da-40ab-a675-3f10d911a761",
+                  "Id": "f2b7fb27-e2a1-4e67-ab2d-6453f02a4861",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2545,12 +2562,13 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "b866f5bc-a3a9-4021-8a95-df5a522273df",
+              "Id": "069f8764-b567-482c-98ac-f318359b69d2",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2619,9 +2637,10 @@
               "YSorts": [],
               "PrefabInstances": [],
               "StateMachines": [],
+              "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "ccfbce1c-d2ba-4252-b04a-625e8cfa9a5c",
+                  "Id": "42fc5588-8bb4-49fe-a611-9cd0b2c3e11c",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2700,12 +2719,13 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "f7491b82-7106-43cd-89c8-d6bf9b2cd0e4",
+              "Id": "048c8d0d-1b53-4712-81ad-346dd9625665",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2774,9 +2794,10 @@
               "YSorts": [],
               "PrefabInstances": [],
               "StateMachines": [],
+              "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "32cc406d-8463-4049-9a65-cd8d038797ce",
+                  "Id": "650deaed-2129-43ae-90fb-ec7faca0db86",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2855,6 +2876,7 @@
                   "YSorts": [],
                   "PrefabInstances": [],
                   "StateMachines": [],
+                  "ScreenFades": [],
                   "Children": []
                 }
               ]

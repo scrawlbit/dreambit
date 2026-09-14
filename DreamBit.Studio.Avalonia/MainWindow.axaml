@@ -369,6 +369,7 @@
                             <ComboBoxItem>Shadow Caster</ComboBoxItem>
                             <ComboBoxItem>Y Sort</ComboBoxItem>
                             <ComboBoxItem>State Machine</ComboBoxItem>
+                            <ComboBoxItem>Screen Fade</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -1497,6 +1498,25 @@
                                     <Button Content="Aplicar ao prefab" Click="OnApplyPrefab" />
                                     <Button Content="Reverter" Click="OnRevertPrefab" />
                                 </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Screen Fade -->
+                        <Border Classes="component" IsVisible="{Binding HasScreenFade}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Screen Fade" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveScreenFade" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding FadeR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="G" /><TextBox Text="{Binding FadeG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBlock Classes="field" Text="B" /><TextBox Text="{Binding FadeB, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="6"><TextBlock Classes="field" Text="Alpha" /><TextBox Text="{Binding FadeAlpha, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Flash na mensagem" /><TextBox Text="{Binding FadeFlashOn, Mode=TwoWay}" Watermark="ex.: hit" />
+                                <TextBlock Classes="field" Text="Duração do flash (s)" /><TextBox Text="{Binding FadeFlashDuration, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Cobre a tela (fade de fase, flash de dano). Alpha 0 = invisível." />
                             </StackPanel>
                         </Border>
 

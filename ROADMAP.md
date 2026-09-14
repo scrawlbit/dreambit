@@ -85,6 +85,10 @@ MonoGame atualizado.
   **Reverter** (recarrega do arquivo).
 - **Banco de assets por GUID** (`AssetDatabase`): identidade estável via sidecar `.meta`,
   resolução por ID à prova de renomear/mover (base para referências por ID).
+- **Máquina de estados de animação** (`AnimationStateMachine`): estados→clipe + transições por
+  parâmetros/gatilhos, dirige sprite/rig com crossfade (runtime do editor visual futuro).
+- **Pós-processamento sem shader** (`ScreenFade`): fade-in/out de fase, fade-to-black e flash
+  de dano (por mensagem).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -115,8 +119,8 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Shaders 2D customizados** (pipeline MGCB) — pós-processamento, normal maps, dissolve por
-  shader. As luzes/sombras 2D por lightmap já existem sem shader.
+- **Shaders 2D customizados** (pipeline MGCB) — grayscale, bloom, dissolve e normal maps por
+  shader. Luzes/sombras e fade/flash de tela já existem sem shader.
 - **Texto TTF/rich text** (hoje fonte pixel escalável).
 
 ### Sistemas e tooling (grandes)

@@ -1214,6 +1214,8 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveYSort() => RemoveSingle<YSort>();
         public void AddStateMachine() => AddSingle(() => new AnimationStateMachine(), "Adicionar State Machine");
         public void RemoveStateMachine() => RemoveSingle<AnimationStateMachine>();
+        public void AddScreenFade() => AddSingle(() => new ScreenFade(), "Adicionar Screen Fade");
+        public void RemoveScreenFade() => RemoveSingle<ScreenFade>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1508,6 +1510,9 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case YSort yst:
                         clone.AddComponent(new YSort { Offset = yst.Offset });
+                        break;
+                    case ScreenFade sfd:
+                        clone.AddComponent(new ScreenFade { Color = sfd.Color, Alpha = sfd.Alpha, FlashOnMessage = sfd.FlashOnMessage, FlashDuration = sfd.FlashDuration });
                         break;
                     case PrefabInstance pin:
                         clone.AddComponent(new PrefabInstance { PrefabPath = pin.PrefabPath });
