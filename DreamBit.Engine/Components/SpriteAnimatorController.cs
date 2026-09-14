@@ -21,6 +21,7 @@ namespace DreamBit.Engine.Components
         private string _attackAction = "Action";
         private bool _flipByVelocity = true;
         private bool _artFacesRight = true;
+        private float _blendTime = 0.1f;
         private bool _attacking;
         private Vector2 _lastPos;
 
@@ -39,6 +40,9 @@ namespace DreamBit.Engine.Components
 
         /// <summary>Se a arte olha para a direita por padrão (senão inverte o flip).</summary>
         public bool ArtFacesRight { get => _artFacesRight; set => Set(ref _artFacesRight, value); }
+
+        /// <summary>Tempo de crossfade (dissolve) ao trocar de clipe (0 = corte seco).</summary>
+        public float BlendTime { get => _blendTime; set => Set(ref _blendTime, System.Math.Max(0f, value)); }
 
         /// <summary>True enquanto o clipe de ataque está tocando.</summary>
         public bool IsAttacking => _attacking;
@@ -65,7 +69,7 @@ namespace DreamBit.Engine.Components
             if (!_attacking && HasClip(animator, _attackClip) &&
                 !string.IsNullOrEmpty(_attackAction) && GameInput.JustPressed(_attackAction))
             {
-                animator.Play(_attackClip);
+                animator.Play(_attackClip, _blendTime);
                 _attacking = true;
             }
 
@@ -73,7 +77,7 @@ namespace DreamBit.Engine.Components
             {
                 string clip = !grounded ? _jumpClip : moving ? _walkClip : _idleClip;
                 if (HasClip(animator, clip))
-                    animator.Play(clip);
+                    animator.Play(clip, _blendTime);
             }
 
             // Vira o sprite pela direção (mantém a direção anterior quando parado).

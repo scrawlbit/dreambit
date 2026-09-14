@@ -389,7 +389,7 @@ namespace DreamBit.Engine.Serialization
                 else if (component is AnimatorController animCtrl)
                     data.AnimatorControllers.Add(new AnimatorControllerData
                     {
-                        IdleClip = animCtrl.IdleClip, WalkClip = animCtrl.WalkClip, JumpClip = animCtrl.JumpClip
+                        IdleClip = animCtrl.IdleClip, WalkClip = animCtrl.WalkClip, JumpClip = animCtrl.JumpClip, BlendTime = animCtrl.BlendTime
                     });
                 else if (component is SpriteAnimatorController spriteCtrl)
                     data.SpriteAnimatorControllers.Add(new SpriteAnimatorControllerData
@@ -397,7 +397,7 @@ namespace DreamBit.Engine.Serialization
                         IdleClip = spriteCtrl.IdleClip, WalkClip = spriteCtrl.WalkClip,
                         JumpClip = spriteCtrl.JumpClip, AttackClip = spriteCtrl.AttackClip,
                         AttackAction = spriteCtrl.AttackAction, FlipByVelocity = spriteCtrl.FlipByVelocity,
-                        ArtFacesRight = spriteCtrl.ArtFacesRight
+                        ArtFacesRight = spriteCtrl.ArtFacesRight, BlendTime = spriteCtrl.BlendTime
                     });
                 else if (component is NavChaser chaser)
                     data.NavChasers.Add(new NavChaserData
@@ -848,7 +848,7 @@ namespace DreamBit.Engine.Serialization
             foreach (var ac in data.AnimatorControllers)
                 obj.AddComponent(new AnimatorController
                 {
-                    IdleClip = ac.IdleClip, WalkClip = ac.WalkClip, JumpClip = ac.JumpClip
+                    IdleClip = ac.IdleClip, WalkClip = ac.WalkClip, JumpClip = ac.JumpClip, BlendTime = ac.BlendTime
                 });
 
             foreach (var sc in data.SpriteAnimatorControllers)
@@ -856,7 +856,7 @@ namespace DreamBit.Engine.Serialization
                 {
                     IdleClip = sc.IdleClip, WalkClip = sc.WalkClip, JumpClip = sc.JumpClip,
                     AttackClip = sc.AttackClip, AttackAction = sc.AttackAction,
-                    FlipByVelocity = sc.FlipByVelocity, ArtFacesRight = sc.ArtFacesRight
+                    FlipByVelocity = sc.FlipByVelocity, ArtFacesRight = sc.ArtFacesRight, BlendTime = sc.BlendTime
                 });
 
             foreach (var tween in data.Tweens)

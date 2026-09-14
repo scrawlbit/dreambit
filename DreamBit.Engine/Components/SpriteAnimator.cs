@@ -39,6 +39,11 @@ namespace DreamBit.Engine.Components
         private SpriteClip? _activeClip;
         private bool _clipDone;
 
+        // Crossfade (dissolve) entre clipes: frame de saída congelado + tempo do blend.
+        private int _fadeFrame = -1;
+        private float _fadeTime;
+        private float _fadeElapsed;
+
         public override string DisplayName => "Sprite Animator";
 
         /// <summary>Espelha o sprite na horizontal (para virar o personagem ao mudar de direção).</summary>
@@ -80,17 +85,34 @@ namespace DreamBit.Engine.Components
         }
 
         /// <summary>Começa a tocar um clipe pelo nome (reinicia do primeiro frame do clipe).
-        /// Nome vazio/desconhecido volta a tocar a folha inteira.</summary>
-        public void Play(string? name)
+        /// Nome vazio/desconhecido volta a tocar a folha inteira. Com <paramref name="blendTime"/>
+        /// &gt; 0, faz um dissolve (crossfade) do frame atual para o novo clipe.</summary>
+        public void Play(string? name, float blendTime = 0f)
         {
             var clip = string.IsNullOrEmpty(name) ? null : _clips.FirstOrDefault(c => c.Name == name);
             if (ReferenceEquals(clip, _activeClip) && clip != null)
                 return; // já tocando este clipe
+
+            if (blendTime > 0f)
+            {
+                _fadeFrame = GlobalFrame(_currentFrame); // congela o frame de saída
+                _fadeTime = blendTime;
+                _fadeElapsed = 0f;
+            }
+            else
+            {
+                _fadeFrame = -1;
+            }
+
             _activeClip = clip;
             _currentFrame = 0;
             _accumulator = 0;
             _clipDone = false;
         }
+
+        /// <summary>Peso do crossfade em andamento (0 = começando, 1 = concluído; 1 se sem blend).</summary>
+        public float BlendWeight => _fadeFrame >= 0 && _fadeTime > 0f
+            ? System.Math.Clamp(_fadeElapsed / _fadeTime, 0f, 1f) : 1f;
 
         /// <summary>Retângulos de origem explícitos (frames de tamanhos diferentes). Quando não
         /// vazio, têm prioridade sobre a grade uniforme — preenchidos pela autodetecção.</summary>
@@ -170,6 +192,13 @@ namespace DreamBit.Engine.Components
         /// <summary>Avança a animação por um intervalo de tempo (lógica pura, testável).</summary>
         public void Advance(double deltaSeconds)
         {
+            if (_fadeFrame >= 0)
+            {
+                _fadeElapsed += (float)deltaSeconds;
+                if (_fadeElapsed >= _fadeTime)
+                    _fadeFrame = -1; // dissolve concluído
+            }
+
             int total = SequenceLength;
             float fps = SequenceFps;
             if (fps <= 0f || total <= 1)
@@ -232,11 +261,22 @@ namespace DreamBit.Engine.Components
                 return;
             }
 
-            int globalFrame = GlobalFrame(_currentFrame);
+            var effects = _flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            float w = BlendWeight; // 1 = sem dissolve
+
+            // Frame de saída (dissolve): desenha por baixo, sumindo (alpha 1-w).
+            if (_fadeFrame >= 0 && w < 1f)
+                DrawFrameAt(drawing, texture, _fadeFrame, Tint * (1f - w), effects);
+
+            // Frame atual (entrando com alpha w durante o dissolve).
+            DrawFrameAt(drawing, texture, GlobalFrame(_currentFrame), Tint * w, effects);
+        }
+
+        private void DrawFrameAt(ISceneDrawing drawing, Texture2D texture, int globalFrame, Color color, SpriteEffects effects)
+        {
             Rectangle source;
             if (_frames.Count > 0)
             {
-                // Frames explícitos (tamanhos diferentes): usa o retângulo detectado.
                 source = _frames[Math.Clamp(globalFrame, 0, _frames.Count - 1)];
             }
             else
@@ -248,14 +288,12 @@ namespace DreamBit.Engine.Components
                 source = new Rectangle(col * _frameWidth, row * _frameHeight, _frameWidth, _frameHeight);
             }
 
-            // Mantém a proporção do frame (importante para frames de larguras diferentes):
-            // escala pela altura e deixa a largura seguir a razão do recorte.
+            // Mantém a proporção do frame (frames de larguras diferentes): escala pela altura.
             var drawSize = _size;
             if (source.Height > 0)
                 drawSize = new Vector2(_size.Y * source.Width / source.Height, _size.Y);
 
-            var effects = _flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            drawing.DrawFrame(Owner.Transform.WorldMatrix, drawSize, Tint, texture, source, effects);
+            drawing.DrawFrame(Owner.Transform.WorldMatrix, drawSize, color, texture, source, effects);
         }
     }
 }

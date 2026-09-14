@@ -20,6 +20,11 @@ namespace DreamBit.Engine.Components
         private float _time;
         private bool _playing;
 
+        // Crossfade entre clipes: pose de partida + duração/tempo do blend.
+        private Dictionary<string, BonePose>? _blendFrom;
+        private float _blendTime;
+        private float _blendElapsed;
+
         public SkeletonAnimator()
         {
             _current = new PoseClip("default");
@@ -94,18 +99,35 @@ namespace DreamBit.Engine.Components
             return true;
         }
 
-        /// <summary>Toca um clipe nomeado do início (runtime).</summary>
-        public void Play(string name)
+        /// <summary>Toca um clipe nomeado do início (runtime). Com <paramref name="blendTime"/> &gt; 0,
+        /// faz crossfade suave da pose atual para o novo clipe (transição sem corte).</summary>
+        public void Play(string name, float blendTime = 0f)
         {
             var clip = _clips.FirstOrDefault(c => c.Name == name);
-            if (clip == null)
+            if (clip == null || clip == _current && _blendTime <= 0f && _time == 0f)
                 return;
+
+            if (blendTime > 0f && _current.Keyframes.Count > 0)
+            {
+                _blendFrom = ResolvePose(_time); // pose de onde estamos saindo
+                _blendTime = blendTime;
+                _blendElapsed = 0f;
+            }
+            else
+            {
+                _blendFrom = null;
+                _blendTime = 0f;
+            }
+
             _current = clip;
             _time = 0f;
             _playing = clip.Keyframes.Count > 0;
             OnPropertyChanged(nameof(CurrentClipName));
             RaiseClipChanged();
         }
+
+        /// <summary>True enquanto uma transição (crossfade) entre clipes está em andamento.</summary>
+        public bool IsBlending => _blendFrom != null && _blendElapsed < _blendTime;
 
         /// <summary>Disparado quando o clipe ativo muda ou seu conteúdo (para a UI atualizar).</summary>
         public event Action? ClipChanged;
@@ -241,13 +263,20 @@ namespace DreamBit.Engine.Components
             Sample(Time);
         }
 
-        /// <summary>Amostra a pose no tempo informado e aplica aos ossos do rig.</summary>
+        /// <summary>Amostra a pose no tempo informado e aplica aos ossos do rig (mistura com a
+        /// pose de partida se houver um crossfade em andamento).</summary>
         public void Sample(float time)
         {
             if (_current.Keyframes.Count == 0)
                 return;
 
             var pose = ResolvePose(time);
+            if (_blendFrom != null && _blendElapsed < _blendTime)
+            {
+                float f = _blendTime > 0f ? _blendElapsed / _blendTime : 1f;
+                pose = BlendPoses(_blendFrom, pose, f);
+            }
+
             var rig = RigBones();
             foreach (var (name, bonePose) in pose)
             {
@@ -258,6 +287,17 @@ namespace DreamBit.Engine.Components
                 t.Rotation = bonePose.Rotation;
                 t.Scale = bonePose.Scale;
             }
+        }
+
+        private static Dictionary<string, BonePose> BlendPoses(
+            Dictionary<string, BonePose> from, Dictionary<string, BonePose> to, float factor)
+        {
+            var result = new Dictionary<string, BonePose>();
+            foreach (var (name, poseTo) in to)
+                result[name] = from.TryGetValue(name, out var poseFrom)
+                    ? BonePose.Lerp(poseFrom, poseTo, factor)
+                    : poseTo;
+            return result;
         }
 
         /// <summary>Pose (por osso) interpolada no tempo informado, sem aplicar.</summary>
@@ -311,6 +351,14 @@ namespace DreamBit.Engine.Components
         {
             if (!_playing || _current.Keyframes.Count == 0)
                 return;
+
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (_blendFrom != null)
+            {
+                _blendElapsed += dt;
+                if (_blendElapsed >= _blendTime)
+                    _blendFrom = null; // transição concluída
+            }
 
             float prev = _time;
             _time += (float)gameTime.ElapsedGameTime.TotalSeconds;

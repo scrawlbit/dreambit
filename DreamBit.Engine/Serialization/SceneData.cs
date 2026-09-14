@@ -258,6 +258,7 @@ namespace DreamBit.Engine.Serialization
         public string IdleClip { get; set; } = "idle";
         public string WalkClip { get; set; } = "walk";
         public string JumpClip { get; set; } = "jump";
+        public float BlendTime { get; set; } = 0.15f;
     }
 
     public sealed class TweenData
@@ -501,6 +502,7 @@ namespace DreamBit.Engine.Serialization
         public string AttackAction { get; set; } = "Action";
         public bool FlipByVelocity { get; set; } = true;
         public bool ArtFacesRight { get; set; } = true;
+        public float BlendTime { get; set; } = 0.1f;
     }
 
     public sealed class AnimEventData

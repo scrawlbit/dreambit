@@ -1245,7 +1245,7 @@ namespace DreamBit.Studio.ViewModels
                         {
                             IdleClip = sac.IdleClip, WalkClip = sac.WalkClip, JumpClip = sac.JumpClip,
                             AttackClip = sac.AttackClip, AttackAction = sac.AttackAction,
-                            FlipByVelocity = sac.FlipByVelocity, ArtFacesRight = sac.ArtFacesRight
+                            FlipByVelocity = sac.FlipByVelocity, ArtFacesRight = sac.ArtFacesRight, BlendTime = sac.BlendTime
                         });
                         break;
                     case TilemapRenderer t:

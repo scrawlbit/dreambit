@@ -667,6 +667,7 @@
                                 <TextBox Text="{Binding CtrlWalkClip, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Clipe no ar (jump)" />
                                 <TextBox Text="{Binding CtrlJumpClip, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Crossfade (s)" /><TextBox Text="{Binding CtrlBlendTime, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Troca o clipe do Skeleton conforme o estado do Platformer." />
                             </StackPanel>
                         </Border>
@@ -865,6 +866,7 @@
                                 <TextBlock Classes="field" Text="Ação de ataque" /><TextBox Text="{Binding SacAttackAction, Mode=TwoWay}" />
                                 <CheckBox Content="Virar pela velocidade" IsChecked="{Binding SacFlipByVelocity, Mode=TwoWay}" Margin="0,4,0,0" />
                                 <CheckBox Content="Arte olha para a direita" IsChecked="{Binding SacArtFacesRight, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Crossfade (s)" /><TextBox Text="{Binding SacBlendTime, Mode=TwoWay}" />
                             </StackPanel>
                         </Border>
 

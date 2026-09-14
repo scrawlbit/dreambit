@@ -446,6 +446,7 @@ namespace DreamBit.Studio.ViewModels
         public string CtrlIdleClip { get => AnimController?.IdleClip ?? string.Empty; set { var c = AnimController; if (c != null) c.IdleClip = value; } }
         public string CtrlWalkClip { get => AnimController?.WalkClip ?? string.Empty; set { var c = AnimController; if (c != null) c.WalkClip = value; } }
         public string CtrlJumpClip { get => AnimController?.JumpClip ?? string.Empty; set { var c = AnimController; if (c != null) c.JumpClip = value; } }
+        public float CtrlBlendTime { get => AnimController?.BlendTime ?? 0.15f; set { var c = AnimController; if (c != null) c.BlendTime = value; } }
 
         // ---- Componente TweenComponent ----
 
@@ -1091,6 +1092,7 @@ namespace DreamBit.Studio.ViewModels
         public string SacAttackAction { get => SAC?.AttackAction ?? "Action"; set { var c = SAC; if (c != null) c.AttackAction = value; } }
         public bool SacFlipByVelocity { get => SAC?.FlipByVelocity ?? true; set { var c = SAC; if (c != null) c.FlipByVelocity = value; } }
         public bool SacArtFacesRight { get => SAC?.ArtFacesRight ?? true; set { var c = SAC; if (c != null) c.ArtFacesRight = value; } }
+        public float SacBlendTime { get => SAC?.BlendTime ?? 0.1f; set { var c = SAC; if (c != null) c.BlendTime = value; } }
 
         // ---- Nav Chaser ----
         private NavChaser? Chaser => _target?.Components.OfType<NavChaser>().FirstOrDefault();
@@ -1239,7 +1241,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(HasAnimController));
             OnPropertyChanged(nameof(CtrlIdleClip));
             OnPropertyChanged(nameof(CtrlWalkClip));
-            OnPropertyChanged(nameof(CtrlJumpClip));
+            OnPropertyChanged(nameof(CtrlJumpClip)); OnPropertyChanged(nameof(CtrlBlendTime));
             OnPropertyChanged(nameof(HasTween));
             OnPropertyChanged(nameof(TweenChannel));
             OnPropertyChanged(nameof(TweenLoop));
@@ -1397,7 +1399,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SacIdleClip)); OnPropertyChanged(nameof(SacWalkClip));
             OnPropertyChanged(nameof(SacJumpClip)); OnPropertyChanged(nameof(SacAttackClip));
             OnPropertyChanged(nameof(SacAttackAction)); OnPropertyChanged(nameof(SacFlipByVelocity));
-            OnPropertyChanged(nameof(SacArtFacesRight));
+            OnPropertyChanged(nameof(SacArtFacesRight)); OnPropertyChanged(nameof(SacBlendTime));
             OnPropertyChanged(nameof(HasNavChaser));
             OnPropertyChanged(nameof(ChaserTargetTag)); OnPropertyChanged(nameof(ChaserSpeed));
             OnPropertyChanged(nameof(ChaserRepath)); OnPropertyChanged(nameof(ChaserArrive));

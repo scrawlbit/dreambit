@@ -15,6 +15,7 @@ namespace DreamBit.Engine.Components
         private string _idleClip = "idle";
         private string _walkClip = "walk";
         private string _jumpClip = "jump";
+        private float _blendTime = 0.15f;
         private string? _lastState;
 
         public override string DisplayName => "Animator Controller";
@@ -22,6 +23,9 @@ namespace DreamBit.Engine.Components
         public string IdleClip { get => _idleClip; set => Set(ref _idleClip, value ?? string.Empty); }
         public string WalkClip { get => _walkClip; set => Set(ref _walkClip, value ?? string.Empty); }
         public string JumpClip { get => _jumpClip; set => Set(ref _jumpClip, value ?? string.Empty); }
+
+        /// <summary>Tempo de crossfade (transição suave) ao trocar de clipe (0 = corte seco).</summary>
+        public float BlendTime { get => _blendTime; set => Set(ref _blendTime, System.Math.Max(0f, value)); }
 
         protected internal override void OnPlayStarted() => _lastState = null;
 
@@ -42,7 +46,7 @@ namespace DreamBit.Engine.Components
             // Só troca se o clipe existir no rig.
             if (skeleton.ClipNames.Any(n => n == clip))
             {
-                skeleton.Play(clip);
+                skeleton.Play(clip, _blendTime);
                 _lastState = clip;
             }
         }
