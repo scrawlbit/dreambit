@@ -1241,6 +1241,8 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveStateMachine() => RemoveSingle<AnimationStateMachine>();
         public void AddScreenFade() => AddSingle(() => new ScreenFade(), "Adicionar Screen Fade");
         public void RemoveScreenFade() => RemoveSingle<ScreenFade>();
+        public void AddPostProcess() => AddSingle(() => new PostProcess(), "Adicionar Post Process");
+        public void RemovePostProcess() => RemoveSingle<PostProcess>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1538,6 +1540,9 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case ScreenFade sfd:
                         clone.AddComponent(new ScreenFade { Color = sfd.Color, Alpha = sfd.Alpha, FlashOnMessage = sfd.FlashOnMessage, FlashDuration = sfd.FlashDuration });
+                        break;
+                    case PostProcess ppc:
+                        clone.AddComponent(new PostProcess { Saturation = ppc.Saturation, Tint = ppc.Tint });
                         break;
                     case PrefabInstance pin:
                         clone.AddComponent(new PrefabInstance { PrefabPath = pin.PrefabPath });

@@ -1216,6 +1216,14 @@ namespace DreamBit.Studio.ViewModels
         public bool HasPrefabInstance => PrefabInst != null;
         public string PrefabInstancePath => PrefabInst?.PrefabPath ?? "";
 
+        // ---- Post Process (shader) ----
+        private PostProcess? Post => _target?.Components.OfType<PostProcess>().FirstOrDefault();
+        public bool HasPostProcess => Post != null;
+        public float PostSaturation { get => Post?.Saturation ?? 1f; set { var c = Post; if (c != null) c.Saturation = value; } }
+        public int PostR { get => Post?.Tint.R ?? 255; set { var c = Post; if (c != null) c.Tint = new Color((byte)Clamp(value), c.Tint.G, c.Tint.B); } }
+        public int PostG { get => Post?.Tint.G ?? 255; set { var c = Post; if (c != null) c.Tint = new Color(c.Tint.R, (byte)Clamp(value), c.Tint.B); } }
+        public int PostB { get => Post?.Tint.B ?? 255; set { var c = Post; if (c != null) c.Tint = new Color(c.Tint.R, c.Tint.G, (byte)Clamp(value)); } }
+
         // ---- Screen Fade ----
         private ScreenFade? Fade => _target?.Components.OfType<ScreenFade>().FirstOrDefault();
         public bool HasScreenFade => Fade != null;
@@ -1531,6 +1539,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(ShadowOffsetX)); OnPropertyChanged(nameof(ShadowOffsetY));
             OnPropertyChanged(nameof(HasYSort)); OnPropertyChanged(nameof(YSortOffset));
             OnPropertyChanged(nameof(HasPrefabInstance)); OnPropertyChanged(nameof(PrefabInstancePath));
+            OnPropertyChanged(nameof(HasPostProcess)); OnPropertyChanged(nameof(PostSaturation)); OnPropertyChanged(nameof(PostR)); OnPropertyChanged(nameof(PostG)); OnPropertyChanged(nameof(PostB));
             OnPropertyChanged(nameof(HasScreenFade)); OnPropertyChanged(nameof(FadeR)); OnPropertyChanged(nameof(FadeG)); OnPropertyChanged(nameof(FadeB)); OnPropertyChanged(nameof(FadeAlpha)); OnPropertyChanged(nameof(FadeFlashOn)); OnPropertyChanged(nameof(FadeFlashDuration));
             OnPropertyChanged(nameof(HasStateMachine)); OnPropertyChanged(nameof(FsmDefaultState)); OnPropertyChanged(nameof(FsmBlendTime)); OnPropertyChanged(nameof(FsmStatesText)); OnPropertyChanged(nameof(FsmTransitionsText));
             OnPropertyChanged(nameof(TilemapOrientation));

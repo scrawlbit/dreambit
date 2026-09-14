@@ -23,4 +23,9 @@
     <ProjectReference Include="..\DreamBit.Engine\DreamBit.Engine.csproj" />
   </ItemGroup>
 
+  <!-- Shaders compilados (MGCB) copiados para Content/ ao lado do executavel. -->
+  <ItemGroup>
+    <Content Include="Content\*.xnb" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

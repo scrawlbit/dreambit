@@ -89,6 +89,7 @@ namespace DreamBit.Engine.Serialization
         public List<PrefabInstanceData> PrefabInstances { get; set; } = new();
         public List<AnimStateMachineData> StateMachines { get; set; } = new();
         public List<ScreenFadeData> ScreenFades { get; set; } = new();
+        public List<PostProcessData> PostProcesses { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
@@ -97,6 +98,8 @@ namespace DreamBit.Engine.Serialization
     public sealed class PrefabInstanceData { public string PrefabPath { get; set; } = ""; }
 
     public sealed class ScreenFadeData { public byte R { get; set; } public byte G { get; set; } public byte B { get; set; } public float Alpha { get; set; } public string FlashOnMessage { get; set; } = ""; public float FlashDuration { get; set; } = 0.25f; }
+
+    public sealed class PostProcessData { public float Saturation { get; set; } = 1f; public byte R { get; set; } = 255; public byte G { get; set; } = 255; public byte B { get; set; } = 255; }
 
     public sealed class AnimStateData { public string Name { get; set; } = ""; public string Clip { get; set; } = ""; public float X { get; set; } public float Y { get; set; } }
     public sealed class AnimTransData { public string From { get; set; } = ""; public string To { get; set; } = ""; public string Parameter { get; set; } = ""; public int Condition { get; set; } }

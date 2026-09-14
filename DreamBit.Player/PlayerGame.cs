@@ -25,10 +25,12 @@ namespace DreamBit.Player
         private readonly int _shotFrame;
         private readonly bool _autoWalk;
         private readonly string? _clip;
+        private readonly bool _grayscale;
         private int _frames;
 
-        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null)
+        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null, bool grayscale = false)
         {
+            _grayscale = grayscale;
             _scenePath = scenePath;
             _shotPath = shotPath;
             _shotFrame = shotFrame;
@@ -46,16 +48,37 @@ namespace DreamBit.Player
 
         private string? _sceneFolder;
 
+        private Microsoft.Xna.Framework.Content.ContentManager? _content;
+        private Microsoft.Xna.Framework.Graphics.Effect? _postEffect;
+        private Microsoft.Xna.Framework.Graphics.SpriteBatch? _postBatch;
+        private Microsoft.Xna.Framework.Graphics.RenderTarget2D? _sceneTarget;
+
         protected override void LoadContent()
         {
             _renderer.Initialize(GraphicsDevice);
             _renderer.ShowGrid = false;
+
+            // Shader de pós-processamento (opcional): carrega o efeito compilado (MGCB), se houver.
+            try
+            {
+                _content = new Microsoft.Xna.Framework.Content.ContentManager(Services, "Content");
+                _postEffect = _content.Load<Microsoft.Xna.Framework.Graphics.Effect>("PostProcess");
+                _postBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GraphicsDevice);
+            }
+            catch { _postEffect = null; /* sem shader compilado: renderiza normal */ }
 
             _sceneFolder = _scenePath != null ? Path.GetDirectoryName(_scenePath) : null;
 
             _scene = _scenePath != null && File.Exists(_scenePath)
                 ? SceneSerializer.Load(_scenePath)
                 : BuildFallbackScene();
+
+            if (_grayscale)
+            {
+                var fx = new GameObject("PostFX");
+                fx.AddComponent(new DreamBit.Engine.Components.PostProcess { Saturation = 0f });
+                _scene.Add(fx);
+            }
 
             _scene.StartPlay(); // dispara sons iniciais, reseta estados
 
@@ -201,11 +224,50 @@ namespace DreamBit.Player
             return null;
         }
 
+        private DreamBit.Engine.Components.PostProcess? FindPostProcess()
+        {
+            foreach (var obj in EnumerateAll(_scene.Objects))
+                foreach (var c in obj.Components)
+                    if (c is DreamBit.Engine.Components.PostProcess pp && pp.Enabled)
+                        return pp;
+            return null;
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             DreamBit.Engine.Diagnostics.Profiler.Begin("draw");
-            _renderer.Render(_scene, _camera,
-                GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            int w = GraphicsDevice.Viewport.Width, h = GraphicsDevice.Viewport.Height;
+            var post = _postEffect != null ? FindPostProcess() : null;
+
+            if (post != null && _postBatch != null)
+            {
+                // Renderiza a cena num alvo e a desenha com o shader (grayscale/tint).
+                if (_sceneTarget == null || _sceneTarget.Width != w || _sceneTarget.Height != h)
+                {
+                    _sceneTarget?.Dispose();
+                    _sceneTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D(GraphicsDevice, w, h);
+                }
+                GraphicsDevice.SetRenderTarget(_sceneTarget);
+                _renderer.Render(_scene, _camera, w, h);
+                GraphicsDevice.SetRenderTarget(null);
+                GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+
+                // Projeção ortográfica da tela (setar manualmente evita depender do SpriteBatch).
+                var projection = Microsoft.Xna.Framework.Matrix.CreateOrthographicOffCenter(0, w, h, 0, 0, 1);
+                _postEffect!.Parameters["MatrixTransform"]?.SetValue(projection);
+                _postEffect.Parameters["Saturation"]?.SetValue(post.Saturation);
+                _postEffect.Parameters["Tint"]?.SetValue(new Microsoft.Xna.Framework.Vector3(
+                    post.Tint.R / 255f, post.Tint.G / 255f, post.Tint.B / 255f));
+                _postBatch.Begin(Microsoft.Xna.Framework.Graphics.SpriteSortMode.Immediate,
+                    Microsoft.Xna.Framework.Graphics.BlendState.Opaque,
+                    Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp, null, null, _postEffect);
+                _postBatch.Draw(_sceneTarget, new Microsoft.Xna.Framework.Rectangle(0, 0, w, h), Microsoft.Xna.Framework.Color.White);
+                _postBatch.End();
+            }
+            else
+            {
+                _renderer.Render(_scene, _camera, w, h);
+            }
             DreamBit.Engine.Diagnostics.Profiler.End("draw");
             base.Draw(gameTime);
 

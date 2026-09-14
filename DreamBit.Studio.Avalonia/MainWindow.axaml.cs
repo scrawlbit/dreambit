@@ -666,6 +666,7 @@ namespace DreamBit.Studio.Avalonia
                 "Y Sort" => _editor.AddYSort,
                 "State Machine" => _editor.AddStateMachine,
                 "Screen Fade" => _editor.AddScreenFade,
+                "Post Process" => _editor.AddPostProcess,
                 "Script" => _editor.AddScript,
                 _ => null
             };
@@ -739,6 +740,7 @@ namespace DreamBit.Studio.Avalonia
             _editor.Inspector.Refresh();
         }
         private void OnRemoveScreenFade(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveScreenFade);
+        private void OnRemovePostProcess(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemovePostProcess);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);
         private void OnRemoveBone(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveBone);

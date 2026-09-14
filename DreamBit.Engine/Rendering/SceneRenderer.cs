@@ -87,9 +87,16 @@ namespace DreamBit.Engine.Rendering
             var device = _spriteBatch.GraphicsDevice;
             var view = camera.GetViewMatrix(width, height);
 
+            // Preserva o alvo do chamador (ex.: render target de pós-processamento): o passe de
+            // luz troca de render target internamente e não pode deixar o backbuffer ligado.
+            var outputTargets = device.GetRenderTargets();
+
             // Iluminação: monta o lightmap ANTES do mundo (alternar render target depois de
             // desenhar apagaria o backbuffer). Depois multiplica sobre o mundo já desenhado.
             bool lit = BuildLightMap(scene, view, width, height);
+
+            if (outputTargets.Length > 0)
+                device.SetRenderTargets(outputTargets); // restaura o alvo do chamador
 
             device.Clear(Background);
 

@@ -370,6 +370,7 @@
                             <ComboBoxItem>Y Sort</ComboBoxItem>
                             <ComboBoxItem>State Machine</ComboBoxItem>
                             <ComboBoxItem>Screen Fade</ComboBoxItem>
+                            <ComboBoxItem>Post Process</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -1499,6 +1500,24 @@
                                     <Button Content="Reverter" Click="OnRevertPrefab" />
                                     <Button Content="Reverter (manter edições)" Click="OnRevertKeepPrefab" />
                                 </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Post Process -->
+                        <Border Classes="component" IsVisible="{Binding HasPostProcess}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="Post Process (shader)" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemovePostProcess" />
+                                </Grid>
+                                <TextBlock Classes="field" Text="Saturação (1 = normal, 0 = cinza)" /><TextBox Text="{Binding PostSaturation, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Tom (R/G/B)" />
+                                <Grid ColumnDefinitions="*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBox Text="{Binding PostR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBox Text="{Binding PostG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBox Text="{Binding PostB, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Shader compilado (MGCB). Roda no Player." />
                             </StackPanel>
                         </Border>
 

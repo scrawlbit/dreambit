@@ -15,6 +15,7 @@ namespace DreamBit.Player
             string? clip = null;
             int shotFrame = 110;
             bool walk = false;
+            bool grayscale = false;
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -24,6 +25,7 @@ namespace DreamBit.Player
                     case "--shot-frame": if (i + 1 < args.Length && int.TryParse(args[++i], out var n)) shotFrame = n; break;
                     case "--walk": walk = true; break;
                     case "--clip": clip = i + 1 < args.Length ? args[++i] : null; break;
+                    case "--grayscale": grayscale = true; break;
                     default: scenePath ??= args[i]; break;
                 }
             }
@@ -35,7 +37,7 @@ namespace DreamBit.Player
                     scenePath = bundled;
             }
 
-            using var game = new PlayerGame(scenePath, shotPath, shotFrame, walk, clip);
+            using var game = new PlayerGame(scenePath, shotPath, shotFrame, walk, clip, grayscale);
             game.Run();
         }
     }

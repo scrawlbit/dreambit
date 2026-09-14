@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "20cd4351-110f-4c0d-a096-1947bffaf7a5",
+      "Id": "c61b53d1-e4af-4d58-be49-cc654ec3296c",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1238,9 +1238,10 @@
       "PrefabInstances": [],
       "StateMachines": [],
       "ScreenFades": [],
+      "PostProcesses": [],
       "Children": [
         {
-          "Id": "df2a7da0-a9d6-44b0-892e-e9b7187598b4",
+          "Id": "559d4022-4846-435f-92ce-979971adaf04",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1310,9 +1311,10 @@
           "PrefabInstances": [],
           "StateMachines": [],
           "ScreenFades": [],
+          "PostProcesses": [],
           "Children": [
             {
-              "Id": "a456c7d9-0413-45a7-a67b-1f20252990da",
+              "Id": "f452d608-152e-49ed-a10b-f51106d54e5a",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1382,9 +1384,10 @@
               "PrefabInstances": [],
               "StateMachines": [],
               "ScreenFades": [],
+              "PostProcesses": [],
               "Children": [
                 {
-                  "Id": "1cb54f16-1434-4216-83ec-3bdf3ac4fd6c",
+                  "Id": "c6f0330a-5515-4a9a-8642-7ac08b4ff9de",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1454,9 +1457,10 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": [
                     {
-                      "Id": "3c5d1bf6-b8a1-438e-9b6f-6d6d57d41832",
+                      "Id": "2b93614f-f09d-4aef-8300-16eb2193e1d6",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1536,12 +1540,13 @@
                       "PrefabInstances": [],
                       "StateMachines": [],
                       "ScreenFades": [],
+                      "PostProcesses": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "91a4029e-5f25-466a-8e82-1b2a029934f0",
+                  "Id": "f8084d40-bec3-4389-8d36-aadd49160a70",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1611,9 +1616,10 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": [
                     {
-                      "Id": "0f591095-85fc-4478-a0e9-1ff4017df82d",
+                      "Id": "cfab6969-6f34-4b6b-bc7f-cd3c02cf5cbd",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1683,9 +1689,10 @@
                       "PrefabInstances": [],
                       "StateMachines": [],
                       "ScreenFades": [],
+                      "PostProcesses": [],
                       "Children": [
                         {
-                          "Id": "18b40484-8f34-4785-9224-55b242c3d784",
+                          "Id": "6455a062-cfaf-414c-8cf2-4375599516fb",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1765,12 +1772,13 @@
                           "PrefabInstances": [],
                           "StateMachines": [],
                           "ScreenFades": [],
+                          "PostProcesses": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "3a51fbd5-da41-4fea-903f-ee28e07f0da8",
+                      "Id": "99d56c21-0f08-49a8-a2b1-e3567ce686c6",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1850,12 +1858,13 @@
                       "PrefabInstances": [],
                       "StateMachines": [],
                       "ScreenFades": [],
+                      "PostProcesses": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "0654074f-2933-442e-bcc4-7bd7ee75bdf8",
+                  "Id": "9305ae1c-8c0e-4c56-bdb8-4a674e32ade7",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1925,9 +1934,10 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": [
                     {
-                      "Id": "4914fe82-2b35-46d1-a597-00598203d504",
+                      "Id": "3d8d12e2-8a42-4de3-932e-d5184c9d7abf",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1997,9 +2007,10 @@
                       "PrefabInstances": [],
                       "StateMachines": [],
                       "ScreenFades": [],
+                      "PostProcesses": [],
                       "Children": [
                         {
-                          "Id": "89518a10-e6df-44bc-8fc7-21d1fc99ba98",
+                          "Id": "00395aa9-4d38-433d-9a8d-7ce16f26b55a",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2069,9 +2080,10 @@
                           "PrefabInstances": [],
                           "StateMachines": [],
                           "ScreenFades": [],
+                          "PostProcesses": [],
                           "Children": [
                             {
-                              "Id": "90284571-7ff1-4faa-a936-323f19f856ba",
+                              "Id": "be0ea9a6-17b6-4692-ab09-cac4da5faa99",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2151,12 +2163,13 @@
                               "PrefabInstances": [],
                               "StateMachines": [],
                               "ScreenFades": [],
+                              "PostProcesses": [],
                               "Children": []
                             }
                           ]
                         },
                         {
-                          "Id": "51c2c48f-be8f-40d1-9aeb-5232176c4b5a",
+                          "Id": "095d0373-0da5-4baa-95dd-0d5a9a7d01f8",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2236,12 +2249,13 @@
                           "PrefabInstances": [],
                           "StateMachines": [],
                           "ScreenFades": [],
+                          "PostProcesses": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "71835af2-b295-4081-86af-f75da74a3dc0",
+                      "Id": "6ac83ed0-72a9-4330-8823-029a9e5a5e90",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2321,12 +2335,13 @@
                       "PrefabInstances": [],
                       "StateMachines": [],
                       "ScreenFades": [],
+                      "PostProcesses": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "9a7dff47-2735-4da2-b538-22e347b90bd1",
+                  "Id": "cef0ab38-5f4a-4c9c-a537-2b7be60185b8",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2406,12 +2421,13 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "66970013-edc8-4e68-87ec-e2e421af74fb",
+              "Id": "5d9efa7e-8e15-4ab2-81a6-656241119c9c",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2481,9 +2497,10 @@
               "PrefabInstances": [],
               "StateMachines": [],
               "ScreenFades": [],
+              "PostProcesses": [],
               "Children": [
                 {
-                  "Id": "873bb6b6-c390-416f-a9f0-d0755feff89d",
+                  "Id": "2f1b309e-195c-48f7-9e02-77728103d9a8",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2563,12 +2580,13 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "a1d7859f-37c7-4ea4-bd6a-77d8ccfdef37",
+              "Id": "b0d0681e-638a-431b-b7f9-b48251fda4b5",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2638,9 +2656,10 @@
               "PrefabInstances": [],
               "StateMachines": [],
               "ScreenFades": [],
+              "PostProcesses": [],
               "Children": [
                 {
-                  "Id": "2ec3c431-9a13-4a13-8a6c-f11d5d887c17",
+                  "Id": "7bda34f8-6cc8-4cac-a627-fd47f6e82da8",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2720,12 +2739,13 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "f7e232ae-ae59-4ab6-b505-d9ddd3aa6c9d",
+              "Id": "7925eed5-c1f7-45ec-88c6-e2e3f5d345de",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2795,9 +2815,10 @@
               "PrefabInstances": [],
               "StateMachines": [],
               "ScreenFades": [],
+              "PostProcesses": [],
               "Children": [
                 {
-                  "Id": "659ec28b-f921-46f1-80c6-c2b5a12fc2a1",
+                  "Id": "de2fc779-d132-417d-a599-e35d0e224560",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2877,6 +2898,7 @@
                   "PrefabInstances": [],
                   "StateMachines": [],
                   "ScreenFades": [],
+                  "PostProcesses": [],
                   "Children": []
                 }
               ]
