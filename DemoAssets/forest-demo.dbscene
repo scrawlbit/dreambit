@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "23cfbfb0-3f56-4ce2-8625-12753939b38b",
+      "Id": "e4774395-7b84-42f1-8fec-9331cc3660f9",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -88,10 +88,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "ef2bdadf-6c15-43c5-beeb-9624f9792d4e",
+      "Id": "5fb8fb1a-5be4-4175-b433-b38d42c1e6c2",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -177,10 +178,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "e7bf43c0-8080-4d42-a982-5cacc0082adb",
+      "Id": "bd4bf0e7-4074-4194-aafe-2fb2ca80d397",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -436,10 +438,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "4ea10f95-352d-4b14-9690-683a9007f631",
+      "Id": "f6b4634d-511a-4480-8de0-b90847da561d",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -520,10 +523,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "a8b82359-c997-41c9-8ad3-2262972f3694",
+      "Id": "52c404d5-e469-4c0a-be84-1b4df28c9b77",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -604,10 +608,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "5fecc8f8-be60-4a5e-a592-f51e4a695455",
+      "Id": "db35d347-0407-4aba-900f-7add925dac9e",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -688,10 +693,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "40634707-ee27-429b-a34e-f5e92157cf99",
+      "Id": "9166b484-442d-4aea-a31b-fdfb39a08f0c",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -772,10 +778,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "f0e02e07-cf05-40fe-936d-f55b56eefcc1",
+      "Id": "995b29aa-0b37-4031-8ab9-84286aa435db",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1630,10 +1637,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "f36b7eb4-23b0-483f-bd3d-3fba328749ee",
+      "Id": "69921d31-cdce-4dbf-9a2e-f356c07dc246",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1711,10 +1719,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "dca4545f-baf3-4fc5-878e-7e185654e87d",
+      "Id": "c77bd731-432f-404d-a91a-d9578c753827",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1826,10 +1835,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "94a60263-1f3b-4a32-9ad9-da86a57d020a",
+      "Id": "6ed4e72f-ce84-4203-a297-28ddd25e2930",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1955,10 +1965,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "7b54098e-3b97-4c78-af2e-6326f3c95465",
+      "Id": "2630a2d8-c5a9-48af-b9bb-10d7fb02202d",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -2033,10 +2044,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "031879c5-03d0-45a5-a030-5f8b8eee3955",
+      "Id": "c0c59954-5e2a-4537-813c-214ee762ef26",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -2130,10 +2142,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "5000aa12-3515-4a4b-8e99-c088b7e34f67",
+      "Id": "bbe74c48-abbf-466a-ac7d-2a9a1f12fff0",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -2227,10 +2240,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "d7e83bbb-4f05-4f85-ac52-e6ab00be6b47",
+      "Id": "0bf1796b-341a-4805-8b75-c6d1e1ed20cb",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2324,10 +2338,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "2e793194-8504-4973-9a69-04a9814feaec",
+      "Id": "1359d8ab-82f7-48e9-92aa-29070ef61e26",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2408,10 +2423,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "6137f343-4f9d-4876-9e77-1d0f3a015432",
+      "Id": "15146b57-1a7b-4a9b-b996-0fc64c3eebdd",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2483,10 +2499,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "0abe339d-4bfa-4310-becc-1cddcc4ed388",
+      "Id": "2c0dab82-a930-4594-bd39-c09262ba2ca9",
       "Name": "Ambiente",
       "Tag": "",
       "SortOrder": 0,
@@ -2553,10 +2570,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "f90de720-0bf8-471b-9580-210effc29eb1",
+      "Id": "9ebbc83c-fdd0-4450-a832-d876791a32c3",
       "Name": "LuzTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2625,10 +2643,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "e2ebf22b-8ee8-41db-bb10-a099f371b7ae",
+      "Id": "3dc6556f-73aa-4a76-8e92-931495e45fda",
       "Name": "SombraArvore",
       "Tag": "",
       "SortOrder": 0,
@@ -2696,10 +2715,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "b45b669b-5818-4d83-b741-0f0c11921cc8",
+      "Id": "7c0a606b-00ed-46bd-8941-3fa78f3b7247",
       "Name": "SombraRocha",
       "Tag": "",
       "SortOrder": 0,
@@ -2767,10 +2787,11 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": []
     },
     {
-      "Id": "54d78dff-a25d-479a-a972-c0b2875fcecd",
+      "Id": "bf64b52a-409b-498d-9c34-6145c1ddc00c",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2831,9 +2852,10 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": [
         {
-          "Id": "a1070cf6-38d1-415a-ae6f-c653cc63f190",
+          "Id": "11f20898-2e0e-4519-9fce-ce6aae38d87a",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2912,10 +2934,11 @@
           "StateMachines": [],
           "ScreenFades": [],
           "PostProcesses": [],
+          "LayeredMusics": [],
           "Children": []
         },
         {
-          "Id": "92d4cb7f-dec1-4b7b-8654-0e60e6d8e4d4",
+          "Id": "c91a8713-a9a8-4b0c-a4de-74d48d893a05",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2992,10 +3015,11 @@
           "StateMachines": [],
           "ScreenFades": [],
           "PostProcesses": [],
+          "LayeredMusics": [],
           "Children": []
         },
         {
-          "Id": "0fd6ff0e-6553-4305-af3f-3479efeec228",
+          "Id": "45e1c49d-5991-4c62-ba5e-b0dc4ca61e36",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,
@@ -3079,6 +3103,7 @@
           "StateMachines": [],
           "ScreenFades": [],
           "PostProcesses": [],
+          "LayeredMusics": [],
           "Children": []
         }
       ]

@@ -28,19 +28,13 @@ namespace DreamBit.Player
         private readonly bool _grayscale;
         private int _frames;
 
-        // Demo por código (ex.: --music-demo) e log de intensidade da música (--music-log).
-        private readonly string? _demo;
+        // Exemplo da galeria a rodar (ex.: --example 09-audio), ou null.
         private readonly string? _example;
-        private readonly float _musicLog;
-        private float _musicLogElapsed;
-        private float _musicLogNextPrint;
 
-        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null, bool grayscale = false, string? demo = null, float musicLog = 0f, string? example = null)
+        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null, bool grayscale = false, string? example = null)
         {
             _grayscale = grayscale;
-            _demo = demo;
             _example = example;
-            _musicLog = musicLog;
             _scenePath = scenePath;
             _shotPath = shotPath;
             _shotFrame = shotFrame;
@@ -81,11 +75,9 @@ namespace DreamBit.Player
 
             _scene = _example != null
                 ? ExampleScenes.Get(_example) ?? BuildFallbackScene()
-                : _demo == "music"
-                    ? DemoScenes.AdaptiveMusic()
-                    : _scenePath != null && File.Exists(_scenePath)
-                        ? SceneSerializer.Load(_scenePath)
-                        : BuildFallbackScene();
+                : _scenePath != null && File.Exists(_scenePath)
+                    ? SceneSerializer.Load(_scenePath)
+                    : BuildFallbackScene();
 
             if (_grayscale)
             {
@@ -148,38 +140,7 @@ namespace DreamBit.Player
 
             UpdateDebugOverlay(gameTime);
 
-            if (_musicLog > 0f)
-                LogMusic(dt);
-
             base.Update(gameTime);
-        }
-
-        // ---- log de intensidade da música adaptativa (--music-log) ----
-        private void LogMusic(float dt)
-        {
-            _musicLogElapsed += dt;
-            if (_musicLogElapsed >= _musicLogNextPrint)
-            {
-                _musicLogNextPrint += 0.25f;
-                var music = EnumerateAll(_scene.Objects)
-                    .SelectMany(o => o.Components)
-                    .OfType<DreamBit.Engine.Components.LayeredMusic>()
-                    .FirstOrDefault();
-                int onScreen = DreamBit.Engine.Elements.CameraVision.CountOnScreen(_scene, "Inimigo");
-                float drums = music != null && music.Layers.Count > 0 ? music.Layers[0].Current : 0f;
-                float baseVol = music?.BaseVolume ?? 0f;
-                System.Console.WriteLine(
-                    $"t={_musicLogElapsed,5:0.00}s  inimigos_na_tela={onScreen}  base={baseVol:0.00}  bateria={drums:0.00}  {Bar(drums)}");
-            }
-            if (_musicLogElapsed >= _musicLog)
-                Exit();
-        }
-
-        private static string Bar(float v)
-        {
-            int n = (int)System.Math.Round(v * 20f);
-            n = System.Math.Max(0, System.Math.Min(20, n));
-            return new string('#', n);
         }
 
         // ---- overlay de debug (F3) ----

@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "eaa6ec20-fd18-4cb8-b32e-cde99aa0c85d",
+      "Id": "d2935ff8-65c3-46a4-951f-a5be136fe9a5",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1239,9 +1239,10 @@
       "StateMachines": [],
       "ScreenFades": [],
       "PostProcesses": [],
+      "LayeredMusics": [],
       "Children": [
         {
-          "Id": "8113664b-fb66-42c9-995a-8436450a1f24",
+          "Id": "18e40463-b3af-45c3-92e9-340040efd465",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1312,9 +1313,10 @@
           "StateMachines": [],
           "ScreenFades": [],
           "PostProcesses": [],
+          "LayeredMusics": [],
           "Children": [
             {
-              "Id": "67e3f501-43ae-4863-b4f3-7d3fc4248d54",
+              "Id": "07f62f38-9385-4681-90c5-e57d2ff710df",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1385,9 +1387,10 @@
               "StateMachines": [],
               "ScreenFades": [],
               "PostProcesses": [],
+              "LayeredMusics": [],
               "Children": [
                 {
-                  "Id": "361ba7ff-33f9-49a2-bf95-3af4e122028a",
+                  "Id": "59e9ae08-082f-4dfc-bf15-c65ecbde2c42",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1458,9 +1461,10 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": [
                     {
-                      "Id": "a4ba837c-b231-43cf-92f3-eaeddfd00fca",
+                      "Id": "d3bb2e34-23aa-45bb-8255-8e9b0b2d62ab",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1541,12 +1545,13 @@
                       "StateMachines": [],
                       "ScreenFades": [],
                       "PostProcesses": [],
+                      "LayeredMusics": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "dad41022-bc75-4cbf-959a-522b22d6d0a0",
+                  "Id": "27d07ac1-e7ed-4f88-93e4-f4728571cfcd",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1617,9 +1622,10 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": [
                     {
-                      "Id": "189ab845-7dd2-4de4-a0e7-4cd204e26fca",
+                      "Id": "703ecbdf-3159-4265-9c6e-c8f70bfe9ad4",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1690,9 +1696,10 @@
                       "StateMachines": [],
                       "ScreenFades": [],
                       "PostProcesses": [],
+                      "LayeredMusics": [],
                       "Children": [
                         {
-                          "Id": "69f2e8ea-4d37-42c5-9c0c-dbaeedcd82e9",
+                          "Id": "b7e4ee30-418d-4f3e-9ebe-fe3b9d95900a",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1773,12 +1780,13 @@
                           "StateMachines": [],
                           "ScreenFades": [],
                           "PostProcesses": [],
+                          "LayeredMusics": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "9cccddb7-5b4e-40bf-929f-91e9d8afa1c4",
+                      "Id": "644d5e99-b92b-4062-9160-a74a7915c02f",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1859,12 +1867,13 @@
                       "StateMachines": [],
                       "ScreenFades": [],
                       "PostProcesses": [],
+                      "LayeredMusics": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "aaa50ba9-df9e-4d77-9282-f14d3dfe9d3f",
+                  "Id": "228e6370-90a0-492c-8c87-d7701fb6623c",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1935,9 +1944,10 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": [
                     {
-                      "Id": "5910d0e8-897e-4a58-94cd-d4386df28d34",
+                      "Id": "97e57351-17a9-48d9-9fce-70ee54c11439",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2008,9 +2018,10 @@
                       "StateMachines": [],
                       "ScreenFades": [],
                       "PostProcesses": [],
+                      "LayeredMusics": [],
                       "Children": [
                         {
-                          "Id": "d8ab1845-68b2-4036-a859-b3c7bb3bc5b4",
+                          "Id": "3dce94ca-6476-49af-a5f0-22b511ecd2e4",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2081,9 +2092,10 @@
                           "StateMachines": [],
                           "ScreenFades": [],
                           "PostProcesses": [],
+                          "LayeredMusics": [],
                           "Children": [
                             {
-                              "Id": "a55a4885-cbe7-48fe-b66e-0cdeb56ada25",
+                              "Id": "34eabee5-0970-44b9-9925-d2394193c5af",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2164,12 +2176,13 @@
                               "StateMachines": [],
                               "ScreenFades": [],
                               "PostProcesses": [],
+                              "LayeredMusics": [],
                               "Children": []
                             }
                           ]
                         },
                         {
-                          "Id": "90a37f86-af73-4133-8f93-b0210ec04cea",
+                          "Id": "992b5d0c-5c32-4dfb-91af-a26d8e1576d8",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2250,12 +2263,13 @@
                           "StateMachines": [],
                           "ScreenFades": [],
                           "PostProcesses": [],
+                          "LayeredMusics": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "acc7cef3-8d60-4f3a-8339-a7319fb70570",
+                      "Id": "df21ab72-c9cd-4921-a0b9-f487d09bf2ea",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2336,12 +2350,13 @@
                       "StateMachines": [],
                       "ScreenFades": [],
                       "PostProcesses": [],
+                      "LayeredMusics": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "1a3e889e-969d-4767-95f0-dc1008602c27",
+                  "Id": "cbb1a139-f99b-4c82-bc61-61994d823fdc",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2422,12 +2437,13 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "8ceacc4e-43a4-4001-97b4-02ff8ee40c52",
+              "Id": "a2a4e186-3799-4434-a6b0-b63be887b36b",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2498,9 +2514,10 @@
               "StateMachines": [],
               "ScreenFades": [],
               "PostProcesses": [],
+              "LayeredMusics": [],
               "Children": [
                 {
-                  "Id": "d87ea00b-cedb-4c76-a9c6-95ddafbd863e",
+                  "Id": "3d4c725c-d4af-42c1-b85c-8a4c8f8bc28b",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2581,12 +2598,13 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "9e24911d-e346-4a3d-aaef-6bf4a5d733ae",
+              "Id": "5b84b17b-d59f-4189-8a7d-cd5138880adc",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2657,9 +2675,10 @@
               "StateMachines": [],
               "ScreenFades": [],
               "PostProcesses": [],
+              "LayeredMusics": [],
               "Children": [
                 {
-                  "Id": "dc8bc7ab-e4af-43b5-9288-97fc38955742",
+                  "Id": "8c38aadd-9ada-41a2-a851-aea56879bde3",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2740,12 +2759,13 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "70dddf8a-5c88-4c03-af1c-151b7e41ec8a",
+              "Id": "0523fe7c-e455-4078-9a50-8a4d82c2792e",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2816,9 +2836,10 @@
               "StateMachines": [],
               "ScreenFades": [],
               "PostProcesses": [],
+              "LayeredMusics": [],
               "Children": [
                 {
-                  "Id": "80b68b32-d423-4990-8fad-eb4f5a33b4ef",
+                  "Id": "39f2a267-c9ce-4e9a-b74d-da7dd635c50a",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2899,6 +2920,7 @@
                   "StateMachines": [],
                   "ScreenFades": [],
                   "PostProcesses": [],
+                  "LayeredMusics": [],
                   "Children": []
                 }
               ]
