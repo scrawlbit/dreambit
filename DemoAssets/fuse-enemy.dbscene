@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "6f5bb7a8-8caf-4a02-8a5c-a223494a58ec",
+      "Id": "20cd4351-110f-4c0d-a096-1947bffaf7a5",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1240,7 +1240,7 @@
       "ScreenFades": [],
       "Children": [
         {
-          "Id": "fe9ee1e5-d967-40f8-a03d-a8d9ecbcc258",
+          "Id": "df2a7da0-a9d6-44b0-892e-e9b7187598b4",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1312,7 +1312,7 @@
           "ScreenFades": [],
           "Children": [
             {
-              "Id": "ec7051df-55bc-471e-94ae-38ace78d1496",
+              "Id": "a456c7d9-0413-45a7-a67b-1f20252990da",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1384,7 +1384,7 @@
               "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "1a2fbc9f-278d-422f-be35-d7cae10f9b63",
+                  "Id": "1cb54f16-1434-4216-83ec-3bdf3ac4fd6c",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1456,7 +1456,7 @@
                   "ScreenFades": [],
                   "Children": [
                     {
-                      "Id": "003ec22d-4ef1-47e9-93f5-2ec76c3eb7f8",
+                      "Id": "3c5d1bf6-b8a1-438e-9b6f-6d6d57d41832",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1541,7 +1541,7 @@
                   ]
                 },
                 {
-                  "Id": "898a8f7e-ebe1-49f9-ab6b-d217af57d166",
+                  "Id": "91a4029e-5f25-466a-8e82-1b2a029934f0",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1613,7 +1613,7 @@
                   "ScreenFades": [],
                   "Children": [
                     {
-                      "Id": "3bca2c02-bb15-4d75-99c9-5888194d39a3",
+                      "Id": "0f591095-85fc-4478-a0e9-1ff4017df82d",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1685,7 +1685,7 @@
                       "ScreenFades": [],
                       "Children": [
                         {
-                          "Id": "0b7c792e-7c96-4daf-82d9-b7227ec18b6d",
+                          "Id": "18b40484-8f34-4785-9224-55b242c3d784",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1770,7 +1770,7 @@
                       ]
                     },
                     {
-                      "Id": "3730727d-9ca7-485d-b0f7-5c8a407a9852",
+                      "Id": "3a51fbd5-da41-4fea-903f-ee28e07f0da8",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1855,7 +1855,7 @@
                   ]
                 },
                 {
-                  "Id": "963efe8e-bdba-4757-825c-0d201a1065c1",
+                  "Id": "0654074f-2933-442e-bcc4-7bd7ee75bdf8",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1927,7 +1927,7 @@
                   "ScreenFades": [],
                   "Children": [
                     {
-                      "Id": "cb324a3e-55e5-4c56-966a-16debbbf8287",
+                      "Id": "4914fe82-2b35-46d1-a597-00598203d504",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1999,7 +1999,7 @@
                       "ScreenFades": [],
                       "Children": [
                         {
-                          "Id": "e0109df5-95de-4970-9456-92d88838258b",
+                          "Id": "89518a10-e6df-44bc-8fc7-21d1fc99ba98",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2071,7 +2071,7 @@
                           "ScreenFades": [],
                           "Children": [
                             {
-                              "Id": "19a771b5-3c91-4624-a9cc-1bc089eb5005",
+                              "Id": "90284571-7ff1-4faa-a936-323f19f856ba",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2156,7 +2156,7 @@
                           ]
                         },
                         {
-                          "Id": "5f5e7f10-04b6-42c9-b900-250dbe153de3",
+                          "Id": "51c2c48f-be8f-40d1-9aeb-5232176c4b5a",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2241,7 +2241,7 @@
                       ]
                     },
                     {
-                      "Id": "b14c9fa4-7acd-4ebf-982d-0211f50aa33b",
+                      "Id": "71835af2-b295-4081-86af-f75da74a3dc0",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2326,7 +2326,7 @@
                   ]
                 },
                 {
-                  "Id": "b95bfa5f-77a7-4a51-9e80-675681303711",
+                  "Id": "9a7dff47-2735-4da2-b538-22e347b90bd1",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2411,7 +2411,7 @@
               ]
             },
             {
-              "Id": "ebae1a9c-38e0-4c5f-bd54-778df9ca5336",
+              "Id": "66970013-edc8-4e68-87ec-e2e421af74fb",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2483,7 +2483,7 @@
               "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "31d52439-7d94-4d15-9379-4434cbc97ac3",
+                  "Id": "873bb6b6-c390-416f-a9f0-d0755feff89d",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2568,7 +2568,7 @@
               ]
             },
             {
-              "Id": "d64a1785-4e47-4dae-acc1-d6f1f06218df",
+              "Id": "a1d7859f-37c7-4ea4-bd6a-77d8ccfdef37",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2640,7 +2640,7 @@
               "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "2421a75a-403c-450f-9fd8-39a0e6533d73",
+                  "Id": "2ec3c431-9a13-4a13-8a6c-f11d5d887c17",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2725,7 +2725,7 @@
               ]
             },
             {
-              "Id": "96cf7588-b6d2-4075-9e0c-a4726c8ed424",
+              "Id": "f7e232ae-ae59-4ab6-b505-d9ddd3aa6c9d",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2797,7 +2797,7 @@
               "ScreenFades": [],
               "Children": [
                 {
-                  "Id": "2548fbae-3bd4-4356-835e-4d87ecf44d06",
+                  "Id": "659ec28b-f921-46f1-80c6-c2b5a12fc2a1",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,

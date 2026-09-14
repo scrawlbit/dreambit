@@ -731,6 +731,13 @@ namespace DreamBit.Studio.Avalonia
         private void OnRemoveShadowCaster(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveShadowCaster);
         private void OnRemoveYSort(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveYSort);
         private void OnRemoveStateMachine(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveStateMachine);
+        private async void OnEditStateMachine(object? sender, RoutedEventArgs e)
+        {
+            var fsm = _editor.SelectedObject?.Components.OfType<DreamBit.Engine.Components.AnimationStateMachine>().FirstOrDefault();
+            if (fsm == null) return;
+            await new StateMachineEditor(fsm).ShowDialog(this);
+            _editor.Inspector.Refresh();
+        }
         private void OnRemoveScreenFade(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveScreenFade);
         private void OnRemoveFollow(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveFollow);
         private void OnRemoveRotator(object? sender, RoutedEventArgs e) => AddComponent(_editor.RemoveRotator);

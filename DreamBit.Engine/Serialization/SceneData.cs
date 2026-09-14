@@ -98,7 +98,7 @@ namespace DreamBit.Engine.Serialization
 
     public sealed class ScreenFadeData { public byte R { get; set; } public byte G { get; set; } public byte B { get; set; } public float Alpha { get; set; } public string FlashOnMessage { get; set; } = ""; public float FlashDuration { get; set; } = 0.25f; }
 
-    public sealed class AnimStateData { public string Name { get; set; } = ""; public string Clip { get; set; } = ""; }
+    public sealed class AnimStateData { public string Name { get; set; } = ""; public string Clip { get; set; } = ""; public float X { get; set; } public float Y { get; set; } }
     public sealed class AnimTransData { public string From { get; set; } = ""; public string To { get; set; } = ""; public string Parameter { get; set; } = ""; public int Condition { get; set; } }
     public sealed class AnimStateMachineData
     {

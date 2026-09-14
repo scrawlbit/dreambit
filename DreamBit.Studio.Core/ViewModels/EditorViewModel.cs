@@ -1544,7 +1544,7 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case AnimationStateMachine fsm:
                         var fsmClone = new AnimationStateMachine { DefaultState = fsm.DefaultState, BlendTime = fsm.BlendTime };
-                        fsmClone.SetStates(fsm.States.Select(x => new AnimStateDef { Name = x.Name, Clip = x.Clip }));
+                        fsmClone.SetStates(fsm.States.Select(x => new AnimStateDef { Name = x.Name, Clip = x.Clip, X = x.X, Y = x.Y }));
                         fsmClone.SetTransitions(fsm.Transitions.Select(x => new AnimTransitionDef { From = x.From, To = x.To, Parameter = x.Parameter, Condition = x.Condition }));
                         clone.AddComponent(fsmClone);
                         break;

@@ -499,7 +499,7 @@ namespace DreamBit.Engine.Serialization
                     data.StateMachines.Add(new AnimStateMachineData
                     {
                         DefaultState = fsm.DefaultState, BlendTime = fsm.BlendTime,
-                        States = fsm.States.Select(x => new AnimStateData { Name = x.Name, Clip = x.Clip }).ToList(),
+                        States = fsm.States.Select(x => new AnimStateData { Name = x.Name, Clip = x.Clip, X = x.X, Y = x.Y }).ToList(),
                         Transitions = fsm.Transitions.Select(x => new AnimTransData { From = x.From, To = x.To, Parameter = x.Parameter, Condition = (int)x.Condition }).ToList()
                     });
                 else if (component is TweenComponent tween)
@@ -787,7 +787,7 @@ namespace DreamBit.Engine.Serialization
             foreach (var sm in data.StateMachines)
             {
                 var fsm = new AnimationStateMachine { DefaultState = sm.DefaultState, BlendTime = sm.BlendTime };
-                fsm.SetStates(sm.States.Select(x => new AnimStateDef { Name = x.Name, Clip = x.Clip }));
+                fsm.SetStates(sm.States.Select(x => new AnimStateDef { Name = x.Name, Clip = x.Clip, X = x.X, Y = x.Y }));
                 fsm.SetTransitions(sm.Transitions.Select(x => new AnimTransitionDef { From = x.From, To = x.To, Parameter = x.Parameter, Condition = (AnimCondition)x.Condition }));
                 obj.AddComponent(fsm);
             }

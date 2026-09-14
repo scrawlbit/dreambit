@@ -8,11 +8,14 @@ namespace DreamBit.Engine.Components
     /// <summary>Condição de uma transição sobre um parâmetro.</summary>
     public enum AnimCondition { BoolTrue, BoolFalse, Trigger }
 
-    /// <summary>Um estado da máquina: nome + clipe de animação que ele toca.</summary>
+    /// <summary>Um estado da máquina: nome + clipe de animação que ele toca (+ posição no editor visual).</summary>
     public sealed class AnimStateDef
     {
         public string Name { get; set; } = "";
         public string Clip { get; set; } = "";
+        /// <summary>Posição do nó no editor visual (nó-e-fio).</summary>
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
     /// <summary>Uma transição: de um estado (ou "" = qualquer) para outro quando a condição vale.</summary>
@@ -68,11 +71,27 @@ namespace DreamBit.Engine.Components
             return this;
         }
 
-        public AnimationStateMachine AddTransition(string from, string to, string parameter, AnimCondition condition)
+        public AnimStateDef AddStateAt(string name, string clip, float x, float y)
         {
-            _transitions.Add(new AnimTransitionDef { From = from, To = to, Parameter = parameter, Condition = condition });
-            return this;
+            var def = new AnimStateDef { Name = name, Clip = clip, X = x, Y = y };
+            _states.Add(def);
+            return def;
         }
+
+        public void RemoveState(AnimStateDef state)
+        {
+            _states.Remove(state);
+            _transitions.RemoveAll(t => t.From == state.Name || t.To == state.Name);
+        }
+
+        public AnimTransitionDef AddTransition(string from, string to, string parameter, AnimCondition condition)
+        {
+            var def = new AnimTransitionDef { From = from, To = to, Parameter = parameter, Condition = condition };
+            _transitions.Add(def);
+            return def;
+        }
+
+        public void RemoveTransition(AnimTransitionDef t) => _transitions.Remove(t);
 
         /// <summary>Define um parâmetro booleano (ex.: "grounded", "moving").</summary>
         public void SetBool(string name, bool value) { if (!string.IsNullOrEmpty(name)) _bools[name] = value; }

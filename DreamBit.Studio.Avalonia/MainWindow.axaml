@@ -1526,7 +1526,10 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="State Machine" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveStateMachine" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                                        <Button Content="Editar visual…" Click="OnEditStateMachine" />
+                                        <Button Classes="remove" Content="✕" Click="OnRemoveStateMachine" />
+                                    </StackPanel>
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Estado inicial" /><TextBox Text="{Binding FsmDefaultState, Mode=TwoWay}" /></StackPanel>
