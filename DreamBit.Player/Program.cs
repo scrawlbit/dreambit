@@ -37,6 +37,15 @@ namespace DreamBit.Player
                 }
             }
 
+            // Salva o mapa de floresta em .dbscene (sem abrir janela) para abrir no editor.
+            for (int i = 0; i < args.Length; i++)
+                if (args[i] == "--forest-save" && i + 1 < args.Length)
+                {
+                    DreamBit.Engine.Serialization.SceneSerializer.Save(ForestMap.Build(), args[i + 1]);
+                    Console.WriteLine($"Mapa salvo em: {args[i + 1]}");
+                    return;
+                }
+
             if (examplesList)
             {
                 foreach (var e in ExampleScenes.All)
