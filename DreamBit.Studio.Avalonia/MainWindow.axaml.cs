@@ -11,8 +11,10 @@ using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using DreamBit.Engine.Tilemap;
 using DreamBit.Engine.Diagnostics;
+using DreamBit.Engine.Elements;
 using DreamBit.Engine.Serialization;
 using DreamBit.Studio.ViewModels;
 using XnaGameTime = Microsoft.Xna.Framework.GameTime;
@@ -44,6 +46,17 @@ namespace DreamBit.Studio.Avalonia
             _editor.ToolChanged += RebuildPalette;
             _editor.SelectionChanged += RebuildPalette;
             _editor.SelectionChanged += SyncHierarchySelection;
+
+            // Arrastar na hierarquia para reordenar a ordem de exibição.
+            var hier = this.FindControl<TreeView>("HierarchyList");
+            if (hier != null)
+            {
+                hier.AddHandler(PointerPressedEvent, OnHierarchyDragStart, RoutingStrategies.Tunnel);
+                hier.AddHandler(PointerMovedEvent, OnHierarchyDragMove, RoutingStrategies.Tunnel);
+                DragDrop.SetAllowDrop(hier, true);
+                hier.AddHandler(DragDrop.DragOverEvent, OnHierarchyDragOver);
+                hier.AddHandler(DragDrop.DropEvent, OnHierarchyDrop);
+            }
 
             // Rola o console para o fim quando chega log novo (após o layout medir a linha).
             _editor.Log.Entries.CollectionChanged += (_, _) =>
@@ -524,6 +537,13 @@ namespace DreamBit.Studio.Avalonia
             // Esc sai do modo carimbo.
             if (_editor.StampMode && e.Key == Key.Escape) { _editor.ClearStamp(); e.Handled = true; InvalidateScene(); return; }
 
+            // Alt+Cima/Baixo: reordena o selecionado na hierarquia (muda a ordem de exibição).
+            if (!inText && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && (e.Key == Key.Up || e.Key == Key.Down))
+            {
+                _editor.MoveSelectedInHierarchy(e.Key == Key.Up ? -1 : 1);
+                RebuildHierarchy(); e.Handled = true; InvalidateScene(); return;
+            }
+
             // Ferramenta de ledge tem prioridade (Esc/Enter).
             if (_editor.IsLedgeTool && e.Key == Key.Escape) { _editor.CancelLedge(); e.Handled = true; InvalidateScene(); return; }
             if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return)) { _editor.FinishLedge(); e.Handled = true; InvalidateScene(); return; }
@@ -641,6 +661,57 @@ namespace DreamBit.Studio.Avalonia
         private void OnCloseAssetsPanel(object? sender, RoutedEventArgs e) => SetAssetsPanel(false);
 
         private void RebuildHierarchy() => SyncHierarchySelection();
+
+        // ---- arrastar na hierarquia (reordenar ordem de exibicao) ----
+        private GameObject? _hierDrag;
+        private global::Avalonia.Point _hierDragStart;
+
+        private void OnHierarchyDragStart(object? sender, PointerPressedEventArgs e)
+        {
+            _hierDrag = HierItemUnder(e.Source);
+            _hierDragStart = e.GetPosition(this);
+        }
+
+        private async void OnHierarchyDragMove(object? sender, PointerEventArgs e)
+        {
+            if (_hierDrag == null)
+                return;
+            if (!e.GetCurrentPoint(null).Properties.IsLeftButtonPressed) { _hierDrag = null; return; }
+            var d = e.GetPosition(this) - _hierDragStart;
+            if (Math.Abs(d.X) < 5 && Math.Abs(d.Y) < 5)
+                return;
+            var item = _hierDrag;
+            _hierDrag = null;
+            var data = new DataObject();
+            data.Set("dbobj", item);
+            await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+        }
+
+        private void OnHierarchyDragOver(object? sender, DragEventArgs e)
+        {
+            e.DragEffects = e.Data.Contains("dbobj") ? DragDropEffects.Move : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void OnHierarchyDrop(object? sender, DragEventArgs e)
+        {
+            if (e.Data.Get("dbobj") is not GameObject dragged)
+                return;
+            var tvi = (e.Source as global::Avalonia.Visual)?.GetVisualAncestors().OfType<TreeViewItem>().FirstOrDefault();
+            if (tvi?.DataContext is not GameObject target)
+                return;
+            bool after = e.GetPosition(tvi).Y > tvi.Bounds.Height / 2;
+            _editor.MoveInHierarchy(dragged, target, after);
+            RebuildHierarchy();
+            InvalidateScene();
+            e.Handled = true;
+        }
+
+        private static GameObject? HierItemUnder(object? source)
+        {
+            var tvi = (source as global::Avalonia.Visual)?.GetVisualAncestors().OfType<TreeViewItem>().FirstOrDefault();
+            return tvi?.DataContext as GameObject;
+        }
 
         private void OnApplyPrefab(object? sender, RoutedEventArgs e) => _editor.ApplyToPrefab();
         private void OnRevertPrefab(object? sender, RoutedEventArgs e) { _editor.RevertToPrefab(); InvalidateScene(); }

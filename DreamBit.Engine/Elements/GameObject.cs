@@ -153,6 +153,33 @@ namespace DreamBit.Engine.Elements
             }
         }
 
+        /// <summary>Índice de um filho direto (-1 se não for filho).</summary>
+        public int IndexOfChild(GameObject child) => _children.IndexOf(child);
+
+        /// <summary>Reordena um filho direto (muda a ordem de exibição entre irmãos).</summary>
+        public void MoveChild(GameObject child, int newIndex)
+        {
+            int old = _children.IndexOf(child);
+            if (old < 0)
+                return;
+            newIndex = System.Math.Clamp(newIndex, 0, _children.Count - 1);
+            if (old != newIndex)
+                _children.Move(old, newIndex);
+        }
+
+        /// <summary>Insere um filho numa posição específica (reparenta se necessário).</summary>
+        public void InsertChild(GameObject child, int index)
+        {
+            if (child == this)
+                throw new InvalidOperationException("Um objeto não pode ser filho de si mesmo.");
+            child._parent?.RemoveChild(child);
+            child.Parent = this;
+            child.Transform.Parent = Transform;
+            index = System.Math.Clamp(index, 0, _children.Count);
+            _children.Insert(index, child);
+            child.SetScene(Scene);
+        }
+
         public T AddComponent<T>(T component) where T : SceneComponent
         {
             component.Owner = this;

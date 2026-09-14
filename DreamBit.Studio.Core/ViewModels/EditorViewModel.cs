@@ -505,6 +505,68 @@ namespace DreamBit.Studio.ViewModels
             return false;
         }
 
+        /// <summary>Sobe/desce o objeto selecionado entre os irmãos (dir -1 = sobe, +1 = desce),
+        /// mudando a ordem de exibição. Desfazível.</summary>
+        public void MoveSelectedInHierarchy(int dir)
+        {
+            var obj = SelectedObject;
+            if (obj == null)
+                return;
+            var parent = obj.Parent;
+            int idx = parent == null ? Scene.IndexOf(obj) : parent.IndexOfChild(obj);
+            int count = parent == null ? Scene.Objects.Count : parent.Children.Count;
+            int ni = idx + dir;
+            if (idx < 0 || ni < 0 || ni >= count)
+                return;
+
+            void Set(int index)
+            {
+                if (parent == null) Scene.MoveObject(obj, index); else parent.MoveChild(obj, index);
+                SelectSingle(obj);
+            }
+            History.Do(new EditorAction("Reordenar", () => Set(ni), () => Set(idx)));
+        }
+
+        /// <summary>Move <paramref name="dragged"/> para ser irmão de <paramref name="target"/>
+        /// (logo antes/depois), mudando a ordem de exibição. Mantém a pose de mundo e é desfazível.</summary>
+        public void MoveInHierarchy(GameObject dragged, GameObject target, bool after)
+        {
+            if (dragged == null || target == null || dragged == target || IsAncestor(dragged, target))
+                return;
+
+            var newParent = target.Parent;
+            var oldParent = dragged.Parent;
+            int oldIndex = oldParent == null ? Scene.IndexOf(dragged) : oldParent.IndexOfChild(dragged);
+            if (oldIndex < 0)
+                return;
+            var w = (dragged.Transform.WorldPosition, dragged.Transform.WorldRotation, dragged.Transform.WorldScale);
+
+            void Detach()
+            {
+                if (dragged.Parent == null) Scene.Remove(dragged); else dragged.Parent.RemoveChild(dragged);
+            }
+            void Insert(GameObject? parent, int index)
+            {
+                if (parent == null) Scene.Insert(dragged, index); else parent.InsertChild(dragged, index);
+                dragged.Transform.SetWorld(w.Item1, w.Item2, w.Item3);
+            }
+
+            History.Do(new EditorAction("Reordenar",
+                doAction: () =>
+                {
+                    Detach();
+                    int ti = newParent == null ? Scene.IndexOf(target) : newParent.IndexOfChild(target);
+                    Insert(newParent, after ? ti + 1 : ti);
+                    SelectSingle(dragged);
+                },
+                undoAction: () =>
+                {
+                    Detach();
+                    Insert(oldParent, oldIndex);
+                    SelectSingle(dragged);
+                }));
+        }
+
         public void DeleteSelected()
         {
             if (_selectedObjects.Count > 0)

@@ -78,6 +78,30 @@ namespace DreamBit.Engine.Elements
             return removed;
         }
 
+        /// <summary>Índice de um objeto raiz (-1 se não for raiz).</summary>
+        public int IndexOf(GameObject gameObject) => _objects.IndexOf(gameObject);
+
+        /// <summary>Reordena um objeto raiz (muda a ordem de exibição entre irmãos).</summary>
+        public void MoveObject(GameObject gameObject, int newIndex)
+        {
+            int old = _objects.IndexOf(gameObject);
+            if (old < 0)
+                return;
+            newIndex = System.Math.Clamp(newIndex, 0, _objects.Count - 1);
+            if (old != newIndex)
+                _objects.Move(old, newIndex);
+        }
+
+        /// <summary>Insere um objeto raiz numa posição específica (tira do pai, se tiver).</summary>
+        public GameObject Insert(GameObject gameObject, int index)
+        {
+            gameObject.Parent?.RemoveChild(gameObject);
+            index = System.Math.Clamp(index, 0, _objects.Count);
+            _objects.Insert(index, gameObject);
+            gameObject.SetScene(this);
+            return gameObject;
+        }
+
         /// <summary>Mundo de física 2D (corpos rígidos) da cena, criado no início do play.</summary>
         private Physics2D.PhysicsWorld? _physics;
         public Physics2D.PhysicsWorld Physics => _physics ??= new Physics2D.PhysicsWorld(new Vector2(0f, 980f));
