@@ -1212,6 +1212,8 @@ namespace DreamBit.Studio.ViewModels
         public void RemoveShadowCaster() => RemoveSingle<ShadowCaster>();
         public void AddYSort() => AddSingle(() => new YSort(), "Adicionar Y Sort");
         public void RemoveYSort() => RemoveSingle<YSort>();
+        public void AddStateMachine() => AddSingle(() => new AnimationStateMachine(), "Adicionar State Machine");
+        public void RemoveStateMachine() => RemoveSingle<AnimationStateMachine>();
 
         private void AddSingle<T>(System.Func<T> create, string label) where T : SceneComponent
         {
@@ -1509,6 +1511,12 @@ namespace DreamBit.Studio.ViewModels
                         break;
                     case PrefabInstance pin:
                         clone.AddComponent(new PrefabInstance { PrefabPath = pin.PrefabPath });
+                        break;
+                    case AnimationStateMachine fsm:
+                        var fsmClone = new AnimationStateMachine { DefaultState = fsm.DefaultState, BlendTime = fsm.BlendTime };
+                        fsmClone.SetStates(fsm.States.Select(x => new AnimStateDef { Name = x.Name, Clip = x.Clip }));
+                        fsmClone.SetTransitions(fsm.Transitions.Select(x => new AnimTransitionDef { From = x.From, To = x.To, Parameter = x.Parameter, Condition = x.Condition }));
+                        clone.AddComponent(fsmClone);
                         break;
                     case NavChaser nc:
                         clone.AddComponent(new NavChaser

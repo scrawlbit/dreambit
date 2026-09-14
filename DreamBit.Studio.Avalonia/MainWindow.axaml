@@ -368,6 +368,7 @@
                             <ComboBoxItem>Joint 2D</ComboBoxItem>
                             <ComboBoxItem>Shadow Caster</ComboBoxItem>
                             <ComboBoxItem>Y Sort</ComboBoxItem>
+                            <ComboBoxItem>State Machine</ComboBoxItem>
                             <ComboBoxItem>Script</ComboBoxItem>
                         </ComboBox>
 
@@ -1496,6 +1497,24 @@
                                     <Button Content="Aplicar ao prefab" Click="OnApplyPrefab" />
                                     <Button Content="Reverter" Click="OnRevertPrefab" />
                                 </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Animation State Machine -->
+                        <Border Classes="component" IsVisible="{Binding HasStateMachine}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="section" Text="State Machine" />
+                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveStateMachine" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Estado inicial" /><TextBox Text="{Binding FsmDefaultState, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Crossfade (s)" /><TextBox Text="{Binding FsmBlendTime, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Estados (um por linha: 'nome: clipe')" />
+                                <TextBox Text="{Binding FsmStatesText, Mode=TwoWay}" AcceptsReturn="True" FontFamily="Consolas,monospace" Height="70" TextWrapping="NoWrap" Watermark="idle: idle" />
+                                <TextBlock Classes="field" Text="Transições ('de > para : parametro true/false/trigger', * = qualquer)" />
+                                <TextBox Text="{Binding FsmTransitionsText, Mode=TwoWay}" AcceptsReturn="True" FontFamily="Consolas,monospace" Height="70" TextWrapping="NoWrap" Watermark="idle > walk : moving true" />
                             </StackPanel>
                         </Border>
 

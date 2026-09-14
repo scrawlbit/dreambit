@@ -1216,6 +1216,58 @@ namespace DreamBit.Studio.ViewModels
         public bool HasPrefabInstance => PrefabInst != null;
         public string PrefabInstancePath => PrefabInst?.PrefabPath ?? "";
 
+        // ---- Animation State Machine ----
+        private AnimationStateMachine? Fsm => _target?.Components.OfType<AnimationStateMachine>().FirstOrDefault();
+        public bool HasStateMachine => Fsm != null;
+        public string FsmDefaultState { get => Fsm?.DefaultState ?? ""; set { var c = Fsm; if (c != null) c.DefaultState = value; } }
+        public float FsmBlendTime { get => Fsm?.BlendTime ?? 0.12f; set { var c = Fsm; if (c != null) c.BlendTime = value; } }
+
+        public string FsmStatesText
+        {
+            get => Fsm == null ? "" : string.Join("\n", Fsm.States.Select(x => $"{x.Name}: {x.Clip}"));
+            set
+            {
+                var c = Fsm; if (c == null) return;
+                var states = new System.Collections.Generic.List<AnimStateDef>();
+                foreach (var line in (value ?? "").Split('\n'))
+                {
+                    var t = line.Trim(); if (t.Length == 0) continue;
+                    var p = t.Split(':', 2);
+                    states.Add(new AnimStateDef { Name = p[0].Trim(), Clip = p.Length > 1 ? p[1].Trim() : p[0].Trim() });
+                }
+                c.SetStates(states);
+            }
+        }
+
+        public string FsmTransitionsText
+        {
+            get => Fsm == null ? "" : string.Join("\n", Fsm.Transitions.Select(t =>
+                $"{(string.IsNullOrEmpty(t.From) ? "*" : t.From)} > {t.To} : {t.Parameter} {CondText(t.Condition)}"));
+            set
+            {
+                var c = Fsm; if (c == null) return;
+                var list = new System.Collections.Generic.List<AnimTransitionDef>();
+                foreach (var line in (value ?? "").Split('\n'))
+                {
+                    var t = line.Trim(); if (t.Length == 0) continue;
+                    var arrow = t.Split('>', 2); if (arrow.Length < 2) continue;
+                    var from = arrow[0].Trim(); if (from == "*") from = "";
+                    var rhs = arrow[1].Split(':', 2);
+                    var to = rhs[0].Trim();
+                    var cond = rhs.Length > 1 ? rhs[1].Trim().Split(' ', System.StringSplitOptions.RemoveEmptyEntries) : System.Array.Empty<string>();
+                    var param = cond.Length > 0 ? cond[0] : "";
+                    var condition = cond.Length > 1 ? ParseCond(cond[1]) : AnimCondition.BoolTrue;
+                    list.Add(new AnimTransitionDef { From = from, To = to, Parameter = param, Condition = condition });
+                }
+                c.SetTransitions(list);
+            }
+        }
+
+        private static string CondText(AnimCondition c) => c switch
+        { AnimCondition.BoolTrue => "true", AnimCondition.BoolFalse => "false", _ => "trigger" };
+        private static AnimCondition ParseCond(string s) => s.ToLowerInvariant() switch
+        { "false" => AnimCondition.BoolFalse, "trigger" => AnimCondition.Trigger, _ => AnimCondition.BoolTrue };
+
         private void RaiseAll()
         {
             OnPropertyChanged(nameof(HasTarget));
@@ -1469,6 +1521,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(ShadowOffsetX)); OnPropertyChanged(nameof(ShadowOffsetY));
             OnPropertyChanged(nameof(HasYSort)); OnPropertyChanged(nameof(YSortOffset));
             OnPropertyChanged(nameof(HasPrefabInstance)); OnPropertyChanged(nameof(PrefabInstancePath));
+            OnPropertyChanged(nameof(HasStateMachine)); OnPropertyChanged(nameof(FsmDefaultState)); OnPropertyChanged(nameof(FsmBlendTime)); OnPropertyChanged(nameof(FsmStatesText)); OnPropertyChanged(nameof(FsmTransitionsText));
             OnPropertyChanged(nameof(TilemapOrientation));
         }
     }

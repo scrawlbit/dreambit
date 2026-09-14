@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "fce38ce4-d31a-4727-b607-82c02a8f9db0",
+      "Id": "d58ecb71-6862-460c-b7c4-0f0712e9230c",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -85,10 +85,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "e601d658-b186-40ce-b86b-761e341b71f6",
+      "Id": "f7a4adc3-e2aa-426e-a736-1279e0fd7660",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -171,10 +172,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "28053127-bfa3-4228-be98-66b8d63df82b",
+      "Id": "f013656f-5ed6-461b-bf6b-41e0e8bd18e0",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -427,10 +429,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "1026e243-a436-4f4c-a7c8-09ed1abe9127",
+      "Id": "0529595e-1349-4276-ae99-d1fe1ba6b63a",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -508,10 +511,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "e35cb40b-7a38-4d7e-821d-225f0bf54108",
+      "Id": "12fcbccb-1968-489b-be7e-0202ac9b3fb7",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -589,10 +593,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "38376bd8-1dbe-4f5e-9116-0f0b05a6158e",
+      "Id": "926c83fd-69d6-43fe-9164-d5e15c54575d",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -670,10 +675,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "dc17c230-b01e-44d9-82e1-60122a9608af",
+      "Id": "9567a2ca-2bf0-461f-bcc6-bb8248f1748d",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -751,10 +757,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "1d0a1cf1-a975-48ce-b35b-f4edce74df66",
+      "Id": "c75ad0f6-1a21-4b76-8183-8e9359695176",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1606,10 +1613,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "c431b941-8f22-4edb-b621-0383ccef83f9",
+      "Id": "58f8dfaa-7503-410c-9703-38e13552cecc",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1684,10 +1692,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "469998af-46c8-4a83-b3ec-23eae9a2d67a",
+      "Id": "610f466d-5b6f-43f4-a024-c15cb7ab8999",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1796,10 +1805,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "edd5dfa5-f131-4f9c-b882-fe904644ea19",
+      "Id": "a6c070c9-7548-4601-9095-1e57c28d48dd",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1922,10 +1932,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "f8d4c4ef-3c69-4a2d-8406-c2672d82fe49",
+      "Id": "ad1259f8-d8b1-460d-924c-29fe42eef226",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -1997,10 +2008,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "02d328f8-308f-425b-b6be-7e8c6b3607e6",
+      "Id": "64d8d6a3-9096-497b-872b-1a45e247483e",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -2091,10 +2103,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "3576eec6-ee89-4932-83ab-8743aa7c1f0e",
+      "Id": "9306a6dd-0758-4534-be34-5052fa9579b8",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -2185,10 +2198,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "9960a01f-0867-46d2-837a-9bb2c60e1b9f",
+      "Id": "4a983fe3-dc9a-4a48-a14f-e406fc898fd3",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2279,10 +2293,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "af1d7040-5ec3-4d07-af7e-dcf2e0964637",
+      "Id": "3ee1e024-5a31-4372-9735-5025f6466d0c",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2360,10 +2375,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "f1f4593f-052f-47cd-8e94-aa74d4acb731",
+      "Id": "2c6675cd-ab6a-4bf6-9374-35af23ac3e85",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2432,10 +2448,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "08cc2913-40db-4a16-9287-c7bf9d883e7b",
+      "Id": "1583cd6f-1250-471c-b625-81fe29eae8b5",
       "Name": "Ambiente",
       "Tag": "",
       "SortOrder": 0,
@@ -2499,10 +2516,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "beca2924-ccfa-43a6-a465-fd7e6505893d",
+      "Id": "9aec0508-da8d-4d58-a797-8d60549335a9",
       "Name": "LuzTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2568,10 +2586,11 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "2185d2af-6122-4f88-94a3-4ff1b5fb0a36",
+      "Id": "36f6a90f-8a6d-457b-8e4a-4fe92fc775dd",
       "Name": "SombraArvore",
       "Tag": "",
       "SortOrder": 0,
@@ -2636,10 +2655,11 @@
       ],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "46d742a0-e6ae-4d65-8874-e1e96755f044",
+      "Id": "5599155c-2fdb-4faf-9728-097b3c7d72b7",
       "Name": "SombraRocha",
       "Tag": "",
       "SortOrder": 0,
@@ -2704,10 +2724,11 @@
       ],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": []
     },
     {
-      "Id": "bd3d2809-412d-44bc-bf7f-659f5396e44c",
+      "Id": "00a20472-a49a-45d0-be01-c03fb5149741",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2765,9 +2786,10 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": [
         {
-          "Id": "1739e9f8-d4db-49b2-b38f-f77c71ef72e3",
+          "Id": "91405982-4cf9-49c4-ac54-e4ecc0b3aa80",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2843,10 +2865,11 @@
           "ShadowCasters": [],
           "YSorts": [],
           "PrefabInstances": [],
+          "StateMachines": [],
           "Children": []
         },
         {
-          "Id": "7107646d-f85f-454a-9a83-0d52703dc539",
+          "Id": "c13bea64-338c-43d3-8395-43cf9ab2a4bd",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2920,10 +2943,11 @@
           "ShadowCasters": [],
           "YSorts": [],
           "PrefabInstances": [],
+          "StateMachines": [],
           "Children": []
         },
         {
-          "Id": "8efe14ae-d24b-45f5-9e02-0bfca000c8f0",
+          "Id": "2036db5a-e9a8-4546-a203-13e9eff6805e",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,
@@ -3004,6 +3028,7 @@
           "ShadowCasters": [],
           "YSorts": [],
           "PrefabInstances": [],
+          "StateMachines": [],
           "Children": []
         }
       ]

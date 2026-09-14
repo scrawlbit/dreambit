@@ -85,12 +85,23 @@ namespace DreamBit.Engine.Serialization
         public List<ShadowCasterData> ShadowCasters { get; set; } = new();
         public List<YSortData> YSorts { get; set; } = new();
         public List<PrefabInstanceData> PrefabInstances { get; set; } = new();
+        public List<AnimStateMachineData> StateMachines { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
     public sealed class YSortData { public float Offset { get; set; } }
 
     public sealed class PrefabInstanceData { public string PrefabPath { get; set; } = ""; }
+
+    public sealed class AnimStateData { public string Name { get; set; } = ""; public string Clip { get; set; } = ""; }
+    public sealed class AnimTransData { public string From { get; set; } = ""; public string To { get; set; } = ""; public string Parameter { get; set; } = ""; public int Condition { get; set; } }
+    public sealed class AnimStateMachineData
+    {
+        public string DefaultState { get; set; } = "";
+        public float BlendTime { get; set; } = 0.12f;
+        public List<AnimStateData> States { get; set; } = new();
+        public List<AnimTransData> Transitions { get; set; } = new();
+    }
 
     public sealed class JointData
     {

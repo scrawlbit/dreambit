@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "70015a3c-ca08-4e44-b701-30cfc3f40dc8",
+      "Id": "bc68a973-9d5b-461a-b46d-489a0553c93a",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1236,9 +1236,10 @@
       "ShadowCasters": [],
       "YSorts": [],
       "PrefabInstances": [],
+      "StateMachines": [],
       "Children": [
         {
-          "Id": "c3d2b284-e98e-4603-9c18-fbd4c7d3f198",
+          "Id": "6fbcb561-32d0-4139-b44c-b931df358c7e",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1306,9 +1307,10 @@
           "ShadowCasters": [],
           "YSorts": [],
           "PrefabInstances": [],
+          "StateMachines": [],
           "Children": [
             {
-              "Id": "44f5c032-3a75-4452-ad0f-51f2e7e80a12",
+              "Id": "99fd5062-b950-4681-b8f9-bf57c5fddb3a",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1376,9 +1378,10 @@
               "ShadowCasters": [],
               "YSorts": [],
               "PrefabInstances": [],
+              "StateMachines": [],
               "Children": [
                 {
-                  "Id": "2d4e1cd6-4420-4874-b9a7-c09888e9870a",
+                  "Id": "16de41d3-c357-4d3f-99cf-09c7309b853e",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1446,9 +1449,10 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": [
                     {
-                      "Id": "2b45cfac-fa64-43bf-9a0a-ab848f516425",
+                      "Id": "ce586dc6-da69-4be9-a77d-978d7f66db5b",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1526,12 +1530,13 @@
                       "ShadowCasters": [],
                       "YSorts": [],
                       "PrefabInstances": [],
+                      "StateMachines": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "9f910ec6-fffc-49b0-ade8-96f146f7fdcc",
+                  "Id": "f5cc29ae-59c8-48e5-9484-babb964a4f89",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1599,9 +1604,10 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": [
                     {
-                      "Id": "12a1c3da-d6d5-48f8-a0c8-871067eccc7f",
+                      "Id": "23f455bc-368b-42d3-aaf2-b677d75027ae",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1669,9 +1675,10 @@
                       "ShadowCasters": [],
                       "YSorts": [],
                       "PrefabInstances": [],
+                      "StateMachines": [],
                       "Children": [
                         {
-                          "Id": "8c0c8922-17d2-4a25-90a1-6e8352ca1f37",
+                          "Id": "1c82b019-a294-4daf-b3f8-949e321894b4",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1749,12 +1756,13 @@
                           "ShadowCasters": [],
                           "YSorts": [],
                           "PrefabInstances": [],
+                          "StateMachines": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "f197296a-9d8d-4ff7-be4a-220e6b801709",
+                      "Id": "6921bb45-9acd-438f-8d94-6318575a78f5",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1832,12 +1840,13 @@
                       "ShadowCasters": [],
                       "YSorts": [],
                       "PrefabInstances": [],
+                      "StateMachines": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "1962e628-f9fd-4479-a88c-4c8c0e5da63d",
+                  "Id": "225c28fd-0eed-4b56-887b-06124551dbe1",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1905,9 +1914,10 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": [
                     {
-                      "Id": "29352e12-f6b2-4e66-859c-f762a1ee4c75",
+                      "Id": "ae6fd7c8-2b40-4c1a-bd60-94767805c137",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1975,9 +1985,10 @@
                       "ShadowCasters": [],
                       "YSorts": [],
                       "PrefabInstances": [],
+                      "StateMachines": [],
                       "Children": [
                         {
-                          "Id": "38a9840f-6ffc-444f-8fc6-dbb6b413e7ae",
+                          "Id": "fa6d0fd1-0f99-459d-8e2b-75835e6f5e05",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2045,9 +2056,10 @@
                           "ShadowCasters": [],
                           "YSorts": [],
                           "PrefabInstances": [],
+                          "StateMachines": [],
                           "Children": [
                             {
-                              "Id": "34597213-254b-4b8f-a142-5ce2921cf79f",
+                              "Id": "a8eeaa5b-7eaf-4339-a35c-5a92d0ed67f5",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2125,12 +2137,13 @@
                               "ShadowCasters": [],
                               "YSorts": [],
                               "PrefabInstances": [],
+                              "StateMachines": [],
                               "Children": []
                             }
                           ]
                         },
                         {
-                          "Id": "f42b565e-a968-4b51-9cc7-dc21c54996de",
+                          "Id": "ab42aacd-ac47-4d3d-9185-2d0c04ea13dc",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2208,12 +2221,13 @@
                           "ShadowCasters": [],
                           "YSorts": [],
                           "PrefabInstances": [],
+                          "StateMachines": [],
                           "Children": []
                         }
                       ]
                     },
                     {
-                      "Id": "01c6b836-3ae1-4adc-9720-a615d5c32009",
+                      "Id": "bf6ef46e-82e2-4b58-abb2-9f30a9f4780c",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2291,12 +2305,13 @@
                       "ShadowCasters": [],
                       "YSorts": [],
                       "PrefabInstances": [],
+                      "StateMachines": [],
                       "Children": []
                     }
                   ]
                 },
                 {
-                  "Id": "3b139e90-e852-4200-bf85-8ede1bae780b",
+                  "Id": "88f6dd43-8e29-465d-9ec3-8522a2caaabf",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2374,12 +2389,13 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "66e4443f-85d1-4544-8dc4-6dc65d2e74e1",
+              "Id": "d5023bf9-9653-4555-a04b-6da5bf12fd0b",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2447,9 +2463,10 @@
               "ShadowCasters": [],
               "YSorts": [],
               "PrefabInstances": [],
+              "StateMachines": [],
               "Children": [
                 {
-                  "Id": "ed13aa29-0674-447f-a923-1ad18934f43c",
+                  "Id": "36ab2c56-91da-40ab-a675-3f10d911a761",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2527,12 +2544,13 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "9225d277-22a3-447b-87ca-210bc290fcbb",
+              "Id": "b866f5bc-a3a9-4021-8a95-df5a522273df",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2600,9 +2618,10 @@
               "ShadowCasters": [],
               "YSorts": [],
               "PrefabInstances": [],
+              "StateMachines": [],
               "Children": [
                 {
-                  "Id": "2d155f8a-4599-4585-b668-4eca2a7fbc3f",
+                  "Id": "ccfbce1c-d2ba-4252-b04a-625e8cfa9a5c",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2680,12 +2699,13 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": []
                 }
               ]
             },
             {
-              "Id": "55297672-2f48-4294-a8c6-b06c9d85ac4b",
+              "Id": "f7491b82-7106-43cd-89c8-d6bf9b2cd0e4",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2753,9 +2773,10 @@
               "ShadowCasters": [],
               "YSorts": [],
               "PrefabInstances": [],
+              "StateMachines": [],
               "Children": [
                 {
-                  "Id": "b4c67e97-2ddd-4d7f-86a3-fc3f46c4d6de",
+                  "Id": "32cc406d-8463-4049-9a65-cd8d038797ce",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2833,6 +2854,7 @@
                   "ShadowCasters": [],
                   "YSorts": [],
                   "PrefabInstances": [],
+                  "StateMachines": [],
                   "Children": []
                 }
               ]

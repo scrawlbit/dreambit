@@ -462,6 +462,13 @@ namespace DreamBit.Engine.Serialization
                     data.YSorts.Add(new YSortData { Offset = ysort.Offset });
                 else if (component is PrefabInstance prefab)
                     data.PrefabInstances.Add(new PrefabInstanceData { PrefabPath = prefab.PrefabPath });
+                else if (component is AnimationStateMachine fsm)
+                    data.StateMachines.Add(new AnimStateMachineData
+                    {
+                        DefaultState = fsm.DefaultState, BlendTime = fsm.BlendTime,
+                        States = fsm.States.Select(x => new AnimStateData { Name = x.Name, Clip = x.Clip }).ToList(),
+                        Transitions = fsm.Transitions.Select(x => new AnimTransData { From = x.From, To = x.To, Parameter = x.Parameter, Condition = (int)x.Condition }).ToList()
+                    });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -740,6 +747,14 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var pi in data.PrefabInstances)
                 obj.AddComponent(new PrefabInstance { PrefabPath = pi.PrefabPath });
+
+            foreach (var sm in data.StateMachines)
+            {
+                var fsm = new AnimationStateMachine { DefaultState = sm.DefaultState, BlendTime = sm.BlendTime };
+                fsm.SetStates(sm.States.Select(x => new AnimStateDef { Name = x.Name, Clip = x.Clip }));
+                fsm.SetTransitions(sm.Transitions.Select(x => new AnimTransitionDef { From = x.From, To = x.To, Parameter = x.Parameter, Condition = (AnimCondition)x.Condition }));
+                obj.AddComponent(fsm);
+            }
 
             foreach (var chaser in data.NavChasers)
                 obj.AddComponent(new NavChaser
