@@ -86,7 +86,9 @@ namespace DreamBit.Player
             if (_shotPath != null && _autoWalk && _frames > 40)
                 DreamBit.Engine.Input.Input.HoldAction("MoveRight");
 
+            DreamBit.Engine.Diagnostics.Profiler.Begin("update");
             _scene.Update(gameTime);
+            DreamBit.Engine.Diagnostics.Profiler.End("update");
 
             // Transição de fase: um SceneExit pediu para carregar outra cena.
             if (_scene.PendingSceneLoad is { } next)
@@ -127,13 +129,17 @@ namespace DreamBit.Player
                 _renderer.ShowDebugOverlay = !_renderer.ShowDebugOverlay;
             _f3Prev = f3;
 
+            // Contadores do profiler + fecha o frame.
+            DreamBit.Engine.Diagnostics.Profiler.SetCounter("obj", CountObjects(_scene.Objects));
+            DreamBit.Engine.Diagnostics.Profiler.SetCounter("fps", _fps);
+            DreamBit.Engine.Diagnostics.Profiler.EndFrame();
+
             if (_renderer.ShowDebugOverlay)
-                _renderer.DebugLines = new[]
-                {
-                    $"FPS {_fps:0}",
-                    $"OBJ {CountObjects(_scene.Objects)}",
-                    $"CENA {_scene.Name}"
-                };
+            {
+                var lines = new System.Collections.Generic.List<string> { $"CENA {_scene.Name}" };
+                lines.AddRange(DreamBit.Engine.Diagnostics.Profiler.Report());
+                _renderer.DebugLines = lines;
+            }
         }
 
         private static int CountObjects(System.Collections.Generic.IEnumerable<GameObject> objects)
@@ -197,8 +203,10 @@ namespace DreamBit.Player
 
         protected override void Draw(GameTime gameTime)
         {
+            DreamBit.Engine.Diagnostics.Profiler.Begin("draw");
             _renderer.Render(_scene, _camera,
                 GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            DreamBit.Engine.Diagnostics.Profiler.End("draw");
             base.Draw(gameTime);
 
             if (_shotPath != null && _frames >= _shotFrame)
