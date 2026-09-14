@@ -5,13 +5,23 @@
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
             <StackPanel Orientation="Horizontal" Spacing="6">
-                <Button Content="📂 Abrir PNG…" Click="OnOpen" />
+                <Button Click="OnOpen">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <PathIcon Width="14" Height="14" Data="{StaticResource IconFolder}" />
+                        <TextBlock Text="Abrir PNG…" />
+                    </StackPanel>
+                </Button>
                 <Border Width="1" Background="#11141A" Margin="2,2" />
                 <TextBlock x:Name="Info" Text="Arraste um retângulo sobre a imagem"
                            VerticalAlignment="Center" Foreground="#8A93A6" />
                 <Border Width="1" Background="#11141A" Margin="2,2" />
-                <Button x:Name="UseButton" Content="🧩 Usar como carimbo" Click="OnUseStamp" IsEnabled="False"
-                        ToolTip.Tip="Liga o modo carimbo: clique na cena para posicionar" />
+                <Button x:Name="UseButton" Click="OnUseStamp" IsEnabled="False"
+                        ToolTip.Tip="Liga o modo carimbo: clique na cena para posicionar">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <PathIcon Width="14" Height="14" Data="{StaticResource IconStamp}" />
+                        <TextBlock Text="Usar como carimbo" />
+                    </StackPanel>
+                </Button>
                 <Button x:Name="StampCenterButton" Content="Carimbar no centro" Click="OnStampCenter" IsEnabled="False" />
             </StackPanel>
         </Border>

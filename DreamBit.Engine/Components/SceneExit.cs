@@ -78,7 +78,7 @@ namespace DreamBit.Engine.Components
             var h1 = _size / 2f;
             var c2 = other.Transform.WorldPosition;
             var h2 = HalfSize(other);
-            return Math.Abs(c1.X - c2.X) <= h1.X + h2.X && Math.Abs(c1.Y - c2.Y) <= h1.Y + h2.Y;
+            return new Geometry.Aabb(c1 - h1, c1 + h1).Intersects(new Geometry.Aabb(c2 - h2, c2 + h2));
         }
 
         private static Vector2 HalfSize(GameObject obj)

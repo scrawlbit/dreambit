@@ -415,7 +415,7 @@ namespace DreamBit.Studio.Avalonia
             Grid.SetColumn(up, 2);
             var down = SmallButton("▼", () => { _editor.MoveTileLayer(layer, -1); RebuildLayers(); InvalidateScene(); });
             Grid.SetColumn(down, 3);
-            var del = SmallButton("✕", () => { _editor.RemoveTileLayer(layer); RebuildLayers(); InvalidateScene(); });
+            var del = SmallButton(CloseGlyph(), () => { _editor.RemoveTileLayer(layer); RebuildLayers(); InvalidateScene(); });
             Grid.SetColumn(del, 4);
 
             grid.Children.Add(vis);
@@ -427,11 +427,20 @@ namespace DreamBit.Studio.Avalonia
             return row;
         }
 
-        private static Button SmallButton(string text, Action onClick)
+        private static Button SmallButton(object content, Action onClick)
         {
-            var b = new Button { Content = text, Padding = new global::Avalonia.Thickness(5, 2), Background = Brushes.Transparent, Foreground = new SolidColorBrush(Color.FromRgb(0x8A, 0x93, 0xA6)) };
+            var b = new Button { Content = content, Padding = new global::Avalonia.Thickness(5, 2), Background = Brushes.Transparent, Foreground = new SolidColorBrush(Color.FromRgb(0x8A, 0x93, 0xA6)) };
             b.Click += (_, __) => onClick();
             return b;
+        }
+
+        /// <summary>Ícone Material de fechar (para botões criados em código).</summary>
+        private global::Avalonia.Controls.PathIcon CloseGlyph()
+        {
+            var icon = new global::Avalonia.Controls.PathIcon { Width = 11, Height = 11 };
+            if (this.FindResource("IconClose") is global::Avalonia.Media.Geometry g)
+                icon.Data = g;
+            return icon;
         }
 
         private void OnPalettePick(object? sender, PointerPressedEventArgs e)
@@ -547,6 +556,7 @@ namespace DreamBit.Studio.Avalonia
                 case "Group" when !inText: _editor.GroupSelected(); RebuildHierarchy(); return true;
                 case "Ungroup" when !inText: _editor.UngroupSelected(); RebuildHierarchy(); return true;
                 case "Play": OnPlayToggle(this, new RoutedEventArgs()); return true;
+                case "RunPlayer": OnRunGame(this, new RoutedEventArgs()); return true;
                 case "ZoomReset": _editor.Camera.Zoom = 1f; return true;
                 case "FocusSelection" when !inText: _editor.Camera.Position = _editor.SelectionCenter(); return true;
                 default: return false;

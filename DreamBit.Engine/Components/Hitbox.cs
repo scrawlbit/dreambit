@@ -71,7 +71,7 @@ namespace DreamBit.Engine.Components
             var scene = Owner?.Scene;
             if (scene != null)
             {
-                var (min, max) = WorldBounds();
+                var box = Bounds();
                 foreach (var obj in scene.VisibleInDrawOrder())
                     foreach (var component in obj.Components)
                     {
@@ -80,8 +80,7 @@ namespace DreamBit.Engine.Components
                         var health = hurt.Health;
                         if (health == null || _hitThisActivation.Contains(health))
                             continue;
-                        var (hmin, hmax) = hurt.WorldBounds();
-                        if (Overlap(min, max, hmin, hmax))
+                        if (box.Overlaps(hurt.Bounds()))
                         {
                             health.Damage(Damage);
                             _hitThisActivation.Add(health);
@@ -93,14 +92,7 @@ namespace DreamBit.Engine.Components
                 _active = false;
         }
 
-        private (Vector2 Min, Vector2 Max) WorldBounds()
-        {
-            var c = Owner.Transform.WorldPosition + Offset;
-            var half = new Vector2(_width / 2f, _height / 2f);
-            return (c - half, c + half);
-        }
-
-        private static bool Overlap(Vector2 aMin, Vector2 aMax, Vector2 bMin, Vector2 bMax)
-            => aMin.X < bMax.X && aMax.X > bMin.X && aMin.Y < bMax.Y && aMax.Y > bMin.Y;
+        private Geometry.Aabb Bounds()
+            => Geometry.Aabb.FromCenterSize(Owner.Transform.WorldPosition + Offset, new Vector2(_width, _height));
     }
 }

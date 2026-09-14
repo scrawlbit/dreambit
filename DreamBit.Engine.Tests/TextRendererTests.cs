@@ -22,7 +22,7 @@ namespace DreamBit.Engine.Tests
         [Fact]
         public void PixelFont_DesconhecidoViraEspaco()
         {
-            CollectionAssert.AreEqual(PixelFont.Glyph(' '), PixelFont.Glyph('❤'));
+            CollectionAssert.AreEqual(PixelFont.Glyph(' '), PixelFont.Glyph('好')); // glifo fora da fonte -> espaço
         }
 
         [Fact]

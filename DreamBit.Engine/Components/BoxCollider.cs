@@ -23,12 +23,15 @@ namespace DreamBit.Engine.Components
         /// <summary>Deslocamento do centro da caixa em relação ao objeto.</summary>
         public Vector2 Offset { get => _offset; set => Set(ref _offset, value); }
 
+        /// <summary>Caixa AABB em coordenadas de mundo, sem rotação.</summary>
+        public Geometry.Aabb Bounds()
+            => Geometry.Aabb.FromCenterSize(Owner.Transform.WorldPosition + _offset, _size);
+
         /// <summary>Caixa em coordenadas de mundo (min, max), sem rotação.</summary>
         public (Vector2 Min, Vector2 Max) WorldBounds()
         {
-            var center = Owner.Transform.WorldPosition + _offset;
-            var half = _size / 2f;
-            return (center - half, center + half);
+            var b = Bounds();
+            return (b.Min, b.Max);
         }
 
         protected internal override void Draw(ISceneDrawing drawing)

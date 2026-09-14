@@ -29,6 +29,29 @@
             <Setter Property="Foreground" Value="#C77" />
             <Setter Property="Padding" Value="4,0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" Cursor="Hand">
+                        <PathIcon Width="12" Height="12" Data="{StaticResource IconClose}"
+                                  Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="Button.remove:pointerover">
+            <Setter Property="Foreground" Value="#FF9A9A" />
+        </Style>
+        <Style Selector="ToggleButton.lock">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Foreground" Value="#6B7280" />
+        </Style>
+        <Style Selector="ToggleButton.lock:checked">
+            <Setter Property="Foreground" Value="#FFC24B" />
+        </Style>
+        <Style Selector="ToggleButton.lock:checked /template/ ContentPresenter">
+            <Setter Property="Background" Value="#33FFC24B" />
         </Style>
     </Window.Styles>
 
@@ -124,8 +147,9 @@
                 <Button Classes="icon" Click="OnOpenAtlas" ToolTip.Tip="Atlas — recortar e carimbar">
                     <PathIcon Classes="tb" Data="{StaticResource IconImage}" />
                 </Button>
-                <Button Classes="icon" Click="OnExitStamp" IsVisible="{Binding StampMode}" ToolTip.Tip="Sair do modo carimbo"
-                        Content="✕" Foreground="#39D0FF" />
+                <Button Classes="icon" Click="OnExitStamp" IsVisible="{Binding StampMode}" ToolTip.Tip="Sair do modo carimbo">
+                    <PathIcon Classes="tb" Data="{StaticResource IconClose}" Foreground="#39D0FF" />
+                </Button>
                 <Border Classes="sep" />
                 <Button x:Name="PlayButton" Classes="icon" Click="OnPlayToggle" ToolTip.Tip="Play/Stop">
                     <PathIcon Classes="tb" Data="{StaticResource IconPlay}" />
@@ -232,7 +256,7 @@
                              DoubleTapped="OnAssetActivated">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding, Converter={x:Static local:FileNameConverter.Instance}}"
+                                <TextBlock Text="{Binding Converter={x:Static local:FileNameConverter.Instance}}"
                                            Foreground="#B9C0CE" ToolTip.Tip="{Binding}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -258,8 +282,9 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Button Background="Transparent" Padding="8,3" Click="OnActivateTab"
                                                 Content="{Binding Title}" Foreground="#D6DBE6" />
-                                        <Button Background="Transparent" Padding="4,3" Click="OnCloseTab"
-                                                Content="✕" Foreground="#8A93A6" />
+                                        <Button Background="Transparent" Padding="4,3" Click="OnCloseTab" Foreground="#8A93A6">
+                                            <PathIcon Width="11" Height="11" Data="{StaticResource IconClose}" Foreground="#8A93A6" />
+                                        </Button>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -273,7 +298,14 @@
 
             <!-- Inspetor -->
             <DockPanel Grid.Column="4" Background="#252932">
-                <TextBlock DockPanel.Dock="Top" Text="INSPETOR" Foreground="#8A93A6" Margin="10,8" />
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="10,6">
+                    <TextBlock Text="INSPETOR" Foreground="#8A93A6" VerticalAlignment="Center" />
+                    <ToggleButton Grid.Column="1" Classes="lock" ToolTip.Tip="Bloquear movimentação"
+                                  IsChecked="{Binding Inspector.Locked, Mode=TwoWay}"
+                                  IsVisible="{Binding Inspector.HasTarget}">
+                        <PathIcon Width="15" Height="15" Data="{StaticResource IconLock}" />
+                    </ToggleButton>
+                </Grid>
                 <ScrollViewer>
                     <StackPanel Margin="10,4" DataContext="{Binding Inspector}" Spacing="2"
                                 IsVisible="{Binding HasTarget}">
@@ -297,8 +329,6 @@
                         </Grid>
                         <CheckBox Content="Fixo na tela (HUD) — não anda com a câmera"
                                   IsChecked="{Binding ScreenSpace, Mode=TwoWay}" Margin="0,2,0,0" />
-                        <CheckBox Content="🔒 Bloquear movimentação (evita arrastar sem querer)"
-                                  IsChecked="{Binding Locked, Mode=TwoWay}" Margin="0,2,0,0" />
                         <Grid ColumnDefinitions="*,6,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="field" Text="Posição X" />
@@ -382,7 +412,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Sprite" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSprite" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveSprite" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -438,7 +468,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Animator" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAnimator" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveAnimator" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Textura (sheet)" />
                                 <TextBox Text="{Binding AnimTexturePath, Mode=TwoWay}" />
@@ -503,7 +533,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Platformer" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemovePlatformer" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemovePlatformer" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -538,7 +568,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Box Collider (sólido)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveCollider" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveCollider" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -569,7 +599,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Audio" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAudio" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveAudio" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Som (.wav)" />
                                 <TextBox Text="{Binding AudioPath, Mode=TwoWay}" />
@@ -595,7 +625,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Particles" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveParticles" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveParticles" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -652,7 +682,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Trigger (coletável)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTrigger" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveTrigger" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -677,7 +707,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Animator Controller" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAnimatorController" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveAnimatorController" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Clipe parado (idle)" />
                                 <TextBox Text="{Binding CtrlIdleClip, Mode=TwoWay}" />
@@ -695,7 +725,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Tween" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTween" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveTween" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Canal" />
                                 <ComboBox ItemsSource="{Binding TweenChannels}" SelectedItem="{Binding TweenChannel, Mode=TwoWay}" HorizontalAlignment="Stretch" />
@@ -718,7 +748,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Text" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveText" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveText" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Conteúdo" />
                                 <TextBox Text="{Binding TextValue, Mode=TwoWay}" />
@@ -747,7 +777,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Camera" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveCamera" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveCamera" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Seguir a tag" />
                                 <TextBox Text="{Binding CameraTargetTag, Mode=TwoWay}" />
@@ -789,7 +819,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Property Animator" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemovePropertyAnimator" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemovePropertyAnimator" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -817,7 +847,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Rigidbody 2D" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveRigidbody" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveRigidbody" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -879,7 +909,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Sprite Animator Controller" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSpriteAnimatorController" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveSpriteAnimatorController" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Clipe parado" /><TextBox Text="{Binding SacIdleClip, Mode=TwoWay}" /></StackPanel>
@@ -901,7 +931,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Nav Chaser" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveNavChaser" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveNavChaser" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Tag do alvo" /><TextBox Text="{Binding ChaserTargetTag, Mode=TwoWay}" />
                                 <Grid ColumnDefinitions="*,6,*,6,*">
@@ -918,7 +948,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Audio Listener" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAudioListener" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveAudioListener" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Ouvinte do áudio espacial (posição = deste objeto). Um por cena." />
                             </StackPanel>
@@ -929,7 +959,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Light 2D" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveLight" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveLight" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Raio" /><TextBox Text="{Binding LightRadius, Mode=TwoWay}" /></StackPanel>
@@ -948,7 +978,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Ambient Light" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveAmbientLight" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveAmbientLight" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding AmbientR, Mode=TwoWay}" /></StackPanel>
@@ -964,7 +994,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Top-Down Controller" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTopDown" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveTopDown" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Velocidade" /><TextBox Text="{Binding TopDownSpeed, Mode=TwoWay}" />
                                 <Grid ColumnDefinitions="*,6,*">
@@ -980,7 +1010,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Health" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveHealth" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveHealth" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Vida máxima" /><TextBox Text="{Binding HealthMax, Mode=TwoWay}" /></StackPanel>
@@ -997,7 +1027,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Hurtbox (recebe golpes)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveHurtbox" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveHurtbox" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Largura" /><TextBox Text="{Binding HurtWidth, Mode=TwoWay}" /></StackPanel>
@@ -1016,7 +1046,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Hitbox (dá golpes)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveHitbox" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveHitbox" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Largura" /><TextBox Text="{Binding HitWidth, Mode=TwoWay}" /></StackPanel>
@@ -1040,7 +1070,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Sprite Flash" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSpriteFlash" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveSpriteFlash" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Duração (s)" /><TextBox Text="{Binding FlashDuration, Mode=TwoWay}" />
                                 <Grid ColumnDefinitions="*,6,*,6,*">
@@ -1056,7 +1086,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Joint 2D" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveJoint" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveJoint" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Tipo" />
                                 <ComboBox ItemsSource="{Binding JointKinds}" HorizontalAlignment="Stretch" SelectedItem="{Binding JointKindValue, Mode=TwoWay}" />
@@ -1078,7 +1108,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Shadow Caster" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveShadowCaster" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveShadowCaster" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Largura" /><TextBox Text="{Binding ShadowWidth, Mode=TwoWay}" /></StackPanel>
@@ -1097,7 +1127,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Timer" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveTimer" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveTimer" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Duração (s)" />
                                 <TextBox Text="{Binding TimerDuration, Mode=TwoWay}" />
@@ -1115,7 +1145,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Parallax" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveParallax" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveParallax" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -1136,7 +1166,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Layout" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiLayout" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiLayout" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Direção" />
                                 <ComboBox ItemsSource="{Binding LayoutDirections}"
@@ -1152,7 +1182,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Slider" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiSlider" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiSlider" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -1176,7 +1206,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Toggle" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiToggle" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiToggle" />
                                 </Grid>
                                 <CheckBox Content="Ligado" IsChecked="{Binding ToggleIsOn, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Tamanho" />
@@ -1191,7 +1221,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Progress Bar" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiProgressBar" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiProgressBar" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Valor (0–1)" />
                                 <TextBox Text="{Binding ProgressValue, Mode=TwoWay}" />
@@ -1214,7 +1244,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Scroll View" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiScrollView" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiScrollView" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -1245,7 +1275,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Navigator" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiNavigator" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiNavigator" />
                                 </Grid>
                                 <CheckBox Content="Focar o primeiro controle automaticamente" IsChecked="{Binding NavigatorAutoFocus, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Setas/D-pad movem o foco; Enter/A confirma; ←/→ ajustam slider. Um por cena." />
@@ -1257,7 +1287,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Text Field" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiTextField" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiTextField" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Texto inicial" />
                                 <TextBox Text="{Binding TextFieldText, Mode=TwoWay}" />
@@ -1284,7 +1314,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Anchor" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiAnchor" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiAnchor" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Âncora na tela" />
                                 <ComboBox ItemsSource="{Binding AnchorPoints}"
@@ -1308,7 +1338,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="UI Button" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveUiButton" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveUiButton" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
@@ -1337,7 +1367,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Message Listener" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveMessageListener" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveMessageListener" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Escutar a mensagem" />
                                 <TextBox Text="{Binding ListenerMessage, Mode=TwoWay}" />
@@ -1353,7 +1383,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Follow" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveFollow" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveFollow" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Velocidade" />
                                 <TextBox Text="{Binding FollowSpeed, Mode=TwoWay}" />
@@ -1366,7 +1396,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Rotator" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveRotator" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveRotator" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Velocidade (rad/s)" />
                                 <TextBox Text="{Binding RotatorSpeed, Mode=TwoWay}" />
@@ -1378,7 +1408,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Bone (rig)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveBone" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveBone" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Comprimento" />
                                 <TextBox Text="{Binding BoneLength, Mode=TwoWay}" />
@@ -1395,7 +1425,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Skeleton (timeline)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveSkeleton" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveSkeleton" />
                                 </Grid>
 
                                 <TextBlock Classes="field" Text="Clipe ativo (idle/walk…)" />
@@ -1463,7 +1493,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Script (C#)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveScript" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveScript" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Arquivo .cs (edite na IDE — hot-reload no play)" />
                                 <TextBox Text="{Binding ScriptSourcePath, Mode=TwoWay}" IsReadOnly="True"
@@ -1513,7 +1543,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Post Process (shader)" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemovePostProcess" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemovePostProcess" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Saturação (1 = normal, 0 = cinza)" /><TextBox Text="{Binding PostSaturation, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Tom (R/G/B)" />
@@ -1531,7 +1561,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Layered Music" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveLayeredMusic" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveLayeredMusic" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Faixa base (.wav em loop)" />
                                 <TextBox Text="{Binding MusicBasePath, Mode=TwoWay}" />
@@ -1554,7 +1584,7 @@
                                                 <StackPanel>
                                                     <Grid ColumnDefinitions="*,Auto">
                                                         <TextBlock Classes="field" Text="Stem (.wav em loop)" />
-                                                        <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveMusicLayer" />
+                                                        <Button Grid.Column="1" Classes="remove" Click="OnRemoveMusicLayer" />
                                                     </Grid>
                                                     <TextBox Text="{Binding TrackPath, Mode=TwoWay}" />
                                                     <Grid ColumnDefinitions="*,6,*" Margin="0,4,0,0">
@@ -1603,7 +1633,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Screen Fade" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveScreenFade" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveScreenFade" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*,6,*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="R" /><TextBox Text="{Binding FadeR, Mode=TwoWay}" /></StackPanel>
@@ -1624,7 +1654,7 @@
                                     <TextBlock Classes="section" Text="State Machine" />
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
                                         <Button Content="Editar visual…" Click="OnEditStateMachine" />
-                                        <Button Classes="remove" Content="✕" Click="OnRemoveStateMachine" />
+                                        <Button Classes="remove" Click="OnRemoveStateMachine" />
                                     </StackPanel>
                                 </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
@@ -1643,7 +1673,7 @@
                             <StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Classes="section" Text="Y Sort" />
-                                    <Button Grid.Column="1" Classes="remove" Content="✕" Click="OnRemoveYSort" />
+                                    <Button Grid.Column="1" Classes="remove" Click="OnRemoveYSort" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Offset do pivô (pés)" /><TextBox Text="{Binding YSortOffset, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Desenha por Y de mundo (profundidade top-down)." />

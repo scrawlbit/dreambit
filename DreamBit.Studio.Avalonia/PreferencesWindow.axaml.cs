@@ -99,8 +99,8 @@ namespace DreamBit.Studio.Avalonia
             else
             {
                 status.Text = EngineLocator.IsEngineRoot(path)
-                    ? "✔ Engine válida nesta pasta."
-                    : "✘ Não achei o DreamBit.Player nesta pasta.";
+                    ? "Engine válida nesta pasta."
+                    : "Não achei o DreamBit.Player nesta pasta.";
             }
         }
 

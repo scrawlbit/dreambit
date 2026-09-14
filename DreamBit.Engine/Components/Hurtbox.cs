@@ -26,11 +26,7 @@ namespace DreamBit.Engine.Components
         public Health? Health => Owner?.Components.OfType<Health>().FirstOrDefault();
 
         /// <summary>Caixa AABB em coordenadas de mundo.</summary>
-        public (Vector2 Min, Vector2 Max) WorldBounds()
-        {
-            var c = Owner.Transform.WorldPosition + Offset;
-            var half = new Vector2(_width / 2f, _height / 2f);
-            return (c - half, c + half);
-        }
+        public Geometry.Aabb Bounds()
+            => Geometry.Aabb.FromCenterSize(Owner.Transform.WorldPosition + Offset, new Vector2(_width, _height));
     }
 }

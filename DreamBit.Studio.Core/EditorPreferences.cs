@@ -38,6 +38,7 @@ namespace DreamBit.Studio
             ("Delete", "Excluir"),
             ("Save", "Salvar cena"),
             ("Play", "Play/Pause"),
+            ("RunPlayer", "Rodar no Player"),
             ("ZoomReset", "Zoom 100%"),
             ("FocusSelection", "Focar seleção"),
         };
@@ -55,6 +56,7 @@ namespace DreamBit.Studio
             ["Delete"] = "Delete",
             ["Save"] = "Ctrl+S",
             ["Play"] = "F5",
+            ["RunPlayer"] = "Ctrl+F5",
             ["ZoomReset"] = "Ctrl+D0",
             ["FocusSelection"] = "F",
         };
