@@ -485,7 +485,9 @@ namespace DreamBit.Engine.Serialization
                         Zoom = cam.Zoom,
                         UseBounds = cam.UseBounds,
                         BoundsMinX = cam.BoundsMin.X, BoundsMinY = cam.BoundsMin.Y,
-                        BoundsMaxX = cam.BoundsMax.X, BoundsMaxY = cam.BoundsMax.Y
+                        BoundsMaxX = cam.BoundsMax.X, BoundsMaxY = cam.BoundsMax.Y,
+                        Priority = cam.Priority, ShakeOnMessage = cam.ShakeOnMessage,
+                        ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude
                     });
                 else if (component is UiAnchor anchor)
                     data.Anchors.Add(new UiAnchorData
@@ -893,7 +895,9 @@ namespace DreamBit.Engine.Serialization
                     Zoom = cam.Zoom,
                     UseBounds = cam.UseBounds,
                     BoundsMin = new Vector2(cam.BoundsMinX, cam.BoundsMinY),
-                    BoundsMax = new Vector2(cam.BoundsMaxX, cam.BoundsMaxY)
+                    BoundsMax = new Vector2(cam.BoundsMaxX, cam.BoundsMaxY),
+                    Priority = cam.Priority, ShakeOnMessage = cam.ShakeOnMessage,
+                    ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude
                 });
 
             foreach (var anchor in data.Anchors)

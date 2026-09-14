@@ -1352,7 +1352,9 @@ namespace DreamBit.Studio.ViewModels
                         {
                             TargetTag = cam.TargetTag, DeadzoneWidth = cam.DeadzoneWidth, DeadzoneHeight = cam.DeadzoneHeight,
                             SmoothTime = cam.SmoothTime, Zoom = cam.Zoom,
-                            UseBounds = cam.UseBounds, BoundsMin = cam.BoundsMin, BoundsMax = cam.BoundsMax
+                            UseBounds = cam.UseBounds, BoundsMin = cam.BoundsMin, BoundsMax = cam.BoundsMax,
+                            Priority = cam.Priority, ShakeOnMessage = cam.ShakeOnMessage,
+                            ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude
                         });
                         break;
                     case AudioSource au:

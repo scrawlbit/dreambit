@@ -527,6 +527,10 @@ namespace DreamBit.Studio.ViewModels
             get => Camera?.UseBounds ?? false;
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
+        public int CameraPriority { get => Camera?.Priority ?? 0; set { var c = Camera; if (c != null) c.Priority = value; } }
+        public string CameraShakeOn { get => Camera?.ShakeOnMessage ?? ""; set { var c = Camera; if (c != null) c.ShakeOnMessage = value; } }
+        public float CameraShakeDuration { get => Camera?.ShakeMessageDuration ?? 0.3f; set { var c = Camera; if (c != null) c.ShakeMessageDuration = value; } }
+        public float CameraShakeMagnitude { get => Camera?.ShakeMessageMagnitude ?? 12f; set { var c = Camera; if (c != null) c.ShakeMessageMagnitude = value; } }
 
         // ---- Componente PropertyAnimator (timeline de propriedades) ----
 
@@ -1278,6 +1282,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(CameraSmoothTime));
             OnPropertyChanged(nameof(CameraZoom));
             OnPropertyChanged(nameof(CameraUseBounds));
+            OnPropertyChanged(nameof(CameraPriority)); OnPropertyChanged(nameof(CameraShakeOn));
+            OnPropertyChanged(nameof(CameraShakeDuration)); OnPropertyChanged(nameof(CameraShakeMagnitude));
             OnPropertyChanged(nameof(HasPropAnim));
             OnPropertyChanged(nameof(PropAnimDuration));
             OnPropertyChanged(nameof(PropAnimLoop));

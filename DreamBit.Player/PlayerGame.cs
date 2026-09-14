@@ -163,17 +163,21 @@ namespace DreamBit.Player
 
         private static CameraComponent? FindCamera(System.Collections.Generic.IEnumerable<GameObject> objects)
         {
-            foreach (var obj in objects)
+            // Câmera ativa (Enabled) de maior prioridade — permite trocar de câmera.
+            CameraComponent? best = null;
+            void Scan(System.Collections.Generic.IEnumerable<GameObject> objs)
             {
-                foreach (var component in obj.Components)
-                    if (component is CameraComponent cam)
-                        return cam;
-
-                var nested = FindCamera(obj.Children);
-                if (nested != null)
-                    return nested;
+                foreach (var obj in objs)
+                {
+                    foreach (var component in obj.Components)
+                        if (component is CameraComponent cam && cam.Enabled &&
+                            (best == null || cam.Priority > best.Priority))
+                            best = cam;
+                    Scan(obj.Children);
+                }
             }
-            return null;
+            Scan(objects);
+            return best;
         }
 
         private static GameObject? FindPlayer(System.Collections.Generic.IEnumerable<GameObject> objects)

@@ -422,6 +422,10 @@ namespace DreamBit.Engine.Serialization
         public float BoundsMinY { get; set; } = -2000f;
         public float BoundsMaxX { get; set; } = 2000f;
         public float BoundsMaxY { get; set; } = 2000f;
+        public int Priority { get; set; }
+        public string ShakeOnMessage { get; set; } = "";
+        public float ShakeMessageDuration { get; set; } = 0.3f;
+        public float ShakeMessageMagnitude { get; set; } = 12f;
     }
 
     public sealed class TilemapData

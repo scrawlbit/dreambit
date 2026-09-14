@@ -755,6 +755,14 @@
                                     </StackPanel>
                                 </Grid>
                                 <CheckBox Content="Usar limites (bounds)" IsChecked="{Binding CameraUseBounds, Mode=TwoWay}" Margin="0,6,0,0" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Prioridade" /><TextBox Text="{Binding CameraPriority, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Tremer na mensagem" /><TextBox Text="{Binding CameraShakeOn, Mode=TwoWay}" Watermark="ex.: hit" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Tremor: duração (s)" /><TextBox Text="{Binding CameraShakeDuration, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Tremor: amplitude" /><TextBox Text="{Binding CameraShakeMagnitude, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
                                 <TextBlock Classes="field" Text="No play, a câmera segue o alvo (deadzone/suavização/limites)." />
                             </StackPanel>
                         </Border>
