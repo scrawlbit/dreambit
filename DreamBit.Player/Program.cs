@@ -15,6 +15,9 @@ namespace DreamBit.Player
             string? clip = null;
             string? demo = null;
             string? musicSave = null;
+            string? example = null;
+            string? examplesSave = null;
+            bool examplesList = false;
             int shotFrame = 110;
             bool walk = false;
             bool grayscale = false;
@@ -37,8 +40,31 @@ namespace DreamBit.Player
                         else musicLog = 16f;
                         break;
                     case "--music-save": musicSave = i + 1 < args.Length ? args[++i] : null; break;
+                    case "--example": example = i + 1 < args.Length ? args[++i] : null; break;
+                    case "--examples-list": examplesList = true; break;
+                    case "--examples-save": examplesSave = i + 1 < args.Length ? args[++i] : null; break;
                     default: scenePath ??= args[i]; break;
                 }
+            }
+
+            if (examplesList)
+            {
+                foreach (var e in ExampleScenes.All)
+                    Console.WriteLine($"{e.Name,-16} {e.Title}");
+                return;
+            }
+
+            // Salva todos os exemplos como .dbscene (sem abrir janela) para abrir no editor.
+            if (examplesSave != null)
+            {
+                Directory.CreateDirectory(examplesSave);
+                foreach (var e in ExampleScenes.All)
+                {
+                    var path = Path.Combine(examplesSave, e.Name + ".dbscene");
+                    DreamBit.Engine.Serialization.SceneSerializer.Save(e.Build(), path);
+                    Console.WriteLine($"salvo: {path}");
+                }
+                return;
             }
 
             // Salva a cena da demo em .dbscene (sem abrir janela) para abrir no editor.
@@ -49,14 +75,14 @@ namespace DreamBit.Player
                 return;
             }
 
-            if (scenePath == null && demo == null)
+            if (scenePath == null && demo == null && example == null)
             {
                 var bundled = Path.Combine(AppContext.BaseDirectory, "game.dbscene");
                 if (File.Exists(bundled))
                     scenePath = bundled;
             }
 
-            using var game = new PlayerGame(scenePath, shotPath, shotFrame, walk, clip, grayscale, demo, musicLog);
+            using var game = new PlayerGame(scenePath, shotPath, shotFrame, walk, clip, grayscale, demo, musicLog, example);
             game.Run();
         }
     }

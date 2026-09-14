@@ -30,14 +30,16 @@ namespace DreamBit.Player
 
         // Demo por código (ex.: --music-demo) e log de intensidade da música (--music-log).
         private readonly string? _demo;
+        private readonly string? _example;
         private readonly float _musicLog;
         private float _musicLogElapsed;
         private float _musicLogNextPrint;
 
-        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null, bool grayscale = false, string? demo = null, float musicLog = 0f)
+        public PlayerGame(string? scenePath, string? shotPath = null, int shotFrame = 110, bool autoWalk = false, string? clip = null, bool grayscale = false, string? demo = null, float musicLog = 0f, string? example = null)
         {
             _grayscale = grayscale;
             _demo = demo;
+            _example = example;
             _musicLog = musicLog;
             _scenePath = scenePath;
             _shotPath = shotPath;
@@ -77,11 +79,13 @@ namespace DreamBit.Player
 
             _sceneFolder = _scenePath != null ? Path.GetDirectoryName(_scenePath) : null;
 
-            _scene = _demo == "music"
-                ? DemoScenes.AdaptiveMusic()
-                : _scenePath != null && File.Exists(_scenePath)
-                    ? SceneSerializer.Load(_scenePath)
-                    : BuildFallbackScene();
+            _scene = _example != null
+                ? ExampleScenes.Get(_example) ?? BuildFallbackScene()
+                : _demo == "music"
+                    ? DemoScenes.AdaptiveMusic()
+                    : _scenePath != null && File.Exists(_scenePath)
+                        ? SceneSerializer.Load(_scenePath)
+                        : BuildFallbackScene();
 
             if (_grayscale)
             {
