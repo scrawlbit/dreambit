@@ -44,11 +44,40 @@ namespace DreamBit.Studio.Avalonia
 
         public AtlasPicker() : this(new EditorViewModel()) { } // designer
 
+        private List<string> _recentPaths = new();
+
         public AtlasPicker(EditorViewModel editor)
         {
             InitializeComponent();
             _editor = editor;
             this.FindControl<ListBox>("StampList")!.ItemsSource = _stamps;
+            RefreshRecent();
+            // Reutilizar: reabre o último atlas cortado.
+            var last = _recentPaths.FirstOrDefault(System.IO.File.Exists);
+            if (last != null)
+                Load(last);
+        }
+
+        private void RefreshRecent()
+        {
+            _recentPaths = DreamBit.Studio.EditorPreferences.Load().RecentAtlases.ToList();
+            var box = this.FindControl<ComboBox>("RecentBox")!;
+            box.ItemsSource = _recentPaths.Select(System.IO.Path.GetFileName).ToList();
+        }
+
+        private void OnRecentSelected(object? sender, SelectionChangedEventArgs e)
+        {
+            var box = this.FindControl<ComboBox>("RecentBox")!;
+            int i = box.SelectedIndex;
+            if (i >= 0 && i < _recentPaths.Count && System.IO.File.Exists(_recentPaths[i]) && _recentPaths[i] != _texturePath)
+                Load(_recentPaths[i]);
+        }
+
+        private void OnStampDoubleClick(object? sender, TappedEventArgs e) => OnUseSelected(sender, new RoutedEventArgs());
+
+        private void OnStampKeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete) { OnDeleteSelected(sender, new RoutedEventArgs()); e.Handled = true; }
         }
 
         // ---------- carregar ----------
@@ -93,6 +122,9 @@ namespace DreamBit.Studio.Avalonia
 
                 this.FindControl<TextBlock>("Info")!.Text =
                     $"{System.IO.Path.GetFileName(path)} — {w}×{h}px · {_frames.Count} sprites detectados · {_library.Stamps.Count} carimbos salvos.";
+
+                DreamBit.Studio.EditorPreferences.Load().PushRecentAtlas(path); // reutilizar depois
+                RefreshRecent();
             }
             catch (Exception ex)
             {

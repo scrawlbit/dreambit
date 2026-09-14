@@ -20,6 +20,21 @@ namespace DreamBit.Studio
         /// Null = detecta na primeira vez e guarda a escolha.</summary>
         public string? ScriptEditorPath { get; set; }
 
+        /// <summary>Atlases abertos recentemente no seletor de carimbos (mais recente primeiro).</summary>
+        public List<string> RecentAtlases { get; set; } = new();
+
+        /// <summary>Registra um atlas como recente (dedup, mais recente primeiro, máx. 10) e salva.</summary>
+        public void PushRecentAtlas(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+            RecentAtlases.RemoveAll(p => string.Equals(p, path, StringComparison.OrdinalIgnoreCase));
+            RecentAtlases.Insert(0, path);
+            if (RecentAtlases.Count > 10)
+                RecentAtlases.RemoveRange(10, RecentAtlases.Count - 10);
+            Save();
+        }
+
         /// <summary>Atalhos: ação → gesto (ex.: "Group" → "Ctrl+G"). Falhas caem no default.</summary>
         public Dictionary<string, string> Shortcuts { get; set; } = new();
 

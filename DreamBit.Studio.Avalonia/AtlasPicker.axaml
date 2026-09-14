@@ -21,6 +21,8 @@
                             <TextBlock Text="Abrir PNG…" />
                         </StackPanel>
                     </Button>
+                    <ComboBox x:Name="RecentBox" Width="230" PlaceholderText="Recentes…"
+                              SelectionChanged="OnRecentSelected" ToolTip.Tip="Reabrir um atlas recente" />
                     <Button Click="OnDetectAll" ToolTip.Tip="Detecta todos os sprites do atlas (por transparência) e cria um carimbo para cada">
                         <TextBlock Text="Detectar tudo" />
                     </Button>
@@ -66,7 +68,7 @@
                 <Button Content="Excluir" Click="OnDeleteSelected" HorizontalAlignment="Stretch" />
             </StackPanel>
             <ListBox x:Name="StampList" Background="Transparent" Margin="4"
-                     SelectionChanged="OnStampSelected">
+                     SelectionChanged="OnStampSelected" DoubleTapped="OnStampDoubleClick" KeyDown="OnStampKeyDown">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid ColumnDefinitions="*,Auto">
