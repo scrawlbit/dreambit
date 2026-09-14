@@ -1,38 +1,83 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="DreamBit.Studio.Avalonia.AtlasPicker"
-        Title="Atlas — recortar e carimbar" Width="980" Height="740" Background="#1E2128">
-    <DockPanel>
-        <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
-            <StackPanel Orientation="Horizontal" Spacing="6">
-                <Button Click="OnOpen">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <PathIcon Width="14" Height="14" Data="{StaticResource IconFolder}" />
-                        <TextBlock Text="Abrir PNG…" />
-                    </StackPanel>
-                </Button>
-                <Border Width="1" Background="#11141A" Margin="2,2" />
-                <TextBlock x:Name="Info" Text="Arraste um retângulo sobre a imagem"
-                           VerticalAlignment="Center" Foreground="#8A93A6" />
-                <Border Width="1" Background="#11141A" Margin="2,2" />
-                <Button x:Name="UseButton" Click="OnUseStamp" IsEnabled="False"
-                        ToolTip.Tip="Liga o modo carimbo: clique na cena para posicionar">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <PathIcon Width="14" Height="14" Data="{StaticResource IconStamp}" />
-                        <TextBlock Text="Usar como carimbo" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="StampCenterButton" Content="Carimbar no centro" Click="OnStampCenter" IsEnabled="False" />
-            </StackPanel>
-        </Border>
+        Title="Atlas — carimbos" Width="1120" Height="780" Background="#1E2128">
+    <Window.Styles>
+        <Style Selector="Border.sep">
+            <Setter Property="Width" Value="1" />
+            <Setter Property="Background" Value="#11141A" />
+            <Setter Property="Margin" Value="2,2" />
+        </Style>
+    </Window.Styles>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#20242D">
-            <Canvas x:Name="PickCanvas" Background="Transparent"
-                    PointerPressed="OnCanvasPressed" PointerMoved="OnCanvasMoved" PointerReleased="OnCanvasReleased">
-                <Image x:Name="AtlasImage" Stretch="None" Canvas.Left="0" Canvas.Top="0" />
-                <Rectangle x:Name="SelectionRect" Stroke="#39D0FF" StrokeThickness="1.5"
-                           Fill="#3339D0FF" IsVisible="False" />
-            </Canvas>
-        </ScrollViewer>
-    </DockPanel>
+    <Grid ColumnDefinitions="*,4,270">
+        <!-- Esquerda: atlas com zoom/pan -->
+        <DockPanel Grid.Column="0">
+            <Border DockPanel.Dock="Top" Background="#252932" Padding="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <Button Click="OnOpen">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <PathIcon Width="14" Height="14" Data="{StaticResource IconFolder}" />
+                            <TextBlock Text="Abrir PNG…" />
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OnDetectAll" ToolTip.Tip="Detecta todos os sprites do atlas (por transparência) e cria um carimbo para cada">
+                        <TextBlock Text="Detectar tudo" />
+                    </Button>
+                    <Button x:Name="AddButton" Click="OnAddSelection" IsEnabled="False"
+                            ToolTip.Tip="Adiciona o retângulo atual como um carimbo nomeado">
+                        <TextBlock Text="+ Carimbo" />
+                    </Button>
+                    <Border Classes="sep" />
+                    <Button Click="OnZoomOut" Content="−" Width="30" />
+                    <TextBlock x:Name="ZoomLabel" Text="100%" VerticalAlignment="Center" Foreground="#B9C0CE" Width="46" TextAlignment="Center" />
+                    <Button Click="OnZoomIn" Content="+" Width="30" />
+                    <Button Click="OnZoomReset" Content="1:1" Width="36" />
+                    <Border Classes="sep" />
+                    <TextBlock x:Name="Info" Text="Abra um PNG. Arraste um retângulo, ou clique num sprite (auto-dimensiona). Scroll do meio arrasta; Ctrl+scroll dá zoom."
+                               VerticalAlignment="Center" Foreground="#8A93A6" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer x:Name="Scroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#20242D">
+                <LayoutTransformControl x:Name="Zoomer">
+                    <LayoutTransformControl.LayoutTransform>
+                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                    </LayoutTransformControl.LayoutTransform>
+                    <Canvas x:Name="PickCanvas" Background="Transparent"
+                            PointerPressed="OnCanvasPressed" PointerMoved="OnCanvasMoved"
+                            PointerReleased="OnCanvasReleased" PointerWheelChanged="OnCanvasWheel">
+                        <Image x:Name="AtlasImage" Stretch="None" Canvas.Left="0" Canvas.Top="0" />
+                        <Rectangle x:Name="SelectionRect" Stroke="#39D0FF" StrokeThickness="1.5"
+                                   Fill="#3339D0FF" IsVisible="False" />
+                    </Canvas>
+                </LayoutTransformControl>
+            </ScrollViewer>
+        </DockPanel>
+
+        <GridSplitter Grid.Column="1" Background="#11141A" />
+
+        <!-- Direita: carimbos salvos -->
+        <DockPanel Grid.Column="2" Background="#252932">
+            <TextBlock DockPanel.Dock="Top" Text="CARIMBOS" Foreground="#8A93A6" Margin="10,8" />
+            <StackPanel DockPanel.Dock="Bottom" Margin="6" Spacing="4">
+                <Button Content="Usar como carimbo" Click="OnUseSelected" HorizontalAlignment="Stretch"
+                        ToolTip.Tip="Liga o modo carimbo: clique na cena para posicionar (Esc sai)" />
+                <Button Content="Excluir" Click="OnDeleteSelected" HorizontalAlignment="Stretch" />
+            </StackPanel>
+            <ListBox x:Name="StampList" Background="Transparent" Margin="4"
+                     SelectionChanged="OnStampSelected">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox Text="{Binding Name, Mode=TwoWay}" LostFocus="OnRenameCommit"
+                                     Background="Transparent" BorderThickness="0" Foreground="#D6DBE6" Padding="2,1" />
+                            <TextBlock Grid.Column="1" Text="{Binding SizeText}" Foreground="#8A93A6"
+                                       FontSize="11" VerticalAlignment="Center" Margin="4,0" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </Grid>
 </Window>
