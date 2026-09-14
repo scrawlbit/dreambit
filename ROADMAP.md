@@ -81,14 +81,15 @@ MonoGame atualizado.
   **Ctrl+Shift+G** desagrupa (undo, preservando a pose de mundo); reparent por API.
 - **Atalhos configuráveis** nas Preferências (pressione para reatribuir) e
   **exportar/importar** preferências+atalhos (JSON) para outros PCs.
-- **Prefabs**: instância rastreada (`PrefabInstance`) com **Aplicar** (salva no arquivo) e
-  **Reverter** (recarrega do arquivo).
-- **Banco de assets por GUID** (`AssetDatabase`): identidade estável via sidecar `.meta`,
-  resolução por ID à prova de renomear/mover (base para referências por ID).
-- **Máquina de estados de animação** (`AnimationStateMachine`): estados→clipe + transições por
-  parâmetros/gatilhos, dirige sprite/rig com crossfade (runtime do editor visual futuro).
-- **Pós-processamento sem shader** (`ScreenFade`): fade-in/out de fase, fade-to-black e flash
-  de dano (por mensagem).
+- **Prefabs**: instância rastreada (`PrefabInstance`) com **Aplicar**/**Reverter** e
+  **overrides por propriedade** (`PrefabPatch` merge-patch): puxa o prefab atualizado
+  mantendo as edições locais da instância.
+- **Referências de asset por GUID** (`AssetDatabase` + `SceneAssetResolver`): identidade
+  estável via `.meta`; ao carregar, reencontra assets movidos/renomeados pelo ID.
+- **Máquina de estados de animação** (`AnimationStateMachine`) com **editor visual nó-e-fio**:
+  estados→clipe + transições por parâmetros/gatilhos, dirige sprite/rig com crossfade.
+- **Pós-processamento**: `ScreenFade` (fade de fase / flash de dano, sem shader) e **shaders 2D
+  via MGCB** (`PostProcess`: grayscale/tint — pipeline de shader compilado).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -119,15 +120,14 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Shaders 2D customizados** (pipeline MGCB) — grayscale, bloom, dissolve e normal maps por
-  shader. Luzes/sombras e fade/flash de tela já existem sem shader.
-- **Texto TTF/rich text** (hoje fonte pixel escalável).
+- **Mais shaders 2D** (bloom, dissolve, normal maps) — o pipeline MGCB e um pós-processo
+  grayscale/tint já existem. **Texto TTF/rich text** (hoje fonte pixel escalável).
+- **Atlas packer** (empacotar sprites soltos num atlas).
 
-### Sistemas e tooling (grandes)
-- **Migrar componentes para referências por ID** (o `AssetDatabase`/GUID já existe) + atlas packer.
-- **Prefabs: diff de overrides por-propriedade** (a instância + Aplicar/Reverter já existem).
-- **Editor visual de animação**: máquina de estados/blend tree em nó-e-fio e editor de curvas.
+### Sistemas e tooling
+- **Blend tree / editor de curvas** — a máquina de estados de animação já tem editor nó-e-fio.
 - **Inspector/profiler remoto** (o profiler local no overlay F3 já existe).
+- **Export para web (HTML5) e mobile** (hoje só desktop DesktopGL).
 
 ### Animação
 - **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência, o fatiador por

@@ -55,6 +55,10 @@ independente, multiplataforma e testada.
 - **Blending de animação** (crossfade de sprite e rig), **Y-sort** e **tilemap isométrico**,
   **tremor/prioridade de câmera**, **áudio adaptativo** (ducking + fade/crossfade), **partículas
   ricas** (burst, cor/tamanho na vida) e **profiler** no overlay F3.
+- **Editor**: aninhar GameObjects (hierarquia em árvore, **Ctrl+G**/**Ctrl+Shift+G**), **atalhos
+  configuráveis** com exportar/importar, **prefabs com overrides**, **referências de asset por
+  GUID** (à prova de renomear), **máquina de estados de animação** com editor visual nó-e-fio, e
+  **shaders 2D** (pós-processamento via MGCB).
 - **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
   (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
