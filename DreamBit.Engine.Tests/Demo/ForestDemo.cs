@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 using DreamBit.Engine.Audio;
 using DreamBit.Engine.Components;
 using DreamBit.Engine.Elements;
@@ -10,10 +7,10 @@ namespace DreamBit.Engine.Tests.Demo
 {
     /// <summary>
     /// Monta a fase de demonstração "Floresta" usando os assets reais (Dust: An Elysian Tail):
-    /// o herói animado por clipes (andar/pular/bater) recortado da sprite sheet e o cenário
-    /// composto do atlas de floresta. Exercita, numa cena só, praticamente toda a engine:
-    /// tilemap sólido, física de plataforma, câmera, HUD/UI, parallax, pathfinding, física
-    /// rígida, timeline de propriedades, triggers/mensagens e áudio espacial.
+    /// o herói animado por clipes (andar/pular/bater) selecionados por grade na sprite sheet
+    /// original e o cenário composto do atlas de floresta. Exercita, numa cena só, praticamente
+    /// toda a engine: tilemap sólido, física de plataforma, câmera, HUD/UI, parallax,
+    /// pathfinding, física rígida, timeline de propriedades, triggers/mensagens e áudio espacial.
     /// </summary>
     public static class ForestDemo
     {
@@ -23,7 +20,11 @@ namespace DreamBit.Engine.Tests.Demo
         private const string GroundTile = "DemoAssets/ground.png";
         private const int Tile = 96;
 
-        // Faixas de frames da sheet do herói -> clipes (índices globais na lista detectada).
+        // A folha do herói é uma grade 13x12 de células 300x300 (3900x3600).
+        public const int HeroColumns = 13;
+        public const int HeroCell = 300;
+
+        // Faixas de células (índices globais na grade, ordem de leitura) -> clipes.
         private static readonly (string Name, int Start, int Count, float Fps, bool Loop)[] Clips =
         {
             ("idle",   65, 13, 8f,  true),
@@ -32,21 +33,6 @@ namespace DreamBit.Engine.Tests.Demo
             ("attack",130, 13, 16f, false),
             ("death", 144, 12, 12f, false),
         };
-
-        public sealed record HeroFrames(int[] Sheet, List<int[]> Rects);
-
-        /// <summary>Lê os retângulos de frame detectados (DemoAssets/hero-frames.json).</summary>
-        public static List<Rectangle> LoadHeroFrames(string? dir = null)
-        {
-            string path = Path.Combine(dir ?? AssetsDir, "hero-frames.json");
-            using var doc = JsonDocument.Parse(File.ReadAllText(path));
-            var frames = new List<Rectangle>();
-            foreach (var f in doc.RootElement.GetProperty("frames").EnumerateArray())
-                frames.Add(new Rectangle(
-                    f.GetProperty("x").GetInt32(), f.GetProperty("y").GetInt32(),
-                    f.GetProperty("w").GetInt32(), f.GetProperty("h").GetInt32()));
-            return frames;
-        }
 
         public static Scene Build(string? assetsDir = null)
         {
@@ -129,13 +115,17 @@ namespace DreamBit.Engine.Tests.Demo
             var hero = new GameObject("Heroi") { Tag = "player", RenderLayer = 0 };
             hero.Transform.Position = new Vector2(300, 300);
 
+            // Usa a folha original direto, em modo grade (13x12 células de 300x300 em
+            // 3900x3600): preserva o tamanho e a transparência de cada quadro, sem recortar.
             var anim = new SpriteAnimator
             {
                 TexturePath = Hero,
-                Size = new Vector2(200, 200),
+                Size = new Vector2(HeroCell, HeroCell),
                 Fps = 12f,
+                FrameWidth = HeroCell,
+                FrameHeight = HeroCell,
+                FrameCount = HeroColumns * 12,
             };
-            anim.SetFrames(LoadHeroFrames(assetsDir));
             foreach (var (name, start, count, fps, loop) in Clips)
                 anim.AddClip(SpriteClip.Range(name, start, count, fps, loop));
             anim.Play("idle");

@@ -272,21 +272,25 @@ namespace DreamBit.Engine.Components
             DrawFrameAt(drawing, texture, GlobalFrame(_currentFrame), Tint * w, effects);
         }
 
+        /// <summary>Retângulo-fonte (na folha) de um frame global. Com frames explícitos
+        /// (<see cref="SetFrames"/>) devolve o recorte guardado; em modo grade, seleciona a célula
+        /// pela largura/altura de quadro — <paramref name="columns"/> é largura_da_folha / <see cref="FrameWidth"/>.
+        /// Preserva o tamanho e a transparência da célula (não recorta o conteúdo).</summary>
+        public Rectangle FrameRect(int globalFrame, int columns)
+        {
+            if (_frames.Count > 0)
+                return _frames[Math.Clamp(globalFrame, 0, _frames.Count - 1)];
+
+            columns = Math.Max(1, columns);
+            int frame = Math.Clamp(globalFrame, 0, Math.Max(0, _frameCount - 1));
+            int col = frame % columns;
+            int row = frame / columns;
+            return new Rectangle(col * _frameWidth, row * _frameHeight, _frameWidth, _frameHeight);
+        }
+
         private void DrawFrameAt(ISceneDrawing drawing, Texture2D texture, int globalFrame, Color color, SpriteEffects effects)
         {
-            Rectangle source;
-            if (_frames.Count > 0)
-            {
-                source = _frames[Math.Clamp(globalFrame, 0, _frames.Count - 1)];
-            }
-            else
-            {
-                int columns = Math.Max(1, texture.Width / _frameWidth);
-                int frame = Math.Clamp(globalFrame, 0, Math.Max(0, _frameCount - 1));
-                int col = frame % columns;
-                int row = frame / columns;
-                source = new Rectangle(col * _frameWidth, row * _frameHeight, _frameWidth, _frameHeight);
-            }
+            var source = FrameRect(globalFrame, Math.Max(1, texture.Width / _frameWidth));
 
             // Mantém a proporção do frame (frames de larguras diferentes): escala pela altura.
             var drawSize = _size;

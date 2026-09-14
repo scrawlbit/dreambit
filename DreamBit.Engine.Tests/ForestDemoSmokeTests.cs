@@ -32,7 +32,7 @@ namespace DreamBit.Engine.Tests
         }
 
         private static bool AssetsPresent()
-            => File.Exists(Path.Combine(ForestDemo.AssetsDir, "hero-frames.json"));
+            => File.Exists(Path.Combine(ForestDemo.AssetsDir, "hero.png"));
 
         private static GameObject Find(Scene scene, string name)
             => scene.VisibleInDrawOrder().First(o => o.Name == name);
@@ -52,8 +52,12 @@ namespace DreamBit.Engine.Tests
             var anim = hero.Components.OfType<SpriteAnimator>().Single();
             var enemy = Find(scene, "Inimigo");
 
-            // Clipes recortados da sheet real.
-            Assert.Equal(156, anim.Frames.Count);
+            // Seleção por grade na folha original (sem recortar): 13x12 células de 300x300.
+            Assert.Empty(anim.Frames);              // sem recortes explícitos
+            Assert.Equal(300, anim.FrameWidth);
+            Assert.Equal(300, anim.FrameHeight);
+            Assert.Equal(156, anim.EffectiveFrameCount);
+            Assert.Equal(new Rectangle(0, 0, 300, 300), anim.FrameRect(0, ForestDemo.HeroColumns));
             Assert.Equal(5, anim.Clips.Count);
 
             string? message = null;

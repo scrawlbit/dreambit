@@ -13,8 +13,11 @@ aqui. Para rodar o demo, coloque nesta pasta:
 | `forest-atlas.png` | Atlas de objetos da floresta (4096×4096) | `... Forest Objects.png` |
 | `ground.png` | Tile de chão 96×96 (recorte do atlas) | derivado do atlas |
 
-Versionados (metadados, sem arte): `hero-frames.json` (156 retângulos de frame detectados),
-`atlas-parts.json` (caixas dos objetos do atlas) e `forest-demo.dbscene` (a cena).
+O herói é animado por **grade** direto de `hero.png` (13×12 células de 300×300), sem recorte —
+preserva tamanho e transparência de cada quadro.
+
+Versionados (metadados, sem arte): `atlas-parts.json` (caixas dos objetos do atlas) e
+`forest-demo.dbscene` (a cena).
 
 ## Rodar
 
