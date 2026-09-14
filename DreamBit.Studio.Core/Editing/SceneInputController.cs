@@ -39,8 +39,9 @@ namespace DreamBit.Studio.Editing
         public (Vector2 Min, Vector2 Max)? BoxSelectWorld =>
             _boxSelecting ? (Vector2.Min(_boxStart, _boxCurrent), Vector2.Max(_boxStart, _boxCurrent)) : null;
 
-        public void PrimaryDown(Vector2 screen, int width, int height, bool ctrl)
+        public void PrimaryDown(Vector2 screen, int width, int height, bool ctrl, bool shift = false)
         {
+            bool addToSelection = ctrl || shift; // Ctrl ou Shift no clique = multi-seleção
             var world = _editor.Camera.ScreenToWorld(screen, width, height);
             var selected = _editor.SelectedObjects;
             float zoom = _editor.Camera.Zoom;
@@ -75,7 +76,9 @@ namespace DreamBit.Studio.Editing
             var hit = Pick(world);
             if (hit != null)
             {
-                if (ctrl)
+                hit = Root(hit); // clicar num item de um grupo seleciona o grupo (raiz)
+
+                if (addToSelection)
                 {
                     _editor.ToggleSelect(hit);
                     return;
@@ -94,7 +97,7 @@ namespace DreamBit.Studio.Editing
             }
 
             // 3) Espaço vazio: tenta selecionar uma ledge; senão, seleção por caixa
-            if (!ctrl)
+            if (!addToSelection)
                 _editor.SelectSingle(null);
 
             if (_editor.TrySelectLedgeAt(world, 8f / zoom))
@@ -111,13 +114,18 @@ namespace DreamBit.Studio.Editing
             _lastScreen = screen;
         }
 
-        public void Move(Vector2 screen, int width, int height)
+        public void Move(Vector2 screen, int width, int height, bool shift = false)
         {
             var world = _editor.Camera.ScreenToWorld(screen, width, height);
 
             if (_rotating)
             {
                 float delta = Angle(_groupCenter, world) - _rotateStartAngle;
+                if (shift) // segurar Shift rotaciona em passos de 15 graus
+                {
+                    float step = MathHelper.ToRadians(15f);
+                    delta = (float)(Math.Round(delta / step) * step);
+                }
                 for (int i = 0; i < _groupObjects.Length; i++)
                 {
                     var before = _groupBefore[i];
@@ -142,8 +150,10 @@ namespace DreamBit.Studio.Editing
 
             if (_movingGroup)
             {
-                var delta = world - _dragAnchor;
-                if (_groupObjects.Length == 1 && _editor.SnapToGrid && _editor.GridStep > 0)
+                // Shift: move "a partir do centro" — o centro do que está selecionado segue o cursor.
+                var delta = shift ? world - GroupBeforeCenter() : world - _dragAnchor;
+
+                if (!shift && _groupObjects.Length == 1 && _editor.SnapToGrid && _editor.GridStep > 0)
                 {
                     var target = _groupBefore[0].Position + delta;
                     float step = _editor.GridStep;
@@ -177,7 +187,11 @@ namespace DreamBit.Studio.Editing
             if (_movingGroup || _rotating || _scaling)
             {
                 var after = _groupObjects.Select(EditorViewModel.Capture).ToArray();
-                _editor.PushGroupTransform(_groupObjects, _groupBefore, after);
+                bool changed = false;
+                for (int i = 0; i < after.Length && i < _groupBefore.Length; i++)
+                    if (!after[i].Equals(_groupBefore[i])) { changed = true; break; }
+                if (changed) // não registra no-op (evita "undo que não faz nada")
+                    _editor.PushGroupTransform(_groupObjects, _groupBefore, after);
             }
             else if (_boxSelecting)
             {
@@ -196,6 +210,26 @@ namespace DreamBit.Studio.Editing
         {
             float factor = delta > 0 ? 1.1f : 1f / 1.1f;
             _editor.Camera.ZoomAt(screen, factor, width, height);
+        }
+
+        /// <summary>Raiz do grupo: clicar num filho seleciona o objeto-grupo mais externo.</summary>
+        private static GameObject Root(GameObject obj)
+        {
+            var top = obj;
+            while (top.Parent != null)
+                top = top.Parent;
+            return top;
+        }
+
+        /// <summary>Centro (média das posições) do que estava selecionado no início do arraste.</summary>
+        private Vector2 GroupBeforeCenter()
+        {
+            if (_groupBefore.Length == 0)
+                return _dragAnchor;
+            var sum = Vector2.Zero;
+            foreach (var b in _groupBefore)
+                sum += b.Position;
+            return sum / _groupBefore.Length;
         }
 
         private void BeginGroupOp(Vector2 center)

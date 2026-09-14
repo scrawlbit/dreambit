@@ -39,6 +39,7 @@ namespace DreamBit.Studio
             ("Save", "Salvar cena"),
             ("Play", "Play/Pause"),
             ("RunPlayer", "Rodar no Player"),
+            ("Atlas", "Abrir Atlas (carimbos)"),
             ("ZoomReset", "Zoom 100%"),
             ("FocusSelection", "Focar seleção"),
         };
@@ -57,6 +58,7 @@ namespace DreamBit.Studio
             ["Save"] = "Ctrl+S",
             ["Play"] = "F5",
             ["RunPlayer"] = "Ctrl+F5",
+            ["Atlas"] = "Ctrl+B",
             ["ZoomReset"] = "Ctrl+D0",
             ["FocusSelection"] = "F",
         };

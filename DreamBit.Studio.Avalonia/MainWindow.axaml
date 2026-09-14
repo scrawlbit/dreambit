@@ -243,7 +243,7 @@
 
                 <DockPanel x:Name="HierarchyPanel" Grid.Row="2">
                     <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
-                        <TextBlock Text="HIERARQUIA (Ctrl/Shift p/ vários · Ctrl+G agrupa)" Foreground="#8A93A6" Margin="10,8" />
+                        <TextBlock Text="HIERARQUIA" Foreground="#8A93A6" Margin="10,8" />
                         <Button Grid.Column="1" Classes="remove" Click="OnCloseHierarchyPanel" Margin="0,0,6,0"
                                 VerticalAlignment="Center" ToolTip.Tip="Fechar (reabre em Janela)" />
                     </Grid>

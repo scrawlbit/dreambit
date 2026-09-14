@@ -365,6 +365,7 @@ namespace DreamBit.Studio.Avalonia
             var pos = Pos(e);
             var props = e.GetCurrentPoint(this).Properties;
             bool ctrl = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+            bool shift = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
 
             PointerScreen = pos;
             if (props.IsLeftButtonPressed)
@@ -417,7 +418,7 @@ namespace DreamBit.Studio.Avalonia
             }
 
             if (props.IsLeftButtonPressed)
-                _input!.PrimaryDown(pos, W, H, ctrl);
+                _input!.PrimaryDown(pos, W, H, ctrl, shift);
             else if (props.IsMiddleButtonPressed || props.IsRightButtonPressed)
                 _input!.MiddleDown(pos);
 
@@ -434,7 +435,7 @@ namespace DreamBit.Studio.Avalonia
                 InvalidateVisual();
                 return;
             }
-            _input?.Move(Pos(e), W, H);
+            _input?.Move(Pos(e), W, H, e.KeyModifiers.HasFlag(KeyModifiers.Shift));
             InvalidateVisual();
         }
 

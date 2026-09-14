@@ -521,6 +521,9 @@ namespace DreamBit.Studio.Avalonia
         {
             bool inText = FocusManager?.GetFocusedElement() is TextBox;
 
+            // Esc sai do modo carimbo.
+            if (_editor.StampMode && e.Key == Key.Escape) { _editor.ClearStamp(); e.Handled = true; InvalidateScene(); return; }
+
             // Ferramenta de ledge tem prioridade (Esc/Enter).
             if (_editor.IsLedgeTool && e.Key == Key.Escape) { _editor.CancelLedge(); e.Handled = true; InvalidateScene(); return; }
             if (_editor.IsLedgeTool && (e.Key == Key.Enter || e.Key == Key.Return)) { _editor.FinishLedge(); e.Handled = true; InvalidateScene(); return; }
@@ -557,6 +560,7 @@ namespace DreamBit.Studio.Avalonia
                 case "Ungroup" when !inText: _editor.UngroupSelected(); RebuildHierarchy(); return true;
                 case "Play": OnPlayToggle(this, new RoutedEventArgs()); return true;
                 case "RunPlayer": OnRunGame(this, new RoutedEventArgs()); return true;
+                case "Atlas": OnOpenAtlas(this, new RoutedEventArgs()); return true;
                 case "ZoomReset": _editor.Camera.Zoom = 1f; return true;
                 case "FocusSelection" when !inText: _editor.Camera.Position = _editor.SelectionCenter(); return true;
                 default: return false;
