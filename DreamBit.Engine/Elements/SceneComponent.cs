@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Engine.Elements
 {
     /// <summary>
-    /// Base de componente de um GameObject. Equivalente ao SceneComponent de DreamBit.Game:
+    /// Base de componente de um GameObject:
     /// participa do laço de update e do desenho da cena.
     /// </summary>
     public abstract class SceneComponent : NotificationObject

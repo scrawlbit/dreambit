@@ -7,8 +7,7 @@ namespace DreamBit.Engine.Data
 {
     /// <summary>
     /// Catálogos data-driven: carrega tabelas de dados (JSON) em tipos que o próprio jogo
-    /// define nos scripts — inimigos, itens, fases — e as consulta por id. É o equivalente
-    /// leve a <c>ScriptableObject</c> (Unity) / <c>Resource</c> (Godot): os valores ficam em
+    /// define nos scripts — inimigos, itens, fases — e as consulta por id. Os valores ficam em
     /// arquivos, separados do código. Ex.: <c>DataCatalog.LoadMap&lt;Inimigo&gt;("enemies.json")</c>
     /// e depois <c>DataCatalog.Get&lt;Inimigo&gt;("goblin")</c>.
     /// </summary>

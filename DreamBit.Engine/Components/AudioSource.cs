@@ -7,7 +7,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Toca um efeito sonoro (WAV) no play mode. Por padrão toca ao iniciar; pode
-    /// repetir em loop. Confiável ao rodar o jogo (DreamBit.Player). (Marco 3.)
+    /// repetir em loop. Confiável ao rodar o jogo (DreamBit.Player).
     /// </summary>
     public sealed class AudioSource : SceneComponent
     {

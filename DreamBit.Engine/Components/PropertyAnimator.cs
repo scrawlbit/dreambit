@@ -48,8 +48,7 @@ namespace DreamBit.Engine.Components
 
     /// <summary>
     /// Timeline de propriedades: anima qualquer propriedade (posição, rotação, escala, cor do
-    /// sprite) por keyframes ao longo do tempo — o equivalente ao AnimationPlayer do Godot /
-    /// Animation do Unity, além do Tween (que é de-para simples). Várias trilhas rodam juntas.
+    /// sprite) por keyframes ao longo do tempo, além do Tween (que é de-para simples). Várias trilhas rodam juntas.
     /// </summary>
     public sealed class PropertyAnimator : SceneComponent
     {

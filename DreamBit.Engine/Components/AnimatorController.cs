@@ -7,8 +7,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Máquina de estados de animação simples para plataforma: escolhe o clipe do
     /// SkeletonAnimator do próprio objeto conforme o estado do PlatformerController
-    /// (no ar → pulo; andando → walk; parado → idle). Equivalente enxuto ao Animator
-    /// do Unity / AnimationTree do Godot, orientado a platformer.
+    /// (no ar → pulo; andando → walk; parado → idle).
     /// </summary>
     public sealed class AnimatorController : SceneComponent
     {

@@ -8,7 +8,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Emissor de partículas simples: no play mode lança partículas para cima (com
-    /// espalhamento), sob gravidade, que desaparecem ao fim da vida. (Marco 3.)
+    /// espalhamento), sob gravidade, que desaparecem ao fim da vida.
     /// </summary>
     public sealed class ParticleEmitter : SceneComponent
     {

@@ -6,7 +6,6 @@ namespace DreamBit.Engine.Rendering
 {
     /// <summary>
     /// Câmera 2D do editor: pan (posição), zoom e conversão tela↔mundo.
-    /// Inspirada na SceneCamera dos projetos Old.*, reescrita para net8.
     /// </summary>
     public sealed class Camera2D : NotificationObject
     {

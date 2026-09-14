@@ -6,8 +6,7 @@ namespace DreamBit.Engine.Animation
     /// <summary>
     /// Máquina de estados genérica (estados nomeados + transições por condição), para scripts
     /// controlarem animação/IA de forma flexível, além do <c>AnimatorController</c> fixo de
-    /// idle/walk/jump. Equivale em espírito ao Animator do Unity / <c>AnimationTree</c> do
-    /// Godot, mas dirigida por código: cada estado tem callbacks (enter/update/exit) e cada
+    /// idle/walk/jump. Dirigida por código: cada estado tem callbacks (enter/update/exit) e cada
     /// transição uma condição <see cref="Func{Boolean}"/>.
     /// </summary>
     public sealed class StateMachine

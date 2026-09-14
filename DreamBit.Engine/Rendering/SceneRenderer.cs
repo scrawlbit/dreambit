@@ -8,8 +8,7 @@ namespace DreamBit.Engine.Rendering
 {
     /// <summary>
     /// Desenha uma <see cref="Scene"/> num GraphicsDevice usando a <see cref="Camera2D"/>:
-    /// grid do editor, objetos da cena e contorno de seleção. Reúne o papel do
-    /// DrawBatchService dos projetos Old.*, reescrito para net8 + MonoGame 3.8.
+    /// grid do editor, objetos da cena e contorno de seleção.
     /// </summary>
     public sealed class SceneRenderer : ISceneDrawing, IDisposable
     {

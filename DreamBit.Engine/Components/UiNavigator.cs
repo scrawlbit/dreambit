@@ -8,8 +8,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Navegação de UI por teclado/gamepad: move o foco entre os controles focáveis da cena
     /// (setas/D-pad, espacialmente) e confirma (Enter/A → <see cref="IUiFocusable.Activate"/>);
-    /// esquerda/direita ajustam um slider focado. Adicione um por cena (como o EventSystem do
-    /// Unity). O ponteiro (mouse/toque) continua funcionando em paralelo.
+    /// esquerda/direita ajustam um slider focado. Adicione um por cena. O ponteiro (mouse/toque) continua funcionando em paralelo.
     /// </summary>
     public sealed class UiNavigator : SceneComponent
     {

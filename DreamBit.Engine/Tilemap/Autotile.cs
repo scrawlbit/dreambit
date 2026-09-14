@@ -6,7 +6,7 @@ namespace DreamBit.Engine.Tilemap
     /// Autotiling por vizinhança (esquema de 4 bits / 16 tiles): dado quais células estão
     /// "preenchidas" (parede/chão), escolhe a variante de tile certa conforme os vizinhos
     /// cardeais (N/L/S/O). O tileset deve ter 16 tiles onde o id local = máscara (bit 0 = N,
-    /// 1 = Leste, 2 = Sul, 3 = Oeste). Equivale ao autotile do Tiled/Godot (borda de 4 bits).
+    /// 1 = Leste, 2 = Sul, 3 = Oeste).
     /// </summary>
     public static class Autotile
     {

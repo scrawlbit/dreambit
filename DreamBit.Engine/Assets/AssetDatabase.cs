@@ -9,7 +9,7 @@ namespace DreamBit.Engine.Assets
     /// Banco de assets com identidade estável: cada arquivo ganha um GUID guardado num sidecar
     /// "<arquivo>.meta". Referenciar por GUID (em vez de caminho) sobrevive a renomear/mover o
     /// asset — o <see cref="PathForGuid"/> reencontra o arquivo pelo .meta. Base para o sistema
-    /// de referências por ID (como os .meta do Unity / UID do Godot). Editor-agnóstico e testável.
+    /// de referências por ID. Editor-agnóstico e testável.
     /// </summary>
     public sealed class AssetDatabase
     {

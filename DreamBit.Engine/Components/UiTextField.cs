@@ -9,7 +9,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Campo de texto editável de UI: clicar dá foco, o teclado digita, Enter confirma (dispara
     /// mensagem). Um campo por vez tem o foco (<see cref="UiFocus"/>). Espaço de tela (HUD).
-    /// Equivale ao LineEdit do Godot / InputField do Unity. O host precisa alimentar o texto
+    /// O host precisa alimentar o texto
     /// digitado em <see cref="Input.Input.PushText"/> (o Player faz isso pelo evento da janela).
     /// </summary>
     public sealed class UiTextField : SceneComponent, IUiFocusable

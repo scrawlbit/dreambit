@@ -7,8 +7,7 @@ namespace DreamBit.Engine.Project
     /// Observa a pasta do projeto e avisa quando cenas (.dbscene) são criadas,
     /// removidas ou renomeadas (<see cref="ScenesChanged"/>) e quando um asset
     /// (imagem, tilemap ou som) é escrito no disco (<see cref="AssetChanged"/>,
-    /// para hot-reload). Substitui os hooks do Solution Explorer do VSIX por um
-    /// FileSystemWatcher próprio.
+    /// para hot-reload). Usa um FileSystemWatcher.
     /// </summary>
     public sealed class ProjectWatcher : IDisposable
     {

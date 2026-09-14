@@ -5,7 +5,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Comportamento de runtime que gira o objeto durante o play mode. Demonstra o
-    /// laço de update do motor (papel dos ScriptBehavior/serviços dos projetos Old.*),
+    /// laço de update do motor,
     /// agora dirigido pelo editor standalone sem o Visual Studio.
     /// </summary>
     public sealed class RotatorBehavior : SceneComponent

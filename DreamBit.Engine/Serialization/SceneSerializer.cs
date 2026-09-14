@@ -12,8 +12,7 @@ namespace DreamBit.Engine.Serialization
 {
     /// <summary>
     /// Serialização de cena em JSON (System.Text.Json). Mantém o modelo (Elements/*)
-    /// limpo, com a serialização desacoplada — como faz o DreamBit.Game atual em
-    /// Serialization/Converters, aqui reescrito para net8 sem dependência de Newtonsoft.
+    /// limpo, com a serialização desacoplada.
     /// </summary>
     public static class SceneSerializer
     {

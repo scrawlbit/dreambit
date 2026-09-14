@@ -7,8 +7,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Um clipe de animação nomeado dentro de uma sprite sheet: uma lista de índices de
     /// frames (na sequência de frames do <see cref="SpriteAnimator"/> — grade ou frames
-    /// explícitos detectados) mais taxa e repetição próprias. Equivale ao SpriteFrames do
-    /// Godot / clipe de sprite do Unity: várias animações (andar, pular, bater) na mesma folha.
+    /// explícitos detectados) mais taxa e repetição próprias. Várias animações (andar, pular, bater) na mesma folha.
     /// </summary>
     public sealed class SpriteClip
     {

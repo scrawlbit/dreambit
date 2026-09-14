@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace DreamBit.Engine.Input
 {
     /// <summary>
-    /// Input mapeável por "ações" (ex.: "MoveLeft", "Jump") em vez de teclas fixas —
-    /// equivalente ao InputMap do Godot / Input System do Unity. Suporta teclado e
+    /// Input mapeável por "ações" (ex.: "MoveLeft", "Jump") em vez de teclas fixas. Suporta teclado e
     /// gamepad. O host (Player) chama <see cref="Update"/> uma vez por frame.
     /// </summary>
     public static class Input

@@ -9,7 +9,6 @@ namespace DreamBit.Engine.Audio
     /// bus tem um volume [0..1]; o volume efetivo de um som é o do seu bus vezes o do "Master".
     /// Permite baixar toda a música sem mexer nos efeitos, ou mutar tudo pelo Master. Os
     /// <see cref="Components.AudioSource"/> leem o volume efetivo do seu bus ao vivo.
-    /// Equivale aos AudioBus do Godot / AudioMixerGroup do Unity.
     /// </summary>
     public static class AudioMixer
     {

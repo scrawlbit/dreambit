@@ -6,7 +6,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Conta um tempo e dispara uma mensagem no barramento ao esgotar — para atrasos, spawns
-    /// periódicos, timeouts. Pode repetir (como o Timer do Godot). Começa no play (se
+    /// periódicos, timeouts. Pode repetir. Começa no play (se
     /// <see cref="AutoStart"/>) ou ao receber a mensagem <see cref="StartOn"/>.
     /// </summary>
     public sealed class TimerComponent : SceneComponent, IMessageReceiver

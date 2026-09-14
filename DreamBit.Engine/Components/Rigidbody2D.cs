@@ -6,7 +6,7 @@ using AVector2 = nkast.Aether.Physics2D.Common.Vector2;
 
 namespace DreamBit.Engine.Components
 {
-    /// <summary>Tipo de corpo rígido (espelha o BodyType do Box2D/Aether).</summary>
+    /// <summary>Tipo de corpo rígido (Static/Dynamic/Kinematic).</summary>
     public enum RigidbodyKind { Static, Dynamic, Kinematic }
 
     /// <summary>Forma do colisor do corpo.</summary>

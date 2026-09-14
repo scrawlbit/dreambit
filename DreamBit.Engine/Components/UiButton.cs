@@ -10,7 +10,7 @@ namespace DreamBit.Engine.Components
     /// posição do objeto (espaço de tela), com estados normal/hover/pressed, e dispara uma
     /// mensagem no barramento ao ser clicado — que um <see cref="MessageListener"/> ou script
     /// pode ouvir. Pensado para HUD/menus; combine com <see cref="UiAnchor"/> e um filho de
-    /// texto para o rótulo. Equivale a Button de Godot/Unity.
+    /// texto para o rótulo.
     /// </summary>
     public sealed class UiButton : SceneComponent, IUiFocusable
     {

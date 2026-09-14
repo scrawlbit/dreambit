@@ -6,7 +6,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Componente que desenha uma textura (PNG) ou, na ausência dela, um retângulo
-    /// colorido no transform do objeto. Equivalente ao ImageRenderer de DreamBit.Game.
+    /// colorido no transform do objeto.
     /// </summary>
     public sealed class SpriteRenderer : SceneComponent
     {

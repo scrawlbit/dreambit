@@ -31,7 +31,7 @@ namespace DreamBit.Engine.Components
     /// Máquina de estados de animação data-driven: estados (cada um toca um clipe) e transições
     /// disparadas por parâmetros (bool) e gatilhos (trigger). Dirige o <see cref="SpriteAnimator"/>
     /// ou o <see cref="SkeletonAnimator"/> do objeto, com crossfade. É o runtime que um editor
-    /// visual (nó-e-fio) autora — equivale ao AnimationTree/Animator do Godot/Unity.
+    /// visual (nó-e-fio) autora.
     /// </summary>
     public sealed class AnimationStateMachine : SceneComponent
     {

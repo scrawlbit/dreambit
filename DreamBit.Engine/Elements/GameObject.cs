@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Engine.Elements
 {
     /// <summary>
-    /// Objeto de cena. Porta o design de DreamBit.Game.Elements.GameObject: bindável,
+    /// Objeto de cena bindável,
     /// com hierarquia (Children), componentes e estado de editor (IsSelected/IsExpanded).
     /// </summary>
     public sealed class GameObject : NotificationObject
@@ -79,8 +79,7 @@ namespace DreamBit.Engine.Elements
         }
 
         /// <summary>Camada de render (grossa): desenhada antes do <see cref="SortOrder"/>. Use
-        /// para separar fundo / cenário / jogo / frente (ex.: -100 fundo, 0 padrão, 100 frente).
-        /// Equivale às Sorting Layers do Unity / camadas do Godot.</summary>
+        /// para separar fundo / cenário / jogo / frente (ex.: -100 fundo, 0 padrão, 100 frente).</summary>
         public int RenderLayer
         {
             get => _renderLayer;

@@ -8,7 +8,7 @@ namespace DreamBit.Engine.Project
     /// <summary>
     /// Projeto DreamBit: uma pasta com cenas (.dbscene). O arquivo .dbproj guarda o
     /// nome; as cenas são descobertas varrendo a pasta (mantidas vivas pelo
-    /// ProjectWatcher). Equivale, de forma enxuta, ao papel de DreamBit.Project.
+    /// ProjectWatcher).
     /// </summary>
     public sealed class GameProject
     {

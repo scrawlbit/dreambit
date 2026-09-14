@@ -19,8 +19,7 @@ namespace DreamBit.Studio.Avalonia
 {
     /// <summary>
     /// Renderiza a cena do DreamBit com o DrawingContext do Avalonia e trata o input
-    /// reaproveitando o SceneInputController. Equivalente ao MonoGameSurface do WPF,
-    /// mas em desenho vetorial nativo (cross-platform).
+    /// reaproveitando o SceneInputController. Desenho vetorial nativo (cross-platform).
     /// </summary>
     public sealed class SceneView : Control
     {

@@ -12,7 +12,7 @@ namespace DreamBit.Engine.Components
 
     /// <summary>
     /// Interpola uma propriedade do transform (posição/rotação/escala) de From a To ao longo
-    /// de Duration com easing — o "juice" barato (equivalente ao Tween do Godot / DOTween).
+    /// de Duration com easing — o "juice" barato.
     /// Rotação é em graus. No play, anima o dono.
     /// </summary>
     public sealed class TweenComponent : SceneComponent

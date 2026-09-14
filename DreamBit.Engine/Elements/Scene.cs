@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Engine.Elements
 {
     /// <summary>
-    /// Uma cena editável: coleção de objetos raiz. Equivalente ao Scene de DreamBit.Game.
+    /// Uma cena editável: coleção de objetos raiz.
     /// </summary>
     public sealed class Scene : NotificationObject
     {

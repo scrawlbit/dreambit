@@ -10,7 +10,7 @@ namespace DreamBit.Engine.Components
     /// IA de perseguição por pathfinding: recalcula periodicamente um caminho A* (via
     /// <see cref="NavGrid"/> montada dos tiles sólidos da cena) até o objeto com a tag alvo e
     /// caminha pelos waypoints. Sem tilemap sólido, persegue em linha reta. Componente pronto
-    /// para inimigos/NPCs — equivale a um NavigationAgent do Godot/Unity apontado a um alvo.
+    /// para inimigos/NPCs.
     /// </summary>
     public sealed class NavChaser : SceneComponent
     {

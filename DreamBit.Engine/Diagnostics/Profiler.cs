@@ -8,7 +8,7 @@ namespace DreamBit.Engine.Diagnostics
     /// <summary>
     /// Profiler leve: mede o tempo (ms) de seções nomeadas por frame (com média móvel) e guarda
     /// contadores (objetos, partículas, draw calls). O host mostra no overlay de debug (F3).
-    /// Equivale ao monitor de performance do Godot. Use <see cref="Begin"/>/<see cref="End"/> ou
+    /// Use <see cref="Begin"/>/<see cref="End"/> ou
     /// <see cref="Scope"/> em volta de um bloco; chame <see cref="EndFrame"/> uma vez por frame.
     /// </summary>
     public static class Profiler

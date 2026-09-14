@@ -9,7 +9,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Componente de script: compila em runtime (Roslyn) uma classe C# do usuário que
-    /// implementa IGameScript e chama Update a cada frame no play. (Marco 3.)
+    /// implementa IGameScript e chama Update a cada frame no play.
     /// </summary>
     public sealed class ScriptComponent : SceneComponent, IMessageReceiver
     {

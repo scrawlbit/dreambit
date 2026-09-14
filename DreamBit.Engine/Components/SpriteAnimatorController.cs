@@ -9,7 +9,7 @@ namespace DreamBit.Engine.Components
     /// Máquina de estados de animação para <see cref="SpriteAnimator"/> (folha de sprites com
     /// clipes nomeados): escolhe o clipe conforme o movimento (no ar → pulo; andando → walk;
     /// parado → idle) e dispara o clipe de ataque uma vez ao pressionar a ação. Também vira o
-    /// sprite (flip) pela direção. Equivale ao AnimationTree/Animator orientado a sprite 2D.
+    /// sprite (flip) pela direção.
     /// Lê o estado de um <see cref="PlatformerController"/> ou de um <see cref="Rigidbody2D"/>.
     /// </summary>
     public sealed class SpriteAnimatorController : SceneComponent

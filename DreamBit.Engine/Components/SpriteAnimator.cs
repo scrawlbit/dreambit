@@ -13,7 +13,7 @@ namespace DreamBit.Engine.Components
 
     /// <summary>
     /// Anima frames de uma sprite sheet (grade de frames de tamanho fixo). No play mode
-    /// avança os frames pela taxa (FPS), com repetição opcional. (Marco 2 — animação.)
+    /// avança os frames pela taxa (FPS), com repetição opcional.
     /// Pode disparar eventos nomeados ao entrar em frames específicos (<see cref="AnimationEvent"/>).
     /// </summary>
     public sealed class SpriteAnimator : SceneComponent

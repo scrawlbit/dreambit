@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework;
 namespace DreamBit.Engine.Elements
 {
     /// <summary>
-    /// Transform hierárquico 2D. Porta o conceito do Transform de DreamBit.Game
-    /// (posição/rotação/escala locais + composição com o pai) de forma direta:
+    /// Transform hierárquico 2D (posição/rotação/escala locais + composição com o pai):
     /// a matriz de mundo é a matriz local multiplicada pela matriz de mundo do pai.
     /// </summary>
     public sealed class Transform : NotificationObject

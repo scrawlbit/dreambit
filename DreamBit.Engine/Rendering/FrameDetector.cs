@@ -6,8 +6,7 @@ namespace DreamBit.Engine.Rendering
     /// <summary>
     /// Detecta frames numa sprite sheet a partir da transparência: agrupa os pixels opacos em
     /// regiões conexas (componentes) e devolve a caixa de cada um — funciona com frames de
-    /// tamanhos diferentes e espaçamento irregular (como o "auto-slice" do Aseprite / Sprite
-    /// Editor do Unity). Algoritmo puro sobre uma máscara booleana (testável, sem GPU).
+    /// tamanhos diferentes e espaçamento irregular. Algoritmo puro sobre uma máscara booleana (testável, sem GPU).
     /// </summary>
     public static class FrameDetector
     {

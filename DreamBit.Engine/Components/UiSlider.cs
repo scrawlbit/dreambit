@@ -10,7 +10,7 @@ namespace DreamBit.Engine.Components
     /// Controle deslizante (slider) de UI: arrasta um valor em [0,1] com o ponteiro. Pensado
     /// para menus de opções — pode ligar direto a um bus do <see cref="AudioMixer"/>
     /// (<see cref="BusTarget"/>), virando um controle de volume, e/ou disparar uma mensagem ao
-    /// mudar. Espaço de tela (HUD). Equivale ao HSlider do Godot / Slider do Unity.
+    /// mudar. Espaço de tela (HUD).
     /// </summary>
     public sealed class UiSlider : SceneComponent, IUiFocusable
     {

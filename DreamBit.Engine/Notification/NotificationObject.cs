@@ -5,8 +5,7 @@ using System.Runtime.CompilerServices;
 namespace DreamBit.Engine.Notification
 {
     /// <summary>
-    /// Base bindável (INotifyPropertyChanged) equivalente à Scrawlbit.Notification.NotificationObject
-    /// usada pelo modelo do DreamBit.Game, reimplementada para net8.
+    /// Base bindável (INotifyPropertyChanged) para o modelo da engine.
     /// </summary>
     public abstract class NotificationObject : INotifyPropertyChanged
     {

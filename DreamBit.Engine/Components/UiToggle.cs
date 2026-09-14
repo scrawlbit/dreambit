@@ -7,7 +7,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Interruptor de UI (checkbox): liga/desliga ao clicar, com uma marca quando ligado, e
-    /// dispara uma mensagem ao mudar. Espaço de tela (HUD). Equivale ao CheckBox de Godot/Unity.
+    /// dispara uma mensagem ao mudar. Espaço de tela (HUD).
     /// </summary>
     public sealed class UiToggle : SceneComponent, IUiFocusable
     {

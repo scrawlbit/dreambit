@@ -8,7 +8,7 @@ namespace DreamBit.Engine.Navigation
     /// Busca de caminho em grade (A*), para IA de inimigos/NPCs. Trabalha sobre uma grade de
     /// células bloqueadas (ex.: tiles sólidos de um tilemap — ver <see cref="NavGrid"/>) e acha
     /// o menor caminho entre duas células, com movimento em 4 ou 8 direções. Algoritmo puro,
-    /// testável. Equivale ao AStarGrid2D do Godot / NavMesh 2D do Unity (em versão de grade).
+    /// testável.
     /// </summary>
     public static class Pathfinding
     {

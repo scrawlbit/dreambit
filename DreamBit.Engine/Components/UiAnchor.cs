@@ -15,7 +15,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Fixa um objeto HUD em relação às bordas da tela: canto/borda/centro + deslocamento em
     /// pixels. Recalcula a cada frame, então acompanha o redimensionamento da janela — como
-    /// as âncoras de UI de Godot (Control anchors) e Unity (RectTransform). Só faz efeito em
+    /// as âncoras de UI. Só faz efeito em
     /// objetos em espaço de tela (<see cref="GameObject.ScreenSpace"/>).
     /// </summary>
     public sealed class UiAnchor : SceneComponent

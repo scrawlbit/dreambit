@@ -8,7 +8,7 @@ namespace DreamBit.Engine.Components
     /// Faz o objeto rolar em ritmo diferente da câmera, criando profundidade (parallax de
     /// fundo). Fator por eixo em [0,1]: 1 = anda junto com o mundo (a câmera passa por cima),
     /// 0 = acompanha a câmera (parece infinitamente distante/fixo). Valores intermediários dão
-    /// o efeito de camadas de fundo. Equivale ao ParallaxBackground do Godot.
+    /// o efeito de camadas de fundo.
     /// A posição de origem (âncora) é capturada no início do play.
     /// </summary>
     public sealed class ParallaxLayer : SceneComponent

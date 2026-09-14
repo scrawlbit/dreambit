@@ -7,7 +7,7 @@ using AVector2 = nkast.Aether.Physics2D.Common.Vector2;
 namespace DreamBit.Engine.Physics2D
 {
     /// <summary>
-    /// Mundo de física 2D (corpos rígidos) por cena, sobre o Aether.Physics2D (Box2D em C#).
+    /// Mundo de física 2D (corpos rígidos) por cena, sobre o Aether.Physics2D.
     /// O motor de física trabalha em metros; o jogo em pixels — a conversão usa
     /// <see cref="PixelsPerMeter"/>. A cena cria um mundo no início do play e o avança a cada
     /// frame; os <see cref="Rigidbody2D"/> registram seus corpos e sincronizam o Transform.

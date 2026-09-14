@@ -10,8 +10,7 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Câmera de cena configurável: segue um alvo (por tag, ex.: "Player") com deadzone,
-    /// suavização, zoom e limites (bounds). Substitui o "seguir o primeiro Platformer"
-    /// que era fixo no Player. Equivalente ao Camera2D do Godot / Cinemachine 2D.
+    /// suavização, zoom e limites (bounds).
     /// O host (Player/editor no play) chama <see cref="DriveCamera"/> por frame.
     /// </summary>
     public sealed class CameraComponent : SceneComponent, IMessageReceiver

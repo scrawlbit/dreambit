@@ -10,7 +10,7 @@ namespace DreamBit.Engine.Components
     /// Contêiner com rolagem: empilha os objetos-filhos numa coluna e mostra só a parte que
     /// cabe na viewport, rolando com a roda do mouse. Itens totalmente fora são ocultados
     /// (culling por item — ideal para listas/menus). Espaço de tela (HUD). Combine com
-    /// <see cref="UiAnchor"/> no objeto-pai. Equivale ao ScrollContainer do Godot.
+    /// <see cref="UiAnchor"/> no objeto-pai.
     /// </summary>
     public sealed class UiScrollView : SceneComponent
     {

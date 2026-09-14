@@ -9,8 +9,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Empilha os objetos-filhos em coluna ou linha, com espaçamento — para montar menus e
     /// painéis de HUD (uma pilha de botões, por exemplo) sem posicionar cada item na mão.
-    /// Reposiciona a cada frame, então acompanha mudanças. Equivale a um Container do Godot /
-    /// Layout Group do Unity. Combine com <see cref="UiAnchor"/> no objeto-pai.
+    /// Reposiciona a cada frame, então acompanha mudanças. Combine com <see cref="UiAnchor"/> no objeto-pai.
     /// </summary>
     public sealed class UiLayout : SceneComponent
     {

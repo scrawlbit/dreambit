@@ -9,8 +9,7 @@ namespace DreamBit.Engine.Saving
     /// <summary>
     /// Progresso persistente do jogo (save game): um dicionário chave→valor tipado, salvo em
     /// JSON. Pensado para ser usado por scripts (<c>SaveGame.SetInt("fase", 2)</c>,
-    /// <c>SaveGame.Save()</c>) — como <c>PlayerPrefs</c> do Unity ou um <c>Resource</c> de
-    /// save do Godot. Simples e sem dependências: um único arquivo por perfil.
+    /// <c>SaveGame.Save()</c>). Simples e sem dependências: um único arquivo por perfil.
     /// </summary>
     public static class SaveGame
     {

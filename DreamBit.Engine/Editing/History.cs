@@ -4,8 +4,7 @@ using System.Collections.Generic;
 namespace DreamBit.Engine.Editing
 {
     /// <summary>
-    /// Pilha de undo/redo do editor. Cumpre o papel do StateManager de DreamBit.General,
-    /// reescrito de forma enxuta para o editor standalone.
+    /// Pilha de undo/redo do editor.
     /// </summary>
     public sealed class History
     {

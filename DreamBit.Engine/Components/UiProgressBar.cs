@@ -7,7 +7,7 @@ namespace DreamBit.Engine.Components
     /// <summary>
     /// Barra de progresso de UI (só leitura): mostra um valor em [0,1] — barra de vida, energia,
     /// carregamento. Scripts ajustam <see cref="Value"/>. Espaço de tela (HUD) ou no mundo (barra
-    /// de vida sobre um inimigo). Equivale ao ProgressBar/TextureProgress de Godot/Unity.
+    /// de vida sobre um inimigo).
     /// </summary>
     public sealed class UiProgressBar : SceneComponent
     {
