@@ -216,6 +216,12 @@ namespace DreamBit.Engine.Serialization
         public byte R { get; set; } = 255;
         public byte G { get; set; } = 180;
         public byte B { get; set; } = 90;
+        public byte EndR { get; set; } = 255;
+        public byte EndG { get; set; } = 180;
+        public byte EndB { get; set; } = 90;
+        public float EndSize { get; set; } = 8f;
+        public int BurstCount { get; set; }
+        public bool EmitOnStart { get; set; }
     }
 
     public sealed class AudioData

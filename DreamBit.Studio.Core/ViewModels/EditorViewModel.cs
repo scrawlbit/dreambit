@@ -1408,7 +1408,8 @@ namespace DreamBit.Studio.ViewModels
                         clone.AddComponent(new ParticleEmitter
                         {
                             EmitRate = pe.EmitRate, Lifetime = pe.Lifetime, Speed = pe.Speed, Spread = pe.Spread,
-                            Size = pe.Size, GravityY = pe.GravityY, Color = pe.Color
+                            Size = pe.Size, GravityY = pe.GravityY, Color = pe.Color,
+                            EndColor = pe.EndColor, EndSize = pe.EndSize, BurstCount = pe.BurstCount, EmitOnStart = pe.EmitOnStart
                         });
                         break;
                     case FollowTarget ft:

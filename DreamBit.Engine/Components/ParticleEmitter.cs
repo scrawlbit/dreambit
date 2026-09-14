@@ -17,8 +17,12 @@ namespace DreamBit.Engine.Components
         private float _speed = 140f;
         private float _spread = 0.6f;
         private float _size = 8f;
+        private float _endSize = 8f;
         private float _gravityY = 220f;
         private Color _color = new(255, 180, 90);
+        private Color _endColor = new(255, 180, 90);
+        private int _burstCount;
+        private bool _emitOnStart;
 
         private readonly List<Particle> _particles = new();
         private readonly Random _rng = new();
@@ -31,10 +35,33 @@ namespace DreamBit.Engine.Components
         public float Speed { get => _speed; set => Set(ref _speed, value); }
         public float Spread { get => _spread; set => Set(ref _spread, value); }
         public float Size { get => _size; set => Set(ref _size, Math.Max(1f, value)); }
+        /// <summary>Tamanho ao fim da vida (interpola de <see cref="Size"/> até aqui).</summary>
+        public float EndSize { get => _endSize; set => Set(ref _endSize, Math.Max(0f, value)); }
         public float GravityY { get => _gravityY; set => Set(ref _gravityY, value); }
         public Color Color { get => _color; set => Set(ref _color, value); }
+        /// <summary>Cor ao fim da vida (interpola de <see cref="Color"/> até aqui).</summary>
+        public Color EndColor { get => _endColor; set => Set(ref _endColor, value); }
+        /// <summary>Quantidade emitida de uma vez num burst (explosão). 0 = sem burst.</summary>
+        public int BurstCount { get => _burstCount; set => Set(ref _burstCount, Math.Max(0, value)); }
+        /// <summary>Emite o burst ao iniciar (efeito one-shot, ex.: explosão).</summary>
+        public bool EmitOnStart { get => _emitOnStart; set => Set(ref _emitOnStart, value); }
 
-        protected internal override void OnPlayStarted() => _particles.Clear();
+        /// <summary>Partículas vivas neste instante (para depurar/testar).</summary>
+        public int ActiveParticles => _particles.Count;
+
+        /// <summary>Emite <paramref name="count"/> partículas de uma vez (burst).</summary>
+        public void Burst(int count)
+        {
+            for (int i = 0; i < count; i++)
+                Spawn();
+        }
+
+        protected internal override void OnPlayStarted()
+        {
+            _particles.Clear();
+            if (_emitOnStart && _burstCount > 0)
+                Burst(_burstCount);
+        }
 
         protected internal override void Update(GameTime gameTime)
         {
@@ -71,9 +98,11 @@ namespace DreamBit.Engine.Components
             foreach (var p in _particles)
             {
                 float alpha = MathHelper.Clamp(p.Life / _lifetime, 0f, 1f);
-                var color = _color * alpha;
+                float age = 1f - alpha; // 0 = novo, 1 = fim da vida
+                var color = Color.Lerp(_color, _endColor, age) * alpha;
+                float size = MathHelper.Lerp(_size, _endSize, age);
                 var world = Matrix.CreateTranslation(p.Position.X, p.Position.Y, 0f);
-                drawing.DrawQuad(world, new Vector2(_size), color);
+                drawing.DrawQuad(world, new Vector2(size), color);
             }
         }
 

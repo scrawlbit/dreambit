@@ -318,7 +318,9 @@ namespace DreamBit.Engine.Serialization
                         GravityY = particles.GravityY,
                         R = particles.Color.R,
                         G = particles.Color.G,
-                        B = particles.Color.B
+                        B = particles.Color.B,
+                        EndR = particles.EndColor.R, EndG = particles.EndColor.G, EndB = particles.EndColor.B,
+                        EndSize = particles.EndSize, BurstCount = particles.BurstCount, EmitOnStart = particles.EmitOnStart
                     });
                 else if (component is FollowTarget follow)
                     data.Follows.Add(new FollowData { TargetId = follow.TargetId, Speed = follow.Speed });
@@ -751,7 +753,9 @@ namespace DreamBit.Engine.Serialization
                     Spread = particles.Spread,
                     Size = particles.Size,
                     GravityY = particles.GravityY,
-                    Color = new Color(particles.R, particles.G, particles.B)
+                    Color = new Color(particles.R, particles.G, particles.B),
+                    EndColor = new Color(particles.EndR, particles.EndG, particles.EndB),
+                    EndSize = particles.EndSize, BurstCount = particles.BurstCount, EmitOnStart = particles.EmitOnStart
                 });
 
             foreach (var follow in data.Follows)

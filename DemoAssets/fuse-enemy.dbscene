@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "828ac3ab-b2b4-4b74-87ce-41493d385563",
+      "Id": "331543d4-0d62-404f-8cd3-19b7411a288d",
       "Name": "Fuse",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1237,7 +1237,7 @@
       "YSorts": [],
       "Children": [
         {
-          "Id": "73a171b4-fb1d-4bf3-b15b-57eaf49b5ac3",
+          "Id": "68818ee9-791e-4a89-9e38-a6b0c3278352",
           "Name": "hip",
           "Tag": "",
           "SortOrder": 0,
@@ -1306,7 +1306,7 @@
           "YSorts": [],
           "Children": [
             {
-              "Id": "877586b1-8349-44e1-afb4-73a0b6a2baf8",
+              "Id": "b792a64d-8da8-4525-bf70-fdbdd0c546df",
               "Name": "torso",
               "Tag": "",
               "SortOrder": 0,
@@ -1375,7 +1375,7 @@
               "YSorts": [],
               "Children": [
                 {
-                  "Id": "9ba9907c-b046-4bdc-873c-0f7e70b45b41",
+                  "Id": "b8c7ca1a-fad2-4dc7-836e-0117ddbd97c4",
                   "Name": "head",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1444,7 +1444,7 @@
                   "YSorts": [],
                   "Children": [
                     {
-                      "Id": "d9c1e67c-598f-4bc9-a27c-0b5ed6ed7656",
+                      "Id": "6354944d-dd5b-4340-98aa-8b8f2c38b40b",
                       "Name": "head_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1526,7 +1526,7 @@
                   ]
                 },
                 {
-                  "Id": "d654e86f-f628-4aa9-beae-d867c1872a32",
+                  "Id": "1429a417-3fbd-4d4e-bf7a-7f113a79101e",
                   "Name": "armBack",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1595,7 +1595,7 @@
                   "YSorts": [],
                   "Children": [
                     {
-                      "Id": "f2a3ba53-ffd9-4df0-8e5a-540d184c852b",
+                      "Id": "57280ba4-50a8-4a78-b497-2cf5a424eb9f",
                       "Name": "foreBack",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1664,7 +1664,7 @@
                       "YSorts": [],
                       "Children": [
                         {
-                          "Id": "8757af8f-a1e3-4d6e-87ed-70f2310f679e",
+                          "Id": "ebc4c599-a62f-4c30-b4ee-c2fd5539152b",
                           "Name": "foreBack_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -1746,7 +1746,7 @@
                       ]
                     },
                     {
-                      "Id": "a620fb21-6d05-4444-a04d-8cd6af6d4638",
+                      "Id": "317fa5dc-c2e4-4af5-a6d7-47cd09aab931",
                       "Name": "armBack_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1828,7 +1828,7 @@
                   ]
                 },
                 {
-                  "Id": "c386ff4e-ce6f-43ad-bbf3-3d30f3775ac6",
+                  "Id": "892ba677-82ca-4aac-a31c-40c12a7f2171",
                   "Name": "armFront",
                   "Tag": "",
                   "SortOrder": 0,
@@ -1897,7 +1897,7 @@
                   "YSorts": [],
                   "Children": [
                     {
-                      "Id": "b31a18ab-d58a-4948-bdf3-5bb01fe7cf91",
+                      "Id": "72f2aca6-0e2b-448d-b54e-e2df581b053b",
                       "Name": "foreFront",
                       "Tag": "",
                       "SortOrder": 0,
@@ -1966,7 +1966,7 @@
                       "YSorts": [],
                       "Children": [
                         {
-                          "Id": "1dc60b4b-0010-4cbe-a7ed-91e6d049e88e",
+                          "Id": "b44f4912-fe2e-432c-b2ec-72a21a91e3fa",
                           "Name": "handFront",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2035,7 +2035,7 @@
                           "YSorts": [],
                           "Children": [
                             {
-                              "Id": "915afbe3-9c5a-49d0-899f-ae37cb92738d",
+                              "Id": "75d11bf2-6f4b-4c45-a526-2b6d4792051d",
                               "Name": "handFront_art",
                               "Tag": "",
                               "SortOrder": 0,
@@ -2117,7 +2117,7 @@
                           ]
                         },
                         {
-                          "Id": "c79f541d-c119-48c8-95c7-48d2f8b70133",
+                          "Id": "0364bacf-4e83-4d89-b09e-1ec6ae011b48",
                           "Name": "foreFront_art",
                           "Tag": "",
                           "SortOrder": 0,
@@ -2199,7 +2199,7 @@
                       ]
                     },
                     {
-                      "Id": "cd3b9c41-b8d3-47f1-a565-ae059b0cfae8",
+                      "Id": "17f46dd4-d394-41b6-8eac-c910176c607b",
                       "Name": "armFront_art",
                       "Tag": "",
                       "SortOrder": 0,
@@ -2281,7 +2281,7 @@
                   ]
                 },
                 {
-                  "Id": "37e45e54-76c7-48ac-ad50-1fb2575fde79",
+                  "Id": "be372131-0084-47db-9208-4591a78448c3",
                   "Name": "torso_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2363,7 +2363,7 @@
               ]
             },
             {
-              "Id": "f713444f-dbf9-4f57-8d5d-703aa2ef82aa",
+              "Id": "54d8a74b-244c-4c83-8581-56a945956929",
               "Name": "legBack",
               "Tag": "",
               "SortOrder": 0,
@@ -2432,7 +2432,7 @@
               "YSorts": [],
               "Children": [
                 {
-                  "Id": "8f391f9b-c7a1-4618-aeb0-dbd13a81fe61",
+                  "Id": "d9a75c4c-7c98-400c-89b0-a097d92176b4",
                   "Name": "legBack_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2514,7 +2514,7 @@
               ]
             },
             {
-              "Id": "d6623fef-8de9-4bc3-aa27-fc1c55e675c4",
+              "Id": "75675542-a42d-44d6-949a-cd4cce446011",
               "Name": "legFront",
               "Tag": "",
               "SortOrder": 0,
@@ -2583,7 +2583,7 @@
               "YSorts": [],
               "Children": [
                 {
-                  "Id": "e7293280-bbd1-41de-8a48-dbe65ae02830",
+                  "Id": "ede0d9c1-b9fa-4124-b4c5-ed6ad2c7952b",
                   "Name": "legFront_art",
                   "Tag": "",
                   "SortOrder": 0,
@@ -2665,7 +2665,7 @@
               ]
             },
             {
-              "Id": "b92d0634-558f-4c06-8716-e7ceb7c35f0a",
+              "Id": "e1f5ecc5-ac97-4124-8865-c412da4a3a1e",
               "Name": "tail",
               "Tag": "",
               "SortOrder": 0,
@@ -2734,7 +2734,7 @@
               "YSorts": [],
               "Children": [
                 {
-                  "Id": "88023ec0-86d1-4346-87ae-0655ffbd8201",
+                  "Id": "f92ee003-9fb1-4e05-9f2b-f8305f0bf889",
                   "Name": "tail_art",
                   "Tag": "",
                   "SortOrder": 0,

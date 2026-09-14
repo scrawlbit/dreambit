@@ -627,6 +627,17 @@
                                         <TextBox Text="{Binding ParticleB, Mode=TwoWay}" />
                                     </StackPanel>
                                 </Grid>
+                                <TextBlock Classes="field" Text="Cor final (R/G/B) e tamanho final" />
+                                <Grid ColumnDefinitions="*,6,*,6,*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBox Text="{Binding ParticleEndR, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBox Text="{Binding ParticleEndG, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="4"><TextBox Text="{Binding ParticleEndB, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="6"><TextBox Text="{Binding ParticleEndSize, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,Auto">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Burst (explosão)" /><TextBox Text="{Binding ParticleBurst, Mode=TwoWay}" /></StackPanel>
+                                    <CheckBox Grid.Column="2" Content="Emitir ao iniciar" IsChecked="{Binding ParticleEmitOnStart, Mode=TwoWay}" VerticalAlignment="Bottom" />
+                                </Grid>
                             </StackPanel>
                         </Border>
 

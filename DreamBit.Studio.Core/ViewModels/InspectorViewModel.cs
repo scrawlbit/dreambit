@@ -863,6 +863,12 @@ namespace DreamBit.Studio.ViewModels
         public int ParticleR { get => Particles?.Color.R ?? 0; set { var p = Particles; if (p != null) p.Color = new Color((byte)Clamp(value), p.Color.G, p.Color.B); } }
         public int ParticleG { get => Particles?.Color.G ?? 0; set { var p = Particles; if (p != null) p.Color = new Color(p.Color.R, (byte)Clamp(value), p.Color.B); } }
         public int ParticleB { get => Particles?.Color.B ?? 0; set { var p = Particles; if (p != null) p.Color = new Color(p.Color.R, p.Color.G, (byte)Clamp(value)); } }
+        public int ParticleEndR { get => Particles?.EndColor.R ?? 0; set { var p = Particles; if (p != null) p.EndColor = new Color((byte)Clamp(value), p.EndColor.G, p.EndColor.B); } }
+        public int ParticleEndG { get => Particles?.EndColor.G ?? 0; set { var p = Particles; if (p != null) p.EndColor = new Color(p.EndColor.R, (byte)Clamp(value), p.EndColor.B); } }
+        public int ParticleEndB { get => Particles?.EndColor.B ?? 0; set { var p = Particles; if (p != null) p.EndColor = new Color(p.EndColor.R, p.EndColor.G, (byte)Clamp(value)); } }
+        public float ParticleEndSize { get => Particles?.EndSize ?? 8f; set { var p = Particles; if (p != null) p.EndSize = value; } }
+        public int ParticleBurst { get => Particles?.BurstCount ?? 0; set { var p = Particles; if (p != null) p.BurstCount = value; } }
+        public bool ParticleEmitOnStart { get => Particles?.EmitOnStart ?? false; set { var p = Particles; if (p != null) p.EmitOnStart = value; } }
 
         // ---- Componente AudioSource ----
 
@@ -1364,6 +1370,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(ParticleR));
             OnPropertyChanged(nameof(ParticleG));
             OnPropertyChanged(nameof(ParticleB));
+            OnPropertyChanged(nameof(ParticleEndR)); OnPropertyChanged(nameof(ParticleEndG)); OnPropertyChanged(nameof(ParticleEndB));
+            OnPropertyChanged(nameof(ParticleEndSize)); OnPropertyChanged(nameof(ParticleBurst)); OnPropertyChanged(nameof(ParticleEmitOnStart));
             OnPropertyChanged(nameof(HasAudio));
             OnPropertyChanged(nameof(AudioPath));
             OnPropertyChanged(nameof(AudioVolume));
