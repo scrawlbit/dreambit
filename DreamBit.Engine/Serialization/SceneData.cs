@@ -10,6 +10,8 @@ namespace DreamBit.Engine.Serialization
         public string Name { get; set; } = "Cena";
         public List<GameObjectData> Objects { get; set; } = new();
         public List<LedgeData> Ledges { get; set; } = new();
+        /// <summary>Mapa caminho→GUID dos assets referenciados (referências por ID, à prova de renomear).</summary>
+        public Dictionary<string, string> Assets { get; set; } = new();
     }
 
     public sealed class LedgeData

@@ -39,6 +39,24 @@ namespace DreamBit.Engine.Serialization
         /// <summary>Serializa a cena para uma string JSON (para snapshots em memória).</summary>
         public static string SaveToString(Scene scene) => JsonSerializer.Serialize(ToData(scene), Options);
 
+        /// <summary>Salva a cena carimbando o GUID de cada asset (referências por ID, à prova de
+        /// renomear). <paramref name="projectRoot"/> resolve caminhos relativos.</summary>
+        public static void SaveWithAssets(Scene scene, string path, Assets.AssetDatabase db, string projectRoot)
+        {
+            var data = ToData(scene);
+            Assets.SceneAssetResolver.Stamp(data, db, projectRoot);
+            File.WriteAllText(path, JsonSerializer.Serialize(data, Options));
+        }
+
+        /// <summary>Carrega a cena e, se algum caminho de asset quebrou, reencontra o arquivo pelo
+        /// GUID (asset movido/renomeado).</summary>
+        public static Scene LoadWithAssets(string path, Assets.AssetDatabase db, string projectRoot)
+        {
+            var data = JsonSerializer.Deserialize<SceneData>(File.ReadAllText(path), Options) ?? new SceneData();
+            Assets.SceneAssetResolver.Resolve(data, db, projectRoot);
+            return FromData(data);
+        }
+
         public static Scene LoadFromString(string json)
             => FromData(JsonSerializer.Deserialize<SceneData>(json, Options) ?? new SceneData());
 

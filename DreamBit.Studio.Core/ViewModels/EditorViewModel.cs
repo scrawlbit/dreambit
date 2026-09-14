@@ -324,9 +324,30 @@ namespace DreamBit.Studio.ViewModels
             AddSceneTab(new Scene { Name = "Nova Cena" }, null);
         }
 
+        private DreamBit.Engine.Assets.AssetDatabase? _assetDb;
+        private string? _assetDbRoot;
+
+        /// <summary>Banco de assets do projeto aberto (para referências por ID à prova de renomear).</summary>
+        private DreamBit.Engine.Assets.AssetDatabase? AssetDb(out string? root)
+        {
+            root = Project.Project?.Folder;
+            if (string.IsNullOrEmpty(root))
+                return null;
+            if (_assetDb == null || _assetDbRoot != root)
+            {
+                _assetDb = new DreamBit.Engine.Assets.AssetDatabase(root);
+                _assetDbRoot = root;
+            }
+            return _assetDb;
+        }
+
         public void SaveTo(string path)
         {
-            SceneSerializer.Save(Scene, path);
+            var db = AssetDb(out var root);
+            if (db != null && root != null)
+                SceneSerializer.SaveWithAssets(Scene, path, db, root); // carimba GUIDs dos assets
+            else
+                SceneSerializer.Save(Scene, path);
             CurrentPath = path;
             if (_activeTab != null)
                 _activeTab.Path = path;
@@ -356,7 +377,11 @@ namespace DreamBit.Studio.ViewModels
                 return;
             }
 
-            AddSceneTab(SceneSerializer.Load(path), path);
+            var db = AssetDb(out var root);
+            var scene = db != null && root != null
+                ? SceneSerializer.LoadWithAssets(path, db, root) // reencontra assets movidos pelo GUID
+                : SceneSerializer.Load(path);
+            AddSceneTab(scene, path);
         }
 
         public GameObject AddObject()
