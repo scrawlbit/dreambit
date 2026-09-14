@@ -68,6 +68,15 @@ MonoGame atualizado.
   e weld (solda); conecta dois corpos por tag ou prende num ponto fixo do mundo.
 - **Sombras nas luzes 2D** (`ShadowCaster`): oclusores bloqueiam as `Light2D` — o renderer
   monta o volume de sombra por luz num render target (sem shader).
+- **Blending de animação** (crossfade): transição suave entre clipes de sprite (dissolve) e
+  de rig (`SkeletonAnimator`/`SpriteAnimator`.Play com blendTime; `BlendTime` nos controladores).
+- **Profundidade top-down** (`YSort`, desenha por Y de mundo) e **tilemap isométrico**
+  (`TilemapRenderer.Orientation`).
+- **Câmera**: tremor (`Shake`/`ShakeOnMessage`) e **prioridade** (troca de câmera/cutscene).
+- **Áudio adaptativo**: ducking de bus (`AudioMixer.Duck`) e fade/crossfade de fonte
+  (`AudioSource.FadeTo`) para música em camadas.
+- **Partículas ricas**: burst/one-shot (`Burst`/`EmitOnStart`), cor e tamanho ao longo da vida.
+- **Profiler** (`Profiler`): tempos por seção e contadores no overlay de debug (F3).
 - Sistemas de runtime para scripts: `SaveGame` (salvar/carregar progresso, JSON),
   `Scheduler` (timers/coroutines por tempo), `ObjectPool` (reaproveitar objetos),
   `DataCatalog` (catálogos data-driven), `StateMachine` (máquina de estados genérica).
@@ -98,9 +107,15 @@ Itens úteis para cobrir jogos 2D completos, com o equivalente em engines de mes
 propósito (Godot, Unity 2D, GameMaker, Construct, Defold, Phaser) como referência.
 
 ### Rendering e cena
-- **Shaders 2D customizados** (pipeline MGCB) — as luzes 2D por lightmap já existem sem shader;
-  faltam sombras e normal maps.
-- **Música em camadas** (o mixer/buses e o áudio espacial já existem).
+- **Shaders 2D customizados** (pipeline MGCB) — pós-processamento, normal maps, dissolve por
+  shader. As luzes/sombras 2D por lightmap já existem sem shader.
+- **Texto TTF/rich text** (hoje fonte pixel escalável).
+
+### Sistemas e tooling (grandes)
+- **Referências de asset por ID/GUID** + atlas packer (hoje por caminho de arquivo).
+- **Prefabs aninhados com overrides/variantes**.
+- **Editor visual de animação**: máquina de estados/blend tree e editor de curvas.
+- **Inspector/profiler remoto** (o profiler local no overlay F3 já existe).
 
 ### Animação
 - **Import Aseprite** (`.ase`/`.json`) — a autodetecção por transparência, o fatiador por

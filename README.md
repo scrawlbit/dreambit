@@ -52,6 +52,9 @@ independente, multiplataforma e testada.
   jogos de cima com tile.
 - **Joints** (`Joint2D`: distância/dobradiça/solda) e **sombras nas luzes** (`ShadowCaster`
   bloqueia as `Light2D`). Todos os componentes são adicionáveis pelo dropdown do editor.
+- **Blending de animação** (crossfade de sprite e rig), **Y-sort** e **tilemap isométrico**,
+  **tremor/prioridade de câmera**, **áudio adaptativo** (ducking + fade/crossfade), **partículas
+  ricas** (burst, cor/tamanho na vida) e **profiler** no overlay F3.
 - **Áudio** com mixer/buses (Master/Music/SFX) e **timeline de propriedades**
   (`PropertyAnimator`: anima posição/rotação/escala/cor por keyframes).
 - Sistemas de runtime para scripts: `SaveGame` (**salvar/carregar**), `Scheduler`
