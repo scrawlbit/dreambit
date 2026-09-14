@@ -1211,6 +1211,11 @@ namespace DreamBit.Studio.ViewModels
             set { var c = _target?.Components.OfType<TilemapRenderer>().FirstOrDefault(); if (c != null) c.Orientation = value; }
         }
 
+        // ---- Prefab Instance ----
+        private PrefabInstance? PrefabInst => _target?.Components.OfType<PrefabInstance>().FirstOrDefault();
+        public bool HasPrefabInstance => PrefabInst != null;
+        public string PrefabInstancePath => PrefabInst?.PrefabPath ?? "";
+
         private void RaiseAll()
         {
             OnPropertyChanged(nameof(HasTarget));
@@ -1463,6 +1468,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(ShadowWidth)); OnPropertyChanged(nameof(ShadowHeight));
             OnPropertyChanged(nameof(ShadowOffsetX)); OnPropertyChanged(nameof(ShadowOffsetY));
             OnPropertyChanged(nameof(HasYSort)); OnPropertyChanged(nameof(YSortOffset));
+            OnPropertyChanged(nameof(HasPrefabInstance)); OnPropertyChanged(nameof(PrefabInstancePath));
             OnPropertyChanged(nameof(TilemapOrientation));
         }
     }

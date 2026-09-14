@@ -460,6 +460,8 @@ namespace DreamBit.Engine.Serialization
                     });
                 else if (component is YSort ysort)
                     data.YSorts.Add(new YSortData { Offset = ysort.Offset });
+                else if (component is PrefabInstance prefab)
+                    data.PrefabInstances.Add(new PrefabInstanceData { PrefabPath = prefab.PrefabPath });
                 else if (component is TweenComponent tween)
                     data.Tweens.Add(new TweenData
                     {
@@ -735,6 +737,9 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var ys in data.YSorts)
                 obj.AddComponent(new YSort { Offset = ys.Offset });
+
+            foreach (var pi in data.PrefabInstances)
+                obj.AddComponent(new PrefabInstance { PrefabPath = pi.PrefabPath });
 
             foreach (var chaser in data.NavChasers)
                 obj.AddComponent(new NavChaser

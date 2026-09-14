@@ -2,7 +2,7 @@
   "Name": "Nova Cena",
   "Objects": [
     {
-      "Id": "810ea0ad-ed50-45a7-ad70-8338cb93a053",
+      "Id": "06b15c3e-6145-4bc5-9caf-24b949b950ab",
       "Name": "Backdrop",
       "Tag": "",
       "SortOrder": 0,
@@ -84,10 +84,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "e0ebe169-68b9-4cef-bd49-a68f4ed13451",
+      "Id": "688e8fb1-3724-46e4-9e6c-205a5b4bda13",
       "Name": "Colina",
       "Tag": "",
       "SortOrder": 0,
@@ -169,10 +170,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "32531e5b-c6f6-4ce1-8b65-ca8565565eea",
+      "Id": "31ad5b69-72db-4e8b-97e2-0147a4055632",
       "Name": "Terreno",
       "Tag": "",
       "SortOrder": 0,
@@ -424,10 +426,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "ffba030f-dea4-40df-a797-5886928f0b85",
+      "Id": "75e1bfb6-4e5c-4863-8a6e-798db2cb8b53",
       "Name": "ArvoreGrande",
       "Tag": "",
       "SortOrder": 0,
@@ -504,10 +507,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "db68e140-cb29-42c4-b2b3-a2813a6eade2",
+      "Id": "a259fa51-55d2-4b57-a618-3fc9dadd281f",
       "Name": "ArvoreFrondosa",
       "Tag": "",
       "SortOrder": 0,
@@ -584,10 +588,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "9dedc676-e863-4432-b370-e2cef641ef0b",
+      "Id": "dfa55259-84ee-41de-b9a7-5343313507a3",
       "Name": "Moita",
       "Tag": "",
       "SortOrder": 0,
@@ -664,10 +669,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "3a6de607-bef0-4e22-bd0e-c1ede7b9edc2",
+      "Id": "a3d39061-e538-4430-882d-32f8bc8e5e8f",
       "Name": "Rochas",
       "Tag": "",
       "SortOrder": 0,
@@ -744,10 +750,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "8cfb116c-c2ab-40fa-9a26-ede3cc766ab8",
+      "Id": "3048c3f0-96eb-4e2a-9efb-6adfdee4beda",
       "Name": "Heroi",
       "Tag": "player",
       "SortOrder": 0,
@@ -1598,10 +1605,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "34596a14-2bb4-4eb1-b9ac-36928effd395",
+      "Id": "e34e9d9d-df46-4b95-848e-28a163060b4a",
       "Name": "Camera",
       "Tag": "",
       "SortOrder": 0,
@@ -1675,10 +1683,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "f1d5a7e9-1730-4268-9865-621e79935e5a",
+      "Id": "a5b26bae-70c3-4a17-a583-a309cdfc79c6",
       "Name": "Inimigo",
       "Tag": "enemy",
       "SortOrder": 0,
@@ -1786,10 +1795,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "1a905841-a496-4874-a98a-a616f4409244",
+      "Id": "4882635f-cace-4f05-920f-4f77d9810ad1",
       "Name": "Cristal",
       "Tag": "",
       "SortOrder": 0,
@@ -1911,10 +1921,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "bc9c2571-d82f-4434-9429-14a028d63697",
+      "Id": "564bf217-11f6-4107-8c72-f9e1361ce22a",
       "Name": "FisicaChao",
       "Tag": "",
       "SortOrder": 0,
@@ -1985,10 +1996,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "00834a02-2eab-4fb2-a8c4-26465fcf649b",
+      "Id": "eed120d3-ee1f-4ad7-82d4-4c273b6d292d",
       "Name": "Caixa0",
       "Tag": "",
       "SortOrder": 0,
@@ -2078,10 +2090,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "d13ed572-a750-4565-a892-f485e8924cef",
+      "Id": "f2565625-99b8-44e7-8708-52e806ba9f1e",
       "Name": "Caixa1",
       "Tag": "",
       "SortOrder": 0,
@@ -2171,10 +2184,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "d9d06235-1605-485f-b4e0-73a42e6e669d",
+      "Id": "5cf347c7-390c-4666-a7f1-5443f3678eee",
       "Name": "Caixa2",
       "Tag": "",
       "SortOrder": 0,
@@ -2264,10 +2278,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "eaff9d01-d5ef-4f02-81c6-288836cc2af1",
+      "Id": "edf08866-c659-40cf-9cd5-3c09351bcb37",
       "Name": "Tenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2344,10 +2359,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "2fd60c4f-b6e7-4312-b04f-acfc26edb1fd",
+      "Id": "8401dcec-3d9c-425b-ac53-3a7a738d4001",
       "Name": "MetaTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2415,10 +2431,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "e53a1477-e3f0-4d2d-ad9d-2009b901598a",
+      "Id": "9ef2306a-2973-46b9-9624-1343f9081aa6",
       "Name": "Ambiente",
       "Tag": "",
       "SortOrder": 0,
@@ -2481,10 +2498,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "4922d449-6c56-4a35-8f1b-2863ef4ebb3f",
+      "Id": "e9ab548a-9248-4c39-8fd0-7c1d75c096c6",
       "Name": "LuzTenda",
       "Tag": "",
       "SortOrder": 0,
@@ -2549,10 +2567,11 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "d2ee9917-8a30-4e78-81d2-b28f5abc5336",
+      "Id": "430c3379-a3ed-4466-99c2-7e9e8c9764b2",
       "Name": "SombraArvore",
       "Tag": "",
       "SortOrder": 0,
@@ -2616,10 +2635,11 @@
         }
       ],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "ff3887af-9319-49c7-8e43-7472ecb51758",
+      "Id": "34a64b77-f983-479b-bbfa-87a4b00375cd",
       "Name": "SombraRocha",
       "Tag": "",
       "SortOrder": 0,
@@ -2683,10 +2703,11 @@
         }
       ],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": []
     },
     {
-      "Id": "cfff8c5a-7914-4957-b1a3-2261681671bf",
+      "Id": "93cc3cac-33d5-443e-a41f-ee73067c281b",
       "Name": "HUD",
       "Tag": "",
       "SortOrder": 0,
@@ -2743,9 +2764,10 @@
       "Joints": [],
       "ShadowCasters": [],
       "YSorts": [],
+      "PrefabInstances": [],
       "Children": [
         {
-          "Id": "648ca274-85fd-475d-aaed-f789a0dabe13",
+          "Id": "167384a2-54de-4533-b3ba-10103a1b469c",
           "Name": "Vida",
           "Tag": "",
           "SortOrder": 0,
@@ -2820,10 +2842,11 @@
           "Joints": [],
           "ShadowCasters": [],
           "YSorts": [],
+          "PrefabInstances": [],
           "Children": []
         },
         {
-          "Id": "bb19597e-7f78-4870-8b4d-0c3b796e8877",
+          "Id": "2ce572fd-a687-44fe-998f-13a9118dec29",
           "Name": "Titulo",
           "Tag": "",
           "SortOrder": 0,
@@ -2896,10 +2919,11 @@
           "Joints": [],
           "ShadowCasters": [],
           "YSorts": [],
+          "PrefabInstances": [],
           "Children": []
         },
         {
-          "Id": "0e5689cf-283a-4d6f-84be-21e5ca41f889",
+          "Id": "7153cab6-a512-48f5-9d3c-b324785ab2e7",
           "Name": "Volume",
           "Tag": "",
           "SortOrder": 0,
@@ -2979,6 +3003,7 @@
           "Joints": [],
           "ShadowCasters": [],
           "YSorts": [],
+          "PrefabInstances": [],
           "Children": []
         }
       ]

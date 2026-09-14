@@ -1486,6 +1486,19 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- Prefab Instance -->
+                        <Border Classes="component" IsVisible="{Binding HasPrefabInstance}">
+                            <StackPanel>
+                                <TextBlock Classes="section" Text="Prefab" />
+                                <TextBlock Classes="field" Text="Arquivo" />
+                                <TextBox Text="{Binding PrefabInstancePath}" IsReadOnly="True" />
+                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,6,0,0">
+                                    <Button Content="Aplicar ao prefab" Click="OnApplyPrefab" />
+                                    <Button Content="Reverter" Click="OnRevertPrefab" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Y Sort -->
                         <Border Classes="component" IsVisible="{Binding HasYSort}">
                             <StackPanel>

@@ -1507,6 +1507,9 @@ namespace DreamBit.Studio.ViewModels
                     case YSort yst:
                         clone.AddComponent(new YSort { Offset = yst.Offset });
                         break;
+                    case PrefabInstance pin:
+                        clone.AddComponent(new PrefabInstance { PrefabPath = pin.PrefabPath });
+                        break;
                     case NavChaser nc:
                         clone.AddComponent(new NavChaser
                         {
@@ -1572,16 +1575,64 @@ namespace DreamBit.Studio.ViewModels
 
         public void SaveSelectedAsPrefab(string path)
         {
-            if (SelectedObject != null)
-                SceneSerializer.SaveObject(SelectedObject, path);
+            if (SelectedObject == null)
+                return;
+            // Vira uma instância do prefab que acabou de criar (para Aplicar/Reverter depois).
+            var pi = SelectedObject.Components.OfType<PrefabInstance>().FirstOrDefault();
+            if (pi == null) SelectedObject.AddComponent(new PrefabInstance { PrefabPath = path });
+            else pi.PrefabPath = path;
+            SceneSerializer.SaveObject(SelectedObject, path);
+            Inspector.Refresh();
         }
 
         public void InsertPrefab(string path)
         {
             var obj = SceneSerializer.LoadPrefab(path);
+            if (!obj.Components.OfType<PrefabInstance>().Any())
+                obj.AddComponent(new PrefabInstance { PrefabPath = path });
+            else
+                obj.Components.OfType<PrefabInstance>().First().PrefabPath = path;
             History.Do(new EditorAction("Inserir prefab",
                 doAction: () => { Scene.Add(obj); SelectedObject = obj; },
                 undoAction: () => { if (SelectedObject == obj) SelectedObject = null; Scene.Remove(obj); }));
+        }
+
+        /// <summary>Salva a instância selecionada de volta no arquivo do prefab (propaga edições).</summary>
+        public void ApplyToPrefab()
+        {
+            var obj = SelectedObject;
+            var pi = obj?.Components.OfType<PrefabInstance>().FirstOrDefault();
+            if (obj == null || pi == null || string.IsNullOrEmpty(pi.PrefabPath))
+                return;
+            SceneSerializer.SaveObject(obj, pi.PrefabPath);
+        }
+
+        /// <summary>Recarrega a instância selecionada a partir do arquivo do prefab (descarta edições
+        /// locais), mantendo posição e pai. Com undo.</summary>
+        public void RevertToPrefab()
+        {
+            var obj = SelectedObject;
+            var pi = obj?.Components.OfType<PrefabInstance>().FirstOrDefault();
+            if (obj == null || pi == null || string.IsNullOrEmpty(pi.PrefabPath) || !File.Exists(pi.PrefabPath))
+                return;
+
+            var parent = obj.Parent;
+            var pos = obj.Transform.Position;
+            var fresh = SceneSerializer.LoadPrefab(pi.PrefabPath);
+            var freshPi = fresh.Components.OfType<PrefabInstance>().FirstOrDefault();
+            if (freshPi == null) fresh.AddComponent(new PrefabInstance { PrefabPath = pi.PrefabPath });
+            else freshPi.PrefabPath = pi.PrefabPath;
+            fresh.Transform.Position = pos;
+
+            void Replace(GameObject remove, GameObject add)
+            {
+                if (parent == null) { Scene.Remove(remove); Scene.Add(add); }
+                else { parent.RemoveChild(remove); parent.AddChild(add); }
+            }
+
+            History.Do(new EditorAction("Reverter ao prefab",
+                doAction: () => { Replace(obj, fresh); SelectSingle(fresh); },
+                undoAction: () => { Replace(fresh, obj); SelectSingle(obj); }));
         }
 
         private System.Collections.Generic.List<GameObject> _clipboard = new();

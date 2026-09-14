@@ -558,6 +558,9 @@ namespace DreamBit.Studio.Avalonia
 
         private void RebuildHierarchy() => SyncHierarchySelection();
 
+        private void OnApplyPrefab(object? sender, RoutedEventArgs e) => _editor.ApplyToPrefab();
+        private void OnRevertPrefab(object? sender, RoutedEventArgs e) { _editor.RevertToPrefab(); InvalidateScene(); }
+
         private bool TryNudge(Key key)
         {
             float step = _editor.SnapToGrid ? _editor.GridStep : 1f;

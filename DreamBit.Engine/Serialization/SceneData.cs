@@ -84,10 +84,13 @@ namespace DreamBit.Engine.Serialization
         public List<JointData> Joints { get; set; } = new();
         public List<ShadowCasterData> ShadowCasters { get; set; } = new();
         public List<YSortData> YSorts { get; set; } = new();
+        public List<PrefabInstanceData> PrefabInstances { get; set; } = new();
         public List<GameObjectData> Children { get; set; } = new();
     }
 
     public sealed class YSortData { public float Offset { get; set; } }
+
+    public sealed class PrefabInstanceData { public string PrefabPath { get; set; } = ""; }
 
     public sealed class JointData
     {
