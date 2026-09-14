@@ -1673,6 +1673,39 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => { Replace(fresh, obj); SelectSingle(obj); }));
         }
 
+        /// <summary>Recarrega a instância do prefab atualizado, mas **mantém as edições locais**
+        /// (overrides por propriedade via merge-patch). Com undo.</summary>
+        public void RevertKeepingOverrides()
+        {
+            var obj = SelectedObject;
+            var pi = obj?.Components.OfType<PrefabInstance>().FirstOrDefault();
+            if (obj == null || pi == null || string.IsNullOrEmpty(pi.PrefabPath) || !File.Exists(pi.PrefabPath))
+                return;
+
+            var prefabNode = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(pi.PrefabPath));
+            var instanceNode = System.Text.Json.Nodes.JsonNode.Parse(SceneSerializer.SaveObjectToString(obj));
+            var overrides = PrefabPatch.Diff(prefabNode, instanceNode);
+            var merged = PrefabPatch.Apply(prefabNode, overrides);
+            if (merged == null)
+                return;
+
+            var fresh = SceneSerializer.LoadPrefabFromString(merged.ToJsonString());
+            var freshPi = fresh.Components.OfType<PrefabInstance>().FirstOrDefault();
+            if (freshPi == null) fresh.AddComponent(new PrefabInstance { PrefabPath = pi.PrefabPath });
+            else freshPi.PrefabPath = pi.PrefabPath;
+            fresh.Transform.Position = obj.Transform.Position;
+
+            var parent = obj.Parent;
+            void Replace(GameObject remove, GameObject add)
+            {
+                if (parent == null) { Scene.Remove(remove); Scene.Add(add); }
+                else { parent.RemoveChild(remove); parent.AddChild(add); }
+            }
+            History.Do(new EditorAction("Reverter (mantendo edições)",
+                doAction: () => { Replace(obj, fresh); SelectSingle(fresh); },
+                undoAction: () => { Replace(fresh, obj); SelectSingle(obj); }));
+        }
+
         private System.Collections.Generic.List<GameObject> _clipboard = new();
 
         public void CopySelected()

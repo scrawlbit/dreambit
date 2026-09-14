@@ -560,6 +560,7 @@ namespace DreamBit.Studio.Avalonia
 
         private void OnApplyPrefab(object? sender, RoutedEventArgs e) => _editor.ApplyToPrefab();
         private void OnRevertPrefab(object? sender, RoutedEventArgs e) { _editor.RevertToPrefab(); InvalidateScene(); }
+        private void OnRevertKeepPrefab(object? sender, RoutedEventArgs e) { _editor.RevertKeepingOverrides(); InvalidateScene(); }
 
         private bool TryNudge(Key key)
         {

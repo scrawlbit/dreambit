@@ -1497,6 +1497,7 @@
                                 <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,6,0,0">
                                     <Button Content="Aplicar ao prefab" Click="OnApplyPrefab" />
                                     <Button Content="Reverter" Click="OnRevertPrefab" />
+                                    <Button Content="Reverter (manter edições)" Click="OnRevertKeepPrefab" />
                                 </StackPanel>
                             </StackPanel>
                         </Border>
