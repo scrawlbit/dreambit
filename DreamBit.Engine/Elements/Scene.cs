@@ -134,6 +134,7 @@ namespace DreamBit.Engine.Elements
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Timing.Scheduler.Tick(dt);
+            Audio.AudioMixer.Tick(dt); // recupera ducking da música/efeitos
 
             foreach (var gameObject in _objects.ToArray())
                 gameObject.Update(gameTime);

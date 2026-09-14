@@ -19,6 +19,10 @@ namespace DreamBit.Engine.Components
         private bool _spatial;
         private float _maxDistance = 600f;
 
+        // Fade da própria fonte (crossfade/camadas de música).
+        private float _fadeFrom, _fadeTo, _fadeTime, _fadeElapsed;
+        private bool _stopAtEnd;
+
         private SoundEffectInstance? _instance;
 
         public override string DisplayName => "Audio Source";
@@ -75,6 +79,8 @@ namespace DreamBit.Engine.Components
 
         protected internal override void Update(GameTime gameTime)
         {
+            AdvanceFade((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             // Reflete ao vivo mudanças de volume do bus/Master (ex.: menu de opções) e a
             // posição espacial (atenuação + pan pela distância ao ouvinte).
             if (_instance != null && _instance.State == SoundState.Playing)
@@ -93,6 +99,33 @@ namespace DreamBit.Engine.Components
         {
             try { _instance?.Stop(); }
             catch { /* ignora */ }
+        }
+
+        /// <summary>Transiciona o volume desta fonte para <paramref name="target"/> em
+        /// <paramref name="duration"/> s (para crossfade/camadas de música). Com
+        /// <paramref name="stopAtEnd"/>, para o som ao terminar o fade (fade-out).</summary>
+        public void FadeTo(float target, float duration, bool stopAtEnd = false)
+        {
+            _fadeFrom = _volume;
+            _fadeTo = MathHelper.Clamp(target, 0f, 1f);
+            _fadeTime = System.Math.Max(0.001f, duration);
+            _fadeElapsed = 0f;
+            _stopAtEnd = stopAtEnd;
+        }
+
+        private void AdvanceFade(float dt)
+        {
+            if (_fadeTime <= 0f)
+                return;
+            _fadeElapsed += dt;
+            float k = MathHelper.Clamp(_fadeElapsed / _fadeTime, 0f, 1f);
+            Volume = MathHelper.Lerp(_fadeFrom, _fadeTo, k);
+            if (k >= 1f)
+            {
+                _fadeTime = 0f;
+                if (_stopAtEnd)
+                    Stop();
+            }
         }
     }
 }
