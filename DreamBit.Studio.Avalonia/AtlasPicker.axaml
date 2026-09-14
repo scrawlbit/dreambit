@@ -71,10 +71,15 @@
                      SelectionChanged="OnStampSelected" DoubleTapped="OnStampDoubleClick" KeyDown="OnStampKeyDown">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBox Text="{Binding Name, Mode=TwoWay}" LostFocus="OnRenameCommit"
-                                     Background="Transparent" BorderThickness="0" Foreground="#D6DBE6" Padding="2,1" />
-                            <TextBlock Grid.Column="1" Text="{Binding SizeText}" Foreground="#8A93A6"
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Border Grid.Column="0" Width="36" Height="36" Background="#11141A"
+                                    CornerRadius="3" Margin="0,0,6,0">
+                                <Image Source="{Binding Preview}" Stretch="Uniform" Margin="2" />
+                            </Border>
+                            <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" LostFocus="OnRenameCommit"
+                                     VerticalAlignment="Center" Background="Transparent" BorderThickness="0"
+                                     Foreground="#D6DBE6" Padding="2,1" />
+                            <TextBlock Grid.Column="2" Text="{Binding SizeText}" Foreground="#8A93A6"
                                        FontSize="11" VerticalAlignment="Center" Margin="4,0" />
                         </Grid>
                     </DataTemplate>

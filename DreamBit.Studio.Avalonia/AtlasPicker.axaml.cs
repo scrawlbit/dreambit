@@ -27,6 +27,7 @@ namespace DreamBit.Studio.Avalonia
     {
         private readonly EditorViewModel _editor;
         private string? _texturePath;
+        private Bitmap? _bitmap;
         private AtlasStampLibrary _library = new();
         private readonly ObservableCollection<StampVm> _stamps = new();
         private readonly List<Rectangle> _overlays = new();
@@ -103,6 +104,7 @@ namespace DreamBit.Studio.Avalonia
                 var canvas = this.FindControl<Canvas>("PickCanvas")!;
                 var bmp = new Bitmap(path);
                 image.Source = bmp;
+                _bitmap = bmp;
                 canvas.Width = bmp.PixelSize.Width;
                 canvas.Height = bmp.PixelSize.Height;
                 _texturePath = path;
@@ -138,7 +140,7 @@ namespace DreamBit.Studio.Avalonia
         {
             _stamps.Clear();
             foreach (var s in _library.Stamps)
-                _stamps.Add(new StampVm(s));
+                _stamps.Add(new StampVm(s, _bitmap));
             DrawOverlays();
         }
 
@@ -322,11 +324,17 @@ namespace DreamBit.Studio.Avalonia
         {
             if (_texturePath == null || _frames.Count == 0)
                 return;
+            int added = 0;
             foreach (var f in _frames)
+            {
+                if (_library.Stamps.Any(s => s.X == f.X && s.Y == f.Y && s.W == f.Width && s.H == f.Height))
+                    continue; // não duplica se já existe esse recorte
                 _library.Stamps.Add(new AtlasStamp { Name = _library.NextName(), X = f.X, Y = f.Y, W = f.Width, H = f.Height });
+                added++;
+            }
             _library.Save(_texturePath);
             RebuildStamps();
-            this.FindControl<TextBlock>("Info")!.Text = $"{_frames.Count} carimbos criados do atlas.";
+            this.FindControl<TextBlock>("Info")!.Text = $"{added} carimbos criados ({_frames.Count} sprites detectados).";
         }
 
         private void OnRenameCommit(object? sender, RoutedEventArgs e)
@@ -368,11 +376,18 @@ namespace DreamBit.Studio.Avalonia
         private static int Clamp(int v, int min, int max) => v < min ? min : v > max ? max : v;
     }
 
-    /// <summary>Linha da lista de carimbos (nome editável).</summary>
+    /// <summary>Linha da lista de carimbos (miniatura + nome editável).</summary>
     public sealed class StampVm : NotificationObject
     {
         public AtlasStamp Model { get; }
-        public StampVm(AtlasStamp model) => Model = model;
+
+        public StampVm(AtlasStamp model, Bitmap? atlas)
+        {
+            Model = model;
+            Preview = MakePreview(atlas, model);
+        }
+
+        public IImage? Preview { get; }
 
         public string Name
         {
@@ -381,5 +396,18 @@ namespace DreamBit.Studio.Avalonia
         }
 
         public string SizeText => $"{Model.W}×{Model.H}";
+
+        private static IImage? MakePreview(Bitmap? atlas, AtlasStamp s)
+        {
+            if (atlas == null || s.W <= 0 || s.H <= 0)
+                return null;
+            try
+            {
+                var rect = new PixelRect(s.X, s.Y, s.W, s.H)
+                    .Intersect(new PixelRect(0, 0, atlas.PixelSize.Width, atlas.PixelSize.Height));
+                return rect.Width > 0 && rect.Height > 0 ? new CroppedBitmap(atlas, rect) : null;
+            }
+            catch { return null; }
+        }
     }
 }
