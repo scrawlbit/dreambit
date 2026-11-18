@@ -349,3 +349,6 @@ healthchecksdb
 /DemoAssets/*.png
 /DemoAssets/*.gif
 /DemoAssets/*.jpg
+
+# Arquivos locais do Claude Code (worktrees de agentes)
+.claude/
