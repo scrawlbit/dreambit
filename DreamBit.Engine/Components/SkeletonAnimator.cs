@@ -603,6 +603,7 @@ namespace DreamBit.Engine.Components
 
         private void ApplyBoneKeys(float time, Dictionary<string, GameObject> rig)
         {
+            ResolvePendingOriginals();
             var samples = ResolveBoneKeys(time);
             var touched = new HashSet<SpriteRenderer>();
             foreach (var (bone, sample) in samples)
@@ -685,8 +686,83 @@ namespace DreamBit.Engine.Components
         /// visibilidade aplicados pelas chaves).</summary>
         public void RestoreParts()
         {
+            ResolvePendingOriginals();
             foreach (var part in _overrides.Keys.ToList())
                 ApplyPart(part, default);
+        }
+
+        /// <summary>Reaplica só sprite/ordem/cor/visibilidade das chaves no tempo atual (sem mexer
+        /// nos transforms dos ossos) — usado pelo editor ao editar as chaves.</summary>
+        public void RefreshBoneKeys()
+        {
+            if (Owner == null)
+                return;
+            if (_current.Keyframes.Count == 0)
+                RestoreParts();
+            else
+                ApplyBoneKeys(_time, RigBones());
+        }
+
+        /// <summary>Valor original de uma parte enquanto uma chave a sobrepõe (nome do objeto da
+        /// parte + valores; nulo = não sobreposto). Salvo na cena para o original não se perder
+        /// ao salvar com o playhead parado numa chave.</summary>
+        public readonly record struct PartOriginal(string Part, SpriteRef? Sprite, int? SortOrder, Color? Tint, bool? Enabled);
+
+        private List<PartOriginal>? _pendingOriginals;
+
+        /// <summary>Originais das partes sobrepostas agora (e os ainda não resolvidos).</summary>
+        public IReadOnlyList<PartOriginal> GetPartOriginals()
+        {
+            var list = new List<PartOriginal>();
+            foreach (var (part, ov) in _overrides)
+            {
+                if (part.Owner == null)
+                    continue;
+                list.Add(new PartOriginal(part.Owner.Name,
+                    ov.Sprite ? new SpriteRef(ov.Texture, ov.Source) : null,
+                    ov.Sort ? ov.SortOrder : null,
+                    ov.Tint ? ov.TintColor : null,
+                    ov.Visible ? ov.Enabled : null));
+            }
+            if (_pendingOriginals != null)
+                foreach (var p in _pendingOriginals)
+                    if (list.All(x => x.Part != p.Part))
+                        list.Add(p);
+            return list;
+        }
+
+        /// <summary>Registra originais lidos da cena; são ligados às partes (por nome) no primeiro uso.</summary>
+        public void SetPartOriginals(IEnumerable<PartOriginal> originals)
+        {
+            _pendingOriginals = originals.ToList();
+            if (_pendingOriginals.Count == 0)
+                _pendingOriginals = null;
+        }
+
+        private void ResolvePendingOriginals()
+        {
+            if (_pendingOriginals == null || Owner == null)
+                return;
+            var unresolved = new List<PartOriginal>();
+            foreach (var p in _pendingOriginals)
+            {
+                var part = FindInRig(p.Part)?.Components.OfType<SpriteRenderer>().FirstOrDefault();
+                if (part == null)
+                {
+                    unresolved.Add(p);
+                    continue;
+                }
+                if (_overrides.ContainsKey(part))
+                    continue;
+                var ov = new PartOverride();
+                if (p.Sprite is { } s) { ov.Sprite = true; ov.Texture = s.TexturePath; ov.Source = s.SourceRect; }
+                if (p.SortOrder is { } o) { ov.Sort = true; ov.SortOrder = o; }
+                if (p.Tint is { } c) { ov.Tint = true; ov.TintColor = c; }
+                if (p.Enabled is { } e) { ov.Visible = true; ov.Enabled = e; }
+                if (ov.Any)
+                    _overrides[part] = ov;
+            }
+            _pendingOriginals = unresolved.Count > 0 ? unresolved : null;
         }
 
         /// <summary>
@@ -846,6 +922,7 @@ namespace DreamBit.Engine.Components
             skin.Parts.Clear();
             if (Owner == null)
                 return skin;
+            ResolvePendingOriginals();
 
             var seen = new HashSet<SpriteRenderer>();
             foreach (var obj in Descendants(Owner))
@@ -871,6 +948,7 @@ namespace DreamBit.Engine.Components
             var skin = CurrentSkin;
             if (skin == null || Owner == null)
                 return;
+            ResolvePendingOriginals();
 
             foreach (var (slot, sprite) in skin.Parts)
             {
@@ -913,6 +991,14 @@ namespace DreamBit.Engine.Components
                 foreach (var k in skin.Remaps.Keys.ToList())
                     skin.Remaps[k] = Map(skin.Remaps[k]);
             }
+
+            foreach (var ov in _overrides.Values)
+                if (ov.Sprite && !string.IsNullOrEmpty(ov.Texture))
+                    ov.Texture = map(ov.Texture);
+            if (_pendingOriginals != null)
+                _pendingOriginals = _pendingOriginals
+                    .Select(p => p.Sprite is { } s ? p with { Sprite = Map(s) } : p)
+                    .ToList();
         }
 
         // ---- cópia e snapshot (duplicar objeto, undo do editor) ----
@@ -964,6 +1050,7 @@ namespace DreamBit.Engine.Components
         {
             var copy = new SkeletonAnimator { Enabled = Enabled, Speed = Speed };
             copy.RestoreSnapshot(CreateSnapshot());
+            copy.SetPartOriginals(GetPartOriginals()); // as partes da cópia têm os mesmos nomes
             return copy;
         }
 
@@ -971,7 +1058,7 @@ namespace DreamBit.Engine.Components
 
         protected internal override void OnPlayStarted()
         {
-            _overrides.Clear(); // os valores atuais da cena são o "original" das partes
+            ResolvePendingOriginals(); // originais de partes que o editor deixou sobrepostas
             _time = 0f;
             _finished = false;
             _atClipStart = true;

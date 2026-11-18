@@ -45,6 +45,17 @@ namespace DreamBit.Engine.Serialization
         public SpriteRefData Sprite { get; set; } = new();
     }
 
+    /// <summary>Valor original de uma parte sobreposta por uma chave no momento de salvar (para
+    /// a cena não perder o original quando o playhead está parado numa chave). Nulo = não sobreposto.</summary>
+    public sealed class PartOriginalData
+    {
+        public string Part { get; set; } = "";
+        public SpriteRefData? Sprite { get; set; }
+        public int? SortOrder { get; set; }
+        public string? Tint { get; set; }
+        public bool? Enabled { get; set; }
+    }
+
     public sealed class SkinData
     {
         public string Name { get; set; } = "skin";

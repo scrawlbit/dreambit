@@ -16,13 +16,22 @@ namespace DreamBit.Engine.Serialization
     {
         public static SkeletonData ToData(SkeletonAnimator skeleton)
         {
+            var originals = skeleton.GetPartOriginals();
             return new SkeletonData
             {
                 CurrentClip = skeleton.CurrentClipName,
                 Clips = skeleton.Clips.Select(ToData).ToList(),
                 Skin = string.IsNullOrEmpty(skeleton.Skin) ? null : skeleton.Skin,
                 Speed = skeleton.Speed,
-                Skins = skeleton.Skins.Count == 0 ? null : skeleton.Skins.Select(ToData).ToList()
+                Skins = skeleton.Skins.Count == 0 ? null : skeleton.Skins.Select(ToData).ToList(),
+                PartOriginals = originals.Count == 0 ? null : originals.Select(o => new PartOriginalData
+                {
+                    Part = o.Part,
+                    Sprite = ToData(o.Sprite),
+                    SortOrder = o.SortOrder,
+                    Tint = o.Tint is { } c ? CustomComponentSerializer.FormatColor(c) : null,
+                    Enabled = o.Enabled
+                }).ToList()
             };
         }
 
@@ -148,6 +157,11 @@ namespace DreamBit.Engine.Serialization
                 }
             animator.Skin = skel.Skin ?? string.Empty; // ainda sem dono: só registra (a cena já tem os sprites)
             animator.Speed = skel.Speed;
+            if (skel.PartOriginals != null)
+                animator.SetPartOriginals(skel.PartOriginals
+                    .Where(o => !string.IsNullOrEmpty(o.Part))
+                    .Select(o => new SkeletonAnimator.PartOriginal(o.Part, FromData(o.Sprite), o.SortOrder,
+                        CustomComponentSerializer.ParseColor(o.Tint), o.Enabled)));
             return animator;
         }
 

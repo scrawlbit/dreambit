@@ -634,6 +634,8 @@ namespace DreamBit.Engine.Serialization
         public string? Skin { get; set; }
         public float Speed { get; set; } = 1f;
         public List<SkinData>? Skins { get; set; }
+        /// <summary>Originais das partes que uma chave sobrepunha ao salvar (ver PartOriginalData).</summary>
+        public List<PartOriginalData>? PartOriginals { get; set; }
     }
 
     public sealed class PoseClipData

@@ -291,6 +291,60 @@ namespace DreamBit.Engine.Tests
         }
 
         [Fact]
+        public void SalvarParadoNumaChave_NaoPerdeOOriginalDaParte()
+        {
+            var scene = new Scene();
+            var (a, _, anim, _, _) = MakeMoving();
+            var sprite = AddSprite(a, "mao_aberta.png");
+            a.SortOrder = 2;
+            var k = anim.CaptureKeyframe(0.5f);
+            var bk = k.GetOrAddBoneKey("BracoA");
+            bk.Sprite = new SpriteRef("mao_fechada.png");
+            bk.SortOrder = 9;
+            scene.Add(a.Parent!);
+            anim.SetTime(0.7f); // playhead parado depois da chave: parte sobreposta
+            Assert.Equal("mao_fechada.png", sprite.TexturePath);
+
+            var loaded = Serialization.SceneSerializer.LoadFromString(Serialization.SceneSerializer.SaveToString(scene));
+            var root = loaded.Objects.First();
+            var la = root.Components.OfType<SkeletonAnimator>().Single();
+            var lbraco = root.Children.First(c => c.Name == "BracoA");
+            var lsprite = lbraco.Components.OfType<SpriteRenderer>().Single();
+            Assert.Equal("mao_fechada.png", lsprite.TexturePath); // estado salvo é o visível
+
+            la.SetTime(0.2f); // antes da chave: volta ao original salvo à parte
+            Assert.Equal("mao_aberta.png", lsprite.TexturePath);
+            Assert.Equal(2, lbraco.SortOrder);
+        }
+
+        [Fact]
+        public void Play_ComPlayheadNumaChave_ComecaComOOriginal()
+        {
+            var scene = new Scene();
+            var (a, _, anim, _, _) = MakeMoving();
+            var sprite = AddSprite(a, "mao_aberta.png");
+            anim.CaptureKeyframe(0.5f).GetOrAddBoneKey("BracoA").Sprite = new SpriteRef("mao_fechada.png");
+            scene.Add(a.Parent!);
+            anim.SetTime(0.8f);
+
+            scene.StartPlay();
+            Assert.Equal("mao_aberta.png", sprite.TexturePath);
+        }
+
+        [Fact]
+        public void RefreshBoneKeys_NaoMexeNosTransforms()
+        {
+            var (a, _, anim, k0, _) = MakeMoving();
+            var sprite = AddSprite(a, "a.png");
+            a.Transform.Position = new Vector2(33, 0); // pose ainda não capturada
+            k0.GetOrAddBoneKey("BracoA").Tint = Color.Red;
+
+            anim.RefreshBoneKeys();
+            Assert.Equal(Color.Red, sprite.Tint);
+            Assert.Equal(33f, a.Transform.Position.X, 0.001f);
+        }
+
+        [Fact]
         public void ResolveBoneKeys_NaoAplica()
         {
             var (a, _, anim, k0, _) = MakeMoving();

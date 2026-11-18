@@ -107,6 +107,10 @@ namespace DreamBit.Engine.Assets
                         foreach (var e in skin.Remaps)
                             yield return e.Sprite;
                 }
+            if (sk.PartOriginals != null)
+                foreach (var o in sk.PartOriginals)
+                    if (o.Sprite != null)
+                        yield return o.Sprite;
         }
     }
 }
