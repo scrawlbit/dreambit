@@ -558,7 +558,9 @@ namespace DreamBit.Engine.Serialization
                         BoundsMinX = cam.BoundsMin.X, BoundsMinY = cam.BoundsMin.Y,
                         BoundsMaxX = cam.BoundsMax.X, BoundsMaxY = cam.BoundsMax.Y,
                         Priority = cam.Priority, ShakeOnMessage = cam.ShakeOnMessage,
-                        ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude
+                        ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude,
+                        MinZoom = cam.MinZoom, GroupPaddingX = cam.GroupPadding.X, GroupPaddingY = cam.GroupPadding.Y,
+                        ZoomSmoothTime = cam.ZoomSmoothTime, LookAhead = cam.LookAhead, LookAheadSmoothTime = cam.LookAheadSmoothTime
                     });
                 else if (component is UiAnchor anchor)
                     data.Anchors.Add(new UiAnchorData
@@ -1011,7 +1013,9 @@ namespace DreamBit.Engine.Serialization
                     BoundsMin = new Vector2(cam.BoundsMinX, cam.BoundsMinY),
                     BoundsMax = new Vector2(cam.BoundsMaxX, cam.BoundsMaxY),
                     Priority = cam.Priority, ShakeOnMessage = cam.ShakeOnMessage,
-                    ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude
+                    ShakeMessageDuration = cam.ShakeMessageDuration, ShakeMessageMagnitude = cam.ShakeMessageMagnitude,
+                    MinZoom = cam.MinZoom, GroupPadding = new Vector2(cam.GroupPaddingX, cam.GroupPaddingY),
+                    ZoomSmoothTime = cam.ZoomSmoothTime, LookAhead = cam.LookAhead, LookAheadSmoothTime = cam.LookAheadSmoothTime
                 });
 
             foreach (var anchor in data.Anchors)

@@ -10,7 +10,9 @@ namespace DreamBit.Engine.Components
 {
     /// <summary>
     /// Câmera de cena configurável: segue um alvo (por tag, ex.: "Player") com deadzone,
-    /// suavização, zoom e limites (bounds).
+    /// suavização, zoom, olhar à frente e limites (bounds). Com várias tags (ex.: "Ruber,Aloine")
+    /// ou várias instâncias da tag, enquadra o grupo: centraliza entre os alvos e dá zoom out
+    /// até <see cref="MinZoom"/> para manter todos na tela (co-op sem tela dividida).
     /// O host (Player/editor no play) chama <see cref="DriveCamera"/> por frame.
     /// </summary>
     public sealed class CameraComponent : SceneComponent, IMessageReceiver
@@ -24,6 +26,14 @@ namespace DreamBit.Engine.Components
         private Vector2 _boundsMin = new(-2000, -2000);
         private Vector2 _boundsMax = new(2000, 2000);
         private int _priority;
+        private float _minZoom = 0.6f;
+        private Vector2 _groupPadding = new(240f, 180f);
+        private float _zoomSmoothTime = 0.35f;
+        private float _lookAhead;
+        private float _lookAheadSmoothTime = 0.4f;
+
+        private float _currentZoom = -1f;
+        private float _lookAheadOffset;
 
         // Shake (tremor) — amplitude decai ao longo da duração.
         private static readonly Random Rng = new();
@@ -61,7 +71,8 @@ namespace DreamBit.Engine.Components
                 Shake(_shakeMsgDuration, _shakeMsgMagnitude);
         }
 
-        /// <summary>Tag do alvo a seguir (vazio = segue o próprio objeto).</summary>
+        /// <summary>Tag(s) do(s) alvo(s), separadas por vírgula (vazio = segue o próprio objeto).
+        /// Todos os objetos com essas tags formam o grupo enquadrado.</summary>
         public string TargetTag { get => _targetTag; set => Set(ref _targetTag, value ?? string.Empty); }
 
         /// <summary>Retângulo em que o alvo se move sem mover a câmera.</summary>
@@ -71,44 +82,86 @@ namespace DreamBit.Engine.Components
         /// <summary>Tempo de suavização (s); 0 = gruda no alvo.</summary>
         public float SmoothTime { get => _smoothTime; set => Set(ref _smoothTime, Math.Max(0f, value)); }
 
+        /// <summary>Zoom normal (mais próximo) da câmera.</summary>
         public float Zoom { get => _zoom; set => Set(ref _zoom, Math.Max(0.05f, value)); }
+
+        /// <summary>Zoom mínimo (o mais afastado) ao enquadrar um grupo.</summary>
+        public float MinZoom { get => _minZoom; set => Set(ref _minZoom, Math.Max(0.05f, value)); }
+
+        /// <summary>Margem (px de mundo, por lado) mantida em volta do grupo.</summary>
+        public Vector2 GroupPadding { get => _groupPadding; set => Set(ref _groupPadding, Vector2.Max(Vector2.Zero, value)); }
+
+        /// <summary>Suavização da troca de zoom (s).</summary>
+        public float ZoomSmoothTime { get => _zoomSmoothTime; set => Set(ref _zoomSmoothTime, Math.Max(0f, value)); }
+
+        /// <summary>Quanto (px) a câmera olha à frente na direção do movimento horizontal do alvo.</summary>
+        public float LookAhead { get => _lookAhead; set => Set(ref _lookAhead, Math.Max(0f, value)); }
+        public float LookAheadSmoothTime { get => _lookAheadSmoothTime; set => Set(ref _lookAheadSmoothTime, Math.Max(0f, value)); }
 
         public bool UseBounds { get => _useBounds; set => Set(ref _useBounds, value); }
         public Vector2 BoundsMin { get => _boundsMin; set => Set(ref _boundsMin, value); }
         public Vector2 BoundsMax { get => _boundsMax; set => Set(ref _boundsMax, value); }
 
-        /// <summary>Atualiza a câmera para seguir o alvo com deadzone/suavização/bounds.</summary>
+        /// <summary>Limites temporários (ex.: zona/sala atual), com prioridade sobre os fixos. Não é salvo.</summary>
+        public (Vector2 Min, Vector2 Max)? BoundsOverride { get; set; }
+
+        /// <summary>Zoom efetivo aplicado no último frame.</summary>
+        public float CurrentZoom => _currentZoom > 0f ? _currentZoom : _zoom;
+
+        /// <summary>True quando o grupo não cabe nem no <see cref="MinZoom"/> (o jogo pode puxar
+        /// o parceiro de volta, teleportar a IA etc.).</summary>
+        public bool GroupOverflow { get; private set; }
+
+        /// <summary>Alvos encontrados no último frame.</summary>
+        public IReadOnlyList<GameObject> Targets => _targets;
+        private readonly List<GameObject> _targets = new();
+
+        /// <summary>Atualiza a câmera para seguir o(s) alvo(s) com deadzone/suavização/bounds.</summary>
         public void DriveCamera(Camera2D camera, float dt, int viewportWidth, int viewportHeight)
         {
-            camera.Zoom = _zoom;
-
-            var target = FindTarget();
-            if (target == null)
+            FindTargets();
+            if (_targets.Count == 0)
+            {
+                camera.Zoom = CurrentZoom;
                 return;
+            }
 
-            var focus = target.Transform.WorldPosition;
+            var (focus, desiredZoom) = Frame(viewportWidth, viewportHeight);
+
+            // Zoom suave.
+            if (_currentZoom <= 0f) _currentZoom = desiredZoom;
+            float zt = _zoomSmoothTime <= 0f ? 1f : Scrawlbit.Mathf.Clamp01(dt / _zoomSmoothTime);
+            _currentZoom = MathHelper.Lerp(_currentZoom, desiredZoom, zt);
+            camera.Zoom = _currentZoom;
+
+            // Olhar à frente (só com um alvo).
+            if (_lookAhead > 0f && _targets.Count == 1)
+            {
+                float dir = Math.Sign(TargetVelocityX(_targets[0]));
+                float lt = _lookAheadSmoothTime <= 0f ? 1f : Scrawlbit.Mathf.Clamp01(dt / _lookAheadSmoothTime);
+                if (dir != 0f)
+                    _lookAheadOffset = MathHelper.Lerp(_lookAheadOffset, dir * _lookAhead, lt);
+                focus.X += _lookAheadOffset;
+            }
+
             var current = camera.Position;
 
-            // Deadzone: só move a câmera quando o alvo sai do retângulo.
-            float dzx = _deadzoneWidth / 2f, dzy = _deadzoneHeight / 2f;
+            // Deadzone: só move quando o foco sai do retângulo (em grupo, segue o centro direto).
             var desired = current;
-            if (focus.X > current.X + dzx) desired.X = focus.X - dzx;
-            else if (focus.X < current.X - dzx) desired.X = focus.X + dzx;
-            if (focus.Y > current.Y + dzy) desired.Y = focus.Y - dzy;
-            else if (focus.Y < current.Y - dzy) desired.Y = focus.Y + dzy;
-
-            // Suavização.
-            float t = _smoothTime <= 0f ? 1f : Scrawlbit.Mathf.Clamp01(dt / _smoothTime);
-            var next = Vector2.Lerp(current, desired, t);
-
-            // Limites: mantém a vista dentro do retângulo (quando cabe).
-            if (_useBounds)
+            if (_targets.Count > 1)
+                desired = focus;
+            else
             {
-                float halfW = viewportWidth / 2f / _zoom;
-                float halfH = viewportHeight / 2f / _zoom;
-                next.X = ClampAxis(next.X, _boundsMin.X + halfW, _boundsMax.X - halfW);
-                next.Y = ClampAxis(next.Y, _boundsMin.Y + halfH, _boundsMax.Y - halfH);
+                float dzx = _deadzoneWidth / 2f, dzy = _deadzoneHeight / 2f;
+                if (focus.X > current.X + dzx) desired.X = focus.X - dzx;
+                else if (focus.X < current.X - dzx) desired.X = focus.X + dzx;
+                if (focus.Y > current.Y + dzy) desired.Y = focus.Y - dzy;
+                else if (focus.Y < current.Y - dzy) desired.Y = focus.Y + dzy;
             }
+
+            // Suavização + limites.
+            float t = _smoothTime <= 0f ? 1f : Scrawlbit.Mathf.Clamp01(dt / _smoothTime);
+            var next = ClampToBounds(Vector2.Lerp(current, desired, t), viewportWidth, viewportHeight, _currentZoom);
 
             // Tremor: offset aleatório com amplitude decaindo.
             if (_shakeTime > 0f && _shakeDuration > 0f)
@@ -123,23 +176,57 @@ namespace DreamBit.Engine.Components
             camera.Position = next;
         }
 
-        /// <summary>Coloca a câmera direto no alvo, sem deadzone/suavização (início de cena,
-        /// teleporte, troca de sala).</summary>
+        /// <summary>Coloca a câmera direto no enquadramento, sem deadzone/suavização (início de
+        /// cena, teleporte, troca de sala).</summary>
         public void SnapCamera(Camera2D camera, int viewportWidth, int viewportHeight)
         {
-            camera.Zoom = _zoom;
-            var target = FindTarget();
-            if (target == null)
-                return;
-            var next = target.Transform.WorldPosition;
-            if (_useBounds)
+            FindTargets();
+            if (_targets.Count == 0)
             {
-                float halfW = viewportWidth / 2f / _zoom;
-                float halfH = viewportHeight / 2f / _zoom;
-                next.X = ClampAxis(next.X, _boundsMin.X + halfW, _boundsMax.X - halfW);
-                next.Y = ClampAxis(next.Y, _boundsMin.Y + halfH, _boundsMax.Y - halfH);
+                camera.Zoom = _zoom;
+                return;
             }
-            camera.Position = next;
+            var (focus, zoom) = Frame(viewportWidth, viewportHeight);
+            _currentZoom = zoom;
+            _lookAheadOffset = 0f;
+            camera.Zoom = zoom;
+            camera.Position = ClampToBounds(focus, viewportWidth, viewportHeight, zoom);
+        }
+
+        /// <summary>Centro e zoom que enquadram os alvos (zoom em [MinZoom, Zoom]).</summary>
+        private (Vector2 Focus, float Zoom) Frame(int viewportWidth, int viewportHeight)
+        {
+            if (_targets.Count == 1)
+            {
+                GroupOverflow = false;
+                return (_targets[0].Transform.WorldPosition, _zoom);
+            }
+
+            var min = new Vector2(float.MaxValue);
+            var max = new Vector2(float.MinValue);
+            foreach (var t in _targets)
+            {
+                var p = t.Transform.WorldPosition;
+                min = Vector2.Min(min, p);
+                max = Vector2.Max(max, p);
+            }
+            var size = max - min + _groupPadding * 2f;
+            float fit = Math.Min(viewportWidth / Math.Max(1f, size.X), viewportHeight / Math.Max(1f, size.Y));
+            float floor = Math.Min(_minZoom, _zoom);
+            GroupOverflow = fit < floor;
+            return ((min + max) / 2f, MathHelper.Clamp(fit, floor, _zoom));
+        }
+
+        private Vector2 ClampToBounds(Vector2 p, int viewportWidth, int viewportHeight, float zoom)
+        {
+            (Vector2 Min, Vector2 Max)? bounds = BoundsOverride ?? (_useBounds ? (_boundsMin, _boundsMax) : null);
+            if (bounds is not { } b)
+                return p;
+            float halfW = viewportWidth / 2f / zoom;
+            float halfH = viewportHeight / 2f / zoom;
+            p.X = ClampAxis(p.X, b.Min.X + halfW, b.Max.X - halfW);
+            p.Y = ClampAxis(p.Y, b.Min.Y + halfH, b.Max.Y - halfH);
+            return p;
         }
 
         /// <summary>True enquanto um tremor está em andamento.</summary>
@@ -148,24 +235,37 @@ namespace DreamBit.Engine.Components
         private static float ClampAxis(float value, float min, float max)
             => min > max ? (min + max) / 2f : Scrawlbit.Mathf.Clamp(value, min, max);
 
-        private GameObject? FindTarget()
+        private static float TargetVelocityX(GameObject target)
         {
-            if (string.IsNullOrEmpty(_targetTag))
-                return Owner;
+            foreach (var c in target.Components)
+                if (c is PlatformerController pc) return pc.CurrentVelocityX;
+            return 0f;
+        }
 
+        private void FindTargets()
+        {
+            _targets.Clear();
             var scene = Owner.Scene;
-            if (scene == null)
-                return Owner;
-
-            foreach (var obj in All(scene.Objects))
+            if (string.IsNullOrWhiteSpace(_targetTag) || scene == null)
             {
-                if (obj.HasTag(_targetTag))
-                    return obj;
-                if (string.Equals(_targetTag, "Player", StringComparison.OrdinalIgnoreCase) &&
-                    obj.Components.OfType<PlatformerController>().Any())
-                    return obj;
+                _targets.Add(Owner);
+                return;
             }
-            return Owner;
+
+            var tags = _targetTag.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            foreach (var obj in All(scene.Objects))
+                if (tags.Any(obj.HasTag))
+                    _targets.Add(obj);
+
+            // Compatibilidade: "Player" também acha o primeiro objeto com PlatformerController.
+            if (_targets.Count == 0 && tags.Any(t => string.Equals(t, "Player", StringComparison.OrdinalIgnoreCase)))
+            {
+                var p = All(scene.Objects).FirstOrDefault(o => o.Components.OfType<PlatformerController>().Any());
+                if (p != null) _targets.Add(p);
+            }
+
+            if (_targets.Count == 0)
+                _targets.Add(Owner);
         }
 
         private static IEnumerable<GameObject> All(IEnumerable<GameObject> objects)

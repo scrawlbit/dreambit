@@ -480,6 +480,12 @@ namespace DreamBit.Engine.Serialization
         public string ShakeOnMessage { get; set; } = "";
         public float ShakeMessageDuration { get; set; } = 0.3f;
         public float ShakeMessageMagnitude { get; set; } = 12f;
+        public float MinZoom { get; set; } = 0.6f;
+        public float GroupPaddingX { get; set; } = 240f;
+        public float GroupPaddingY { get; set; } = 180f;
+        public float ZoomSmoothTime { get; set; } = 0.35f;
+        public float LookAhead { get; set; }
+        public float LookAheadSmoothTime { get; set; } = 0.4f;
     }
 
     public sealed class TilemapData

@@ -801,8 +801,16 @@
                                     <TextBlock Classes="section" Text="Camera" />
                                     <Button Grid.Column="1" Classes="remove" Click="OnRemoveCamera" />
                                 </Grid>
-                                <TextBlock Classes="field" Text="Seguir a tag" />
+                                <TextBlock Classes="field" Text="Seguir a(s) tag(s) — várias separadas por vírgula enquadram o grupo" />
                                 <TextBox Text="{Binding CameraTargetTag, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Zoom mín. (grupo)" /><TextBox Text="{Binding CameraMinZoom, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Olhar à frente (px)" /><TextBox Text="{Binding CameraLookAhead, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Margem do grupo X" /><TextBox Text="{Binding CameraGroupPadX, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Margem do grupo Y" /><TextBox Text="{Binding CameraGroupPadY, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Classes="field" Text="Deadzone L" />

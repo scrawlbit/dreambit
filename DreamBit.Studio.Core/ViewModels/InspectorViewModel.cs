@@ -551,6 +551,10 @@ namespace DreamBit.Studio.ViewModels
             set { var c = Camera; if (c != null) c.UseBounds = value; }
         }
         public int CameraPriority { get => Camera?.Priority ?? 0; set { var c = Camera; if (c != null) c.Priority = value; } }
+        public float CameraMinZoom { get => Camera?.MinZoom ?? 0.6f; set { var c = Camera; if (c != null) c.MinZoom = value; } }
+        public float CameraGroupPadX { get => Camera?.GroupPadding.X ?? 240f; set { var c = Camera; if (c != null) c.GroupPadding = new Vector2(value, c.GroupPadding.Y); } }
+        public float CameraGroupPadY { get => Camera?.GroupPadding.Y ?? 180f; set { var c = Camera; if (c != null) c.GroupPadding = new Vector2(c.GroupPadding.X, value); } }
+        public float CameraLookAhead { get => Camera?.LookAhead ?? 0f; set { var c = Camera; if (c != null) c.LookAhead = value; } }
         public string CameraShakeOn { get => Camera?.ShakeOnMessage ?? ""; set { var c = Camera; if (c != null) c.ShakeOnMessage = value; } }
         public float CameraShakeDuration { get => Camera?.ShakeMessageDuration ?? 0.3f; set { var c = Camera; if (c != null) c.ShakeMessageDuration = value; } }
         public float CameraShakeMagnitude { get => Camera?.ShakeMessageMagnitude ?? 12f; set { var c = Camera; if (c != null) c.ShakeMessageMagnitude = value; } }
@@ -1452,6 +1456,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(TextB));
             OnPropertyChanged(nameof(HasCamera));
             OnPropertyChanged(nameof(CameraTargetTag));
+            OnPropertyChanged(nameof(CameraMinZoom)); OnPropertyChanged(nameof(CameraGroupPadX));
+            OnPropertyChanged(nameof(CameraGroupPadY)); OnPropertyChanged(nameof(CameraLookAhead));
             OnPropertyChanged(nameof(CameraDeadzoneWidth));
             OnPropertyChanged(nameof(CameraDeadzoneHeight));
             OnPropertyChanged(nameof(CameraSmoothTime));
