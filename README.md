@@ -75,6 +75,59 @@ independente, multiplataforma e testada.
 - **Hot-reload** de assets (editar PNG/TMX/WAV recarrega no editor); play restaurável;
   console de logs; export de jogo portátil.
 
+## Fazendo um jogo MonoGame com a DreamBit
+
+Um jogo é um projeto MonoGame próprio que referencia `DreamBit.Engine` e herda de
+`DreamBitGame` (ou usa o `SceneHost` direto). A DreamBit cuida de cenas/mapas/animação/
+física/câmera/áudio/UI; a lógica fica em componentes C# do jogo.
+
+```csharp
+public sealed class MeuJogo : DreamBitGame
+{
+    protected override void Configure(GameSettings s)
+    {
+        s.Title = "As Crônicas de Lothar";
+        s.VirtualResolution = new Point(1920, 1080); // letterbox em qualquer monitor
+        s.AssetRoots.Add("Content");                 // caminhos relativos das cenas
+    }
+
+    protected override void OnStart()
+    {
+        ComponentRegistry.RegisterAssembly(typeof(MeuJogo).Assembly); // [GameComponent] do jogo
+        Fonts.Register("default", "fonts/serif.ttf");
+        Host.LoadScene("Cenas/Bosque_01.dbscene");
+    }
+}
+
+[GameComponent("Lothar/Corrupção")]
+public sealed class Corrupcao : SceneComponent
+{
+    public override string DisplayName => "Corrupção";
+    [Tooltip("Vida + corrupção")] public float Total { get; set; } = 200;
+}
+```
+
+No editor, **Arquivo › Componentes do jogo (DLL)…** aponta a DLL compilada do jogo: os
+componentes aparecem em "Adicionar componente" (com inspector automático) e são salvos na
+cena; o Play do editor passa a DLL e a pasta do projeto para o Player.
+
+### Sistemas para jogos de plataforma/metroidvania
+- **Input por jogador** (`Input.Players`, P1..P4, teclado inteiro ou dividido, controles,
+  rebind, vibração) e `VirtualInput` para IA/cutscenes.
+- **PlatformerController** com coyote time, buffer e pulo variável, aceleração e
+  habilidades liberáveis (`MovementAbilities`): pulo duplo, planar, parede, agarrar borda,
+  dash, agachar/deslizar, pancada no chão, empurrar, atravessar plataformas, quebrar
+  paredes/pisos (`Breakable`), caixotes (`Pushable`), plataformas móveis.
+- **Câmera de grupo** (várias tags): enquadra todos com zoom out até `MinZoom`; olhar à
+  frente; `CameraZone` limita por sala.
+- **Mundo**: `RoomDoor` + `SpawnPoint` + `Persistent` (o grupo atravessa as salas),
+  `MapRoom`/`WorldMap`, `Pickup` (libera habilidades), `Switch`/`Gate` (puzzles
+  cooperativos), `SavePoint` + `SaveSlots`, `WorldState` (flags persistentes).
+- **Diálogos** (`DialogueAsset` JSON, `DialogueBox`, `TalkTrigger`) e **fontes TrueType**
+  (`Fonts`, `FontText`).
+- **IA e grupo**: `PlatformerFollower` (companheiro), `PartySwitcher` (troca de personagem,
+  co-op com drop-in do P2), `PatrolEnemy`, `Projectile`.
+
 ## Fase de demonstração
 
 `DemoAssets/forest-demo.dbscene` é uma fase completa que exercita quase toda a engine numa

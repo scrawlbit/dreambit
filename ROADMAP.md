@@ -5,7 +5,7 @@ Estado da engine e do editor DreamBit (.NET 11 / MonoGame), e itens planejados.
 ## Entregue
 
 ### Migração e base
-Extensão VSIX (.NET Framework) migrada para uma solução standalone em .NET 8:
+Extensão VSIX (.NET Framework) migrada para uma solução standalone em .NET 8 (hoje .NET 11):
 `DreamBit.Engine` (modelo/runtime multi-target), `DreamBit.Studio.Avalonia` (editor
 cross-platform), `DreamBit.Studio.Core` (lógica de editor), `DreamBit.Player` (runtime
 DesktopGL), `Scrawlbit` (helpers compartilhados). Editor WPF antigo aposentado; código
@@ -113,6 +113,17 @@ MonoGame atualizado.
 - Inspetor de todos os componentes (adição por dropdown), timeline de rig, console de
   logs, assets browser, tema claro/escuro, preferências (localização da engine).
 - Rodar no Player, exportar jogo (self-contained/portátil), build de conteúdo (MGCB).
+
+### Para jogos (As Crônicas de Lothar)
+- .NET 11 + MonoGame 3.8.6; `DreamBitGame`/`SceneHost` para jogos MonoGame próprios, com
+  resolução virtual (letterbox) e `AssetPaths`.
+- Componentes customizados do jogo (`[GameComponent]`, `ComponentRegistry`) salvos na cena,
+  com inspector por reflexão e DLLs do jogo carregadas pelo editor e pelo Player.
+- Input por jogador e co-op local; câmera de grupo com zoom out.
+- Plataforma avançada com habilidades de metroidvania; Breakable/Pushable.
+- Salas, portas, spawn, zonas de câmera, mapa, save slots, interruptores e portões.
+- Diálogos com escolhas/flags/retratos; fontes TrueType (FontStashSharp).
+- IA: companheiro, troca de personagem, inimigo patrulha, projéteis.
 
 ## Planejado
 
