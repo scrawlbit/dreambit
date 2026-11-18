@@ -123,6 +123,25 @@ namespace DreamBit.Engine.Components
             camera.Position = next;
         }
 
+        /// <summary>Coloca a câmera direto no alvo, sem deadzone/suavização (início de cena,
+        /// teleporte, troca de sala).</summary>
+        public void SnapCamera(Camera2D camera, int viewportWidth, int viewportHeight)
+        {
+            camera.Zoom = _zoom;
+            var target = FindTarget();
+            if (target == null)
+                return;
+            var next = target.Transform.WorldPosition;
+            if (_useBounds)
+            {
+                float halfW = viewportWidth / 2f / _zoom;
+                float halfH = viewportHeight / 2f / _zoom;
+                next.X = ClampAxis(next.X, _boundsMin.X + halfW, _boundsMax.X - halfW);
+                next.Y = ClampAxis(next.Y, _boundsMin.Y + halfH, _boundsMax.Y - halfH);
+            }
+            camera.Position = next;
+        }
+
         /// <summary>True enquanto um tremor está em andamento.</summary>
         public bool IsShaking => _shakeTime > 0f;
 

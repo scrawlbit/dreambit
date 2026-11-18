@@ -80,7 +80,11 @@ namespace DreamBit.Engine.Input
         /// via <see cref="SetPointer"/> (ex.: editor Avalonia, que não tem mouse do MonoGame).</summary>
         public static Vector2 PointerPosition => _mouseOverride
             ? _mouseOverridePos
-            : new Vector2(_mouseNow.X, _mouseNow.Y);
+            : PointerMapper?.Invoke(new Vector2(_mouseNow.X, _mouseNow.Y)) ?? new Vector2(_mouseNow.X, _mouseNow.Y);
+
+        /// <summary>Converte a posição do mouse na janela para coordenadas lógicas da tela (ex.:
+        /// resolução virtual com letterbox). Definido pelo host; null = sem conversão.</summary>
+        public static System.Func<Vector2, Vector2>? PointerMapper { get; set; }
 
         /// <summary>True enquanto o botão principal (clique/toque) está pressionado.</summary>
         public static bool PointerDown => _mouseOverride

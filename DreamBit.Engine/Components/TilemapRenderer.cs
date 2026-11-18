@@ -60,9 +60,9 @@ namespace DreamBit.Engine.Components
         {
             get
             {
-                if (_map == null && !string.IsNullOrEmpty(_tmxPath) && File.Exists(_tmxPath))
+                if (_map == null && !string.IsNullOrEmpty(_tmxPath) && File.Exists(Assets.AssetPaths.Resolve(_tmxPath)))
                 {
-                    try { _map = TmxImporter.Load(_tmxPath); }
+                    try { _map = TmxImporter.Load(Assets.AssetPaths.Resolve(_tmxPath)); }
                     catch { _map = null; }
                 }
                 return _map;

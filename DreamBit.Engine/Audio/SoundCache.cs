@@ -17,8 +17,7 @@ namespace DreamBit.Engine.Audio
             if (string.IsNullOrEmpty(path))
                 return null;
 
-            if (!Path.IsPathRooted(path))
-                path = Path.Combine(AppContext.BaseDirectory, path);
+            path = Assets.AssetPaths.Resolve(path);
 
             lock (_gate)
                 if (_cache.TryGetValue(path, out var cached))
@@ -47,8 +46,7 @@ namespace DreamBit.Engine.Audio
             if (string.IsNullOrEmpty(path))
                 return;
 
-            if (!Path.IsPathRooted(path))
-                path = Path.Combine(AppContext.BaseDirectory, path);
+            path = Assets.AssetPaths.Resolve(path);
 
             lock (_gate)
                 if (_cache.Remove(path, out var sound))
