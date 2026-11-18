@@ -393,6 +393,20 @@ namespace DreamBit.Studio.ViewModels
             get => Platformer?.MoveSpeed ?? 0f;
             set { var p = Platformer; if (p != null) p.MoveSpeed = value; }
         }
+        /// <summary>Jogador do Platformer (-1 = global, 0 = P1, 1 = P2…).</summary>
+        public int PlatPlayerIndex
+        {
+            get => Platformer?.PlayerIndex ?? -1;
+            set { var p = Platformer; if (p != null) p.PlayerIndex = value; }
+        }
+
+        /// <summary>Jogador do Top-Down (-1 = global).</summary>
+        public int TopDownPlayerIndex
+        {
+            get => TopDown?.PlayerIndex ?? -1;
+            set { var c = TopDown; if (c != null) c.PlayerIndex = value; }
+        }
+
         public float PlatJumpSpeed
         {
             get => Platformer?.JumpSpeed ?? 0f;
@@ -1551,6 +1565,8 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(PlatUseKeyboard));
             OnPropertyChanged(nameof(PlatMoveSpeed));
             OnPropertyChanged(nameof(PlatJumpSpeed));
+            OnPropertyChanged(nameof(PlatPlayerIndex));
+            OnPropertyChanged(nameof(TopDownPlayerIndex));
             OnPropertyChanged(nameof(HasAnimator));
             OnPropertyChanged(nameof(AnimTexturePath));
             OnPropertyChanged(nameof(AnimFrameWidth));

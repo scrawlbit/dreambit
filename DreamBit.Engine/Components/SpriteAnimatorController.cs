@@ -67,7 +67,7 @@ namespace DreamBit.Engine.Components
 
             // Dispara o ataque (uma vez), tem prioridade sobre locomoção.
             if (!_attacking && HasClip(animator, _attackClip) &&
-                !string.IsNullOrEmpty(_attackAction) && GameInput.JustPressed(_attackAction))
+                !string.IsNullOrEmpty(_attackAction) && OwnerInput().JustPressed(_attackAction))
             {
                 animator.Play(_attackClip, _blendTime);
                 _attacking = true;
@@ -133,5 +133,14 @@ namespace DreamBit.Engine.Components
 
         private static bool HasClip(SpriteAnimator animator, string clip)
             => !string.IsNullOrEmpty(clip) && animator.Clips.Any(c => c.Name == clip);
+
+        /// <summary>Fonte de input do controlador (plataforma/top-down) do mesmo objeto; senão, a global.</summary>
+        private DreamBit.Engine.Input.IInputSource OwnerInput()
+        {
+            foreach (var c in Owner.Components)
+                if (c is DreamBit.Engine.Input.IInputControlled ic)
+                    return ic.InputSource;
+            return GameInput.Global;
+        }
     }
 }

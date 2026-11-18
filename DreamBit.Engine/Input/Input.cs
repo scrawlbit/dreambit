@@ -43,6 +43,49 @@ namespace DreamBit.Engine.Input
             _typedPending.Clear();
         }
 
+        /// <summary>Máximo de jogadores locais (controles).</summary>
+        public const int MaxPlayers = 4;
+
+        private static readonly GamePadState[] _padsNow = new GamePadState[MaxPlayers];
+        private static readonly GamePadState[] _padsPrev = new GamePadState[MaxPlayers];
+
+        /// <summary>Contador de frames de input (incrementa em <see cref="Update"/>). Fontes virtuais
+        /// usam para detectar borda (JustPressed) sem precisar de chamada extra.</summary>
+        public static long Frame { get; private set; }
+
+        /// <summary>Duração aproximada do frame para efeitos temporizados (vibração). O host pode ajustar.</summary>
+        public static double FrameDelta { get; set; } = 1.0 / 60.0;
+
+        /// <summary>Estado do teclado neste frame / no anterior.</summary>
+        public static KeyboardState KeyboardNow => _kbNow;
+        public static KeyboardState KeyboardPrev => _kbPrev;
+
+        /// <summary>Estado do controle <paramref name="index"/> (0..3) neste frame / no anterior.</summary>
+        public static GamePadState PadNow(int index) => index >= 0 && index < MaxPlayers ? _padsNow[index] : default;
+        public static GamePadState PadPrev(int index) => index >= 0 && index < MaxPlayers ? _padsPrev[index] : default;
+
+        /// <summary>Índices dos controles conectados.</summary>
+        public static System.Collections.Generic.IEnumerable<int> ConnectedGamepads()
+        {
+            for (int i = 0; i < MaxPlayers; i++)
+                if (_padsNow[i].IsConnected)
+                    yield return i;
+        }
+
+        /// <summary>Jogadores locais (P1..P4), cada um com teclado/controle e mapa próprios.</summary>
+        public static PlayerInputSet Players { get; } = new();
+
+        /// <summary>Fonte de input de um jogador; índice negativo devolve <see cref="Global"/>.</summary>
+        public static IInputSource ForPlayer(int index)
+            => index >= 0 && index < MaxPlayers ? Players[index] : Global;
+
+        /// <summary>Fonte de input "global" (mapa estático: teclado + controle 1). É o que os
+        /// componentes usam quando não têm jogador definido.</summary>
+        public static IInputSource Global { get; } = new GlobalInputSource();
+
+        /// <summary>Ações forçadas por software estão ativas (preview/testes)?</summary>
+        internal static bool IsForced(string action, bool previous) => (previous ? _forcedPrev : _forcedNow).Contains(action);
+
         /// <summary>True se a tecla foi pressionada neste frame (borda).</summary>
         public static bool KeyJustPressed(Keys key) => _kbNow.IsKeyDown(key) && !_kbPrev.IsKeyDown(key);
         private static MouseState _mouseNow, _mousePrev;
@@ -59,6 +102,13 @@ namespace DreamBit.Engine.Input
             _kbNow = Keyboard.GetState();
             _padPrev = _padNow;
             _padNow = GamePad.GetState(PlayerIndex.One);
+            for (int i = 0; i < MaxPlayers; i++)
+            {
+                _padsPrev[i] = _padsNow[i];
+                _padsNow[i] = i == 0 ? _padNow : GamePad.GetState(i);
+            }
+            Frame++;
+            Players.Tick((float)FrameDelta);
 
             // Rotaciona as ações forçadas: o que foi mantido no frame anterior vira "prev".
             (_forcedPrev, _forcedNow) = (_forcedNow, _forcedPrev);

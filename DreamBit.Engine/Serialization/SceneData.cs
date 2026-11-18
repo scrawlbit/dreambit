@@ -156,6 +156,7 @@ namespace DreamBit.Engine.Serialization
 
     public sealed class TopDownData
     {
+        public int PlayerIndex { get; set; } = -1;
         public float MoveSpeed { get; set; } = 200f;
         public bool UseKeyboard { get; set; } = true;
         public float HalfWidth { get; set; } = 16f;
@@ -290,6 +291,7 @@ namespace DreamBit.Engine.Serialization
         public bool UseKeyboard { get; set; } = true;
         public float MoveSpeed { get; set; } = 220f;
         public float JumpSpeed { get; set; } = 620f;
+        public int PlayerIndex { get; set; } = -1;
     }
 
     public sealed class BoxColliderData

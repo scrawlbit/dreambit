@@ -11,7 +11,7 @@ namespace DreamBit.Engine.Components
     /// tilemap e <see cref="BoxCollider"/>. Para jogos de cima (RPG, dungeon, tile). Complementa
     /// o <see cref="PlatformerController"/> (plataforma) e o <see cref="Rigidbody2D"/> (física).
     /// </summary>
-    public sealed class TopDownController : SceneComponent
+    public sealed class TopDownController : SceneComponent, DreamBit.Engine.Input.IInputControlled
     {
         private float _moveSpeed = 200f;
         private bool _useKeyboard = true;
@@ -21,6 +21,18 @@ namespace DreamBit.Engine.Components
         private Vector2 _velocity;
 
         public override string DisplayName => "Top-Down Controller";
+
+        private int _playerIndex = -1;
+
+        /// <summary>Jogador que controla (0 = P1, 1 = P2…); -1 = mapa global (teclado + controle 1).</summary>
+        public int PlayerIndex { get => _playerIndex; set => Set(ref _playerIndex, System.Math.Clamp(value, -1, GameInput.MaxPlayers - 1)); }
+
+        /// <summary>Fonte de input em runtime (IA, cutscene); tem prioridade sobre <see cref="PlayerIndex"/>. Não é salva.</summary>
+        public DreamBit.Engine.Input.IInputSource? InputOverride { get; set; }
+
+        /// <summary>Fonte efetiva: <see cref="InputOverride"/> ou o jogador de <see cref="PlayerIndex"/>.</summary>
+        public DreamBit.Engine.Input.IInputSource InputSource => InputOverride ?? GameInput.ForPlayer(_playerIndex);
+
 
         public float MoveSpeed { get => _moveSpeed; set => Set(ref _moveSpeed, value); }
         public bool UseKeyboard { get => _useKeyboard; set => Set(ref _useKeyboard, value); }
@@ -42,7 +54,7 @@ namespace DreamBit.Engine.Components
             if (dt <= 0f)
                 return;
 
-            var dir = _useKeyboard ? new Vector2(GameInput.Horizontal(), GameInput.Vertical()) : MoveInput;
+            var dir = _useKeyboard ? new Vector2(InputSource.Horizontal(), InputSource.Vertical()) : MoveInput;
             if (dir.LengthSquared() > 1f)      // normaliza para a diagonal não ser mais rápida
                 dir.Normalize();
 

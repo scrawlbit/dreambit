@@ -12,7 +12,7 @@ namespace DreamBit.Engine.Components
     /// personagem jogável (setas/A-D andam; Espaço/W/Cima pulam quando no chão);
     /// senão, usa <see cref="HorizontalSpeed"/> constante. Fecha o laço das ledges.
     /// </summary>
-    public sealed class PlatformerController : SceneComponent
+    public sealed class PlatformerController : SceneComponent, DreamBit.Engine.Input.IInputControlled
     {
         private float _gravity = 1400f;
         private float _halfHeight = 24f;
@@ -27,6 +27,18 @@ namespace DreamBit.Engine.Components
         private float _currentVx;
 
         public override string DisplayName => "Platformer Controller";
+
+        private int _playerIndex = -1;
+
+        /// <summary>Jogador que controla (0 = P1, 1 = P2…); -1 = mapa global (teclado + controle 1).</summary>
+        public int PlayerIndex { get => _playerIndex; set => Set(ref _playerIndex, System.Math.Clamp(value, -1, GameInput.MaxPlayers - 1)); }
+
+        /// <summary>Fonte de input em runtime (IA, cutscene); tem prioridade sobre <see cref="PlayerIndex"/>. Não é salva.</summary>
+        public DreamBit.Engine.Input.IInputSource? InputOverride { get; set; }
+
+        /// <summary>Fonte efetiva: <see cref="InputOverride"/> ou o jogador de <see cref="PlayerIndex"/>.</summary>
+        public DreamBit.Engine.Input.IInputSource InputSource => InputOverride ?? GameInput.ForPlayer(_playerIndex);
+
 
         /// <summary>True quando está no chão (para máquina de estados de animação).</summary>
         public bool Grounded => _grounded;
@@ -76,9 +88,10 @@ namespace DreamBit.Engine.Components
             if (_useKeyboard)
             {
                 // Input por ações (teclado + gamepad), mapeável em DreamBit.Engine.Input.
-                vx = GameInput.Horizontal() * _moveSpeed;
+                var input = InputSource;
+                vx = input.Horizontal() * _moveSpeed;
 
-                if (GameInput.IsDown("Jump") && _grounded)
+                if (input.IsDown("Jump") && _grounded)
                 {
                     _velocityY = -_jumpSpeed;
                     _grounded = false;

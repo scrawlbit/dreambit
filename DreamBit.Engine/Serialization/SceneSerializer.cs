@@ -407,7 +407,8 @@ namespace DreamBit.Engine.Serialization
                         HorizontalSpeed = platformer.HorizontalSpeed,
                         UseKeyboard = platformer.UseKeyboard,
                         MoveSpeed = platformer.MoveSpeed,
-                        JumpSpeed = platformer.JumpSpeed
+                        JumpSpeed = platformer.JumpSpeed,
+                        PlayerIndex = platformer.PlayerIndex
                     });
                 else if (component is BoxCollider box)
                     data.BoxColliders.Add(new BoxColliderData
@@ -459,7 +460,7 @@ namespace DreamBit.Engine.Serialization
                     data.TopDowns.Add(new TopDownData
                     {
                         MoveSpeed = td.MoveSpeed, UseKeyboard = td.UseKeyboard,
-                        HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight
+                        HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight, PlayerIndex = td.PlayerIndex
                     });
                 else if (component is Health hp)
                     data.Healths.Add(new HealthData
@@ -761,7 +762,7 @@ namespace DreamBit.Engine.Serialization
                 obj.AddComponent(new TopDownController
                 {
                     MoveSpeed = td.MoveSpeed, UseKeyboard = td.UseKeyboard,
-                    HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight
+                    HalfWidth = td.HalfWidth, HalfHeight = td.HalfHeight, PlayerIndex = td.PlayerIndex
                 });
 
             foreach (var hp in data.Healths)
@@ -946,7 +947,8 @@ namespace DreamBit.Engine.Serialization
                     HorizontalSpeed = platformer.HorizontalSpeed,
                     UseKeyboard = platformer.UseKeyboard,
                     MoveSpeed = platformer.MoveSpeed,
-                    JumpSpeed = platformer.JumpSpeed
+                    JumpSpeed = platformer.JumpSpeed,
+                    PlayerIndex = platformer.PlayerIndex
                 });
 
             foreach (var box in data.BoxColliders)

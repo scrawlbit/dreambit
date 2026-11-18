@@ -580,6 +580,8 @@
                                 </Grid>
                                 <TextBlock Classes="field" Text="Vel. horizontal (auto)" />
                                 <TextBox Text="{Binding PlatHorizontalSpeed, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Jogador (-1 = global, 0 = P1, 1 = P2)" />
+                                <TextBox Text="{Binding PlatPlayerIndex, Mode=TwoWay}" />
                             </StackPanel>
                         </Border>
 
@@ -1017,6 +1019,7 @@
                                     <Button Grid.Column="1" Classes="remove" Click="OnRemoveTopDown" />
                                 </Grid>
                                 <TextBlock Classes="field" Text="Velocidade" /><TextBox Text="{Binding TopDownSpeed, Mode=TwoWay}" />
+                                <TextBlock Classes="field" Text="Jogador (-1 = global, 0 = P1, 1 = P2)" /><TextBox Text="{Binding TopDownPlayerIndex, Mode=TwoWay}" />
                                 <Grid ColumnDefinitions="*,6,*">
                                     <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Meia-largura" /><TextBox Text="{Binding TopDownHalfWidth, Mode=TwoWay}" /></StackPanel>
                                     <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Meia-altura" /><TextBox Text="{Binding TopDownHalfHeight, Mode=TwoWay}" /></StackPanel>
