@@ -34,6 +34,8 @@
   <ItemGroup>
     <!-- Compilação de scripts C# do usuário em runtime (componente Script). -->
     <PackageReference Include="Aether.Physics2D" Version="2.2.0" />
+    <!-- Fontes TrueType em runtime (texto nítido em qualquer tamanho). -->
+    <PackageReference Include="FontStashSharp.MonoGame" Version="1.6.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.12.0" />
   </ItemGroup>
 

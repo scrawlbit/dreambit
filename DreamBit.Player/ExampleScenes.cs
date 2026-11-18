@@ -30,6 +30,7 @@ namespace DreamBit.Player
             ("11-navchaser",     "Pathfinding / NavChaser",  NavChaserExample),
             ("12-ui",            "UI (botão/slider/toggle)", Ui),
             ("13-postprocess",   "Pós-processamento",        PostProcessExample),
+            ("14-dialogue",      "Diálogo + fonte TTF",      DialogueExample),
         };
 
         public static Scene? Get(string name)
@@ -389,6 +390,43 @@ namespace DreamBit.Player
             fx.AddComponent(new PostProcess { Saturation = 0f });
             s.Add(fx);
             Title(s, "POS-PROCESSAMENTO (grayscale)");
+            return s;
+        }
+
+        private static Scene DialogueExample()
+        {
+            var s = new Scene { Name = "Diálogo" };
+            Backdrop(s, new Color(40, 46, 60));
+            // Fonte do sistema, se existir (no jogo: Fonts.Register com o .ttf do projeto).
+            var ttf = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts), "georgia.ttf");
+            if (System.IO.File.Exists(ttf)) DreamBit.Engine.Rendering.Fonts.Register("default", ttf);
+
+            var player = new GameObject("Ruber") { Tag = "Player" };
+            player.AddComponent(new SpriteRenderer { Size = new Vector2(60, 90), Color = new Color(200, 60, 50) });
+            player.AddComponent(new PlatformerController { Gravity = 0f });
+            s.Add(player);
+
+            var title = new GameObject("Titulo");
+            title.Transform.Position = new Vector2(0, -220);
+            title.AddComponent(new DreamBit.Engine.Dialogue.FontText { Text = "As Crônicas de Lothar", Size = 56, Color = new Color(255, 214, 150) });
+            s.Add(title);
+
+            var npc = new GameObject("Aloine");
+            npc.Transform.Position = new Vector2(40, 0);
+            npc.AddComponent(new SpriteRenderer { Size = new Vector2(56, 86), Color = new Color(170, 130, 210) });
+            npc.AddComponent(new DreamBit.Engine.Dialogue.TalkTrigger
+            {
+                AutoStart = true,
+                Inline = DreamBit.Engine.Dialogue.DialogueAsset.Parse(@"{ ""lines"": [
+                    { ""speaker"": ""Aloine"", ""text"": ""Você está bem? Aquele mercador não tinha honra nenhuma. Ainda bem que eu passava por aqui."" },
+                    { ""speaker"": ""Ruber"", ""text"": ""Eu poderia ter cuidado disso sozinho... mas obrigado."",
+                      ""choices"": [ { ""text"": ""Oferecer uma sidra"" }, { ""text"": ""Seguir para a praça"" } ] } ] }")
+            });
+            s.Add(npc);
+
+            var hud = new GameObject("DialogoHUD") { ScreenSpace = true };
+            hud.AddComponent(new DreamBit.Engine.Dialogue.DialogueBox { CharsPerSecond = 0f });
+            s.Add(hud);
             return s;
         }
     }
