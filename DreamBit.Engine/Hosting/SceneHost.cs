@@ -81,6 +81,7 @@ namespace DreamBit.Engine.Hosting
         /// <summary>Carrega uma cena de arquivo e a coloca em execução.</summary>
         public Scene LoadScene(string path)
         {
+            Levels.WorldNavigator.CurrentSceneFile = path;
             var full = Assets.AssetPaths.Resolve(path);
             var scene = SceneSerializer.Load(full);
             _sceneFolder = Path.GetDirectoryName(full);
@@ -92,9 +93,13 @@ namespace DreamBit.Engine.Hosting
         public void SetScene(Scene scene)
         {
             if (Scene.Objects.Count > 0 || Scene.Ledges.Count > 0)
+            {
                 SceneUnloading?.Invoke(Scene);
+                Levels.WorldNavigator.BeforeSceneSwap(Scene); // leva os objetos Persistent
+            }
             Scene = scene;
             Scene.StartPlay();
+            Levels.WorldNavigator.AfterSceneLoaded(Scene);   // grupo no SpawnPoint
             SnapCamera();
             SceneLoaded?.Invoke(Scene);
         }
@@ -114,7 +119,10 @@ namespace DreamBit.Engine.Hosting
                 var path = SceneFileResolver?.Invoke(next)
                            ?? (_sceneFolder != null ? Path.Combine(_sceneFolder, next) : Assets.AssetPaths.Resolve(next));
                 if (path != null && File.Exists(path))
+                {
                     LoadScene(path);
+                    Levels.WorldNavigator.CurrentSceneFile = next;
+                }
                 else
                     Scene.ClearPendingSceneLoad();
             }

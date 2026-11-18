@@ -15,17 +15,19 @@ namespace DreamBit.Engine.Saving
     {
         private static readonly Dictionary<string, string> _data = new(StringComparer.Ordinal);
 
-        /// <summary>Caminho padrão do arquivo de save (na pasta de dados do usuário).</summary>
-        public static string DefaultPath
+        /// <summary>Nome da pasta do jogo em %AppData% (o jogo define; padrão "DreamBit").</summary>
+        public static string GameFolderName { get; set; } = "DreamBit";
+
+        /// <summary>Pasta dos saves (%AppData%/&lt;GameFolderName&gt;), ou outra definida pelo jogo.</summary>
+        public static string Folder
         {
-            get
-            {
-                var dir = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "DreamBit");
-                return Path.Combine(dir, "savegame.json");
-            }
+            get => _folder ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), GameFolderName);
+            set => _folder = value;
         }
+        private static string? _folder;
+
+        /// <summary>Caminho padrão do arquivo de save (na pasta de dados do usuário).</summary>
+        public static string DefaultPath => Path.Combine(Folder, "savegame.json");
 
         // ---- leitura/escrita tipada ----
 
@@ -78,6 +80,14 @@ namespace DreamBit.Engine.Saving
                 foreach (var kv in loaded)
                     _data[kv.Key] = kv.Value;
             return true;
+        }
+
+        /// <summary>Lê um arquivo de save sem alterar o estado atual (null se não existir/for inválido).</summary>
+        public static IReadOnlyDictionary<string, string>? Peek(string path)
+        {
+            if (!File.Exists(path)) return null;
+            try { return JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(path)); }
+            catch (JsonException) { return null; }
         }
 
         /// <summary>True se existe um arquivo de save no caminho informado (ou no padrão).</summary>

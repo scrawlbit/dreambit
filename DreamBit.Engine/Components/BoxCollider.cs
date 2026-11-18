@@ -36,7 +36,9 @@ namespace DreamBit.Engine.Components
 
         protected internal override void Draw(ISceneDrawing drawing)
         {
-            // Contorno leve do colisor (útil no editor).
+            // Contorno leve do colisor (útil no editor; o jogo final desliga em DebugDraw).
+            if (!DebugDraw.Colliders)
+                return;
             var world = Matrix.CreateTranslation(_offset.X, _offset.Y, 0f) * Owner.Transform.WorldMatrix;
             drawing.DrawQuad(world, _size, new Color(90, 200, 255) * 0.18f);
         }

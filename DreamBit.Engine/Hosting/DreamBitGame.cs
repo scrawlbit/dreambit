@@ -87,6 +87,9 @@ namespace DreamBit.Engine.Hosting
                 ? Microsoft.Xna.Framework.Graphics.SamplerState.LinearClamp
                 : Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp;
             Host.Renderer.Background = _settings.ClearColor;
+            Rendering.DebugDraw.Colliders = _settings.ShowDebugShapes;
+            Rendering.DebugDraw.Zones = _settings.ShowDebugShapes;
+            Saving.SaveGame.GameFolderName = _settings.SaveFolderName ?? _settings.Title;
             Host.Initialize(GraphicsDevice, Content);
             OnStart();
         }
@@ -134,6 +137,12 @@ namespace DreamBit.Engine.Hosting
         public bool SmoothUpscale { get; set; } = true;
 
         public Color ClearColor { get; set; } = Color.Black;
+
+        /// <summary>Desenha colisores e zonas (protótipo). Desligado num jogo final.</summary>
+        public bool ShowDebugShapes { get; set; }
+
+        /// <summary>Pasta dos saves em %AppData% (padrão: o título).</summary>
+        public string? SaveFolderName { get; set; }
 
         /// <summary>Pasta do ContentManager do MonoGame (shaders .xnb, opcional).</summary>
         public string ContentDirectory { get; set; } = "Content";
