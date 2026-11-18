@@ -279,6 +279,12 @@ namespace DreamBit.Engine.Serialization
 
             foreach (var component in obj.Components)
             {
+                if (component is Components.Custom.MissingComponent || Components.Custom.ComponentRegistry.IsCustom(component))
+                {
+                    data.Custom.Add(Components.Custom.CustomComponentSerializer.ToData(component));
+                    continue;
+                }
+
                 if (component is SpriteRenderer sprite)
                     data.Sprites.Add(new SpriteData
                     {
@@ -1106,6 +1112,9 @@ namespace DreamBit.Engine.Serialization
                     FixedRotation = rb.FixedRotation,
                     CollisionCategory = rb.CollisionCategory, CollidesWith = rb.CollidesWith
                 });
+
+            foreach (var custom in data.Custom)
+                obj.AddComponent(Components.Custom.CustomComponentSerializer.FromData(custom));
 
             foreach (var childData in data.Children)
                 obj.AddChild(FromData(childData));

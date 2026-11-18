@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,8 +12,18 @@ namespace DreamBit.Studio
     /// </summary>
     public static class PlayerLauncher
     {
-        public static void Launch(string scenePath)
+        public static void Launch(string scenePath) => Launch(scenePath, null, null);
+
+        /// <summary>Roda a cena no Player, carregando as DLLs de componentes do jogo
+        /// (<c>--components</c>) e resolvendo assets relativos à pasta do projeto (<c>--assets</c>).</summary>
+        public static void Launch(string scenePath, IEnumerable<string>? componentAssemblies, string? assetRoot)
         {
+            var args = Quote(scenePath);
+            if (!string.IsNullOrEmpty(assetRoot))
+                args += " --assets " + Quote(assetRoot);
+            foreach (var dll in componentAssemblies ?? Enumerable.Empty<string>())
+                args += " --components " + Quote(dll);
+
             var root = EngineLocator.FindRoot();
             if (root == null)
                 throw new DirectoryNotFoundException(
@@ -22,7 +33,7 @@ namespace DreamBit.Studio
             var direct = Path.Combine(root, "DreamBit.Player.exe");
             if (File.Exists(direct))
             {
-                Start(direct, Quote(scenePath));
+                Start(direct, args);
                 return;
             }
 
@@ -30,13 +41,13 @@ namespace DreamBit.Studio
             var exe = FindPlayerExecutable(playerDir);
             if (exe != null)
             {
-                Start(exe, Quote(scenePath));
+                Start(exe, args);
                 return;
             }
 
             // Fallback: compila e roda pelo SDK.
             var csproj = Path.Combine(playerDir, "DreamBit.Player.csproj");
-            Start("dotnet", $"run --project {Quote(csproj)} -- {Quote(scenePath)}");
+            Start("dotnet", $"run --project {Quote(csproj)} -- {args}");
         }
 
         private static string? FindPlayerExecutable(string playerDir)

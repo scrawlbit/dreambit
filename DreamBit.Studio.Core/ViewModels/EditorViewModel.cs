@@ -872,6 +872,41 @@ namespace DreamBit.Studio.ViewModels
                 undoAction: () => obj.RemoveComponent(sprite)));
         }
 
+        // ---- componentes customizados (do jogo) ----
+
+        /// <summary>Adiciona um componente customizado registrado ao objeto selecionado (com undo).</summary>
+        public void AddCustomComponent(DreamBit.Engine.Components.Custom.ComponentTypeInfo info)
+        {
+            var obj = SelectedObject;
+            if (obj == null)
+                return;
+            var component = info.Create();
+            History.Do(new EditorAction("Adicionar " + info.Name,
+                doAction: () => obj.AddComponent(component),
+                undoAction: () => obj.RemoveComponent(component)));
+        }
+
+        /// <summary>Altera uma propriedade de componente customizado (com undo).</summary>
+        public void SetCustomProperty(SceneComponent component, DreamBit.Engine.Components.Custom.ComponentProperty property, object? value)
+        {
+            var before = property.Get(component);
+            if (Equals(before, value))
+                return;
+            History.Do(new EditorAction(property.Name,
+                doAction: () => property.Set(component, value),
+                undoAction: () => property.Set(component, before)));
+        }
+
+        /// <summary>Liga/desliga um componente (com undo).</summary>
+        public void SetComponentEnabled(SceneComponent component, bool enabled)
+        {
+            if (component.Enabled == enabled)
+                return;
+            History.Do(new EditorAction(enabled ? "Ligar componente" : "Desligar componente",
+                doAction: () => component.Enabled = enabled,
+                undoAction: () => component.Enabled = !enabled));
+        }
+
         public void RemoveComponent(SceneComponent component)
         {
             var obj = SelectedObject;
@@ -1689,6 +1724,10 @@ namespace DreamBit.Studio.ViewModels
                         }
                         skelClone.CurrentClipName = skel.CurrentClipName;
                         clone.AddComponent(skelClone);
+                        break;
+                    case DreamBit.Engine.Components.Custom.MissingComponent:
+                    case var custom when DreamBit.Engine.Components.Custom.ComponentRegistry.IsCustom(custom):
+                        clone.AddComponent(DreamBit.Engine.Components.Custom.CustomComponentSerializer.Clone(component));
                         break;
                 }
             }

@@ -9,6 +9,7 @@ namespace DreamBit.Player
         // Sem argumento, procura "game.dbscene" ao lado do executável (jogo exportado).
         // --shot captura o backbuffer em PNG após N frames e sai (para gerar previews).
         // --example <nome> roda um exemplo da galeria; --examples-list / --examples-save <pasta>.
+        // --assets <pasta> raiz de assets relativos; --components <dll> componentes do jogo (repetível).
         private static void Main(string[] args)
         {
             string? scenePath = null;
@@ -33,6 +34,17 @@ namespace DreamBit.Player
                     case "--example": example = i + 1 < args.Length ? args[++i] : null; break;
                     case "--examples-list": examplesList = true; break;
                     case "--examples-save": examplesSave = i + 1 < args.Length ? args[++i] : null; break;
+                    // Pasta raiz para assets relativos da cena (o editor passa a pasta do projeto).
+                    case "--assets": if (i + 1 < args.Length) DreamBit.Engine.Assets.AssetPaths.AddRoot(args[++i]); break;
+                    // DLL do jogo com componentes customizados (pode repetir).
+                    case "--components":
+                        if (i + 1 < args.Length)
+                        {
+                            var dll = args[++i];
+                            try { DreamBit.Engine.Components.Custom.ComponentRegistry.RegisterAssemblyFile(dll); }
+                            catch (Exception ex) { Console.Error.WriteLine($"Falha ao carregar componentes de {dll}: {ex.Message}"); }
+                        }
+                        break;
                     default: scenePath ??= args[i]; break;
                 }
             }

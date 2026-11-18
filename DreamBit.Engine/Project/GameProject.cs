@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -72,7 +73,7 @@ namespace DreamBit.Engine.Project
 
         public void Save()
         {
-            var data = new ProjectData { Name = Name };
+            var data = new ProjectData { Name = Name, ComponentAssemblies = new List<string>(ComponentAssemblies) };
             File.WriteAllText(ProjectFilePath, JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true }));
         }
 
@@ -84,7 +85,9 @@ namespace DreamBit.Engine.Project
             var name = string.IsNullOrWhiteSpace(data.Name)
                 ? Path.GetFileNameWithoutExtension(projectFilePath)
                 : data.Name;
-            return new GameProject(name, folder);
+            var project = new GameProject(name, folder);
+            project.ComponentAssemblies.AddRange(data.ComponentAssemblies ?? new List<string>());
+            return project;
         }
 
         /// <summary>Cria (ou reutiliza) um projeto numa pasta, gravando o .dbproj + estrutura inicial.</summary>
@@ -95,8 +98,9 @@ namespace DreamBit.Engine.Project
             {
                 project.Save();
                 project.Scaffold();
+                return project;
             }
-            return project;
+            return Load(project.ProjectFilePath); // preserva configurações do .dbproj (ex.: DLLs)
         }
 
         /// <summary>Cria a estrutura inicial de um projeto novo: pasta de assets + cena inicial.</summary>
@@ -109,9 +113,38 @@ namespace DreamBit.Engine.Project
                 Serialization.SceneSerializer.Save(new Elements.Scene { Name = "Fase1" }, scenePath);
         }
 
+        /// <summary>DLLs do jogo com componentes customizados (caminhos relativos à pasta do
+        /// projeto). O editor e o Player as carregam e registram no ComponentRegistry.</summary>
+        public List<string> ComponentAssemblies { get; } = new();
+
+        /// <summary>Caminhos absolutos das DLLs de componentes.</summary>
+        public IEnumerable<string> ComponentAssemblyPaths()
+        {
+            foreach (var rel in ComponentAssemblies)
+                yield return Path.IsPathRooted(rel) ? rel : Path.GetFullPath(Path.Combine(Folder, rel));
+        }
+
+        /// <summary>Carrega e registra as DLLs de componentes que existirem. Retorna os erros
+        /// (caminho → mensagem) das que falharam.</summary>
+        public IReadOnlyList<(string Path, string Error)> LoadComponentAssemblies()
+        {
+            var errors = new List<(string, string)>();
+            foreach (var path in ComponentAssemblyPaths())
+            {
+                try
+                {
+                    if (!File.Exists(path)) { errors.Add((path, "arquivo não encontrado (compile o jogo)")); continue; }
+                    Components.Custom.ComponentRegistry.RegisterAssemblyFile(path);
+                }
+                catch (Exception e) { errors.Add((path, e.Message)); }
+            }
+            return errors;
+        }
+
         private sealed class ProjectData
         {
             public string Name { get; set; } = "Projeto";
+            public List<string> ComponentAssemblies { get; set; } = new();
         }
     }
 }

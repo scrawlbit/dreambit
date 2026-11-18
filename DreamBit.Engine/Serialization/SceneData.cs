@@ -52,6 +52,8 @@ namespace DreamBit.Engine.Serialization
         public List<FollowData> Follows { get; set; } = new();
         public List<TriggerData> Triggers { get; set; } = new();
         public List<ScriptData> Scripts { get; set; } = new();
+        /// <summary>Componentes customizados do jogo (ver Components.Custom.ComponentRegistry).</summary>
+        public List<CustomComponentData> Custom { get; set; } = new();
         public List<BoneData> Bones { get; set; } = new();
         public List<SkeletonData> Skeletons { get; set; } = new();
         public List<MessageListenerData> MessageListeners { get; set; } = new();
@@ -649,5 +651,13 @@ namespace DreamBit.Engine.Serialization
         public bool ChromaAuto { get; set; } = true;
         public byte ChromaR { get; set; } = 255; public byte ChromaG { get; set; } public byte ChromaB { get; set; } = 255;
         public int ChromaTolerance { get; set; } = 30;
+    }
+
+    /// <summary>Componente customizado: id do tipo + propriedades públicas em JSON.</summary>
+    public sealed class CustomComponentData
+    {
+        public string Type { get; set; } = "";
+        public bool Enabled { get; set; } = true;
+        public Dictionary<string, System.Text.Json.JsonElement> Properties { get; set; } = new();
     }
 }

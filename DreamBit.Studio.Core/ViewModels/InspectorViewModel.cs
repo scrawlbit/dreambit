@@ -35,6 +35,7 @@ namespace DreamBit.Studio.ViewModels
                     _target.Transform.Changed += RaiseAll;
 
                 RaiseAll();
+                Refreshed?.Invoke();
             }
         }
 
@@ -1159,7 +1160,14 @@ namespace DreamBit.Studio.ViewModels
         }
 
         /// <summary>Reavalia todos os campos (ex.: após adicionar/remover componente).</summary>
-        public void Refresh() => RaiseAll();
+        public void Refresh()
+        {
+            RaiseAll();
+            Refreshed?.Invoke();
+        }
+
+        /// <summary>Disparado após <see cref="Refresh"/> (o editor reconstrói o painel de componentes customizados).</summary>
+        public event System.Action? Refreshed;
 
         private static int Clamp(int value) => value < 0 ? 0 : value > 255 ? 255 : value;
 

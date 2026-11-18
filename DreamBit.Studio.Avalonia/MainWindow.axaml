@@ -60,6 +60,8 @@
         <Menu DockPanel.Dock="Top" Background="#252932">
             <MenuItem Header="_Arquivo">
                 <MenuItem Header="Abrir projeto…" Click="OnOpenProject" />
+                <MenuItem Header="Componentes do jogo (DLL)…" Click="OnAddComponentAssembly" />
+                <MenuItem Header="Recarregar componentes do jogo" Click="OnReloadComponentAssemblies" />
                 <Separator />
                 <MenuItem Header="Preferências…" Click="OnPreferences" />
             </MenuItem>
@@ -1697,6 +1699,9 @@
                                 <TextBlock Classes="field" Text="Desenha por Y de mundo (profundidade top-down)." />
                             </StackPanel>
                         </Border>
+
+                        <!-- Componentes customizados do jogo (montados por reflexão em CustomComponentInspector) -->
+                        <StackPanel x:Name="CustomComponentsPanel" />
 
                     </StackPanel>
                 </ScrollViewer>

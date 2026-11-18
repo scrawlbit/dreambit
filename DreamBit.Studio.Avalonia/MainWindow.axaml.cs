@@ -43,6 +43,18 @@ namespace DreamBit.Studio.Avalonia
             _timer.Start();
 
             KeyDown += OnKeyDown;
+
+            // Componentes customizados do jogo: inspector por reflexão + entradas no "Adicionar componente".
+            var customPanel = this.FindControl<StackPanel>("CustomComponentsPanel");
+            if (customPanel != null)
+            {
+                _customInspector = new CustomComponentInspector(customPanel, _editor,
+                    (title, filter) => PickOpenFileAsync(title, "Arquivos", filter));
+                _editor.Inspector.Refreshed += () => _customInspector.Rebuild();
+            }
+            DreamBit.Engine.Components.Custom.ComponentRegistry.Changed += () => Dispatcher.UIThread.Post(RebuildCustomComponentMenu);
+            RebuildCustomComponentMenu();
+
             _editor.ToolChanged += RebuildPalette;
             _editor.SelectionChanged += RebuildPalette;
             _editor.SelectionChanged += SyncHierarchySelection;
@@ -486,7 +498,8 @@ namespace DreamBit.Studio.Avalonia
             SceneSerializer.Save(_editor.Scene, scenePath);
             try
             {
-                DreamBit.Studio.PlayerLauncher.Launch(scenePath);
+                var project = _editor.Project.Project;
+                DreamBit.Studio.PlayerLauncher.Launch(scenePath, project?.ComponentAssemblyPaths(), project?.Folder);
                 EngineLog.Info("Iniciando o DreamBit.Player…");
             }
             catch (Exception ex)
@@ -784,6 +797,12 @@ namespace DreamBit.Studio.Avalonia
             var label = item.Content as string;
             box.SelectedItem = null; // volta ao placeholder (re-entra com null e sai)
 
+            if (item.Tag is DreamBit.Engine.Components.Custom.ComponentTypeInfo customType)
+            {
+                AddComponent(() => _editor.AddCustomComponent(customType));
+                return;
+            }
+
             if (label == "Script")
             {
                 await AddScriptWithFileAsync();
@@ -1015,6 +1034,55 @@ namespace DreamBit.Studio.Avalonia
         }
 
         /// <summary>Executa a operação de componente e atualiza inspetor + cena.</summary>
+        // ---- componentes customizados (do jogo) ----
+
+        private CustomComponentInspector? _customInspector;
+
+        /// <summary>Recria as entradas de componentes do jogo no "Adicionar componente" (marcadas com Tag).</summary>
+        private void RebuildCustomComponentMenu()
+        {
+            var box = this.FindControl<ComboBox>("AddComponentBox");
+            if (box == null)
+                return;
+            foreach (var old in box.Items.OfType<ComboBoxItem>().Where(i => i.Tag is DreamBit.Engine.Components.Custom.ComponentTypeInfo).ToList())
+                box.Items.Remove(old);
+            foreach (var type in DreamBit.Engine.Components.Custom.ComponentRegistry.Types)
+                box.Items.Add(new ComboBoxItem { Content = "[Jogo] " + type.MenuPath, Tag = type });
+            _customInspector?.Rebuild();
+        }
+
+        /// <summary>Acrescenta uma DLL de componentes ao projeto (.dbproj) e a carrega.</summary>
+        private async void OnAddComponentAssembly(object? sender, RoutedEventArgs e)
+        {
+            var project = _editor.Project.Project;
+            if (project == null)
+            {
+                EngineLog.Warn("Abra um projeto antes de adicionar componentes do jogo.");
+                return;
+            }
+            var path = await PickOpenFileAsync("DLL do jogo com componentes", "Assembly .NET", "*.dll");
+            if (path == null)
+                return;
+            var rel = System.IO.Path.GetRelativePath(project.Folder, path).Replace(System.IO.Path.DirectorySeparatorChar, '/');
+            if (!project.ComponentAssemblies.Contains(rel))
+                project.ComponentAssemblies.Add(rel);
+            project.Save();
+            ReloadComponentAssemblies();
+        }
+
+        private void OnReloadComponentAssemblies(object? sender, RoutedEventArgs e) => ReloadComponentAssemblies();
+
+        private void ReloadComponentAssemblies()
+        {
+            var project = _editor.Project.Project;
+            if (project == null)
+                return;
+            var errors = project.LoadComponentAssemblies();
+            foreach (var (path, error) in errors)
+                EngineLog.Warn($"Componentes do jogo não carregados ({path}): {error}");
+            EngineLog.Info($"Componentes do jogo: {DreamBit.Engine.Components.Custom.ComponentRegistry.Types.Count} tipo(s) registrados.");
+        }
+
         private void AddComponent(Action operation)
         {
             operation();

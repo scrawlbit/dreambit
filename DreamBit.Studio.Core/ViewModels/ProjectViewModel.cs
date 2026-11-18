@@ -34,6 +34,8 @@ namespace DreamBit.Studio.ViewModels
             _watcher?.Dispose();
 
             _project = project;
+            foreach (var (path, error) in project.LoadComponentAssemblies())
+                DreamBit.Engine.Diagnostics.EngineLog.Warn($"Componentes do jogo não carregados ({path}): {error}");
             _watcher = new ProjectWatcher(project.Folder);
             _watcher.ScenesChanged += OnScenesChanged;
             _watcher.AssetChanged += OnAssetChanged;
