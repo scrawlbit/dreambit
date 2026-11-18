@@ -18,6 +18,7 @@ namespace DreamBit.Engine.Components
         private bool _chromaAuto = true;
         private Color _chromaColor = new(255, 0, 255);
         private int _chromaTolerance = 30;
+        private Color _tint = Color.White;
 
         public override string DisplayName => "Sprite Renderer";
 
@@ -40,6 +41,16 @@ namespace DreamBit.Engine.Components
         {
             get => _color;
             set => Set(ref _color, value);
+        }
+
+        /// <summary>
+        /// Cor multiplicada no desenho (RGB + alpha, não pré-multiplicada). Branco = sem efeito.
+        /// Usada pela animação de esqueleto (cor/alpha por keyframe); não é salva na cena.
+        /// </summary>
+        public Color Tint
+        {
+            get => _tint;
+            set => Set(ref _tint, value);
         }
 
         /// <summary>Caminho do arquivo de imagem (PNG). Vazio = retângulo colorido.</summary>
@@ -66,14 +77,23 @@ namespace DreamBit.Engine.Components
                 ? TextureCache.GetChromaKeyed(device, _texturePath, _chromaAuto, _chromaColor, _chromaTolerance)
                 : TextureCache.Get(device, _texturePath);
 
+            // Tint em alpha pré-multiplicado (o SpriteBatch usa BlendState.AlphaBlend).
+            var tint = _tint == Color.White ? Color.White : Color.FromNonPremultiplied(_tint.R, _tint.G, _tint.B, _tint.A);
             if (texture != null && _sourceRect is { } src)
             {
-                drawing.DrawFrame(Owner.Transform.WorldMatrix, _size, Color.White, texture, src);
+                drawing.DrawFrame(Owner.Transform.WorldMatrix, _size, tint, texture, src);
                 return;
             }
 
-            var tint = texture != null ? Color.White : _color;
-            drawing.DrawQuad(Owner.Transform.WorldMatrix, _size, tint, texture);
+            var color = texture != null ? tint : Multiply(_color, _tint);
+            drawing.DrawQuad(Owner.Transform.WorldMatrix, _size, color, texture);
+        }
+
+        private static Color Multiply(Color a, Color b)
+        {
+            if (b == Color.White)
+                return a;
+            return new Color(a.R * b.R / 255, a.G * b.G / 255, a.B * b.B / 255, a.A * b.A / 255);
         }
     }
 }

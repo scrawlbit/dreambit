@@ -80,10 +80,33 @@ namespace DreamBit.Engine.Assets
                 yield return (sc.SourcePath ?? "", v => sc.SourcePath = v);
             foreach (var pi in obj.PrefabInstances)
                 yield return (pi.PrefabPath ?? "", v => pi.PrefabPath = v);
+            foreach (var sk in obj.Skeletons)
+                foreach (var sprite in SkeletonSprites(sk))
+                    yield return (sprite.Path ?? "", v => sprite.Path = v);
 
             foreach (var child in obj.Children)
                 foreach (var r in Refs(child))
                     yield return r;
+        }
+
+        // Sprites das trocas por keyframe e das skins de um esqueleto.
+        private static IEnumerable<SpriteRefData> SkeletonSprites(SkeletonData sk)
+        {
+            foreach (var clip in sk.Clips)
+                foreach (var kf in clip.Keyframes)
+                    if (kf.BoneKeys != null)
+                        foreach (var bk in kf.BoneKeys)
+                            if (bk.Sprite != null)
+                                yield return bk.Sprite;
+            if (sk.Skins != null)
+                foreach (var skin in sk.Skins)
+                {
+                    foreach (var e in skin.Parts)
+                        yield return e.Sprite;
+                    if (skin.Remaps != null)
+                        foreach (var e in skin.Remaps)
+                            yield return e.Sprite;
+                }
         }
     }
 }

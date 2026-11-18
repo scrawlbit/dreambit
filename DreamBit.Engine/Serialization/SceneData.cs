@@ -629,6 +629,11 @@ namespace DreamBit.Engine.Serialization
         public int Easing { get; set; }
         public List<PoseKeyframeData> Keyframes { get; set; } = new();
         public List<SkeletonEventData> Events { get; set; } = new();
+
+        // Skins e reprodução (ausentes em cenas antigas: sem skins, velocidade 1).
+        public string? Skin { get; set; }
+        public float Speed { get; set; } = 1f;
+        public List<SkinData>? Skins { get; set; }
     }
 
     public sealed class PoseClipData
@@ -651,6 +656,10 @@ namespace DreamBit.Engine.Serialization
     {
         public float Time { get; set; }
         public List<BonePoseData> Bones { get; set; } = new();
+
+        // Curva da chave e extras por osso (ausentes em cenas antigas = easing do clipe, sem extras).
+        public KeyCurveData? Curve { get; set; }
+        public List<BoneKeyData>? BoneKeys { get; set; }
     }
 
     public sealed class BonePoseData

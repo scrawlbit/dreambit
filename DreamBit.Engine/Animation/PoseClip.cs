@@ -21,5 +21,28 @@ namespace DreamBit.Engine.Animation
 
         /// <summary>Eventos por tempo (tempo → nome), ordenados por tempo.</summary>
         public List<(float Time, string Name)> Events { get; } = new();
+
+        /// <summary>Keyframe exatamente (dentro da tolerância) no tempo informado, ou nulo.</summary>
+        public PoseKeyframe? KeyframeAt(float time, float tolerance = 0.0001f)
+        {
+            PoseKeyframe? best = null;
+            float bestDist = float.MaxValue;
+            foreach (var k in Keyframes)
+            {
+                float d = System.Math.Abs(k.Time - time);
+                if (d <= tolerance && d < bestDist) { best = k; bestDist = d; }
+            }
+            return best;
+        }
+
+        /// <summary>Cópia profunda (keyframes, extras e eventos).</summary>
+        public PoseClip Clone()
+        {
+            var copy = new PoseClip(Name) { Duration = Duration, Loop = Loop, Easing = Easing };
+            foreach (var k in Keyframes)
+                copy.Keyframes.Add(k.Clone());
+            copy.Events.AddRange(Events);
+            return copy;
+        }
     }
 }
