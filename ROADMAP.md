@@ -1,6 +1,6 @@
 # DreamBit — Roadmap
 
-Estado da engine e do editor DreamBit (.NET 8 / MonoGame), e itens planejados.
+Estado da engine e do editor DreamBit (.NET 11 / MonoGame), e itens planejados.
 
 ## Entregue
 

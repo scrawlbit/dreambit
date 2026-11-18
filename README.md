@@ -1,6 +1,6 @@
 # DreamBit
 
-Engine e editor de jogos 2D **standalone em .NET 8**, com MonoGame. Nasceu como uma
+Engine e editor de jogos 2D **standalone em .NET 11**, com MonoGame. Nasceu como uma
 extensão do Visual Studio (VSIX, .NET Framework) e foi migrado para uma solução
 independente, multiplataforma e testada.
 
@@ -11,7 +11,7 @@ independente, multiplataforma e testada.
 
 | Projeto | O que é |
 |---|---|
-| **DreamBit.Engine** | Modelo e runtime da engine (cena, objetos, componentes, física de ledges, tilemap, áudio, scripting, animação). Multi-target `net8.0-windows;net8.0`. |
+| **DreamBit.Engine** | Modelo e runtime da engine (cena, objetos, componentes, física de ledges, tilemap, áudio, scripting, animação). Multi-target `net11.0-windows;net11.0`. |
 | **DreamBit.Studio.Avalonia** | **O editor** — cross-platform (Windows/macOS/Linux, Rider). Canvas com texturas, tilemap, ledges, carimbo de atlas, timeline de rig, console. |
 | **DreamBit.Studio.Core** | ViewModels e lógica de editor (sem dependência de UI): ViewModels, `SceneInputController`, exportador/launcher/content-builder. |
 | **DreamBit.Player** | Runtime do jogo (DesktopGL), roda um `.dbscene` (com transição entre fases). Cross-platform. |
@@ -114,4 +114,4 @@ Player por RID (win/linux/osx).
 
 ## Requisitos
 
-.NET 8 SDK. No Rider (qualquer SO), abra `DreamBit.Studio.slnx`.
+.NET 11 SDK. No Rider (qualquer SO), abra `DreamBit.Studio.slnx`.

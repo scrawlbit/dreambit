@@ -23,8 +23,8 @@ Examples\run.ps1 -List
 Sem o launcher, via Player:
 
 ```bash
-DreamBit.Player\bin\Debug\net8.0\DreamBit.Player.exe --example 05-lights
-DreamBit.Player\bin\Debug\net8.0\DreamBit.Player.exe --examples-list
+DreamBit.Player\bin\Debug\net11.0\DreamBit.Player.exe --example 05-lights
+DreamBit.Player\bin\Debug\net11.0\DreamBit.Player.exe --examples-list
 ```
 
 ## Abrir no editor

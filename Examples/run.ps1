@@ -8,7 +8,7 @@ param([string]$Name, [switch]$List)
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot            # raiz do repo (Examples/ fica na raiz)
 $proj = Join-Path $root "DreamBit.Player\DreamBit.Player.csproj"
-$exe  = Join-Path $root "DreamBit.Player\bin\Debug\net8.0\DreamBit.Player.exe"
+$exe  = Join-Path $root "DreamBit.Player\bin\Debug\net11.0\DreamBit.Player.exe"
 
 if (-not (Test-Path $exe)) {
     Write-Host "Compilando o Player..." -ForegroundColor Yellow

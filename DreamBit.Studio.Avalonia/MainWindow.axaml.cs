@@ -682,20 +682,26 @@ namespace DreamBit.Studio.Avalonia
                 return;
             var item = _hierDrag;
             _hierDrag = null;
-            var data = new DataObject();
-            data.Set("dbobj", item);
-            await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(HierarchyDragFormat, item.Name));
+            _hierDragging = item;
+            try { await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move); }
+            finally { _hierDragging = null; }
         }
+
+        // Arrasto interno da hierarquia: o formato só marca a origem; o objeto fica em _hierDragging.
+        private static readonly DataFormat<string> HierarchyDragFormat = DataFormat.CreateStringApplicationFormat("dbobj");
+        private GameObject? _hierDragging;
 
         private void OnHierarchyDragOver(object? sender, DragEventArgs e)
         {
-            e.DragEffects = e.Data.Contains("dbobj") ? DragDropEffects.Move : DragDropEffects.None;
+            e.DragEffects = e.DataTransfer.Formats.Contains(HierarchyDragFormat) ? DragDropEffects.Move : DragDropEffects.None;
             e.Handled = true;
         }
 
         private void OnHierarchyDrop(object? sender, DragEventArgs e)
         {
-            if (e.Data.Get("dbobj") is not GameObject dragged)
+            if (!e.DataTransfer.Formats.Contains(HierarchyDragFormat) || _hierDragging is not GameObject dragged)
                 return;
             var tvi = (e.Source as global::Avalonia.Visual)?.GetVisualAncestors().OfType<TreeViewItem>().FirstOrDefault();
             if (tvi?.DataContext is not GameObject target)
