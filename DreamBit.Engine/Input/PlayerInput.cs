@@ -274,28 +274,46 @@ namespace DreamBit.Engine.Input
 
     /// <summary>
     /// Fonte de input controlada por código (IA, cutscenes, replays): o dono define quais
-    /// ações estão pressionadas e os eixos. Detecta borda (JustPressed) pelo
-    /// <see cref="Input.Frame"/>, sem chamada extra por frame.
+    /// ações estão pressionadas e os eixos. A borda (JustPressed/JustReleased) vale para o
+    /// primeiro frame (<see cref="Input.Frame"/>) em que alguém lê a ação depois da mudança —
+    /// então funciona chamando <see cref="Set"/> antes ou depois do <c>Input.Update()</c>.
     /// </summary>
     public sealed class VirtualInput : IInputSource
     {
-        private HashSet<string> _now = new(StringComparer.Ordinal);
-        private HashSet<string> _prev = new(StringComparer.Ordinal);
-        private long _frame = -1;
+        private const long Pending = -1;
+        private readonly HashSet<string> _down = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, long> _pressEdge = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, long> _releaseEdge = new(StringComparer.Ordinal);
         private float _h, _v;
 
         /// <summary>Mantém (ou solta) uma ação até mudar de novo.</summary>
         public void Set(string action, bool down)
         {
-            Sync();
-            if (down) _now.Add(action); else _now.Remove(action);
+            if (down)
+            {
+                if (_down.Add(action)) { _pressEdge[action] = Pending; _releaseEdge.Remove(action); }
+            }
+            else if (_down.Remove(action))
+            {
+                _releaseEdge[action] = Pending;
+                _pressEdge.Remove(action);
+            }
         }
+
+        /// <summary>Aperta e solta no próximo frame lido (um toque).</summary>
+        public void Tap(string action)
+        {
+            Set(action, true);
+            _tapPending.Add(action);
+        }
+
+        private readonly HashSet<string> _tapPending = new(StringComparer.Ordinal);
 
         /// <summary>Solta todas as ações e zera os eixos.</summary>
         public void ReleaseAll()
         {
-            Sync();
-            _now.Clear();
+            foreach (var a in new List<string>(_down))
+                Set(a, false);
             _h = _v = 0f;
         }
 
@@ -306,18 +324,42 @@ namespace DreamBit.Engine.Input
             _v = MathHelper.Clamp(vertical, -1f, 1f);
         }
 
-        public bool IsDown(string action) { Sync(); return _now.Contains(action); }
-        public bool JustPressed(string action) { Sync(); return _now.Contains(action) && !_prev.Contains(action); }
-        public bool JustReleased(string action) { Sync(); return !_now.Contains(action) && _prev.Contains(action); }
+        public bool IsDown(string action)
+        {
+            bool down = _down.Contains(action);
+            ReleaseTapIfConsumed(action);
+            return down;
+        }
+
+        public bool JustPressed(string action) => Edge(_pressEdge, action);
+        public bool JustReleased(string action) => Edge(_releaseEdge, action);
         public float Horizontal() => _h != 0f ? _h : (IsDown("MoveRight") ? 1f : 0f) - (IsDown("MoveLeft") ? 1f : 0f);
         public float Vertical() => _v != 0f ? _v : (IsDown("MoveDown") ? 1f : 0f) - (IsDown("MoveUp") ? 1f : 0f);
 
-        // Na virada de frame, o estado atual vira o anterior (base da detecção de borda).
-        private void Sync()
+        private bool Edge(Dictionary<string, long> edges, string action)
         {
-            if (_frame == Input.Frame) return;
-            _prev = new HashSet<string>(_now, StringComparer.Ordinal);
-            _frame = Input.Frame;
+            if (!edges.TryGetValue(action, out var frame))
+                return false;
+            if (frame == Pending)
+            {
+                edges[action] = Input.Frame; // observado agora: vale por este frame inteiro
+                return true;
+            }
+            if (frame == Input.Frame)
+                return true;
+            edges.Remove(action);
+            ReleaseTapIfConsumed(action);
+            return false;
+        }
+
+        // Um Tap solta a ação depois que o frame em que ela foi vista passou.
+        private void ReleaseTapIfConsumed(string action)
+        {
+            if (_tapPending.Contains(action) && _pressEdge.TryGetValue(action, out var f) && f != Pending && f != Input.Frame)
+            {
+                _tapPending.Remove(action);
+                Set(action, false);
+            }
         }
     }
 }

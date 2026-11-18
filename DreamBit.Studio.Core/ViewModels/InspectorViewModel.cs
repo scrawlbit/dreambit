@@ -400,6 +400,28 @@ namespace DreamBit.Studio.ViewModels
             set { var p = Platformer; if (p != null) p.PlayerIndex = value; }
         }
 
+        public float PlatAcceleration { get => Platformer?.Acceleration ?? 0f; set { var p = Platformer; if (p != null) p.Acceleration = value; } }
+        public float PlatDeceleration { get => Platformer?.Deceleration ?? 0f; set { var p = Platformer; if (p != null) p.Deceleration = value; } }
+        public float PlatCoyote { get => Platformer?.CoyoteTime ?? 0.1f; set { var p = Platformer; if (p != null) p.CoyoteTime = value; } }
+        public float PlatJumpBuffer { get => Platformer?.JumpBufferTime ?? 0.12f; set { var p = Platformer; if (p != null) p.JumpBufferTime = value; } }
+        public int PlatAirJumps { get => Platformer?.AirJumps ?? 1; set { var p = Platformer; if (p != null) p.AirJumps = value; } }
+        public float PlatDashSpeed { get => Platformer?.DashSpeed ?? 720f; set { var p = Platformer; if (p != null) p.DashSpeed = value; } }
+
+        /// <summary>Habilidades liberadas, como nomes separados por vírgula (ex.: "DoubleJump, Dash").</summary>
+        public string PlatAbilities
+        {
+            get => Platformer?.Abilities.ToString() ?? "";
+            set
+            {
+                var p = Platformer;
+                if (p == null) return;
+                var flags = MovementAbilities.None;
+                foreach (var part in (value ?? "").Split(new[] { ',', ';', '|' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    if (Enum.TryParse<MovementAbilities>(part, true, out var f)) flags |= f;
+                p.Abilities = flags;
+            }
+        }
+
         /// <summary>Jogador do Top-Down (-1 = global).</summary>
         public int TopDownPlayerIndex
         {
@@ -1572,6 +1594,10 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(PlatMoveSpeed));
             OnPropertyChanged(nameof(PlatJumpSpeed));
             OnPropertyChanged(nameof(PlatPlayerIndex));
+            OnPropertyChanged(nameof(PlatAcceleration)); OnPropertyChanged(nameof(PlatDeceleration));
+            OnPropertyChanged(nameof(PlatCoyote)); OnPropertyChanged(nameof(PlatJumpBuffer));
+            OnPropertyChanged(nameof(PlatAirJumps)); OnPropertyChanged(nameof(PlatDashSpeed));
+            OnPropertyChanged(nameof(PlatAbilities));
             OnPropertyChanged(nameof(TopDownPlayerIndex));
             OnPropertyChanged(nameof(HasAnimator));
             OnPropertyChanged(nameof(AnimTexturePath));

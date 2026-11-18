@@ -292,6 +292,34 @@ namespace DreamBit.Engine.Serialization
         public float MoveSpeed { get; set; } = 220f;
         public float JumpSpeed { get; set; } = 620f;
         public int PlayerIndex { get; set; } = -1;
+        public float Acceleration { get; set; } = 0f;
+        public float Deceleration { get; set; } = 0f;
+        public float AirControl { get; set; } = 1f;
+        public float MaxFallSpeed { get; set; } = 1600f;
+        public float CoyoteTime { get; set; } = 0.1f;
+        public float JumpBufferTime { get; set; } = 0.12f;
+        public float JumpCutMultiplier { get; set; } = 0.5f;
+        public int AirJumps { get; set; } = 1;
+        public float AirJumpSpeed { get; set; } = 560f;
+        public float GlideFallSpeed { get; set; } = 120f;
+        public float WallSlideSpeed { get; set; } = 160f;
+        public float WallJumpSpeedX { get; set; } = 360f;
+        public float WallJumpSpeedY { get; set; } = 600f;
+        public float WallJumpLockTime { get; set; } = 0.15f;
+        public float LedgeGrabReach { get; set; } = 18f;
+        public float LedgeClimbTime { get; set; } = 0.25f;
+        public float DashSpeed { get; set; } = 720f;
+        public float DashDuration { get; set; } = 0.18f;
+        public float DashCooldown { get; set; } = 0.35f;
+        public int AirDashes { get; set; } = 1;
+        public float CrouchHalfHeight { get; set; } = 14f;
+        public float CrouchSpeedFactor { get; set; } = 0.45f;
+        public float SlideSpeed { get; set; } = 520f;
+        public float SlideDuration { get; set; } = 0.45f;
+        public float GroundPoundSpeed { get; set; } = 1400f;
+        public float PushSpeedFactor { get; set; } = 0.5f;
+        /// <summary>MovementAbilities (flags). Padrão: DropThrough | Crouch.</summary>
+        public int Abilities { get; set; } = (1 << 8) | (1 << 9);
     }
 
     public sealed class BoxColliderData

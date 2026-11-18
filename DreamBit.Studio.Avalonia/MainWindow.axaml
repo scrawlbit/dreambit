@@ -582,6 +582,20 @@
                                 <TextBox Text="{Binding PlatHorizontalSpeed, Mode=TwoWay}" />
                                 <TextBlock Classes="field" Text="Jogador (-1 = global, 0 = P1, 1 = P2)" />
                                 <TextBox Text="{Binding PlatPlayerIndex, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Aceleração (0 = instantânea)" /><TextBox Text="{Binding PlatAcceleration, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Desaceleração" /><TextBox Text="{Binding PlatDeceleration, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Coyote (s)" /><TextBox Text="{Binding PlatCoyote, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Buffer de pulo (s)" /><TextBox Text="{Binding PlatJumpBuffer, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,6,*">
+                                    <StackPanel Grid.Column="0"><TextBlock Classes="field" Text="Pulos no ar" /><TextBox Text="{Binding PlatAirJumps, Mode=TwoWay}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><TextBlock Classes="field" Text="Vel. dash" /><TextBox Text="{Binding PlatDashSpeed, Mode=TwoWay}" /></StackPanel>
+                                </Grid>
+                                <TextBlock Classes="field" Text="Habilidades (DoubleJump, WallJump, LedgeGrab, Dash, Slide, Glide, GroundPound, Push, DropThrough, Crouch, BreakWalls, BreakFloors)" TextWrapping="Wrap" />
+                                <TextBox Text="{Binding PlatAbilities, Mode=TwoWay}" />
                             </StackPanel>
                         </Border>
 

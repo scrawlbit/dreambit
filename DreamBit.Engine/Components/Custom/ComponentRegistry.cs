@@ -30,6 +30,15 @@ namespace DreamBit.Engine.Components.Custom
         private static readonly Dictionary<Type, ComponentTypeInfo> _byType = new();
         private static readonly object _gate = new();
 
+        // Componentes da própria engine marcados com [GameComponent] (Breakable, Pushable…)
+        // são registrados sempre, sem precisar de DLL.
+        static ComponentRegistry() => RegisterEngineTypes();
+
+        private static void RegisterEngineTypes() => RegisterAssembly(typeof(ComponentRegistry).Assembly);
+
+        /// <summary>True se o tipo vem da própria engine (não do jogo).</summary>
+        public static bool IsEngineType(ComponentTypeInfo info) => info.Type.Assembly == typeof(ComponentRegistry).Assembly;
+
         /// <summary>Disparado quando tipos são registrados (o editor atualiza o menu).</summary>
         public static event Action? Changed;
 
@@ -113,6 +122,7 @@ namespace DreamBit.Engine.Components.Custom
         public static void Clear()
         {
             lock (_gate) { _byId.Clear(); _byType.Clear(); }
+            RegisterEngineTypes();
             Changed?.Invoke();
         }
     }

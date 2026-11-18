@@ -1047,7 +1047,7 @@ namespace DreamBit.Studio.Avalonia
             foreach (var old in box.Items.OfType<ComboBoxItem>().Where(i => i.Tag is DreamBit.Engine.Components.Custom.ComponentTypeInfo).ToList())
                 box.Items.Remove(old);
             foreach (var type in DreamBit.Engine.Components.Custom.ComponentRegistry.Types)
-                box.Items.Add(new ComboBoxItem { Content = "[Jogo] " + type.MenuPath, Tag = type });
+                box.Items.Add(new ComboBoxItem { Content = (DreamBit.Engine.Components.Custom.ComponentRegistry.IsEngineType(type) ? "" : "[Jogo] ") + type.MenuPath, Tag = type });
             _customInspector?.Rebuild();
         }
 
