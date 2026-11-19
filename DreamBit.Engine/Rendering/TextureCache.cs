@@ -53,6 +53,7 @@ namespace DreamBit.Engine.Rendering
             {
                 using var stream = File.OpenRead(path);
                 texture = Texture2D.FromStream(device, stream);
+                PremultiplyInPlace(texture);
             }
             catch
             {
@@ -92,12 +93,39 @@ namespace DreamBit.Engine.Rendering
             }
 
             ChromaKey.Apply(pixels, key, tolerance);
+            Premultiply(pixels);
             var result = new Texture2D(device, baseTexture.Width, baseTexture.Height);
             result.SetData(pixels);
 
             lock (_gate)
                 _chromaCache[cacheKey] = result;
             return result;
+        }
+
+        /// <summary>
+        /// Converte para alfa pré-multiplicado (RGB × A), que é o que o SpriteBatch espera com
+        /// BlendState.AlphaBlend. PNGs vêm com alfa "reto": sem isso, pixels transparentes que
+        /// guardam cor (comum em arte pintada, para evitar bordas escuras) são somados à tela.
+        /// </summary>
+        public static void Premultiply(Color[] pixels)
+        {
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                var c = pixels[i];
+                if (c.A == 255) continue;
+                pixels[i] = new Color((byte)(c.R * c.A / 255), (byte)(c.G * c.A / 255), (byte)(c.B * c.A / 255), c.A);
+            }
+        }
+
+        private static void PremultiplyInPlace(Texture2D texture)
+        {
+            var pixels = new Color[texture.Width * texture.Height];
+            texture.GetData(pixels);
+            bool any = false;
+            foreach (var c in pixels) if (c.A != 255) { any = true; break; }
+            if (!any) return;
+            Premultiply(pixels);
+            texture.SetData(pixels);
         }
 
         /// <summary>
