@@ -87,6 +87,9 @@ namespace DreamBit.Engine.Hosting
                 ? Microsoft.Xna.Framework.Graphics.SamplerState.LinearClamp
                 : Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp;
             Host.Renderer.Background = _settings.ClearColor;
+            Host.Renderer.WorldSampler = _settings.SmoothSprites
+                ? Microsoft.Xna.Framework.Graphics.SamplerState.LinearClamp
+                : Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp;
             Rendering.DebugDraw.Colliders = _settings.ShowDebugShapes;
             Rendering.DebugDraw.Zones = _settings.ShowDebugShapes;
             Saving.SaveGame.GameFolderName = _settings.SaveFolderName ?? _settings.Title;
@@ -135,6 +138,9 @@ namespace DreamBit.Engine.Hosting
 
         /// <summary>Escala suave (arte pintada) ou nearest (pixel art) ao aplicar a resolução virtual.</summary>
         public bool SmoothUpscale { get; set; } = true;
+
+        /// <summary>Filtragem suave das texturas do mundo (arte pintada). Desligue para pixel art.</summary>
+        public bool SmoothSprites { get; set; } = true;
 
         public Color ClearColor { get; set; } = Color.Black;
 

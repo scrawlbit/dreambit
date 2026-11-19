@@ -45,6 +45,7 @@ namespace DreamBit.Player
             settings.Title = "DreamBit Player";
             settings.ClearColor = new Color(24, 26, 32);
             settings.AllowResizing = false;
+            settings.SmoothSprites = false; // exemplos e protótipos: mantém o filtro nearest de antes
         }
 
         protected override void OnStart()

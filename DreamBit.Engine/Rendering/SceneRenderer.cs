@@ -36,6 +36,10 @@ namespace DreamBit.Engine.Rendering
         public Color GridColor { get; set; } = new(44, 48, 58);
         public Color GridAxisColor { get; set; } = new(90, 96, 110);
         public bool ShowGrid { get; set; } = true;
+
+        /// <summary>Filtro das texturas do mundo: PointClamp (pixel art, padrão) ou LinearClamp
+        /// (arte pintada/ilustrada, sem serrilhado ao escalar e girar partes do rig).</summary>
+        public SamplerState WorldSampler { get; set; } = SamplerState.PointClamp;
         public bool ShowLedges { get; set; } = true;
         public int GridSize { get; set; } = 32;
 
@@ -99,7 +103,7 @@ namespace DreamBit.Engine.Rendering
 
             device.Clear(Background);
 
-            _spriteBatch.Begin(transformMatrix: view, samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(transformMatrix: view, samplerState: WorldSampler);
 
             if (ShowGrid)
                 DrawGrid(camera, width, height);
