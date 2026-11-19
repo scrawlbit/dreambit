@@ -210,6 +210,12 @@ namespace DreamBit.Engine.Dialogue
         public float PanelHeight { get; set; } = 220f;
         public float Margin { get; set; } = 32f;
         public float PortraitSize { get; set; } = 180f;
+        /// <summary>Espaço entre a borda do painel e o texto (horizontal / vertical). Painéis com
+        /// moldura grossa ou cantos arredondados precisam de mais.</summary>
+        public float TextPaddingX { get; set; } = 56f;
+        public float TextPaddingY { get; set; } = 36f;
+        /// <summary>Espaço entre a borda do painel e o retrato, e entre o retrato e o texto.</summary>
+        public float PortraitInset { get; set; } = 30f;
         public Color PanelColor { get; set; } = new(18, 16, 24, 220);
         public Color TextColor { get; set; } = new(245, 238, 225);
         public Color NameColor { get; set; } = new(255, 196, 120);
@@ -266,18 +272,20 @@ namespace DreamBit.Engine.Dialogue
             var tex = string.IsNullOrEmpty(PanelTexture) ? null : TextureCache.Get(drawing.SpriteBatch.GraphicsDevice, PanelTexture);
             drawing.SpriteBatch.Draw(tex ?? drawing.Pixel, panel, tex != null ? Color.White : PanelColor);
 
-            float textLeft = panel.X + 28, textRight = panel.Right - 28;
+            float textLeft = panel.X + TextPaddingX, textRight = panel.Right - TextPaddingX;
             if (!string.IsNullOrEmpty(line.Portrait) && TextureCache.Get(drawing.SpriteBatch.GraphicsDevice, line.Portrait) is { } portrait)
             {
                 bool right = string.Equals(line.Side, "right", StringComparison.OrdinalIgnoreCase);
-                float scale = PortraitSize / Math.Max(portrait.Width, portrait.Height);
+                // O retrato cabe no painel com a mesma folga em cima, embaixo e na lateral.
+                float fit = Math.Min(PortraitSize, panel.Height - PortraitInset * 2f);
+                float scale = fit / Math.Max(portrait.Width, portrait.Height);
                 var size = new Vector2(portrait.Width, portrait.Height) * scale;
-                var pos = new Vector2(right ? panel.Right - size.X - 16 : panel.X + 16, panel.Bottom - size.Y - 16);
+                var pos = new Vector2(right ? panel.Right - size.X - PortraitInset : panel.X + PortraitInset, panel.Bottom - size.Y - PortraitInset);
                 drawing.SpriteBatch.Draw(portrait, new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y), Color.White);
-                if (right) textRight = pos.X - 20; else textLeft = pos.X + size.X + 20;
+                if (right) textRight = pos.X - PortraitInset; else textLeft = pos.X + size.X + PortraitInset;
             }
 
-            float y = panel.Y + 20;
+            float y = panel.Y + TextPaddingY;
             if (!string.IsNullOrEmpty(line.Speaker))
             {
                 Fonts.Draw(drawing, Font, NameSize, line.Speaker, new Vector2(textLeft, y), NameColor, Color.Black * 0.6f, 1.5f);
