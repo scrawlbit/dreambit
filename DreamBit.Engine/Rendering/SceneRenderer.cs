@@ -404,17 +404,29 @@ namespace DreamBit.Engine.Rendering
 
         public void DrawQuad(Matrix world, Vector2 size, Color color, Texture2D? texture = null)
         {
-            var position = new Vector2(world.M41, world.M42);
-            float scaleX = new Vector2(world.M11, world.M12).Length();
-            float scaleY = new Vector2(world.M21, world.M22).Length();
-            float rotation = (float)Math.Atan2(world.M12, world.M11);
+            var (position, rotation, scaleX, scaleY, mirror) = Decompose(world);
 
             var tex = texture ?? _pixel;
             var texSize = new Vector2(tex.Width, tex.Height);
             var origin = texSize / 2f;
             var drawScale = new Vector2(size.X / texSize.X * scaleX, size.Y / texSize.Y * scaleY);
 
-            _spriteBatch.Draw(tex, position, null, color, rotation, origin, drawScale, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(tex, position, null, color, rotation, origin, drawScale, mirror, 0f);
+        }
+
+        /// <summary>Decompõe a matriz de mundo para o SpriteBatch (posição, rotação, escalas
+        /// positivas). Com determinante negativo (pai espelhado, ex.: personagem virado para a
+        /// esquerda com escala X negativa) a rotação lida do eixo X equivale a girar 180°, então o
+        /// eixo Y fica invertido: compensa com <see cref="SpriteEffects.FlipVertically"/>. A
+        /// origem é sempre o centro, então o flip não desloca o quad.</summary>
+        public static (Vector2 Position, float Rotation, float ScaleX, float ScaleY, SpriteEffects Mirror) Decompose(Matrix world)
+        {
+            var position = new Vector2(world.M41, world.M42);
+            float scaleX = new Vector2(world.M11, world.M12).Length();
+            float scaleY = new Vector2(world.M21, world.M22).Length();
+            float rotation = (float)Math.Atan2(world.M12, world.M11);
+            bool mirrored = world.M11 * world.M22 - world.M12 * world.M21 < 0f;
+            return (position, rotation, scaleX, scaleY, mirrored ? SpriteEffects.FlipVertically : SpriteEffects.None);
         }
 
         public void DrawFrame(Matrix world, Vector2 size, Color color, Texture2D texture, Rectangle source,
@@ -423,15 +435,12 @@ namespace DreamBit.Engine.Rendering
             if (source.Width <= 0 || source.Height <= 0)
                 return;
 
-            var position = new Vector2(world.M41, world.M42);
-            float scaleX = new Vector2(world.M11, world.M12).Length();
-            float scaleY = new Vector2(world.M21, world.M22).Length();
-            float rotation = (float)Math.Atan2(world.M12, world.M11);
+            var (position, rotation, scaleX, scaleY, mirror) = Decompose(world);
 
             var origin = new Vector2(source.Width / 2f, source.Height / 2f);
             var drawScale = new Vector2(size.X / source.Width * scaleX, size.Y / source.Height * scaleY);
 
-            _spriteBatch.Draw(texture, position, source, color, rotation, origin, drawScale, effects, 0f);
+            _spriteBatch.Draw(texture, position, source, color, rotation, origin, drawScale, effects ^ mirror, 0f);
         }
 
         private void DrawGrid(Camera2D camera, int width, int height)
