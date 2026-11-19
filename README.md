@@ -109,6 +109,13 @@ public sealed class Corrupcao : SceneComponent
 }
 ```
 
+Em componentes do jogo (outro assembly), os ganchos da engine são sobrescritos como
+`protected override` (`Update`, `Draw`, `DrawScreen`, `OnPlayStarted`).
+
+O projeto do editor (.dbproj) pode ficar na pasta de conteúdo do jogo: as cenas podem estar em
+subpastas (ex.: `scenes/01_cela.dbscene`) e os caminhos relativos de assets resolvem pela pasta
+do projeto.
+
 No editor, **Arquivo › Componentes do jogo (DLL)…** aponta a DLL compilada do jogo: os
 componentes aparecem em "Adicionar componente" (com inspector automático) e são salvos na
 cena; o Play do editor passa a DLL e a pasta do projeto para o Player.

@@ -28,18 +28,18 @@ namespace DreamBit.Engine.Project
         /// <summary>Caminho do arquivo .dbproj.</summary>
         public string ProjectFilePath => Path.Combine(Folder, Name + ProjectExtension);
 
-        /// <summary>Cenas (nomes de arquivo) presentes na pasta do projeto.</summary>
+        /// <summary>Cenas do projeto, como caminhos relativos à pasta (inclui subpastas, ex.:
+        /// "scenes/01_cela.dbscene"; pastas bin/obj e ocultas são ignoradas).</summary>
         public IEnumerable<string> EnumerateScenes()
         {
             if (!Directory.Exists(Folder))
                 return Enumerable.Empty<string>();
 
             return Directory
-                .EnumerateFiles(Folder, "*" + SceneExtension, SearchOption.TopDirectoryOnly)
-                .Select(Path.GetFileName)
-                .Where(name => name != null)
-                .Select(name => name!)
-                .OrderBy(name => name);
+                .EnumerateFiles(Folder, "*" + SceneExtension, SearchOption.AllDirectories)
+                .Select(f => Path.GetRelativePath(Folder, f).Replace(Path.DirectorySeparatorChar, '/'))
+                .Where(rel => !rel.Split('/').Any(part => part.StartsWith('.') || part is "bin" or "obj"))
+                .OrderBy(rel => rel, StringComparer.OrdinalIgnoreCase);
         }
 
         public string ScenePath(string sceneFileName) => Path.Combine(Folder, sceneFileName);

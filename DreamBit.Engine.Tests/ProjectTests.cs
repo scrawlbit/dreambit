@@ -46,6 +46,22 @@ namespace DreamBit.Engine.Tests
         }
 
         [Fact]
+        public void EnumerateScenes_IncluiSubpastas_EIgnoraBin()
+        {
+            var project = GameProject.CreateOrOpen(_folder, "Jogo");
+            Directory.CreateDirectory(Path.Combine(_folder, "scenes"));
+            Directory.CreateDirectory(Path.Combine(_folder, "bin"));
+            SceneSerializer.Save(new Scene { Name = "Cela" }, Path.Combine(_folder, "scenes", "01_cela.dbscene"));
+            SceneSerializer.Save(new Scene { Name = "Lixo" }, Path.Combine(_folder, "bin", "copia.dbscene"));
+
+            var scenes = project.EnumerateScenes().ToList();
+
+            Assert.Contains("scenes/01_cela.dbscene", scenes);
+            Assert.DoesNotContain(scenes, s => s.StartsWith("bin/"));
+            Assert.True(File.Exists(project.ScenePath("scenes/01_cela.dbscene")));
+        }
+
+        [Fact]
         public void Load_PreservaONome()
         {
             var created = GameProject.CreateOrOpen(_folder, "Projeto X");

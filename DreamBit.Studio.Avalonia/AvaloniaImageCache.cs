@@ -30,6 +30,7 @@ namespace DreamBit.Studio.Avalonia
         {
             if (string.IsNullOrEmpty(path))
                 return null;
+            path = DreamBit.Engine.Assets.AssetPaths.Resolve(path); // relativo à pasta do projeto
 
             lock (_gate)
                 if (_cache.TryGetValue(path, out var cached))
@@ -58,6 +59,7 @@ namespace DreamBit.Studio.Avalonia
         /// do editor bater com o runtime. Usa o mesmo algoritmo da engine (<see cref="ChromaKey"/>).</summary>
         public static Bitmap? GetChromaKeyed(string? path, bool auto, XnaColor chroma, int tolerance)
         {
+            if (!string.IsNullOrEmpty(path)) path = DreamBit.Engine.Assets.AssetPaths.Resolve(path);
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
                 return null;
 

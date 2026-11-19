@@ -34,6 +34,9 @@ namespace DreamBit.Studio.ViewModels
             _watcher?.Dispose();
 
             _project = project;
+            // Caminhos relativos das cenas (texturas, sons, mapas) resolvem pela pasta do projeto.
+            DreamBit.Engine.Assets.AssetPaths.ClearRoots();
+            DreamBit.Engine.Assets.AssetPaths.AddRoot(project.Folder);
             foreach (var (path, error) in project.LoadComponentAssemblies())
                 DreamBit.Engine.Diagnostics.EngineLog.Warn($"Componentes do jogo não carregados ({path}): {error}");
             _watcher = new ProjectWatcher(project.Folder);
