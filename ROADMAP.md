@@ -20,7 +20,9 @@ MonoGame atualizado.
   enter/exit, envio de mensagem), `MessageListener`, `AudioSource`, `ParticleEmitter`,
   `FollowTarget`, `RotatorBehavior`, `ScriptComponent` (C# em runtime via Roslyn),
   `Bone` + `SkeletonAnimator` (rig cutout, keyframes de pose, clipes nomeados, easing,
-  eventos por tempo), `AnimatorController` (estados idle/walk/jump), `TweenComponent`
+  eventos por tempo; curvas por chave/osso com step e bézier, troca de sprite, ordem,
+  cor/alpha e visibilidade por chave, skins, fila/velocidade/tempo normalizado, onion skin
+  no editor), `IkConstraint` (IK de dois ossos), `AttachPoint`, `AnimatorController` (estados idle/walk/jump), `TweenComponent`
   (interpola propriedade com easing), `CameraComponent` (follow/deadzone/bounds/zoom),
   `TextRenderer` (fonte pixel embutida, mundo ou HUD), `SceneExit` (transição de fase),
   `UiAnchor` (âncora de HUD), `UiButton` (botão clicável), `ParallaxLayer` (fundo com

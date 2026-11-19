@@ -88,12 +88,14 @@ namespace DreamBit.Studio.Avalonia
                     }
                 }
 
+                DrawOnionSkin(context); // fantasmas das poses vizinhas do rig selecionado
                 DrawLighting(context, w, h); // iluminação 2D no play (F5): escurece + poças de luz
 
                 DrawLedges(context);
                 DrawColliders(context);
                 DrawSelectionBox(context);
                 DrawGizmos(context);
+                DrawRigGizmos(context);
                 DrawWorldTexts(context);
             }
 
@@ -512,20 +514,11 @@ namespace DreamBit.Studio.Avalonia
         {
             foreach (var c in obj.Components)
             {
-                if (c is SpriteRenderer sprite && !string.IsNullOrEmpty(sprite.TexturePath))
-                {
-                    var bmp = sprite.ChromaKeyEnabled
-                        ? AvaloniaImageCache.GetChromaKeyed(sprite.TexturePath, sprite.ChromaAuto, sprite.ChromaColor, sprite.ChromaTolerance)
-                        : AvaloniaImageCache.Get(sprite.TexturePath);
-                    if (bmp == null)
-                        return false;
+                if (c is SpriteRenderer { Enabled: false })
+                    return true; // parte escondida (chave de visibilidade do esqueleto ou componente desligado)
 
-                    var src = sprite.SourceRect is { } r
-                        ? new Rect(r.X, r.Y, r.Width, r.Height)
-                        : new Rect(0, 0, bmp.PixelSize.Width, bmp.PixelSize.Height);
-                    context.DrawImage(bmp, src, rect);
-                    return true;
-                }
+                if (c is SpriteRenderer sprite && !string.IsNullOrEmpty(sprite.TexturePath))
+                    return DrawSprite(context, sprite, sprite.TexturePath, sprite.SourceRect, rect, sprite.Tint);
 
                 if (c is SpriteAnimator anim && !string.IsNullOrEmpty(anim.TexturePath))
                 {
@@ -558,12 +551,131 @@ namespace DreamBit.Studio.Avalonia
             return false;
         }
 
+        /// <summary>Desenha uma textura de sprite (com recorte, chroma e Tint da animação).</summary>
+        private static bool DrawSprite(DrawingContext context, SpriteRenderer sprite, string path, XnaRect? source, Rect rect, XnaColor tint)
+        {
+            var bmp = sprite.ChromaKeyEnabled
+                ? AvaloniaImageCache.GetChromaKeyed(path, sprite.ChromaAuto, sprite.ChromaColor, sprite.ChromaTolerance)
+                : AvaloniaImageCache.Get(path);
+            if (bmp == null)
+                return false;
+
+            if (tint != XnaColor.White)
+                bmp = AvaloniaImageCache.GetTinted(bmp, path + (sprite.ChromaKeyEnabled ? "|c" : "|n"), tint);
+
+            var src = source is { } r
+                ? new Rect(r.X, r.Y, r.Width, r.Height)
+                : new Rect(0, 0, bmp.PixelSize.Width, bmp.PixelSize.Height);
+            if (tint.A < 255)
+                using (context.PushOpacity(tint.A / 255.0))
+                    context.DrawImage(bmp, src, rect);
+            else
+                context.DrawImage(bmp, src, rect);
+            return true;
+        }
+
         private static XnaColor FillColor(GameObject obj)
         {
             foreach (var c in obj.Components)
                 if (c is SpriteRenderer s)
-                    return s.Color;
+                    return s.Tint == XnaColor.White
+                        ? s.Color
+                        : new XnaColor(s.Color.R * s.Tint.R / 255, s.Color.G * s.Tint.G / 255, s.Color.B * s.Tint.B / 255, s.Color.A * s.Tint.A / 255);
             return new XnaColor(70, 130, 200);
+        }
+
+        // ---- rig de esqueleto: onion skin e gizmos ----
+
+        private static readonly Pen _onionPrevPen = new(new SolidColorBrush(Color.FromRgb(255, 110, 110)), 1.5);
+        private static readonly Pen _onionNextPen = new(new SolidColorBrush(Color.FromRgb(110, 230, 140)), 1.5);
+        private static readonly Pen _rigGizmoPen = new(new SolidColorBrush(Color.FromArgb(220, 255, 170, 60)), 1.5);
+
+        /// <summary>Onion skin: fantasmas das poses dos keyframes anteriores (vermelho) e
+        /// seguintes (verde) do rig selecionado, mais transparentes quanto mais longe.</summary>
+        private void DrawOnionSkin(DrawingContext context)
+        {
+            if (_editor == null || _editor.IsPlaying)
+                return;
+            var skel = _editor.Inspector.OnionSkeleton;
+            if (skel?.Owner == null || skel.Keyframes.Count == 0)
+                return;
+
+            int count = _editor.Inspector.OnionSkinCount;
+            float now = skel.Time;
+            var prev = skel.Keyframes.Where(k => k.Time < now - 0.0005f).Reverse().Take(count).ToList();
+            var next = skel.Keyframes.Where(k => k.Time > now + 0.0005f).Take(count).ToList();
+
+            for (int i = prev.Count - 1; i >= 0; i--)
+                DrawGhost(context, skel, prev[i].Time, i + 1, _onionPrevPen);
+            for (int i = next.Count - 1; i >= 0; i--)
+                DrawGhost(context, skel, next[i].Time, i + 1, _onionNextPen);
+        }
+
+        private static void DrawGhost(DrawingContext context, SkeletonAnimator skel, float time, int distance, Pen pen)
+        {
+            var worlds = skel.ComputeWorldMatrices(time);
+            var samples = new Dictionary<SpriteRenderer, DreamBit.Engine.Animation.BoneKeySample>();
+            foreach (var (bone, sample) in skel.ResolveBoneKeys(time))
+                if (skel.FindPart(bone) is { } part)
+                    samples[part] = sample;
+
+            var parts = worlds
+                .Select(kv => (Obj: kv.Key, World: kv.Value, Sprite: kv.Key.Components.OfType<SpriteRenderer>().FirstOrDefault()))
+                .Where(p => p.Sprite != null)
+                .Select(p => (p.Obj, p.World, Sprite: p.Sprite!, Sample: samples.TryGetValue(p.Sprite!, out var s) ? s : default))
+                .OrderBy(p => p.Sample.SortOrder ?? p.Obj.SortOrder)
+                .ToList();
+
+            using (context.PushOpacity(0.35 / distance))
+            {
+                foreach (var (_, world, sprite, sample) in parts)
+                {
+                    bool visible = sample.Visible ?? skel.GetBaseVisible(sprite);
+                    if (!visible)
+                        continue;
+
+                    var baseSprite = skel.GetBaseSprite(sprite);
+                    var shown = sample.Sprite is { } key ? skel.CurrentSkin?.Remap(key) ?? key : baseSprite;
+                    var path = string.IsNullOrEmpty(shown.TexturePath) ? baseSprite.TexturePath : shown.TexturePath;
+
+                    var size = sprite.Size;
+                    var rect = new Rect(-size.X / 2, -size.Y / 2, size.X, size.Y);
+                    using (context.PushTransform(ToAvalonia(world)))
+                    {
+                        if (string.IsNullOrEmpty(path) || !DrawSprite(context, sprite, path, shown.SourceRect, rect, sample.Tint ?? XnaColor.White))
+                            context.FillRectangle(new SolidColorBrush(ToColor(sprite.Color)), rect);
+                        context.DrawRectangle(null, pen, rect);
+                    }
+                }
+            }
+        }
+
+        /// <summary>Gizmos do rig no modo de edição: pontos de fixação (cruz + direção) e alvos de IK.</summary>
+        private void DrawRigGizmos(DrawingContext context)
+        {
+            if (_editor == null || _editor.IsPlaying)
+                return;
+            float zoom = Math.Max(0.0001f, _editor.Camera.Zoom);
+            float s = 6f / zoom;
+
+            foreach (var obj in Flatten(_editor.Scene.Objects))
+            {
+                foreach (var c in obj.Components)
+                {
+                    if (c is AttachPoint ap)
+                    {
+                        var p = ap.WorldPosition;
+                        var d = ap.WorldDirection;
+                        context.DrawLine(_rigGizmoPen, new Point(p.X - s, p.Y), new Point(p.X + s, p.Y));
+                        context.DrawLine(_rigGizmoPen, new Point(p.X, p.Y - s), new Point(p.X, p.Y + s));
+                        context.DrawLine(_rigGizmoPen, ToPoint(p), ToPoint(p + d * (s * 2.5f)));
+                    }
+                    else if (c is IkConstraint ik && ik.TargetPosition is { } t)
+                    {
+                        context.DrawEllipse(null, _rigGizmoPen, new Point(t.X, t.Y), s, s);
+                    }
+                }
+            }
         }
 
         /// <summary>Iluminação 2D aproximada para o play no editor (F5): espelha o lightmap do

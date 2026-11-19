@@ -14,7 +14,7 @@ namespace DreamBit.Studio.ViewModels
     /// rotação (em graus) e escala como propriedades bindáveis, reconstruindo os
     /// Vector2 do Transform a cada alteração (structs não são bindáveis diretamente).
     /// </summary>
-    public sealed class InspectorViewModel : NotificationObject
+    public sealed partial class InspectorViewModel : NotificationObject
     {
         private GameObject? _target;
 
@@ -1099,7 +1099,7 @@ namespace DreamBit.Studio.ViewModels
         {
             var s = Skeleton;
             if (s == null) return;
-            s.AddClip(string.IsNullOrWhiteSpace(_newClipName) ? "clip" : _newClipName);
+            EditSkeleton(s, "Adicionar clipe", () => s.AddClip(string.IsNullOrWhiteSpace(_newClipName) ? "clip" : _newClipName));
             Refresh();
         }
 
@@ -1107,7 +1107,7 @@ namespace DreamBit.Studio.ViewModels
         {
             var s = Skeleton;
             if (s == null) return;
-            s.RemoveClip(s.CurrentClipName);
+            EditSkeleton(s, "Remover clipe", () => s.RemoveClip(s.CurrentClipName));
             Refresh();
         }
 
@@ -1155,7 +1155,7 @@ namespace DreamBit.Studio.ViewModels
         public float SkeletonTime
         {
             get => Skeleton?.Time ?? 0f;
-            set { var s = Skeleton; if (s != null) { s.SetTime(value); OnPropertyChanged(); } }
+            set { var s = Skeleton; if (s != null) { s.SetTime(value); OnPropertyChanged(); RaiseRig(); } }
         }
 
         /// <summary>Tempos (segundos) dos keyframes, para exibir/pular na timeline.</summary>
@@ -1167,7 +1167,7 @@ namespace DreamBit.Studio.ViewModels
         {
             var s = Skeleton;
             if (s == null) return;
-            s.CaptureKeyframe(s.Time);
+            EditSkeleton(s, "Adicionar keyframe", () => s.CaptureKeyframe(s.Time));
             OnPropertyChanged(nameof(SkeletonKeyframeCount));
             OnPropertyChanged(nameof(SkeletonKeyframeTimes));
         }
@@ -1177,7 +1177,7 @@ namespace DreamBit.Studio.ViewModels
         {
             var s = Skeleton;
             if (s == null) return;
-            s.RemoveKeyframeNear(s.Time);
+            EditSkeleton(s, "Remover keyframe", () => s.RemoveKeyframeNear(s.Time));
             OnPropertyChanged(nameof(SkeletonKeyframeCount));
             OnPropertyChanged(nameof(SkeletonKeyframeTimes));
         }
@@ -1624,6 +1624,7 @@ namespace DreamBit.Studio.ViewModels
             OnPropertyChanged(nameof(SkeletonEventsText));
             OnPropertyChanged(nameof(SkeletonClipNames));
             OnPropertyChanged(nameof(SkeletonCurrentClip));
+            RaiseRig();
 
             OnPropertyChanged(nameof(HasSpriteAnimCtrl));
             OnPropertyChanged(nameof(SacIdleClip)); OnPropertyChanged(nameof(SacWalkClip));

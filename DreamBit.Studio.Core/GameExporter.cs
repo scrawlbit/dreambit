@@ -73,6 +73,9 @@ namespace DreamBit.Studio
                         case SpriteAnimator a:
                             a.TexturePath = Copy(a.TexturePath, assetsDir);
                             break;
+                        case SkeletonAnimator sk:
+                            sk.RemapSpritePaths(p => Copy(p, assetsDir)); // trocas de sprite e skins
+                            break;
                         case AudioSource au:
                             au.SoundPath = Copy(au.SoundPath, assetsDir);
                             break;

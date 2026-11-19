@@ -40,6 +40,7 @@ namespace DreamBit.Studio.ViewModels
             Camera = new Camera2D();
             Inspector = new InspectorViewModel();
             History = new History();
+            Inspector.History = History; // edições do rig (chaves, skins) com undo
             Project = new ProjectViewModel();
             Log = new LogViewModel();
 
@@ -1708,22 +1709,7 @@ namespace DreamBit.Studio.ViewModels
                         });
                         break;
                     case SkeletonAnimator skel:
-                        var skelClone = new SkeletonAnimator();
-                        bool firstClip = true;
-                        foreach (var clip in skel.Clips)
-                        {
-                            if (firstClip) { skelClone.CurrentClip.Name = clip.Name; firstClip = false; }
-                            else skelClone.AddClip(clip.Name);
-                            skelClone.Duration = clip.Duration;
-                            skelClone.Loop = clip.Loop;
-                            skelClone.Easing = clip.Easing;
-                            skelClone.SetEvents(clip.Events);
-                            foreach (var kf in clip.Keyframes)
-                                skelClone.AddKeyframe(new DreamBit.Engine.Animation.PoseKeyframe(
-                                    kf.Time, new System.Collections.Generic.Dictionary<string, DreamBit.Engine.Animation.BonePose>(kf.Bones)));
-                        }
-                        skelClone.CurrentClipName = skel.CurrentClipName;
-                        clone.AddComponent(skelClone);
+                        clone.AddComponent(skel.Clone()); // clipes, curvas, extras por osso e skins
                         break;
                     case DreamBit.Engine.Components.Custom.MissingComponent:
                     case var custom when DreamBit.Engine.Components.Custom.ComponentRegistry.IsCustom(custom):

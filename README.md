@@ -27,7 +27,9 @@ independente, multiplataforma e testada.
   enter/exit, envio de mensagem), `MessageListener`, `AudioSource`, `ParticleEmitter`,
   `FollowTarget`, `RotatorBehavior`, `ScriptComponent` (C# em runtime via Roslyn),
   `Bone` + `SkeletonAnimator` (**rig cutout**: keyframes de pose, **clipes nomeados**,
-  easing, eventos), `AnimatorController` (estados idle/walk/jump), `TweenComponent`,
+  easing, eventos, **curvas step/bézier por chave**, **troca de sprite/ordem/cor/visibilidade
+  por chave**, **skins**, **onion skin**), `IkConstraint` (**IK de dois ossos**),
+  `AttachPoint` (pontos de fixação), `AnimatorController` (estados idle/walk/jump), `TweenComponent`,
   `CameraComponent` (follow/deadzone/bounds/zoom), `TextRenderer` (fonte pixel, mundo ou
   **HUD**), `SceneExit` (**transição de fase**), `UiAnchor` + `UiButton` (**UI clicável**),
   `ParallaxLayer` (**parallax**), `TimerComponent`.

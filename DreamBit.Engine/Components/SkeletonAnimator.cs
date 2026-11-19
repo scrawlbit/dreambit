@@ -691,6 +691,22 @@ namespace DreamBit.Engine.Components
                 ApplyPart(part, default);
         }
 
+        /// <summary>Sprite "de base" da parte: o original, se uma chave a sobrepõe agora, senão o atual.</summary>
+        public SpriteRef GetBaseSprite(SpriteRenderer part)
+        {
+            ResolvePendingOriginals();
+            return _overrides.TryGetValue(part, out var ov) && ov.Sprite
+                ? new SpriteRef(ov.Texture, ov.Source)
+                : new SpriteRef(part.TexturePath, part.SourceRect);
+        }
+
+        /// <summary>Visibilidade "de base" da parte (o original, se uma chave a sobrepõe agora).</summary>
+        public bool GetBaseVisible(SpriteRenderer part)
+        {
+            ResolvePendingOriginals();
+            return _overrides.TryGetValue(part, out var ov) && ov.Visible ? ov.Enabled : part.Enabled;
+        }
+
         /// <summary>Reaplica só sprite/ordem/cor/visibilidade das chaves no tempo atual (sem mexer
         /// nos transforms dos ossos) — usado pelo editor ao editar as chaves.</summary>
         public void RefreshBoneKeys()

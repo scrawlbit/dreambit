@@ -1462,6 +1462,73 @@
                                     <Button Content="Capturar pose" Click="OnCaptureBonePose" />
                                     <Button Content="Resetar pose" Click="OnResetBonePose" />
                                 </StackPanel>
+
+                                <!-- Chave do osso no keyframe atual do Skeleton do rig -->
+                                <StackPanel IsVisible="{Binding HasRigContext}" Margin="0,8,0,0">
+                                    <TextBlock Classes="section" Text="Chave do osso" />
+                                    <Slider Minimum="0" Maximum="{Binding RigDuration}" Value="{Binding RigTime, Mode=TwoWay}"
+                                            SmallChange="0.02" LargeChange="0.1" />
+                                    <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                                        <Button Grid.Column="0" Content="&lt;" Click="OnRigPrevKey" ToolTip.Tip="Keyframe anterior" Padding="8,2" />
+                                        <Button Grid.Column="1" Content="&gt;" Click="OnRigNextKey" ToolTip.Tip="Próximo keyframe" Padding="8,2" Margin="4,0,0,0" />
+                                        <Button Grid.Column="3" Content="+ Keyframe" Click="OnRigAddKeyframe"
+                                                ToolTip.Tip="Captura a pose do rig inteiro no tempo atual" />
+                                    </Grid>
+                                    <TextBlock Text="{Binding RigKeyInfo}" Foreground="#8A93A6" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,2" />
+
+                                    <StackPanel IsVisible="{Binding HasRigKeyframe}">
+                                        <TextBlock Classes="field" Text="Curva até a próxima chave (só este osso)" />
+                                        <ComboBox ItemsSource="{Binding CurveOptions}" SelectedItem="{Binding BoneKeyCurve, Mode=TwoWay}"
+                                                  HorizontalAlignment="Stretch" />
+                                        <TextBox Text="{Binding BoneKeyBezier, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 IsVisible="{Binding BoneKeyIsBezier}" Watermark="x1, y1, x2, y2"
+                                                 ToolTip.Tip="Pontos de controle da bézier (como no CSS cubic-bezier)" Margin="0,4,0,0" />
+
+                                        <CheckBox Content="Trocar sprite nesta chave" IsChecked="{Binding BoneKeyHasSprite, Mode=TwoWay}"
+                                                  IsEnabled="{Binding HasRigPart}" Margin="0,6,0,0"
+                                                  ToolTip.Tip="Mão aberta/fechada, expressões: vale da chave até a próxima troca" />
+                                        <StackPanel IsVisible="{Binding BoneKeyHasSprite}">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <TextBox Grid.Column="0" Text="{Binding BoneKeySpritePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Watermark="caminho (vazio = mesma textura)" />
+                                                <Button Grid.Column="1" Content="..." Click="OnBoneKeyBrowseSprite" Margin="4,0,0,0"
+                                                        ToolTip.Tip="Escolher a imagem" />
+                                            </Grid>
+                                            <TextBox Text="{Binding BoneKeySpriteRect, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     Watermark="recorte x, y, w, h (vazio = inteira)" Margin="0,4,0,0" />
+                                            <Button Content="Usar sprite atual da parte" Click="OnBoneKeyUseCurrentSprite" Margin="0,4,0,0"
+                                                    ToolTip.Tip="Grava na chave o sprite que a parte mostra agora (ex.: escolhido no atlas)" />
+                                        </StackPanel>
+
+                                        <Grid ColumnDefinitions="*,6,*" Margin="0,6,0,0">
+                                            <CheckBox Grid.Column="0" Content="Ordem nesta chave" IsChecked="{Binding BoneKeyHasSortOrder, Mode=TwoWay}"
+                                                      IsEnabled="{Binding HasRigPart}" />
+                                            <TextBox Grid.Column="2" Text="{Binding BoneKeySortOrder, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     IsEnabled="{Binding BoneKeyHasSortOrder}" />
+                                        </Grid>
+
+                                        <CheckBox Content="Cor/alpha nesta chave (interpola)" IsChecked="{Binding BoneKeyHasTint, Mode=TwoWay}"
+                                                  IsEnabled="{Binding HasRigPart}" Margin="0,6,0,0" />
+                                        <Grid ColumnDefinitions="*,4,*,4,*,4,*" IsVisible="{Binding BoneKeyHasTint}">
+                                            <TextBox Grid.Column="0" Text="{Binding BoneKeyTintR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="R" />
+                                            <TextBox Grid.Column="2" Text="{Binding BoneKeyTintG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="G" />
+                                            <TextBox Grid.Column="4" Text="{Binding BoneKeyTintB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="B" />
+                                            <TextBox Grid.Column="6" Text="{Binding BoneKeyTintA, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Alpha" />
+                                        </Grid>
+
+                                        <TextBlock Classes="field" Text="Visibilidade da parte" />
+                                        <ComboBox ItemsSource="{Binding VisibilityOptions}" SelectedItem="{Binding BoneKeyVisibility, Mode=TwoWay}"
+                                                  HorizontalAlignment="Stretch" IsEnabled="{Binding HasRigPart}" />
+                                        <TextBlock Text="A parte é o Sprite do osso ou do primeiro filho que não é osso. Fora das chaves volta ao original."
+                                                   Foreground="#8A93A6" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" />
+                                    </StackPanel>
+
+                                    <Grid ColumnDefinitions="*,6,60" Margin="0,6,0,0">
+                                        <CheckBox Grid.Column="0" Content="Onion skin" IsChecked="{Binding OnionSkinEnabled, Mode=TwoWay}"
+                                                  ToolTip.Tip="Fantasmas das poses dos keyframes anteriores/seguintes" />
+                                        <TextBox Grid.Column="2" Text="{Binding OnionSkinCount, Mode=TwoWay}" ToolTip.Tip="Keyframes antes/depois (1 a 5)" />
+                                    </Grid>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -1524,6 +1591,42 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                                <StackPanel IsVisible="{Binding SkeletonHasKeyAtTime}" Margin="0,4,0,0">
+                                    <TextBlock Classes="field" Text="Curva do keyframe atual (até o próximo)" />
+                                    <ComboBox ItemsSource="{Binding CurveOptions}" SelectedItem="{Binding SkeletonKeyCurve, Mode=TwoWay}"
+                                              HorizontalAlignment="Stretch" ToolTip.Tip="Padrão = suavização do clipe; Step segura a pose" />
+                                    <TextBox Text="{Binding SkeletonKeyBezier, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             IsVisible="{Binding SkeletonKeyIsBezier}" Watermark="x1, y1, x2, y2" Margin="0,4,0,0" />
+                                </StackPanel>
+
+                                <Grid ColumnDefinitions="*,6,*" Margin="0,6,0,0">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="field" Text="Velocidade" />
+                                        <TextBox Text="{Binding SkeletonSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                        <CheckBox Content="Onion skin" IsChecked="{Binding OnionSkinEnabled, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <TextBlock Classes="field" Text="Skin (preview)" />
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <ComboBox Grid.Column="0" ItemsSource="{Binding SkinOptions}" SelectedItem="{Binding SkeletonSkin, Mode=TwoWay}"
+                                              HorizontalAlignment="Stretch" />
+                                    <Button Grid.Column="1" Content="− skin" Click="OnRemoveSkeletonSkin" Margin="4,0,0,0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,4,0,0">
+                                    <TextBox Grid.Column="0" Text="{Binding NewSkinName, Mode=TwoWay}" Watermark="nome da skin" />
+                                    <Button Grid.Column="1" Content="+ skin" Click="OnAddSkeletonSkin" Margin="4,0,0,0"
+                                            ToolTip.Tip="Cria uma skin com o visual atual das partes" />
+                                    <Button Grid.Column="2" Content="Regravar" Click="OnUpdateSkeletonSkin" Margin="4,0,0,0"
+                                            ToolTip.Tip="Grava o visual atual das partes na skin ativa" />
+                                </Grid>
+                                <TextBox Text="{Binding SkeletonSkinText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" AcceptsReturn="True"
+                                         FontFamily="Consolas,monospace" Height="64" TextWrapping="NoWrap" Margin="0,4,0,0"
+                                         Watermark="parte: caminho | x, y, w, h&#x0a;&gt; original.png: novo.png"
+                                         ToolTip.Tip="Partes da skin ativa; linhas com '&gt;' remapeiam sprites usados nas chaves" />
+
                                 <TextBlock Classes="field" Text="Eventos por tempo (uma linha 'tempo: nome')" />
                                 <TextBox Text="{Binding SkeletonEventsText, Mode=TwoWay}" AcceptsReturn="True"
                                          FontFamily="Consolas,monospace" Height="54" TextWrapping="NoWrap"

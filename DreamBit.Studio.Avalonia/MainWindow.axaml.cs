@@ -1024,6 +1024,22 @@ namespace DreamBit.Studio.Avalonia
         private void OnAddSkeletonClip(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.AddSkeletonClip);
         private void OnRemoveSkeletonClip(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RemoveSkeletonClip);
 
+        // ---- rig: chave do osso, skins ----
+        private void OnRigPrevKey(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RigPreviousKey);
+        private void OnRigNextKey(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RigNextKey);
+        private void OnRigAddKeyframe(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RigAddKeyframe);
+        private void OnBoneKeyUseCurrentSprite(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.BoneKeyUseCurrentSprite);
+        private void OnAddSkeletonSkin(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.AddSkeletonSkin);
+        private void OnUpdateSkeletonSkin(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.UpdateSkeletonSkin);
+        private void OnRemoveSkeletonSkin(object? sender, RoutedEventArgs e) => AddComponent(_editor.Inspector.RemoveSkeletonSkin);
+
+        private async void OnBoneKeyBrowseSprite(object? sender, RoutedEventArgs e)
+        {
+            var path = await PickOpenFileAsync("Sprite da chave", "Imagens", "*.png");
+            if (path != null)
+                AddComponent(() => _editor.Inspector.BoneKeySetSpriteFile(path));
+        }
+
         private void OnGoToKeyframe(object? sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: float time })
