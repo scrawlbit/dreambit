@@ -698,6 +698,11 @@ namespace DreamBit.Engine.Serialization
         public bool ChromaAuto { get; set; } = true;
         public byte ChromaR { get; set; } = 255; public byte ChromaG { get; set; } public byte ChromaB { get; set; } = 255;
         public int ChromaTolerance { get; set; } = 30;
+        // Tint (multiplica a textura). Branco = sem efeito; cenas antigas sem o campo ficam brancas.
+        public byte TintR { get; set; } = 255;
+        public byte TintG { get; set; } = 255;
+        public byte TintB { get; set; } = 255;
+        public byte TintA { get; set; } = 255;
     }
 
     /// <summary>Componente customizado: id do tipo + propriedades públicas em JSON.</summary>

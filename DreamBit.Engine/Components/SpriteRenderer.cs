@@ -37,6 +37,7 @@ namespace DreamBit.Engine.Components
             set => Set(ref _size, value);
         }
 
+        /// <summary>Cor do retângulo quando não há textura. Com textura, use <see cref="Tint"/>.</summary>
         public Color Color
         {
             get => _color;
@@ -45,7 +46,8 @@ namespace DreamBit.Engine.Components
 
         /// <summary>
         /// Cor multiplicada no desenho (RGB + alpha, não pré-multiplicada). Branco = sem efeito.
-        /// Usada pela animação de esqueleto (cor/alpha por keyframe); não é salva na cena.
+        /// É a forma de colorir um sprite com textura; é salva na cena. A animação de esqueleto
+        /// também a usa (cor/alpha por keyframe) e sobrescreve em tempo de execução.
         /// </summary>
         public Color Tint
         {

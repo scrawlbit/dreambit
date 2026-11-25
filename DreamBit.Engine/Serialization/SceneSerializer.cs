@@ -276,6 +276,7 @@ namespace DreamBit.Engine.Serialization
                         SrcY = sprite.SourceRect?.Y ?? 0,
                         SrcW = sprite.SourceRect?.Width ?? 0,
                         SrcH = sprite.SourceRect?.Height ?? 0,
+                        TintR = sprite.Tint.R, TintG = sprite.Tint.G, TintB = sprite.Tint.B, TintA = sprite.Tint.A,
                         ChromaKey = sprite.ChromaKeyEnabled,
                         ChromaAuto = sprite.ChromaAuto,
                         ChromaR = sprite.ChromaColor.R, ChromaG = sprite.ChromaColor.G, ChromaB = sprite.ChromaColor.B,
@@ -701,7 +702,8 @@ namespace DreamBit.Engine.Serialization
                     ChromaKeyEnabled = sprite.ChromaKey,
                     ChromaAuto = sprite.ChromaAuto,
                     ChromaColor = new Color(sprite.ChromaR, sprite.ChromaG, sprite.ChromaB),
-                    ChromaTolerance = sprite.ChromaTolerance
+                    ChromaTolerance = sprite.ChromaTolerance,
+                    Tint = new Color(sprite.TintR, sprite.TintG, sprite.TintB, sprite.TintA)
                 });
 
             foreach (var rotator in data.Rotators)
